@@ -60,7 +60,7 @@ while (1) {
    my $liner1 = "";
    debugmsg("Main loop...");
 
-   my @liner = `/usr/lib/hobbit/server/bin/bb localhost "hobbitdboard fields=hostname,testname,color"`;
+   my @liner = `/usr/lib/hobbit/server/bin/bb localhost "hobbitdboard fields=hostname,testname,ackmsg,color"`;
    my @BBYEL  = grep {/\|yellow/} @liner;
    my @BBRED  = grep {/\|\|red/} @liner;
    my @BBBLU  = grep {/\|blue/} @liner;
