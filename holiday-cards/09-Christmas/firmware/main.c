@@ -15,6 +15,8 @@
 
 #include <avr/io.h>
 #include <avr/sleep.h>
+
+#define LED_CONTROL_PIN _BV(3)
 #define NOP __asm__ __volatile__ ("nop")
 
 void delay_cnt(unsigned char c);
@@ -24,23 +26,23 @@ int main(void){
 
 	//configure chip
 	//select clock source
-	DDRB&=(~0xff); 				//pins outputs
-	PORTB|=(0xff);				//pins GND
+	DDRB=(~LED_CONTROL_PIN);	//ctrl pin output
+	PORTB&=(~0xff);				//all pins GND
 	
 	for(i=0; i<10; i++){ 		//flash the lights 10 times
 
 		//we don't just blink them, we fade them in and out
 		for(j=0; j<0xff; j++){	//fade in gently
-			PORTB|=(0xff);		//LEDs on
+			PORTB|=LED_CONTROL_PIN;		//LEDs on
 			delay_cnt(j);		//delay (grows)
-			PORTB&=(~0xff);		//LEDs off
+			PORTB&=(~LED_CONTROL_PIN);		//LEDs off
 			delay_cnt(0xff-j);	//delay (shrinks)
 		}
 		
 		for(j=0; j<0xff; j++){	//fade out gently
-			PORTB&=(~0xff);		//LEDs off
+			PORTB&=(~LED_CONTROL_PIN);		//LEDs off
 			delay_cnt(j);		//delay (grows)
-			PORTB|=(0xff);		//LEDs on
+			PORTB|=LED_CONTROL_PIN;		//LEDs on
 			delay_cnt(0xff-j);	//delay (shrinks)
 		}
 
