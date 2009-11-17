@@ -4,6 +4,7 @@
 # (c) 2009 Lars Engels <lars@0x20.net>
 # Distributed under the 2-clause BSD license.
 
+#http://whereisian.com/forum/index.php?topic=153.msg878#msg878
 #I found some time to hack down a Perl script based on noxin's work to feed my #twatch.
 #At the moment you can tell it to print the content of a file to the LCD.
 #There's a function to truncate long lines to 20 characters, so the text is not wrapped. I also wrote some functions that I found at X7JAY7X's LCD Page.
