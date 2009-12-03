@@ -26,8 +26,8 @@ int main(void){
 
 	//configure chip
 	//select clock source
-	DDRB=(~LED_CONTROL_PIN);	//ctrl pin output
-	PORTB&=(~0xff);				//all pins GND
+	DDRB=(LED_CONTROL_PIN);	//ctrl pin output (1 = output)
+	PORTB&=(~0xff);				//all pins GND, vpullup off (0 = ground)
 	
 	for(i=0; i<10; i++){ 		//flash the lights 10 times
 
