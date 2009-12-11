@@ -1,0 +1,5 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartArguments>--file=B:\Utveckling\Elektronik\2550Test\output\serlcd.hex --device=pic18f2550 --port=com1 --baudrate=115200 --write-program</StartArguments>
+  </PropertyGroup>
+</Project>
