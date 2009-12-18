@@ -21,10 +21,9 @@
 
 #include "TCPIP Stack/TCPIP.h" //include TCPIP headers
 #include "tweet_treev1.h"
-APP_CONFIG AppConfig;
+APP_CONFIG AppConfig; //this is used as an external variable
 
 static void InitHardware(void);
-static void InitAppConfig(void);
 unsigned char UART1RXRdy(void);
 unsigned char UART1RX(void);
 void UART1TX(char c);
@@ -39,7 +38,22 @@ int main(void){
 
     TickInit();	//setup the tick timer
 
-	InitAppConfig(); //setup the TCPIP stack config variable
+	//setup the TCPIP stack config variable
+	AppConfig.Flags.bIsDHCPEnabled = TRUE;
+	AppConfig.Flags.bInConfigMode = TRUE;
+	AppConfig.MyMACAddr.v[0] = MY_DEFAULT_MAC_BYTE1;
+	AppConfig.MyMACAddr.v[1] = MY_DEFAULT_MAC_BYTE2;
+	AppConfig.MyMACAddr.v[2] = MY_DEFAULT_MAC_BYTE3;
+	AppConfig.MyMACAddr.v[3] = MY_DEFAULT_MAC_BYTE4;
+	AppConfig.MyMACAddr.v[4] = MY_DEFAULT_MAC_BYTE5;
+	AppConfig.MyMACAddr.v[5] = MY_DEFAULT_MAC_BYTE6;
+	AppConfig.MyIPAddr.Val = MY_DEFAULT_IP_ADDR_BYTE1 | MY_DEFAULT_IP_ADDR_BYTE2<<8ul | MY_DEFAULT_IP_ADDR_BYTE3<<16ul | MY_DEFAULT_IP_ADDR_BYTE4<<24ul;
+	AppConfig.DefaultIPAddr.Val = AppConfig.MyIPAddr.Val;
+	AppConfig.MyMask.Val = MY_DEFAULT_MASK_BYTE1 | MY_DEFAULT_MASK_BYTE2<<8ul | MY_DEFAULT_MASK_BYTE3<<16ul | MY_DEFAULT_MASK_BYTE4<<24ul;
+	AppConfig.DefaultMask.Val = AppConfig.MyMask.Val;
+	AppConfig.MyGateway.Val = MY_DEFAULT_GATE_BYTE1 | MY_DEFAULT_GATE_BYTE2<<8ul | MY_DEFAULT_GATE_BYTE3<<16ul | MY_DEFAULT_GATE_BYTE4<<24ul;
+	AppConfig.PrimaryDNSServer.Val = MY_DEFAULT_PRIMARY_DNS_BYTE1 | MY_DEFAULT_PRIMARY_DNS_BYTE2<<8ul  | MY_DEFAULT_PRIMARY_DNS_BYTE3<<16ul  | MY_DEFAULT_PRIMARY_DNS_BYTE4<<24ul;
+	AppConfig.SecondaryDNSServer.Val = MY_DEFAULT_SECONDARY_DNS_BYTE1 | MY_DEFAULT_SECONDARY_DNS_BYTE2<<8ul  | MY_DEFAULT_SECONDARY_DNS_BYTE3<<16ul  | MY_DEFAULT_SECONDARY_DNS_BYTE4<<24ul;
 
     StackInit();	//setup the stack
 
@@ -170,20 +184,6 @@ void InitializeUART1(void){
     U1MODEbits.UARTEN = 1;
     U1STAbits.UTXEN = 1;
     IFS0bits.U1RXIF = 0;
-}
-
-static ROM BYTE SerializedMACAddress[6] = {MY_DEFAULT_MAC_BYTE1, MY_DEFAULT_MAC_BYTE2, MY_DEFAULT_MAC_BYTE3, MY_DEFAULT_MAC_BYTE4, MY_DEFAULT_MAC_BYTE5, MY_DEFAULT_MAC_BYTE6};
-static void InitAppConfig(void){
-	AppConfig.Flags.bIsDHCPEnabled = TRUE;
-	AppConfig.Flags.bInConfigMode = TRUE;
-	memcpypgm2ram((void*)&AppConfig.MyMACAddr, (ROM void*)SerializedMACAddress, sizeof(AppConfig.MyMACAddr));
-	AppConfig.MyIPAddr.Val = MY_DEFAULT_IP_ADDR_BYTE1 | MY_DEFAULT_IP_ADDR_BYTE2<<8ul | MY_DEFAULT_IP_ADDR_BYTE3<<16ul | MY_DEFAULT_IP_ADDR_BYTE4<<24ul;
-	AppConfig.DefaultIPAddr.Val = AppConfig.MyIPAddr.Val;
-	AppConfig.MyMask.Val = MY_DEFAULT_MASK_BYTE1 | MY_DEFAULT_MASK_BYTE2<<8ul | MY_DEFAULT_MASK_BYTE3<<16ul | MY_DEFAULT_MASK_BYTE4<<24ul;
-	AppConfig.DefaultMask.Val = AppConfig.MyMask.Val;
-	AppConfig.MyGateway.Val = MY_DEFAULT_GATE_BYTE1 | MY_DEFAULT_GATE_BYTE2<<8ul | MY_DEFAULT_GATE_BYTE3<<16ul | MY_DEFAULT_GATE_BYTE4<<24ul;
-	AppConfig.PrimaryDNSServer.Val = MY_DEFAULT_PRIMARY_DNS_BYTE1 | MY_DEFAULT_PRIMARY_DNS_BYTE2<<8ul  | MY_DEFAULT_PRIMARY_DNS_BYTE3<<16ul  | MY_DEFAULT_PRIMARY_DNS_BYTE4<<24ul;
-	AppConfig.SecondaryDNSServer.Val = MY_DEFAULT_SECONDARY_DNS_BYTE1 | MY_DEFAULT_SECONDARY_DNS_BYTE2<<8ul  | MY_DEFAULT_SECONDARY_DNS_BYTE3<<16ul  | MY_DEFAULT_SECONDARY_DNS_BYTE4<<24ul;
 }
 
 //stack overslow interrupt vectors
