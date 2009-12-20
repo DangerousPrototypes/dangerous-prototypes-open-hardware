@@ -26,16 +26,25 @@
 #include "tweet_treev1.h"
 #include "shiftbrite.h"
 
-//#define JSON_DEBUG
+//#define DEBUG
+
 #define TWEETCHARS 140 //how long can a tweet be?
 #define MAX_IDCHARS 20 //length of MAX_ID value buffer
 #define HTTP_MAX_RETRY 3 //how many times to retry before delaying
-#define REFRESH_INTERVAL 1 //max refresh interval in munites, -1
+#ifdef DEBUG
+	#define REFRESH_INTERVAL 0 //max refresh interval in munites
+#else
+	#define REFRESH_INTERVAL 1 //max refresh interval in munites, -1
+#endif	
 #define HOLD_SECONDS 5	//how long to hold a solid color after fading (if there are more colors to show)
 
 static BYTE ServerName[] =	"search.twitter.com"; //twitter address
 static WORD ServerPort = 80; //http server port number
-static ROM BYTE SearchURL[] = "/search.json?rpp=50&q=%40tweet_tree&since_id="; //tweet search JSON datafeed URL
+#ifdef DEBUG
+	static ROM BYTE SearchURL[] = "/search.json?rpp=50&q=%40tweet_tree&since_id=6856568500"; //tweet search JSON datafeed URL
+#else
+	static ROM BYTE SearchURL[] = "/search.json?rpp=50&q=%40tweet_tree&since_id="; //tweet search JSON datafeed URL
+#endif
 
 struct _jsonParser{
 	unsigned char *searchTag; //pointer to the tag to search for
@@ -55,7 +64,7 @@ struct _jsonParser{
 static unsigned char textTag[]="\"text\":\"";//JSON tag that identifies tweets
 static unsigned char max_idTag[]="\"id\":";//JSON tag that identifies max ID number to search for next time
 
-static unsigned char tweetBuf[TWEETCHARS];//store tweet text here for color code extraction
+static unsigned char tweetBuf[TWEETCHARS+1];//store tweet text here for color code extraction
 static unsigned char lastidBuf[(MAX_IDCHARS+1)];//20 character array to hold maximum ID for next time, 1 extra char to assure 0 termination
 
 static struct _jsonParser searchParser;
@@ -133,8 +142,8 @@ void twatchTasks(void){ //this state machine services the #twatch
 		}
 	}
 
-	switch(twitterTCPstate)
-	{
+	switch(twitterTCPstate){
+
 		case TWITTER_INIT: //setup JSON parser structs on first run
 			searchParser.searchTag=textTag;//tag to search for
 			searchParser.searchTagLength=(sizeof(textTag)-1);//length of search tag
@@ -169,17 +178,25 @@ void twatchTasks(void){ //this state machine services the #twatch
 				//go backwards from colorCount
 
 				//increment current color towards this color
-				cnt=incrementColor(&RGB.Rout,RGB.R[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
-				cnt+=incrementColor(&RGB.Gout,RGB.G[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
-				cnt+=incrementColor(&RGB.Bout,RGB.B[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
-				//send to shiftbrite
-				shiftBriteColor((unsigned int)(RGB.Rout<<2), (unsigned int)(RGB.Gout<<2), (unsigned int)(RGB.Bout<<2));
+				#ifdef DEBUG
+					cnt=0;
+				#else
+					cnt=incrementColor(&RGB.Rout,RGB.R[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
+					cnt+=incrementColor(&RGB.Gout,RGB.G[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
+					cnt+=incrementColor(&RGB.Bout,RGB.B[(RGB.colorCount-1)]); //new value is in Rout, returns 0 when match
+					//send to shiftbrite
+					shiftBriteColor((unsigned int)(RGB.Rout<<2), (unsigned int)(RGB.Gout<<2), (unsigned int)(RGB.Bout<<2));
+				#endif
+
 				//is this the final color step?
 				if(cnt==0){//done incrementing all colors
 					RGB.colorCount--;
 					time.runsec=0;//clear running counter for pause
-					twitterTCPstate=HOLD_COLOR;//next time hold solid color
+					#ifndef DEBUG
+						twitterTCPstate=HOLD_COLOR;//next time hold solid color
+					#endif
 				}
+
 			}else if(time.minutes>=REFRESH_INTERVAL){ //if it has been at least X minutes, get tweet search results
 				time.minutes=0;
 				twitterTCPstate=TWITTER_SEARCH_TCP_START; //start TCP data grabber next cycle
@@ -223,7 +240,11 @@ void twatchTasks(void){ //this state machine services the #twatch
 			TCPPutROMString(TCPSocket, SearchURL);	//JSON search datafeed URL
 
 			//add the last ID to the JSON search URL. (usually requires urlencoding, but we have numbers only)
-			TCPPutString(TCPSocket, lastidBuf); //put the string in the TCP buffer
+			#ifndef DEBUG
+			if(lastidBuf[0]!='\0'){ //don't put 0 length IDs into TCP, kills socket
+				TCPPutString(TCPSocket, lastidBuf); //put the string in the TCP buffer
+			}
+			#endif
 
 			//form the rest of the HTTP request
 			TCPPutROMString(TCPSocket, (ROM BYTE*)" HTTP/1.0\r\nHost: ");
