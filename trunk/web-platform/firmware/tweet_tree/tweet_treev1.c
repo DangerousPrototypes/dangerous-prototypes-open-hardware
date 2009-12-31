@@ -34,7 +34,7 @@
 #ifdef DEBUG
 	#define REFRESH_INTERVAL 0 //max refresh interval in munites
 #else
-	#define REFRESH_INTERVAL 1 //max refresh interval in munites, -1
+	#define REFRESH_INTERVAL 20 //max refresh interval in seconds
 #endif	
 #define HOLD_SECONDS 5	//how long to hold a solid color after fading (if there are more colors to show)
 
@@ -43,7 +43,7 @@ static WORD ServerPort = 80; //http server port number
 #ifdef DEBUG
 	static ROM BYTE SearchURL[] = "/search.json?rpp=50&q=%40tweet_tree&since_id=6856568500"; //tweet search JSON datafeed URL
 #else
-	static ROM BYTE SearchURL[] = "/search.json?rpp=50&q=%40tweet_tree&since_id="; //tweet search JSON datafeed URL
+	static ROM BYTE SearchURL[] = "/search.json?rpp=3&q=%40tweet_tree&since_id="; //tweet search JSON datafeed URL
 #endif
 
 struct _jsonParser{
@@ -66,6 +66,7 @@ static unsigned char max_idTag[]="\"id\":";//JSON tag that identifies max ID num
 
 static unsigned char tweetBuf[TWEETCHARS+1];//store tweet text here for color code extraction
 static unsigned char lastidBuf[(MAX_IDCHARS+1)];//20 character array to hold maximum ID for next time, 1 extra char to assure 0 termination
+static unsigned char lastidTempBuf[(MAX_IDCHARS+1)];
 
 static struct _jsonParser searchParser;
 static struct _jsonParser max_idParser;
@@ -153,7 +154,7 @@ void twatchTasks(void){ //this state machine services the #twatch
 
 			max_idParser.searchTag=max_idTag;//tag to search for
 			max_idParser.searchTagLength=(sizeof(max_idTag)-1);//length of search tag
-			max_idParser.valueBuffer=lastidBuf; //assign buffer to this struct
+			max_idParser.valueBuffer=lastidTempBuf; //assign buffer to this struct
 			max_idParser.valueBufferLength=MAX_IDCHARS;//buffer length
 			max_idParser.valueEndChar=','; //text tag, value ends with "
 			max_idParser.valueBuffer[20]='\0'; //ensure 0 termination
@@ -197,8 +198,8 @@ void twatchTasks(void){ //this state machine services the #twatch
 					#endif
 				}
 
-			}else if(time.minutes>=REFRESH_INTERVAL){ //if it has been at least X minutes, get tweet search results
-				time.minutes=0;
+			}else if(time.seconds>=REFRESH_INTERVAL){ //if it has been at least X minutes, get tweet search results
+				time.seconds=0;
 				twitterTCPstate=TWITTER_SEARCH_TCP_START; //start TCP data grabber next cycle
 			}			
 			break;
@@ -303,6 +304,9 @@ void twatchTasks(void){ //this state machine services the #twatch
 							if(gotID==0){//get only the first (highest) tweet ID to append to the URL next time
 								if(tagSearch(tcpBuf[cnt], &max_idParser)){
 									addValueByte('\0', &max_idParser);
+									for(gotID=0; gotID<21; gotID++){
+										lastidBuf[gotID]=lastidTempBuf[gotID];//only overwrite if comlete
+									}
 									gotID=1;
 								}
 							}
@@ -499,6 +503,11 @@ unsigned char i, foundColor=0;
 			case 'P':
 			case 'p':
 				addColor(0xff, 0, 0xff);
+				foundColor=1;
+				break;
+			case 'W':
+			case 'w':
+				addColor(0xff, 0xff, 0xff);
 				foundColor=1;
 				break;
 			case '*':
