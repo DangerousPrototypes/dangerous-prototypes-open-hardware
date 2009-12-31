@@ -177,11 +177,17 @@ unsigned char UART1RX(void){
 //add byte to buffer, pause if full
 //uses PIC 4 byte UART FIFO buffer
 void UART1TX(char c){
-	U1STAbits.UTXEN = 1; //enable UART TX
+	static unsigned char discard=1;//discard the first TX byte before enabling UART TX
+
+	if(discard){//discard the first few bytes to avoid back powering the FTDI chip
+		discard--;
+		return;
+	}
+	if(U1STAbits.UTXEN ==0)U1STAbits.UTXEN = 1; //enable UART TX
 	while(U1STAbits.UTXBF == 1); //if buffer is full, wait
     U1TXREG = c;
 	while(U1STAbits.TRMT== 0); //wait for UART to empty
-	U1STAbits.UTXEN = 0;	//disable TX to avoid backpowering FTDI chip when no USB attached
+	//U1STAbits.UTXEN = 0;	//disable TX to avoid backpowering FTDI chip when no USB attached
 }
 
 //Initialize the terminal UART
