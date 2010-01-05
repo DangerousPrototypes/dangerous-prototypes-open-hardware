@@ -15,7 +15,7 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 #endif
 
 // dsPIC33F processor
-#define GetSystemClock()		(80000000ul)      // Hz
+#define GetSystemClock()		(40000000ul)      // Hz
 #define GetInstructionClock()	(GetSystemClock()/2)
 #define GetPeripheralClock()	GetInstructionClock()
 
