@@ -27,47 +27,29 @@
 ;-----------------------------------------------------------------------------
 ; Configuration Bits 
 ;-----------------------------------------------------------------------------
-#if CPU_5V_HS
-	CONFIG	PLLDIV = 5			; OSC/4 for 16MHz
-	CONFIG  CPUDIV = OSC1_PLL2		; CPU_clk = PLL/2
-	CONFIG 	USBDIV = 2			; USB_clk = PLL/2
-	CONFIG 	FOSC = HSPLL_HS			; HS osc PLL
-#else
-	CONFIG	PLLDIV = 4			; OSC/4 for 16MHz
-	CONFIG  CPUDIV = OSC1_PLL2		; CPU_clk = Fosc
-	CONFIG 	USBDIV = 2			; USB_clk = PLL/2
-	CONFIG 	FOSC = HS			; HS osc
-#endif
-	CONFIG  FCMEN = ON			; Fail Safe Clock Monitor
-	CONFIG  IESO = OFF			; Int/Ext switchover mode
-	CONFIG  PWRT = ON			; PowerUp Timer
-	CONFIG  BOR = OFF			; Brown Out
-	CONFIG  VREGEN = ON			; Int Voltage Regulator
-	CONFIG  WDT = OFF			; WatchDog Timer
-	CONFIG  MCLRE = ON			; MCLR
-	CONFIG  LPT1OSC = OFF			; Low Power OSC
-	CONFIG  PBADEN = ON			; PORTB<4:0> A/D
-	CONFIG  CCP2MX = ON			; CCP2 Mux RC1
-	CONFIG  STVREN = ON			; Stack Overflow Reset
-	CONFIG  LVP = OFF			; Low Voltage Programming
-;	CONFIG  ICPRT = OFF			; ICP
-	CONFIG  XINST = OFF			; Ext CPU Instruction Set
-	CONFIG	DEBUG = OFF			; Background Debugging
-	CONFIG  CP0 = OFF			; Code Protect
-	CONFIG  CP1 = OFF
-	CONFIG  CP2 = OFF
-	CONFIG  CPB = OFF   			; Boot Sect Code Protect
-	CONFIG  CPD = OFF  			; EEPROM Data Protect
-	CONFIG  WRT0 = OFF 			; Table Write Protect
-	CONFIG  WRT1 = OFF
-	CONFIG  WRT2 = OFF 
-	CONFIG  WRTB = ON  			; Boot Table Write Protest
-	CONFIG  WRTC = ON  			; CONFIG Write Protect
-	CONFIG  WRTD = OFF 			; EEPROM Write Protect
-	CONFIG  EBTR0 = OFF			; Ext Table Read Protect
-	CONFIG  EBTR1 = OFF
-	CONFIG  EBTR2 = OFF
-	CONFIG  EBTRB = OFF 			; Boot Table Read Protect
+     CONFIG WDTEN = OFF          ;WDT disabled (enabled by SWDTEN bit)
+     CONFIG PLLDIV = 5           ;Divide by 5 (20 MHz oscillator input) (was /3, for 12)
+     CONFIG STVREN = ON          ;stack overflow/underflow reset enabled
+     CONFIG XINST = OFF          ;Extended instruction set disabled
+     CONFIG CPUDIV = OSC1        ;No CPU system clock divide
+     CONFIG CP0 = OFF            ;Program memory is not code-protected
+     CONFIG OSC = HSPLL          ;HS oscillator, PLL enabled, HSPLL used by USB
+     CONFIG T1DIG = ON           ;Sec Osc clock source may be selected
+     CONFIG LPT1OSC = OFF        ;high power Timer1 mode
+     CONFIG FCMEN = OFF          ;Fail-Safe Clock Monitor disabled
+     CONFIG IESO = OFF           ;Two-Speed Start-up disabled
+     CONFIG WDTPS = 32768        ;1:32768
+     CONFIG DSWDTOSC = INTOSCREF ;DSWDT uses INTOSC/INTRC as clock
+     CONFIG RTCOSC = T1OSCREF    ;RTCC uses T1OSC/T1CKI as clock
+     CONFIG DSBOREN = OFF        ;Zero-Power BOR disabled in Deep Sleep
+     CONFIG DSWDTEN = OFF        ;Disabled
+     CONFIG DSWDTPS = 8192       ;1:8,192 (8.5 seconds)
+     CONFIG IOL1WAY = OFF        ;IOLOCK bit can be set and cleared
+     CONFIG MSSP7B_EN = MSK7     ;7 Bit address masking
+     CONFIG WPFP = PAGE_1        ;Write Protect Program Flash Page 0
+     CONFIG WPEND = PAGE_0       ;Start protection at page 0
+     CONFIG WPCFG = OFF          ;Write/Erase last page protect Disabled
+     CONFIG WPDIS = OFF          ;WPFP[5:0], WPEND, and WPCFG bits ignored  
 ;--------------------------------------------------------------------------
 ; External declarations
 	extern	usb_sm_state
@@ -125,40 +107,41 @@ BOOT_ASM_CODE CODE
 ;--------------------------------------------------------------------------
 	global	main
 main
+	;18f24j50 must be manually switched to PLL, even if the fuse is set
+	bsf		OSCTUNE, PLLEN	;enable PLL
+	;now wait at least 2ms	
+		; Init delay
+		movlw 	0xff
+rpt1:	clrf	W
+rptc:	nop
+notrcv:	decf 	W, W
+		bra 	nz, rptc
+		decf 	W, W
+		bra 	nz, rpt1
+
 	UD_INIT
 	UD_TX	'X'
 
-	; Decide what to run bootloader or application
-#if USE_EEPROM_MARK
-	; Check EEPROM mark
-	movlw	EEPROM_MARK_ADDR
-	movwf	EEADR
-	movlw	0x01
-	movwf	EECON1
-	movlw	EEPROM_MARK
-	subwf	EEDATA, W
-	bz	bootloader
-#endif
 	; Check bootloader enable jumper
 #ifdef USE_JP_BOOTLOADER_EN
-	clrf	JP_BOOTLOADER_PORT		;PORTB low
-	clrf	JP_BOOTLOADER_TRIS		;TRISB output
-	bcf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT ;clear RBPU to enable B pullups
+	;clrf	JP_BOOTLOADER_PORT		;PORTB low
+	;clrf	JP_BOOTLOADER_TRIS		;TRISB output
+	;bcf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT ;clear RBPU to enable B pullups
 	bsf		JP_BOOTLOADER_LAT, JP_BOOTLOADER_PIN	;PGD to input
 	nop
 	nop
 	btfsc	JP_BOOTLOADER_PORT, JP_BOOTLOADER_PIN	;skip app go to BL if bit is clear
 	bra		cleanupandexit	;disable and skip to user app
-	bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
-	setf	JP_BOOTLOADER_TRIS		;trisB back input
+	;bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
+	;setf	JP_BOOTLOADER_TRIS		;trisB back input
 #endif
 	; Run bootloader
 	bra	bootloader
 	reset
 
 cleanupandexit:
-	bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
-	setf	JP_BOOTLOADER_TRIS		;trisB back input
+	;bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
+	;setf	JP_BOOTLOADER_TRIS		;trisB back input
 	goto	APP_RESET_VECTOR	; Run Application FW
 
 

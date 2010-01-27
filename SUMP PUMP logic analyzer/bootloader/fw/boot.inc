@@ -34,7 +34,7 @@
 #define CPU_5V_HS		1
 ;-----------------------------------------------------------------------------
 ; EEPROM Mark to run bootloader
-#define USE_EEPROM_MARK		1	; Enable EEPROM MARK. To disable = 0
+#define USE_EEPROM_MARK		0	; Enable EEPROM MARK. To disable = 0
 #define EEPROM_MARK_ADDR	0x00	; EEPROM Address for MARK
 #define EEPROM_MARK		0x5A	; MARK value
 ;-----------------------------------------------------------------------------
