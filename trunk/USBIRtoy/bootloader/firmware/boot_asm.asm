@@ -46,8 +46,8 @@ EEDATA_OFFS	equ	6
 ;-----------------------------------------------------------------------------
 ; Extern Functions
 ;-----------------------------------------------------------------------------
-	EXTERN	store_fsr1_fsr2
-	EXTERN	restore_fsr1_fsr2
+;	EXTERN	store_fsr1_fsr2
+;	EXTERN	restore_fsr1_fsr2
 ;	EXTERN	xtea_encode
 ;	EXTERN	xtea_decode
 
@@ -490,4 +490,30 @@ eeprom_write
 	clrf	hold_r		; hold_r=0
 	return
 ;-----------------------------------------------------------------------------
+
+; These were in xtea.asm, 
+; but we didn't need encryption so we removed xtea
+; and moved these funcitons here where they're used.
+	
+	global	_fsr
+_fsr	res	4	; Temporary storage for FSR's
+
+	; Store FSR1,FSR2
+	GLOBAL  store_fsr1_fsr2        
+store_fsr1_fsr2
+	movff	FSR1L, _fsr                         
+	movff	FSR1H, _fsr + 1
+	movff	FSR2L, _fsr + 2
+	movff	FSR2H, _fsr + 3
+	return
+
+	; Restore FSR1, FSR2
+	GLOBAL	restore_fsr1_fsr2
+restore_fsr1_fsr2
+	movff	_fsr, FSR1L                        
+	movff	_fsr + 1, FSR1H                          
+	movff	_fsr + 2, FSR2L                        
+	movff	_fsr + 3, FSR2H                          
+	return
+
 	END

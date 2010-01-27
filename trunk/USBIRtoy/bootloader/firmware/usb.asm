@@ -166,12 +166,19 @@ usb_sm_prepare_next_setup_trf
 	movwf	PREINC2		; BDT_ADRH(ep0Bo)
 	; BDT STAT
 	; Buffer OUT: SIE ownership, DATA0 Expected, Toggle Synch Enabled
-	subfsr	FSR2, 3
+	;subfsr	FSR2, 3
+	movf	POSTDEC2, W
+	movf	POSTDEC2, W
+	movf	POSTDEC2, W
 	movlw	(_USIE | _DAT0 | _DTSEN)
 	movwf	INDF2		; BDT_STAT(ep0Bo)
 	; Buffer IN configuration. Assume the ep0Bi in the same bank as ep0Bo
 	; Buffer IN: CPU ownership
-	addfsr	FSR2, 4		; movlb	HIGH(ep0Bi)
+	;addfsr	FSR2, 4		; movlb	HIGH(ep0Bi)
+	movf	POSTINC2, W
+	movf	POSTINC2, W
+	movf	POSTINC2, W
+	movf	POSTINC2, W
 	movlw	_UCPU
 	movwf	INDF2		; BDT_STAT(ep0Bi)
 	return
@@ -765,7 +772,8 @@ usb_sm_ctrl_setup_end_in
 	movwf	POSTDEC2		; BDT_ADRH(ep0Bi)
 	movlw	LOW(CtrlTrfData)
 	movwf	POSTDEC2		; BDT_ADRL(ep0Bi)
-	subfsr	FSR2, 1
+	;subfsr	FSR2, 1
+	movf	POSTDEC2, W
 	movlw	(_USIE | _DAT1 | _DTSEN)
 	movwf	POSTDEC2		; BDT_STAT(ep0Bi)
 	bra	usb_sm_ctrl_setup_end_in_out
@@ -814,7 +822,12 @@ usb_stall_ep0
 	movwf	POSTDEC2		; BDT_CNT(ep0Bo)
 	movlw	(_USIE | _BSTALL)
 	movwf	INDF2		; BDT_STAT(ep0Bo)
-	addfsr	FSR2, 4
+	;addfsr	FSR2, 4
+	movf	POSTINC2, W
+	movf	POSTINC2, W
+	movf	POSTINC2, W
+	movf	POSTINC2, W
+	movlw	(_USIE | _BSTALL) ;repeated because we cheat to avoid the extended instruction set
 	movwf	INDF2			; BDT_STAT(ep0Bi)
 	bcf	UCON, PKTDIS
 	return

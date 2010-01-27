@@ -51,12 +51,12 @@
 	CONFIG  STVREN = ON			; Stack Overflow Reset
 	CONFIG  LVP = OFF			; Low Voltage Programming
 ;	CONFIG  ICPRT = OFF			; ICP
-	CONFIG  XINST = ON			; Ext CPU Instruction Set
+	CONFIG  XINST = OFF			; Ext CPU Instruction Set
 	CONFIG	DEBUG = OFF			; Background Debugging
-	CONFIG  CP0 = ON			; Code Protect
-	CONFIG  CP1 = ON
-	CONFIG  CP2 = ON
-	CONFIG  CPB = ON   			; Boot Sect Code Protect
+	CONFIG  CP0 = OFF			; Code Protect
+	CONFIG  CP1 = OFF
+	CONFIG  CP2 = OFF
+	CONFIG  CPB = OFF   			; Boot Sect Code Protect
 	CONFIG  CPD = OFF  			; EEPROM Data Protect
 	CONFIG  WRT0 = OFF 			; Table Write Protect
 	CONFIG  WRT1 = OFF
@@ -67,7 +67,7 @@
 	CONFIG  EBTR0 = OFF			; Ext Table Read Protect
 	CONFIG  EBTR1 = OFF
 	CONFIG  EBTR2 = OFF
-	CONFIG  EBTRB = ON 			; Boot Table Read Protect
+	CONFIG  EBTRB = OFF 			; Boot Table Read Protect
 ;--------------------------------------------------------------------------
 ; External declarations
 	extern	usb_sm_state
