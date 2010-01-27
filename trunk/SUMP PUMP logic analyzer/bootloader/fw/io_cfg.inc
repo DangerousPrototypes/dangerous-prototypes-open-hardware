@@ -22,19 +22,17 @@
 ; LED
 #define USE_LED			1	; Undef/comment if you not want to use FW LED
 #ifdef	USE_LED
-#define LED				LATA
-#define LED_TRIS		TRISA
-#define LED_PIN			0
+#define LED				LATC
+#define LED_TRIS		TRISC
+#define LED_PIN			2
 #endif
 ;-----------------------------------------------------------------------------
 ; Jumpers
 #define USE_JP_BOOTLOADER_EN	1	; Undef/comment if you not want to use FW Jumper
 #ifdef	USE_JP_BOOTLOADER_EN
-#define JP_BOOTLOADER_TRIS	TRISB
-#define JP_BOOTLOADER_PORT	PORTB
-#define JP_BOOTLOADER_LAT	LATB
-#define JP_BOOTLOADER_PIN	6	
-#define JP_BOOTLOADER_PULLUP INTCON2
-#define JP_BOOTLOADER_PULLUP_BIT	7
+#define JP_BOOTLOADER_TRIS	TRISC
+#define JP_BOOTLOADER_PORT	PORTC
+#define JP_BOOTLOADER_LAT	LATC
+#define JP_BOOTLOADER_PIN	1	
 #endif
 ;-----------------------------------------------------------------------------

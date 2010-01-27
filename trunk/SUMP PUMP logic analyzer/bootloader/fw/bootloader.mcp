@@ -81,7 +81,7 @@ file_008=boot.inc
 file_009=io_cfg.inc
 file_010=boot_if.inc
 file_011=P18F24J50.INC
-file_012=bootloader.lkr
+file_012=18f24j50_g.lkr
 file_013=Makefile
 [SUITE_INFO]
 suite_guid={6B3DAA78-59C1-46DD-B6AA-DBDAE4E06484}

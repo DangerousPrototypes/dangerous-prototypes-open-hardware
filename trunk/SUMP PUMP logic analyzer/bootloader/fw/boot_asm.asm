@@ -17,7 +17,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Flash Reading / Writing
 ;-----------------------------------------------------------------------------
-	#include "P18F2550.INC"
+	#include "P18F24J50.INC"
 	#include "boot.inc"
 	#include "boot_if.inc"
 	#include "usb_defs.inc"
@@ -121,10 +121,6 @@ read_code_loop
 	decfsz	cntr
 	bra	read_code_loop
 	
-	; Encode and return
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	;bra	xtea_encode
-	;goto	xtea_encode
 
 ;-----------------------------------------------------------------------------
 ;       write_code 
@@ -135,11 +131,6 @@ read_code_loop
 ; NOTES : Assume TBLPTRU=0
 ;-----------------------------------------------------------------------------
 write_code
-	; Decode
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	;rcall	xtea_decode
-;	call	xtea_decode
-	
 	; TBLPTR = addr
 	rcall	load_address_size8		; TBLPTR=addr cntr=size8 & 0x3C
 	lfsr	FSR0,boot_cmd + CODE_OFFS	; FSR0=&boot_cmd.data
@@ -180,13 +171,8 @@ read_id_loop
 	
 rdwr_id_return
 	clrf	TBLPTRU                  
-#if ENCODE_ID
-	; Encode and return
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;	goto	xtea_encode
-#else
 	return
-#endif
+
 	
 ;-----------------------------------------------------------------------------
 ;       write_id 
@@ -197,11 +183,6 @@ rdwr_id_return
 ; NOTES : Will leave TBLPTRU=0
 ;-----------------------------------------------------------------------------
 write_id
-#if ENCODE_ID
-	; Decode
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;	call	xtea_decode
-#endif
 	rcall   rdwr_id_init
 	lfsr    FSR0, boot_cmd + CODE_OFFS	; FSR0=&boot_cmd.data
 	
@@ -236,22 +217,17 @@ rdwr_id_init
 ; NOTES :
 ;-----------------------------------------------------------------------------
 write_eeprom
-#if ENCODE_EEPROM
-	; Decode
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;	call	xtea_decode
-#endif
 	rcall	eeprom_init
 	lfsr	FSR0, boot_cmd + EEDATA_OFFS	; FSR0=&boot_cmd.write_eeprom.data
         ; while( cntr-- )
 write_eeprom_loop
-	movff	POSTINC0, EEDATA
-	rcall	eeprom_write
-	btfsc	EECON1, WR			; Is WRITE completed?
-	bra	$ - 2				; Wait until WRITE complete
-	incf	EEADR, F			; Next address
-	decfsz	cntr
-	bra	write_eeprom_loop
+;	movff	POSTINC0, EEDATA
+;	rcall	eeprom_write
+;	btfsc	EECON1, WR			; Is WRITE completed?
+;	bra	$ - 2				; Wait until WRITE complete
+;	incf	EEADR, F			; Next address
+;	decfsz	cntr
+;	bra	write_eeprom_loop
 	return
 ;-----------------------------------------------------------------------------
 ; DESCR : Read data from EEPROM
@@ -264,18 +240,12 @@ read_eeprom
 	lfsr	FSR0, boot_rep + EEDATA_OFFS	; FSR0=&boot_rsp.read_eeprom.data
         ; while( cntr-- )
 read_eeprom_loop
-	bsf	EECON1, RD			; Read data
-	movff	EEDATA, POSTINC0
-	incf	EEADR, F			; Next address
-	decfsz	cntr
-	bra	read_eeprom_loop
-#if ENCODE_EEPROM
-	; Encode and return
-	;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;	goto	xtea_encode
-#else
+;	bsf	EECON1, RD			; Read data
+;	movff	EEDATA, POSTINC0
+;	incf	EEADR, F			; Next address
+;	decfsz	cntr
+;	bra	read_eeprom_loop
 	return
-#endif
 ;-----------------------------------------------------------------------------
 ; DESCR : Setup EEPROM registers and vars
 ; INPUT : boot_cmd
@@ -283,12 +253,12 @@ read_eeprom_loop
 ; NOTES :
 ;-----------------------------------------------------------------------------
 eeprom_init
-	movf	boot_cmd + ADDR_LO_OFFS, W	; EEPEOM address to read
-	movwf	EEADR
-	movf	boot_cmd + SIZE_OFFS, W		; Size  of data to read
-	movwf	cntr
-	movwf	boot_rep + SIZE_OFFS
-	clrf	EECON1, W
+;	movf	boot_cmd + ADDR_LO_OFFS, W	; EEPEOM address to read
+;	movwf	EEADR
+;	movf	boot_cmd + SIZE_OFFS, W		; Size  of data to read
+;	movwf	cntr
+;	movwf	boot_rep + SIZE_OFFS
+;	clrf	EECON1, W
 	return
 ;-----------------------------------------------------------------------------
 ; Assembler Functions written to save code space
@@ -372,20 +342,8 @@ get_fw_version
 ; OUTPUT: 
 ; NOTES : 
 ;-----------------------------------------------------------------------------
-#if USE_EEPROM_MARK
-; Soft Reset and run bootloader FW
-bootloader_soft_reset
-	; Set EEPROM Mark
-	rcall	set_eep_mark
-	bra	soft_reset2
-#endif
-
 ; Soft Reset and run Application FW
 soft_reset
-#if USE_EEPROM_MARK 
-	; Remove EEPROM Mark
-	rcall	clr_eep_mark
-#endif        
 
 	; Reset USB        
 soft_reset2
@@ -436,21 +394,21 @@ copy_boot_rep_loop
 ; NOTES : 
 ;-----------------------------------------------------------------------------
 clr_eep_mark
-	movlw	~(EEPROM_MARK)
-	clrf	eep_mark_set	; EEP_MARK will be cleared
+;	movlw	~(EEPROM_MARK)
+;	clrf	eep_mark_set	; EEP_MARK will be cleared
 	bra	write_eep_mark
 set_eep_mark
-	movlw	EEPROM_MARK
-	bsf	eep_mark_set, 0	; EEP_MARK will be set
+;	movlw	EEPROM_MARK
+;	bsf	eep_mark_set, 0	; EEP_MARK will be set
 write_eep_mark
-	movwf	EEDATA		; Set Data
-	movlw	EEPROM_MARK_ADDR
-	movwf	EEADR		; Set Address
-	bcf	EECON1, EEPGD	; Access EEPROM (not code memory)
-	rcall	eeprom_write	; Perform write sequence
-	btfsc	EECON1, WR
-	bra	$ - 2		; Wait EEIF=1 write completed
-	bcf	EECON1, WREN	; Disable writes
+;	movwf	EEDATA		; Set Data
+;	movlw	EEPROM_MARK_ADDR
+;	movwf	EEADR		; Set Address
+;	bcf	EECON1, EEPGD	; Access EEPROM (not code memory)
+;	rcall	eeprom_write	; Perform write sequence
+;	btfsc	EECON1, WR
+;	bra	$ - 2		; Wait EEIF=1 write completed
+;	bcf	EECON1, WREN	; Disable writes
 	return
 
 ;-----------------------------------------------------------------------------
@@ -477,10 +435,10 @@ load_address
 
 ; write flash (if EECON1.FREE is set will perform block erase)          
 flash_write
-	bsf	EECON1, EEPGD	; Access code memory (not EEPROM)
+;	bsf	EECON1, EEPGD	; Access code memory (not EEPROM)
 ; write eeprom EEADR,EEDATA must be preset, EEPGD must be cleared       
 eeprom_write
-	bcf	EECON1, CFGS	; Access code memory (not Config)
+;	bcf	EECON1, CFGS	; Access code memory (not Config)
 	bsf	EECON1, WREN	; Enable write
 	movlw	0x55
 	movwf	EECON2
