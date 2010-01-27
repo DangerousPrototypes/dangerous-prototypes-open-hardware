@@ -1,0 +1,2569 @@
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ; BootLoader Main code
+                      00019 ;-----------------------------------------------------------------------------
+                      00020         #include "P18F24J50.INC"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC18F24J50 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2009 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      02009         LIST
+                      00021         #include "boot.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ; Main definitions
+                      00019 ;-----------------------------------------------------------------------------
+                      00020 ; Bootloader Version
+                      00021 #define FW_VER_MAJOR            0
+                      00022 #define FW_VER_MINOR            2
+                      00023 #define FW_VER_SUB_MINOR        2
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00024 #define FW_VER_CODE             ((FW_VER_MAJOR << 8) | (FW_VER_MINOR << 4) | (FW_VER_SUB_MINOR))
+                      00025 ;-----------------------------------------------------------------------------
+                      00026 ; Application FW RESET and INTERRUPT VECTORS
+                      00027 #define APP_RESET_VECTOR                0x000800
+                      00028 #define APP_HIGH_INTERRUPT_VECTOR       0x000808
+                      00029 #define APP_LOW_INTERRUPT_VECTOR        0x000818
+                      00030 ;-----------------------------------------------------------------------------
+                      00031 ; CPU Power & Speed
+                      00032 ; If CPU_5V_HS is 1 then CPU run from 48 MHz PLL clock. REQUIRE 5V Power Supply
+                      00033 ; If CPU_5V_HS is 0 then CPU run from 16 MHz OSC directly. Possible 3.3V Power Supply
+                      00034 #define CPU_5V_HS               1
+                      00035 ;-----------------------------------------------------------------------------
+                      00036 ; EEPROM Mark to run bootloader
+                      00037 #define USE_EEPROM_MARK         1       ; Enable EEPROM MARK. To disable = 0
+                      00038 #define EEPROM_MARK_ADDR        0x00    ; EEPROM Address for MARK
+                      00039 #define EEPROM_MARK             0x5A    ; MARK value
+                      00040 ;-----------------------------------------------------------------------------
+                      00041 ; EEPROM and ID encoding by XTEA support
+                      00042 #define ENCODE_EEPROM           0       ; Disable EEPROM encoding. To enable = 1
+                      00043 #define ENCODE_ID               0       ; Disable ID encoding. To enable = 1
+                      00044 ;-----------------------------------------------------------------------------
+                      00045 ; Debug messages over UART
+                      00046 #define UART_DEBUG      0
+                      00047 #if UART_DEBUG
+                      00048 UD_INIT macro
+                      00049         clrf    TXSTA
+                      00050         clrf    RCSTA
+                      00051         clrf    BAUDCON
+                      00052         bsf     TXSTA, BRGH
+                      00053         movlw   ((.48000000 / .16 / .115200) - 1)       ; .25 = 115200
+                      00054         movwf   SPBRG
+                      00055         bsf     RCSTA, SPEN
+                      00056         bsf     TXSTA, TXEN
+                      00057         endm
+                      00058 UD_TX   macro   BYTE
+                      00059         btfss   PIR1, TXIF
+                      00060         bra     $ - 2
+                      00061         movlw   BYTE
+                      00062         movwf   TXREG
+                      00063         bcf     PIR1, TXIF
+                      00064         endm
+                      00065 UD_TXB  macro   BYTE
+                      00066         btfss   PIR1, TXIF
+                      00067         bra     $ - 2
+                      00068         movf    BYTE, W
+                      00069         addlw   0x30
+                      00070         movwf   TXREG
+                      00071         bcf     PIR1, TXIF
+                      00072         endm
+                      00073 #else
+                      00074 UD_INIT macro
+                      00075         endm
+                      00076 UD_TX   macro   BYTE
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00077         endm
+                      00078 UD_TXB  macro   BYTE
+                      00079         endm
+                      00080 #endif ; UART_DEBUG
+                      00081 ;-----------------------------------------------------------------------------
+                      00022         #include "io_cfg.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ; I/O configuration
+                      00019 ;-----------------------------------------------------------------------------
+                      00020 ; Constants
+                      00021 ;-----------------------------------------------------------------------------
+                      00022 ; LED
+                      00023 #define USE_LED                 1       ; Undef/comment if you not want to use FW LED
+                      00024 #ifdef  USE_LED
+                      00025 #define LED                             LATA
+                      00026 #define LED_TRIS                TRISA
+                      00027 #define LED_PIN                 0
+                      00028 #endif
+                      00029 ;-----------------------------------------------------------------------------
+                      00030 ; Jumpers
+                      00031 #define USE_JP_BOOTLOADER_EN    1       ; Undef/comment if you not want to use FW Jumper
+                      00032 #ifdef  USE_JP_BOOTLOADER_EN
+                      00033 #define JP_BOOTLOADER_TRIS      TRISB
+                      00034 #define JP_BOOTLOADER_PORT      PORTB
+                      00035 #define JP_BOOTLOADER_LAT       LATB
+                      00036 #define JP_BOOTLOADER_PIN       6       
+                      00037 #define JP_BOOTLOADER_PULLUP INTCON2
+                      00038 #define JP_BOOTLOADER_PULLUP_BIT        7
+                      00039 #endif
+                      00040 ;-----------------------------------------------------------------------------
+                      00023         #include "usb_defs.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ;-----------------------------------------------------------------------------
+                      00019 ; UEPn Initialization Parameters
+                      00020 #define EP_CTRL         0x06    ; Cfg Control pipe for this ep
+                      00021 #define EP_OUT          0x0C    ; Cfg OUT only pipe for this ep
+                      00022 #define EP_IN           0x0A    ; Cfg IN only pipe for this ep
+                      00023 #define EP_OUT_IN       0x0E    ; Cfg both OUT & IN pipes for this ep
+                      00024 #define HSHK_EN         0x10    ; Enable handshake packet
+                      00025 
+                      00026 ; Buffer Descriptor Status Register Initialization Parameters
+                      00027 #define _BSTALL         0x04    ; Buffer Stall enable
+                      00028 #define _DTSEN          0x08    ; Data Toggle Synch enable
+                      00029 #define _INCDIS         0x10    ; Address increment disable
+                      00030 #define _KEN            0x20    ; SIE keeps buff descriptors enable
+                      00031 #define _DAT0           0x00    ; DATA0 packet expected next
+                      00032 #define _DAT1           0x40    ; DATA1 packet expected next
+                      00033 #define _DTSMASK        0x40    ; DTS Mask
+                      00034 #define _USIE           0x80    ; SIE owns buffer
+                      00035 #define _UCPU           0x00    ; CPU owns buffer
+                      00036 
+                      00037 ; USTAT checking constants
+                      00038 #define OUT             0
+                      00039 #define IN              1
+                      00040 #define EP00_OUT        ((0x00 << 3) | (OUT << 2))
+                      00041 #define EP00_IN         ((0x00 << 3) | (IN << 2))
+                      00042 
+                      00043 ; USB PID: Token Types - See chapter 8 in the USB specification
+                      00044 #define SETUP_TOKEN     0x34
+                      00045 #define OUT_TOKEN       0x04
+                      00046 #define IN_TOKEN        0x24
+                      00047 
+                      00048 #define EP0_BUFF_SIZE   .64     
+                      00049 
+                      00050 ; HID
+                      00051 #define HID_INTF_ID     0x00
+                      00052 #define HID_UEP         UEP1
+                      00053 #define HID_BD_OUT      ep1Bo
+                      00054 #define HID_OUT_EP_SIZE EP0_BUFF_SIZE
+                      00055 #define HID_BD_IN       ep1Bi
+                      00056 #define HID_IN_EP_SIZE  .64
+                      00057 
+                      00058 ; SETUP packet fields
+                      00059 
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00060 #define RQ_TYPE_MASK    (0x03 << 5)
+                      00061 #define STANDARD        (0x00 << 5)
+                      00062 #define CLASS           (0x01 << 5)
+                      00063 #define VENDOR          (0x02 << 5)
+                      00064 ; Recipient
+                      00065 #define RCPT_MASK       0x1F
+                      00066 #define RCPT_DEV        0
+                      00067 #define RCPT_INTF       1
+                      00068 #define RCPT_EP         2
+                      00069 #define RCPT_OTH        3
+                      00070 ; Standard Requests
+                      00071 #define GET_STATUS      .0
+                      00072 #define CLR_FEATURE     .1
+                      00073 #define SET_FEATURE     .3
+                      00074 #define SET_ADR         .5
+                      00075 #define GET_DSC         .6
+                      00076 #define SET_DSC         .7
+                      00077 #define GET_CFG         .8
+                      00078 #define SET_CFG         .9
+                      00079 #define GET_INTF        .10
+                      00080 #define SET_INTF        .11
+                      00081 #define SYNCH_FRAME     .12
+                      00082 
+                      00083 ; HID Class-Specific Requests
+                      00084 #define GET_REPORT      0x01
+                      00085 #define GET_IDLE        0x02
+                      00086 #define GET_PROTOCOL    0x03
+                      00087 #define SET_REPORT      0x09
+                      00088 #define SET_IDLE        0x0A
+                      00089 #define SET_PROTOCOL    0x0B
+                      00090 
+                      00091 ; Host-to-device,Device-to-host
+                      00092 #define HOST_TO_DEV     0
+                      00093 #define DEV_TO_HOST     1
+                      00094 ; DEVICE_REMOTE_WAKEUP,ENDPOINT_HALT
+                      00095 #define DEVICE_REMOTE_WAKEUP    0x01
+                      00096 #define ENDPOINT_HALT           0x00
+                      00097 ;-----------------------------------------------------------------------------
+                      00098 ; SETUP packet definitions
+                      00099 #define bmRequestType   0
+                      00100 #define bRequest        1
+                      00101 #define wValue          2
+                      00102 #define wIndex          4
+                      00103 #define wLength         6
+                      00104 
+                      00105 #define DataDir         7       ; Bit number - Transaction Direction: 0-OUT, 1-IN
+                      00106 
+                      00107 #define bDscIndex       2       ; For Configuration and String DSC Only
+                      00108 #define bDscType        3       ; Device,Configuration,String
+                      00109 #define wLangID         4       ; Language ID
+                      00110 
+                      00111 #define bDevADR         2       ; Device Address 0-127
+                      00112 #define bDevADRH        3       ; Must equal zero
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00113 
+                      00114 #define bCfgValue       2       ; Configuration Value 0-255
+                      00115 #define bCfgRSD         3       ; Must equal zero (Reserved)
+                      00116 
+                      00117 #define Recipient       0       ; Device,Interface,Endpoint,Other
+                      00118 
+                      00119 #define EPNum           5       ; Endpoint Number 0-15
+                      00120 #define EPDir           7       ; Bit number - Endpoint Direction: 0-OUT, 1-IN
+                      00121 
+                      00122 #define bAltID          2       ; Alternate Setting Value 0-255
+                      00123 #define bAltID_H        3       ; Must equal zero
+                      00124 #define bIntfID         4       ; Interface Number Value 0-255
+                      00125 #define bIntfID_H       5       ; Must equal zero
+                      00126 
+                      00127 #define bFeature        2       ; DEVICE_REMOTE_WAKEUP, ENDPOINT_HALT
+                      00128 ;-----------------------------------------------------------------------------
+                      00024         #include "usb_desc.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ;-----------------------------------------------------------------------------
+                      00019 #define USE_PROD_STRING         0       ; 1 - Support for Product string descriptor
+                      00020 ;-----------------------------------------------------------------------------
+                      00021 #ifndef BOOTLOADER_VID
+                      00022 #define BOOTLOADER_VID  0X04D8          ; MUST BE VALID Vendor ID
+                      00023 #endif
+                      00024 #ifndef BOOTLOADER_PID
+                      00025 #define BOOTLOADER_PID  0XFD0B          ; MUST BE VALID Product ID
+                      00026 #endif
+                      00027 
+                      00028 #define DSC_DEV                 0x01
+                      00029 #define DSC_CFG                 0x02
+                      00030 #define DSC_STR                 0x03
+                      00031 #define DSC_INTF                0x04
+                      00032 #define DSC_EP                  0x05
+                      00033 
+                      00034 #define _DEFAULT                0x01 << 7               ; Default Value (Bit 7 is set)
+                      00035 #define _SELF                   0x01 << 6               ; Self-powered (Supports if set)
+                      00036 #define _RWU                    0x01 << 5               ; Remote Wakeup (Supports if set)
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00037 
+                      00038 #define HID_INTF                0x03
+                      00039 #define NO_SUBCLASS             0x00
+                      00040 #define BOOT_INTF_SUBCLASS      0x01
+                      00041 
+                      00042 #define HID_PROTOCOL_NONE       0x00
+                      00043 #define HID_PROTOCOL_KEYBOAD    0x01
+                      00044 #define HID_PROTOCOL_MOUSE      0x02
+                      00045 
+                      00046 #define _EP01_OUT               0x01
+                      00047 #define _EP01_IN                0x81
+                      00048 
+                      00049 #define _CTRL                   0x00
+                      00050 #define _ISO                    0x01
+                      00051 #define _BULK                   0x02
+                      00052 #define _INT                    0x03
+                      00053 
+                      00054 #define DSC_HID                 0x21
+                      00055 #define DSC_RPT                 0x22
+                      00056 #define DSC_PHY                 0x23
+                      00057 
+                      00058 #define HID_NUM_OF_DSC          0x01
+                      00059 
+                      00060 #define HID_RPT01_SIZE          .23
+                      00061 
+                      00062 #define CFG_ATTRIBUTES          _DEFAULT
+                      00063 ;-----------------------------------------------------------------------------
+                      00064 ; Descriptor sizes
+                      00065 #define USB_DEV_DESC_SIZE       .18
+                      00066 #define USB_CFG_DESC_SIZE       .9
+                      00067 #define USB_IF_DESC_SIZE        .9
+                      00068 #define USB_HID_DESC_SIZE       .9
+                      00069 #define USB_EP_DESC_SIZE        .7
+                      00070 #define USB_CFG_TOTAL_SIZE      (USB_CFG_DESC_SIZE + USB_IF_DESC_SIZE + USB_HID_DESC_SIZE + USB_EP_DESC_
+                            SIZE)
+                      00071 #define USB_LANG_DESC_SIZE      .4
+                      00072 #define USB_MFG_DESC_SIZE       .22
+                      00073 #if USE_PROD_STRING
+                      00074 #define USB_PROD_DESC_SIZE      .22
+                      00075 #endif
+                      00076 #define USB_HID_RPT_SIZE        .23
+                      00077 ;-----------------------------------------------------------------------------
+                      00025         #include "usb.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ;-----------------------------------------------------------------------------
+                      00019 ; State Machine Variables
+                      00020 ;   State Machine State
+                      00021 #define USB_SM_DETACHED         0
+                      00022 #define USB_SM_ATTACHED         1
+                      00023 #define USB_SM_POWERED          2
+                      00024 #define USB_SM_DEFAULT          3
+                      00025 #define USB_SM_ADR_PENDING      4
+                      00026 #define USB_SM_ADDRESS          5
+                      00027 #define USB_SM_CONFIGURED       6
+                      00028 ;   State Machine Control I/F state
+                      00029 #define USB_SM_CTRL_WAIT_SETUP  0
+                      00030 #define USB_SM_CTRL_TRF_TX      1
+                      00031 #define USB_SM_CTRL_TRF_RX      2
+                      00032 ;-----------------------------------------------------------------------------
+                      00033 ; Wrappers to manipulate BDTs
+                      00034 #define BDT_STAT(x)     (x + 0)
+                      00035 #define BDT_CNT(x)      (x + 1)
+                      00036 #define BDT_ADRL(x)     (x + 2)
+                      00037 #define BDT_ADRH(x)     (x + 3)
+                      00038 ;-----------------------------------------------------------------------------
+                      00039 ; BDT_STAT bits
+                      00040 #define BC8     0
+                      00041 #define BC9     1
+                      00042 #define BSTALL  2       ; Buffer Stall Enable
+                      00043 #define DTSEN   3       ; Data Toggle Synch Enable
+                      00044 #define INCDIS  4       ; Address Increment Disable
+                      00045 #define KEN     5       ; BD Keep Enable
+                      00046 #define DTS     6       ; Data Toggle Synch Value
+                      00047 #define UOWN    7       ; USB Ownership
+                      00048 #define PID0    2       ; Packet Identifier Bits
+                      00049 #define PID1    3
+                      00050 #define PID2    4
+                      00051 #define PID3    5
+                      00052 ;-----------------------------------------------------------------------------
+                      00053 ; Data location flag
+                      00054 #define _RAM    0       ; In ASM this interpretted as bit number
+                      00055 #define _ROM    1       
+                      00056 ;-----------------------------------------------------------------------------
+                      00057 #define MUID_NULL       0
+                      00058 #define MUID_USB9       1
+                      00059 #define MUID_HID        2
+                      00060 #define MUID_CDC        3
+                      00061 ;-----------------------------------------------------------------------------
+                      00026         #include "boot_if.inc"
+                      00001 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00002 ;;  BootLoader.                                                             ;;
+                      00003 ;;  Copyright (C) 2007 Diolan ( http://www.diolan.com )                     ;;
+                      00004 ;;                                                                          ;;
+                      00005 ;;  This program is free software: you can redistribute it and/or modify    ;;
+                      00006 ;;  it under the terms of the GNU General Public License as published by    ;;
+                      00007 ;;  the Free Software Foundation, either version 3 of the License, or       ;;
+                      00008 ;;  (at your option) any later version.                                     ;;
+                      00009 ;;                                                                          ;;
+                      00010 ;;  This program is distributed in the hope that it will be useful,         ;;
+                      00011 ;;  but WITHOUT ANY WARRANTY; without even the implied warranty of          ;;
+                      00012 ;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           ;;
+                      00013 ;;  GNU General Public License for more details.                            ;;
+                      00014 ;;                                                                          ;;
+                      00015 ;;  You should have received a copy of the GNU General Public License       ;;
+                      00016 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
+                      00017 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                      00018 ; UEPn Initialization Parameters
+                      00019 ;-----------------------------------------------------------------------------
+                      00020 #define BOOT_CMD_SIZE   .64
+                      00021 #ifdef HID_OUT_EP_SIZE
+                      00022 #if HID_OUT_EP_SIZE < BOOT_CMD_SIZE
+                      00023         error   "HID_OUT and CMD size missmatch: HID_OUT_EP_SIZE < BOOT_CMD_SIZE"
+                      00024 #endif
+                      00025 #endif
+                      00026 
+                      00027 #define BOOT_REP_SIZE   .64
+                      00028 #ifdef HID_IN_EP_SIZE
+                      00029 #if HID_IN_EP_SIZE < BOOT_CMD_SIZE
+                      00030         error   "HID_IN and CMD size missmatch: HID_IN_EP_SIZE<BOOT_REP_SIZE"
+                      00031 #endif
+                      00032 #endif
+                      00033 ;-----------------------------------------------------------------------------
+                      00034 ; Command
+                      00035 #define cmd     0
+                      00036 ; To change command you have to fix 
+                      00037 ; hid_process_cmd function in boot_asm.asm
+                      00038 #define BOOT_READ_FLASH         0x01
+                      00039 #define BOOT_WRITE_FLASH        0x02
+                      00040 #define BOOT_ERASE_FLASH        0x03
+                      00041 #define BOOT_GET_FW_VER         0x04
+                      00042 #define BOOT_RESET              0x05
+                      00043 #define BOOT_READ_ID            0x06
+                      00044 #define BOOT_WRITE_ID           0x07
+                      00045 #define BOOT_READ_EEPROM        0x08
+                      00046 #define BOOT_WRITE_EEPROM       0x09
+                      00047 #define BOOT_CMD_UNKNOWN        0xFF
+                      00048 
+                      00049 #define BOOT_ID_LEN             8
+                      00050 
+                      00051 ; ID is used to link between command and reply 
+                      00052 ; Reply must contain the same id as in related command
+                      00053 #define id      1
+                      00054 #define cmdata  2
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00055 ;-----------------------------------------------------------------------------
+                      00027 ;-----------------------------------------------------------------------------
+                      00028 ; Configuration Bits 
+                      00029 ;-----------------------------------------------------------------------------
+                      00030 #if CPU_5V_HS
+                      00031         CONFIG  PLLDIV = 5                      ; OSC/4 for 16MHz
+Error[176]  : CONFIG Directive Error:  (value "OSC1_PLL2" not valid for setting "CPUDIV")
+                      00032         CONFIG  CPUDIV = OSC1_PLL2              ; CPU_clk = PLL/2
+Error[176]  : CONFIG Directive Error:  (setting "USBDIV" not found for the processor 18F24J50)
+                      00033         CONFIG  USBDIV = 2                      ; USB_clk = PLL/2
+Error[176]  : CONFIG Directive Error:  (setting "FOSC" not found for the processor 18F24J50)
+                      00034         CONFIG  FOSC = HSPLL_HS                 ; HS osc PLL
+                      00035 #else
+                      00036         CONFIG  PLLDIV = 4                      ; OSC/4 for 16MHz
+                      00037         CONFIG  CPUDIV = OSC1_PLL2              ; CPU_clk = Fosc
+                      00038         CONFIG  USBDIV = 2                      ; USB_clk = PLL/2
+                      00039         CONFIG  FOSC = HS                       ; HS osc
+                      00040 #endif
+                      00041         CONFIG  FCMEN = ON                      ; Fail Safe Clock Monitor
+                      00042         CONFIG  IESO = OFF                      ; Int/Ext switchover mode
+Error[176]  : CONFIG Directive Error:  (setting "PWRT" not found for the processor 18F24J50)
+                      00043         CONFIG  PWRT = ON                       ; PowerUp Timer
+Error[176]  : CONFIG Directive Error:  (setting "BOR" not found for the processor 18F24J50)
+                      00044         CONFIG  BOR = OFF                       ; Brown Out
+Error[176]  : CONFIG Directive Error:  (setting "VREGEN" not found for the processor 18F24J50)
+                      00045         CONFIG  VREGEN = ON                     ; Int Voltage Regulator
+Error[176]  : CONFIG Directive Error:  (setting "WDT" not found for the processor 18F24J50)
+                      00046         CONFIG  WDT = OFF                       ; WatchDog Timer
+Error[176]  : CONFIG Directive Error:  (setting "MCLRE" not found for the processor 18F24J50)
+                      00047         CONFIG  MCLRE = ON                      ; MCLR
+                      00048         CONFIG  LPT1OSC = OFF                   ; Low Power OSC
+Error[176]  : CONFIG Directive Error:  (setting "PBADEN" not found for the processor 18F24J50)
+                      00049         CONFIG  PBADEN = ON                     ; PORTB<4:0> A/D
+Error[176]  : CONFIG Directive Error:  (setting "CCP2MX" not found for the processor 18F24J50)
+                      00050         CONFIG  CCP2MX = ON                     ; CCP2 Mux RC1
+                      00051         CONFIG  STVREN = ON                     ; Stack Overflow Reset
+Error[176]  : CONFIG Directive Error:  (setting "LVP" not found for the processor 18F24J50)
+                      00052         CONFIG  LVP = OFF                       ; Low Voltage Programming
+                      00053 ;       CONFIG  ICPRT = OFF                     ; ICP
+                      00054         CONFIG  XINST = OFF                     ; Ext CPU Instruction Set
+Error[176]  : CONFIG Directive Error:  (setting "DEBUG" not found for the processor 18F24J50)
+                      00055         CONFIG  DEBUG = OFF                     ; Background Debugging
+                      00056         CONFIG  CP0 = OFF                       ; Code Protect
+Error[176]  : CONFIG Directive Error:  (setting "CP1" not found for the processor 18F24J50)
+                      00057         CONFIG  CP1 = OFF
+Error[176]  : CONFIG Directive Error:  (setting "CP2" not found for the processor 18F24J50)
+                      00058         CONFIG  CP2 = OFF
+Error[176]  : CONFIG Directive Error:  (setting "CPB" not found for the processor 18F24J50)
+                      00059         CONFIG  CPB = OFF                       ; Boot Sect Code Protect
+Error[176]  : CONFIG Directive Error:  (setting "CPD" not found for the processor 18F24J50)
+                      00060         CONFIG  CPD = OFF                       ; EEPROM Data Protect
+Error[176]  : CONFIG Directive Error:  (setting "WRT0" not found for the processor 18F24J50)
+                      00061         CONFIG  WRT0 = OFF                      ; Table Write Protect
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Error[176]  : CONFIG Directive Error:  (setting "WRT1" not found for the processor 18F24J50)
+                      00062         CONFIG  WRT1 = OFF
+Error[176]  : CONFIG Directive Error:  (setting "WRT2" not found for the processor 18F24J50)
+                      00063         CONFIG  WRT2 = OFF 
+Error[176]  : CONFIG Directive Error:  (setting "WRTB" not found for the processor 18F24J50)
+                      00064         CONFIG  WRTB = ON                       ; Boot Table Write Protest
+Error[176]  : CONFIG Directive Error:  (setting "WRTC" not found for the processor 18F24J50)
+                      00065         CONFIG  WRTC = ON                       ; CONFIG Write Protect
+Error[176]  : CONFIG Directive Error:  (setting "WRTD" not found for the processor 18F24J50)
+                      00066         CONFIG  WRTD = OFF                      ; EEPROM Write Protect
+Error[176]  : CONFIG Directive Error:  (setting "EBTR0" not found for the processor 18F24J50)
+                      00067         CONFIG  EBTR0 = OFF                     ; Ext Table Read Protect
+Error[176]  : CONFIG Directive Error:  (setting "EBTR1" not found for the processor 18F24J50)
+                      00068         CONFIG  EBTR1 = OFF
+Error[176]  : CONFIG Directive Error:  (setting "EBTR2" not found for the processor 18F24J50)
+                      00069         CONFIG  EBTR2 = OFF
+Error[176]  : CONFIG Directive Error:  (setting "EBTRB" not found for the processor 18F24J50)
+                      00070         CONFIG  EBTRB = OFF                     ; Boot Table Read Protect
+                      00071 ;--------------------------------------------------------------------------
+                      00072 ; External declarations
+  0000                00073         extern  usb_sm_state
+  0000                00074         extern  usb_sm_ctrl_state
+  0000                00075         extern  ep1Bo
+  0000                00076         extern  ep1Bi
+  0000                00077         extern  SetupPkt
+  0000                00078         extern  SetupPktCopy
+  0000                00079         extern  pSrc
+  0000                00080         extern  pDst
+  0000                00081         extern  Count
+  0000                00082         extern  ctrl_trf_session_owner
+  0000                00083         extern  ctrl_trf_mem
+  0000                00084         extern  eep_mark_set
+                      00085 ;--------------------------------------------------------------------------
+                      00086 ; Variables
+                      00087 BOOT_DATA       UDATA
+  0000                00088         global  boot_cmd; 
+  0000                00089         global  boot_rep;
+  0000                00090         global  active_protocol
+  0000                00091         global  idle_rate
+000000                00092 active_protocol res     1
+000001                00093 idle_rate       res     1
+000002                00094 boot_cmd        res     BOOT_CMD_SIZE
+000042                00095 boot_rep        res     BOOT_REP_SIZE
+                      00096 ;--------------------------------------------------------------------------
+                      00097 ; HID buffers
+                      00098 USB_HID         UDATA   0x500
+  0000                00099         global  hid_report_out
+  0000                00100         global  hid_report_in
+000500                00101 hid_report_out  res     HID_OUT_EP_SIZE ; OUT packet buffet
+000540                00102 hid_report_in   res     HID_IN_EP_SIZE  ; IN packed buffer
+                      00103 
+                      00104 ;--------------------------------------------------------------------------
+                      00105 BOOT_ASM_CODE CODE
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  0000                00106         extern  usb_init
+  0000                00107         extern  usb_sm_ctrl
+  0000                00108         extern  usb_sm_reset
+  0000                00109         extern  usb_sm_prepare_next_setup_trf
+  0000                00110         extern  copy_boot_rep
+  0000                00111         extern  USB_HID_DESC
+  0000                00112         extern  USB_HID_RPT
+  0000                00113         extern  hid_process_cmd
+                      00114 ;--------------------------------------------------------------------------
+                      00115 ; main
+                      00116 ; DESCR : Boot Loader main routine.
+                      00117 ; WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+                      00118 ; WARNING                                                 WARNING
+                      00119 ; WARNING     This code is not a routine!!!               WARNING
+                      00120 ; WARNING     RESET command is used to "exit" from main   WARNING
+                      00121 ; WARNING                                                 WARNING
+                      00122 ; WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+                      00123 ; INPUT : no
+                      00124 ; OUTPUT: no
+                      00125 ;--------------------------------------------------------------------------
+  0000                00126         global  main
+000000                00127 main
+                      00128         UD_INIT
+                      00129         UD_TX   'X'
+                      00130 
+                      00131         ; Decide what to run bootloader or application
+                      00132 #if USE_EEPROM_MARK
+                      00133         ; Check EEPROM mark
+000000 0E00           00134         movlw   EEPROM_MARK_ADDR
+Error[113]  : Symbol not previously defined (EEADR)
+000002 6E00           00135         movwf   EEADR
+000004 0E01           00136         movlw   0x01
+000006 6EA6           00137         movwf   EECON1
+000008 0E5A           00138         movlw   EEPROM_MARK
+Error[113]  : Symbol not previously defined (EEDATA)
+00000A 5C00           00139         subwf   EEDATA, W
+00000C E0??           00140         bz      bootloader
+                      00141 #endif
+                      00142         ; Check bootloader enable jumper
+                      00143 #ifdef USE_JP_BOOTLOADER_EN
+00000E 6A81           00144         clrf    JP_BOOTLOADER_PORT              ;PORTB low
+000010 6A93           00145         clrf    JP_BOOTLOADER_TRIS              ;TRISB output
+000012 9EF1           00146         bcf             JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT ;clear RBPU to enable B pullups
+000014 8C8A           00147         bsf             JP_BOOTLOADER_LAT, JP_BOOTLOADER_PIN    ;PGD to input
+000016 0000           00148         nop
+000018 0000           00149         nop
+00001A BC81           00150         btfsc   JP_BOOTLOADER_PORT, JP_BOOTLOADER_PIN   ;skip app go to BL if bit is clear
+00001C D???           00151         bra             cleanupandexit  ;disable and skip to user app
+00001E 8EF1           00152         bsf             JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT  ;turn PORTB pullups off
+000020 6893           00153         setf    JP_BOOTLOADER_TRIS              ;trisB back input
+                      00154 #endif
+                      00155         ; Run bootloader
+000022 D???           00156         bra     bootloader
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000024 00FF           00157         reset
+                      00158 
+000026                00159 cleanupandexit:
+000026 8EF1           00160         bsf             JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT  ;turn PORTB pullups off
+000028 6893           00161         setf    JP_BOOTLOADER_TRIS              ;trisB back input
+00002A EF00 F004      00162         goto    APP_RESET_VECTOR        ; Run Application FW
+                      00163 
+                      00164 
+                      00165 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      00166 ;!!!    WARNING NEVER RETURN IN NORMAL WAY   !!!
+                      00167 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      00168 ;--------------------------------------------------------------------------
+                      00169 ; bootloader
+                      00170 ; DESCR : Run the Boot Loader.
+                      00171 ; WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+                      00172 ; WARNING                                                 WARNING
+                      00173 ; WARNING     This code is not a routine!!!               WARNING
+                      00174 ; WARNING     Branch to bootloader occur if firmware      WARNING
+                      00175 ; WARNING     updating mode is detected either throuch    WARNING
+                      00176 ; WARNING     EEPROM MARK or FW Junper                    WARNING
+                      00177 ; WARNING     RESET command is used to "exit"             WARNING
+                      00178 ; WARNING     from bootloader                             WARNING
+                      00179 ; WARNING                                                 WARNING
+                      00180 ; WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING
+                      00181 ; INPUT : no
+                      00182 ; OUTPUT: no
+  0000                00183         global  bootloader
+00002E                00184 bootloader
+                      00185 #ifdef USE_LED
+00002E 9092           00186         bcf     LED_TRIS, LED_PIN
+000030 8089           00187         bsf     LED, LED_PIN
+                      00188 #endif
+000032 6A??           00189         clrf    eep_mark_set    ; EEP_MARK will be cleared
+000034 D???           00190         rcall   usb_init
+                      00191 ; Main Loop
+000036                00192 bootloader_loop
+000036 D???           00193         rcall   usb_state_machine
+000038 D???           00194         rcall   hid_process_cmd
+00003A D???           00195         rcall   hid_send_report
+00003C D???           00196         bra     bootloader_loop
+00003E 00FF           00197         reset
+                      00198 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      00199 ;!!!    WARNING NEVER RETURN IN NORMAL WAY   !!!
+                      00200 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                      00201 ;--------------------------------------------------------------------------
+                      00202 ; usb_state_machine
+                      00203 ; DESCR : Handles USB state machine according to USB Spec.
+                      00204 ;         Process low level action on USB controller.
+                      00205 ; INPUT : no
+                      00206 ; OUTPUT: no
+                      00207 ;-----------------------------------------------------------------------------
+  0000                00208         global  usb_state_machine
+000040                00209 usb_state_machine
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00210         ; Bus Activity detected after IDLE state
+000040                00211 usb_state_machine_actif
+000040 A462           00212         btfss   UIR, ACTVIF
+000042 D???           00213         bra     usb_state_machine_actif_end
+000044 A536           00214         btfss   UIE, ACTVIE
+000046 D???           00215         bra     usb_state_machine_actif_end
+                      00216         UD_TX   'A'
+000048 9265           00217         bcf     UCON, SUSPND
+00004A 9536           00218         bcf     UIE, ACTVIE
+00004C 9462           00219         bcf     UIR, ACTVIF
+00004E                00220 usb_state_machine_actif_end
+                      00221         ; Pointless to continue servicing if the device is in suspend mode.
+00004E B265           00222         btfsc   UCON, SUSPND
+000050 0012           00223         return
+                      00224         ; USB Bus Reset Interrupt.
+                      00225         ; When bus reset is received during suspend, ACTVIF will be set first,
+                      00226         ; once the UCONbits.SUSPND is clear, then the URSTIF bit will be asserted.
+                      00227         ; This is why URSTIF is checked after ACTVIF.
+                      00228         ;
+                      00229         ; The USB reset flag is masked when the USB state is in
+                      00230         ; DETACHED_STATE or ATTACHED_STATE, and therefore cannot
+                      00231         ; cause a USB reset event during these two states.
+000052                00232 usb_state_machine_rstif
+000052 A062           00233         btfss   UIR, URSTIF
+000054 D???           00234         bra     usb_state_machine_rstif_end
+000056 A136           00235         btfss   UIE, URSTIE
+000058 D???           00236         bra     usb_state_machine_rstif_end
+00005A D???           00237         rcall   usb_sm_reset
+00005C                00238 usb_state_machine_rstif_end
+                      00239         ; Idle condition detected
+00005C                00240 usb_state_machine_idleif
+00005C A862           00241         btfss   UIR, IDLEIF
+00005E D???           00242         bra     usb_state_machine_idleif_end
+000060 A936           00243         btfss   UIE, IDLEIE
+000062 D???           00244         bra     usb_state_machine_idleif_end
+                      00245         UD_TX   'I'
+000064 8536           00246         bsf     UIE, ACTVIE     ; Enable bus activity interrupt
+000066 9862           00247         bcf     UIR, IDLEIF
+000068 8265           00248         bsf     UCON, SUSPND    ; Put USB module in power conserve
+                      00249                                 ; mode, SIE clock inactive
+                      00250         ; Now, go into power saving
+00006A 98A1           00251         bcf     PIR2, USBIF     ; Clear flag
+00006C 88A0           00252         bsf     PIE2, USBIE     ; Set wakeup source
+00006E 0003           00253         sleep
+000070 98A0           00254         bcf     PIE2, USBIE
+000072                00255 usb_state_machine_idleif_end
+                      00256         ; SOF Flag
+000072                00257 usb_state_machine_sof
+000072 A262           00258         btfss   UIR, UERRIF
+000074 D???           00259         bra     usb_state_machine_sof_end
+000076 A336           00260         btfss   UIE, UERRIE
+000078 D???           00261         bra     usb_state_machine_sof_end
+                      00262         UD_TX   'F'
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00007A 9C62           00263         bcf     UIR, SOFIF
+00007C                00264 usb_state_machine_sof_end
+                      00265 
+                      00266         ; A STALL handshake was sent by the SIE
+00007C                00267 usb_state_machine_stallif
+00007C AA62           00268         btfss   UIR, STALLIF
+00007E D???           00269         bra     usb_state_machine_stallif_end
+000080 AB36           00270         btfss   UIE, STALLIE
+000082 D???           00271         bra     usb_state_machine_stallif_end
+                      00272         UD_TX   'T'
+000084 A126           00273         btfss   UEP0, EPSTALL
+000086 D???           00274         bra     usb_state_machine_stallif_clr
+000088 D???           00275         rcall   usb_sm_prepare_next_setup_trf   ; Firmware Work-Around
+00008A 9126           00276         bcf     UEP0, EPSTALL
+00008C                00277 usb_state_machine_stallif_clr
+00008C 9A62           00278         bcf     UIR, STALLIF
+00008E                00279 usb_state_machine_stallif_end
+                      00280         ; USB Error flag
+00008E                00281 usb_state_machine_err
+00008E A262           00282         btfss   UIR, UERRIF
+000090 D???           00283         bra     usb_state_machine_err_end
+000092 A336           00284         btfss   UIE, UERRIE
+000094 D???           00285         bra     usb_state_machine_err_end
+                      00286         UD_TX   'E'
+000096 9262           00287         bcf     UIR, UERRIF
+000098                00288 usb_state_machine_err_end
+                      00289         ; Pointless to continue servicing if the host has not sent a bus reset.
+                      00290         ; Once bus reset is received, the device transitions into the DEFAULT
+                      00291         ; state and is ready for communication.
+                      00292 ;    if( usb_sm_state < USB_SM_DEFAULT ) 
+                      00293 ;               return;
+000098 0E02           00294         movlw   (USB_SM_DEFAULT - 1)    ; Be carefull while changing USB_SM_* constants
+00009A 64??           00295         cpfsgt  usb_sm_state
+00009C 0012           00296         return
+                      00297         ; Detect Interrupt bit
+00009E                00298 usb_state_machine_trnif
+00009E A662           00299         btfss   UIR, TRNIF
+0000A0 D???           00300         bra     usb_state_machine_trnif_end
+0000A2 A736           00301         btfss   UIE, TRNIE
+0000A4 D???           00302         bra     usb_state_machine_trnif_end
+                      00303         ; Only services transactions over EP0.
+                      00304         ; Ignore all other EP transactions.
+0000A6 D???           00305         rcall   usb_sm_ctrl
+0000A8 9662           00306         bcf     UIR, TRNIF
+0000AA                00307 usb_state_machine_trnif_end
+0000AA 0012           00308         return
+                      00309 ;-----------------------------------------------------------------------------
+                      00310 ; HID
+                      00311 ;-----------------------------------------------------------------------------
+                      00312 ; usb_sm_HID_init_EP
+                      00313 ; DESCR : Initialize Endpoints for HID
+                      00314 ; INPUT : no
+                      00315 ; OUTPUT: no
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 16
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00316 ;-----------------------------------------------------------------------------
+  0000                00317         global  usb_sm_HID_init_EP
+0000AC                00318 usb_sm_HID_init_EP
+                      00319 #define USE_HID_EP_OUT 0
+                      00320 #if USE_HID_EP_OUT
+                      00321         movlw   EP_OUT_IN | HSHK_EN
+                      00322         movwf   HID_UEP         ; Enable 2 data pipes
+                      00323         movlb   HIGH(HID_BD_OUT)
+                      00324         movlw   HID_OUT_EP_SIZE
+                      00325         movwf   BDT_CNT(HID_BD_OUT)
+                      00326         movlw   LOW(hid_report_out)
+                      00327         movwf   BDT_ADRL(HID_BD_OUT)
+                      00328         movlw   HIGH(hid_report_out)
+                      00329         movwf   BDT_ADRH(HID_BD_OUT)
+                      00330         movlw   (_USIE | _DAT0 | _DTSEN)
+                      00331         movwf   BDT_STAT(HID_BD_OUT)
+                      00332 #else
+0000AC 0E1A           00333         movlw   (EP_IN | HSHK_EN)
+0000AE 6F27           00334         movwf   HID_UEP         ; Enable 1 data pipe
+                      00335 #endif
+0000B0 01??           00336         movlb   HIGH(HID_BD_IN)
+0000B2 0E??           00337         movlw   LOW(hid_report_in)
+0000B4 6E??           00338         movwf   BDT_ADRL(HID_BD_IN)
+0000B6 0E??           00339         movlw   HIGH(hid_report_in)
+0000B8 6E??           00340         movwf   BDT_ADRH(HID_BD_IN)
+0000BA 0E40           00341         movlw   (_UCPU | _DAT1)
+0000BC 6E??           00342         movwf   BDT_STAT(HID_BD_IN)
+0000BE 0100           00343         movlb   0
+0000C0 6A??           00344         clrf    (boot_rep + cmd)
+0000C2 0012           00345         return
+                      00346 ;--------------------------------------------------------------------------
+                      00347 ; hid_send_report
+                      00348 ; DESCR : Sends HID reports to host
+                      00349 ; INPUT : no
+                      00350 ; OUTPUT: no
+                      00351 ; Resources:
+                      00352 ;       FSR2:   BDTs manipulations
+                      00353 ;-----------------------------------------------------------------------------
+  0000                00354         global  hid_send_report
+0000C4                00355 hid_send_report
+0000C4 50??           00356         movf    (boot_rep + cmd), W     ; Z flag affected
+0000C6 E0??           00357         bz      hid_send_report_end
+0000C8 EE?? F0??      00358         lfsr    FSR2, BDT_STAT(HID_BD_IN)
+0000CC BEDE           00359         btfsc   POSTINC2, UOWN          ; BDT_STAT(HID_BD_IN)
+0000CE D???           00360         bra     hid_send_report_end
+                      00361         ; Copy boot_rep into hid_report_in
+                      00362         ; Clear bytes of boot_rep
+0000D0 D???           00363         rcall   copy_boot_rep   ; BSR not changed
+                      00364         ; BSR still valid for HID_BD_IN
+0000D2 0E40           00365         movlw   BOOT_REP_SIZE
+                      00366         ; FSR2 points to BDT_CNT(HID_BD_IN)
+0000D4 6EDD           00367         movwf   POSTDEC2        ; BDT_CNT(HID_BD_IN)
+                      00368         ; FSR2 points to BDT_STAT(HID_BD_IN)
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 17
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0000D6 0E40           00369         movlw   _DTSMASK
+0000D8 16DF           00370         andwf   INDF2, F        ; BDT_STAT(HID_BD_IN), Save only DTS bit
+0000DA 0E40           00371         movlw   (1 << DTS)
+0000DC 1ADF           00372         xorwf   INDF2, F        ; BDT_STAT(HID_BD_IN), Toggle DTS bit
+0000DE 0E88           00373         movlw   _USIE|_DTSEN
+0000E0 12DF           00374         iorwf   INDF2, F        ; BDT_STAT(HID_BD_IN), Turn ownership to SIE
+0000E2                00375 hid_send_report_end
+0000E2 0012           00376         return
+                      00377 ;--------------------------------------------------------------------------
+                      00378 ; usb_sm_HID_request
+                      00379 ; DESCR : Process USB HID requests
+                      00380 ; INPUT : no
+                      00381 ; OUTPUT: no
+                      00382 ;-----------------------------------------------------------------------------
+  0000                00383         global  usb_sm_HID_request
+0000E4                00384 usb_sm_HID_request
+                      00385         UD_TX   'H'
+0000E4 50??           00386         movf    (SetupPktCopy + Recipient), W
+0000E6 0B1F           00387         andlw   RCPT_MASK
+0000E8 0801           00388         sublw   RCPT_INTF
+0000EA A4D8           00389         btfss   STATUS, Z
+0000EC 0012           00390         return
+0000EE                00391 usb_sm_HID_rq_rcpt
+0000EE 50??           00392         movf    (SetupPktCopy + bIntfID), W
+0000F0 0800           00393         sublw   HID_INTF_ID
+0000F2 A4D8           00394         btfss   STATUS, Z
+0000F4 0012           00395         return
+0000F6                00396 usb_sm_HID_rq_rcpt_id
+                      00397         ; There are two standard requests that we may support.
+                      00398         ; 1. GET_DSC(DSC_HID,DSC_RPT,DSC_PHY);
+                      00399         ; 2. SET_DSC(DSC_HID,DSC_RPT,DSC_PHY);
+0000F6 50??           00400         movf    (SetupPktCopy + bRequest), W
+0000F8 0806           00401         sublw   GET_DSC
+0000FA E1??           00402         bnz     usb_sm_HID_rq_cls
+0000FC 50??           00403         movf    (SetupPktCopy + bDscType), W
+                      00404         ; WREG = WREG - DSC_HID !!!
+0000FE 0FDF           00405         addlw   (-DSC_HID)      ; DSC_HID = 0x21
+000100 E0??           00406         bz      usb_sm_HID_rq_dsc_hid
+000102 4EE8           00407         dcfsnz  WREG            ; DSC_RPT = 0x22
+000104 D???           00408         bra     usb_sm_HID_rq_dsc_rpt
+000106 4EE8           00409         dcfsnz  WREG            ; DSC_PHY = 0x23
+000108 D???           00410         bra     usb_sm_HID_rq_dsc_phy
+00010A                00411 usb_sm_HID_rq_dsc_unknown
+                      00412         UD_TX('!')
+00010A D???           00413         bra     usb_sm_HID_rq_cls
+                      00414 ;--------       Get DSC_HID descrptor address
+00010C                00415 usb_sm_HID_rq_dsc_hid
+00010C 0E??           00416         movlw   LOW(USB_HID_DESC)
+00010E 6E??           00417         movwf   pSrc
+000110 0E??           00418         movlw   HIGH(USB_HID_DESC)
+000112 6E??           00419         movwf   (pSrc + 1)
+000114 0E09           00420         movlw   USB_HID_DESC_SIZE
+000116                00421 usb_sm_HID_rq_dsc_hid_end
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 18
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000116 D???           00422         bra     usb_sm_HID_rq_dsc_end
+                      00423 ;--------       Get DSC_RPT descrptor address
+000118                00424 usb_sm_HID_rq_dsc_rpt
+000118 0E??           00425         movlw   LOW(USB_HID_RPT)
+00011A 6E??           00426         movwf   pSrc
+00011C 0E??           00427         movlw   HIGH(USB_HID_RPT)
+00011E 6E??           00428         movwf   (pSrc + 1)
+000120 0E17           00429         movlw   USB_HID_RPT_SIZE
+000122                00430 usb_sm_HID_rq_dsc_rpt_end
+000122 D???           00431         bra     usb_sm_HID_rq_dsc_end
+                      00432 ;--------       Get DSC_PHY descrptor address
+000124                00433 usb_sm_HID_rq_dsc_phy
+000124                00434 usb_sm_HID_rq_dsc_phy_end
+000124 D???           00435         bra     usb_sm_HID_request_end
+                      00436 ;--------
+000126                00437 usb_sm_HID_rq_dsc_end
+000126 6E??           00438         movwf   Count
+000128 80??           00439         bsf     ctrl_trf_session_owner, 0
+00012A 80??           00440         bsf     ctrl_trf_mem, _RAM
+00012C D???           00441         bra     usb_sm_HID_request_end
+                      00442 ;--------
+                      00443 ; Class Request
+00012E                00444 usb_sm_HID_rq_cls
+00012E 50??           00445         movf    (SetupPktCopy + bmRequestType), W
+000130 0B60           00446         andlw   RQ_TYPE_MASK
+000132 0820           00447         sublw   CLASS
+000134 E0??           00448         bz      usb_sm_HID_rq_cls_rq
+                      00449         UD_TX('*')
+000136 0012           00450         return
+                      00451 ;--------
+000138                00452 usb_sm_HID_rq_cls_rq
+000138 50??           00453         movf    (SetupPktCopy + bRequest), W
+00013A 4EE8           00454         dcfsnz  WREG    ; GET_REPORT = 0x01
+00013C D???           00455         bra     usb_sm_HID_rq_cls_rq_grpt
+00013E 4EE8           00456         dcfsnz  WREG    ; GET_IDLE = 0x02
+000140 D???           00457         bra     usb_sm_HID_rq_cls_rq_gidle
+000142 4EE8           00458         dcfsnz  WREG    ; GET_PROTOCOL = 0x03
+000144 D???           00459         bra     usb_sm_HID_rq_cls_rq_gprot
+                      00460         ; SET_REPORT = 0x09 -> 9 - 3 = 6
+                      00461         ; WREG = WREG - 6 !!!
+000146 0FFA           00462         addlw   (-(SET_REPORT - GET_PROTOCOL))
+000148 E0??           00463         bz      usb_sm_HID_rq_cls_rq_srpt
+00014A 4EE8           00464         dcfsnz  WREG    ; SET_IDLE = 0x0A
+00014C D???           00465         bra     usb_sm_HID_rq_cls_rq_sidle
+00014E 4EE8           00466         dcfsnz  WREG    ; SET_PROTOCOL = 0x0B
+000150 D???           00467         bra     usb_sm_HID_rq_cls_rq_sprot
+000152                00468 usb_sm_HID_rq_cls_rq_unknown
+                      00469         UD_TX('#')
+000152 D???           00470         bra     usb_sm_HID_request_end
+                      00471 ;--------       GET_REPORT
+000154                00472 usb_sm_HID_rq_cls_rq_grpt
+000154 0E00           00473         movlw   0               ; No data to be transmitted
+000156                00474 usb_sm_HID_rq_cls_rq_grpt_end
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 19
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000156 D???           00475         bra     usb_sm_HID_rq_cls_rq_end
+                      00476 ;--------       SET_REPORT
+000158                00477 usb_sm_HID_rq_cls_rq_srpt
+000158 0E??           00478         movlw   LOW(boot_cmd)
+00015A 6E??           00479         movwf   pDst
+00015C 0E??           00480         movlw   HIGH(boot_cmd)
+00015E 6E??           00481         movwf   (pDst + 1)
+000160                00482 usb_sm_HID_rq_cls_rq_srpt_end
+000160 D???           00483         bra     usb_sm_HID_rq_cls_rq_end_ses
+                      00484 #define GET_SET_IDLE 0
+                      00485 #if GET_SET_IDLE
+                      00486 ;--------       GET_IDLE
+                      00487 usb_sm_HID_rq_cls_rq_gidle
+                      00488         UD_TX('j')
+                      00489         movlw   LOW(idle_rate)
+                      00490         movwf   pSrc
+                      00491         movlw   HIGH(idle_rate)
+                      00492         movwf   (pSrc + 1)
+                      00493         movlw   1       ; For Count
+                      00494 usb_sm_HID_rq_cls_rq_gidle_end
+                      00495         bra     usb_sm_HID_rq_cls_rq_end
+                      00496 ;--------       SET_IDLE
+                      00497 usb_sm_HID_rq_cls_rq_sidle
+                      00498         UD_TX('x')
+                      00499         movff   (SetupPktCopy + (wValue + 1)), idle_rate
+                      00500 usb_sm_HID_rq_cls_rq_sidle_end
+                      00501         bra     usb_sm_HID_rq_cls_rq_end_ses
+                      00502 #endif
+                      00503 #define GET_SET_PROTOCOL 0
+                      00504 #if GET_SET_PROTOCOL
+                      00505 ;--------       GET_PROTOCOL
+                      00506 usb_sm_HID_rq_cls_rq_gprot
+                      00507         UD_TX('y')
+                      00508         movlw   LOW(active_protocol)
+                      00509         movwf   pSrc
+                      00510         movlw   HIGH(active_protocol)
+                      00511         movwf   (pSrc + 1)
+                      00512         movlw   1       ; For Count
+                      00513 usb_sm_HID_rq_cls_rq_gprot_end
+                      00514         bra     usb_sm_HID_rq_cls_rq_end
+                      00515 ;--------       SET_PROTOCOL
+                      00516 usb_sm_HID_rq_cls_rq_sprot
+                      00517         UD_TX('z')
+                      00518         movf    (SetupPktCopy + wValue), W
+                      00519         movwf   active_protocol
+                      00520 usb_sm_HID_rq_cls_rq_sprot_end
+                      00521         bra     usb_sm_HID_rq_cls_rq_end_ses
+                      00522 #endif
+000162                00523 usb_sm_HID_rq_cls_rq_end
+000162 6E??           00524         movwf   Count
+000164 90??           00525         bcf     ctrl_trf_mem, _RAM
+000166                00526 usb_sm_HID_rq_cls_rq_end_ses
+000166 80??           00527         bsf     ctrl_trf_session_owner, 0
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 20
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00528 ;--------
+                      00529 #if !GET_SET_IDLE
+000168                00530 usb_sm_HID_rq_cls_rq_gidle
+                      00531 #if UART_DEBUG
+                      00532         UD_TX('j')
+                      00533         bra     usb_sm_HID_request_end
+                      00534 #endif
+000168                00535 usb_sm_HID_rq_cls_rq_sidle
+                      00536 #if UART_DEBUG
+                      00537         UD_TX('x')
+                      00538         bra     usb_sm_HID_request_end
+                      00539 #endif
+                      00540 #endif
+                      00541 #if !GET_SET_PROTOCOL
+000168                00542 usb_sm_HID_rq_cls_rq_gprot
+                      00543 #if UART_DEBUG
+                      00544         UD_TX('y')
+                      00545         bra     usb_sm_HID_request_end
+                      00546 #endif
+000168                00547 usb_sm_HID_rq_cls_rq_sprot
+                      00548 #if UART_DEBUG
+                      00549         UD_TX('z')
+                      00550         bra     usb_sm_HID_request_end
+                      00551 #endif
+                      00552 #endif
+000168                00553 usb_sm_HID_request_end
+000168 0012           00554         return
+                      00555 ;--------------------------------------------------------------------------
+                      00556         END
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+A                                 00000000
+ABDEN                             00000000
+ABDOVF                            00000007
+ACCESS                            00000000
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ACQT0                             00000003
+ACQT1                             00000004
+ACQT2                             00000005
+ACTVIE                            00000002
+ACTVIF                            00000002
+ADCAL                             00000006
+ADCON0                            00000FC2
+ADCON1                            00000FC1
+ADCS0                             00000000
+ADCS1                             00000001
+ADCS2                             00000002
+ADDEN                             00000003
+ADDR0                             00000000
+ADDR1                             00000001
+ADDR2                             00000002
+ADDR3                             00000003
+ADDR4                             00000004
+ADDR5                             00000005
+ADDR6                             00000006
+ADEN                              00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADIP                              00000006
+ADMSK1                            00000001
+ADMSK2                            00000002
+ADMSK3                            00000003
+ADMSK4                            00000004
+ADMSK5                            00000005
+ADON                              00000000
+ADRES                             00000FC3
+ADRESH                            00000FC4
+ADRESL                            00000FC3
+ALRMCFG                           00000F91
+ALRMEN                            00000007
+ALRMPTR0                          00000000
+ALRMPTR1                          00000001
+ALRMRPT                           00000F90
+ALRMVALH                          00000F8F
+ALRMVALL                          00000F8E
+AMASK0                            00000002
+AMASK1                            00000003
+AMASK2                            00000004
+AMASK3                            00000005
+AN0                               00000000
+AN1                               00000001
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+AN10                              00000001
+AN11                              00000002
+AN12                              00000000
+AN2                               00000002
+AN3                               00000003
+AN4                               00000005
+AN8                               00000002
+AN9                               00000003
+ANCON0                            00000F48
+ANCON1                            00000F49
+APP_HIGH_INTERRUPT_VECTOR         0x000808
+APP_LOW_INTERRUPT_VECTOR          0x000818
+APP_RESET_VECTOR                  0x000800
+ARPT0                             00000000
+ARPT1                             00000001
+ARPT2                             00000002
+ARPT3                             00000003
+ARPT4                             00000004
+ARPT5                             00000005
+ARPT6                             00000006
+ARPT7                             00000007
+BANKED                            00000001
+BAUDCON                           00000F7E
+BAUDCON1                          00000F7E
+BAUDCON2                          00000F7C
+BAUDCTL                           00000F7E
+BC8                               0
+BC9                               1
+BCL1IE                            00000003
+BCL1IF                            00000003
+BCL1IP                            00000003
+BCL2IE                            00000006
+BCL2IF                            00000006
+BCL2IP                            00000006
+BCLIE                             00000003
+BCLIF                             00000003
+BCLIP                             00000003
+BDT_ADRH                          (x + 3)
+BDT_ADRL                          (x + 2)
+BDT_CNT                           (x + 1)
+BDT_STAT                          (x + 0)
+BF                                00000000
+BGVST                             00000006
+BOOTLOADER_PID                    0XFD0B
+BOOTLOADER_VID                    0X04D8
+BOOT_CMD_SIZE                     .64
+BOOT_CMD_UNKNOWN                  0xFF
+BOOT_ERASE_FLASH                  0x03
+BOOT_GET_FW_VER                   0x04
+BOOT_ID_LEN                       8
+BOOT_INTF_SUBCLASS                0x01
+BOOT_READ_EEPROM                  0x08
+BOOT_READ_FLASH                   0x01
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BOOT_READ_ID                      0x06
+BOOT_REP_SIZE                     .64
+BOOT_RESET                        0x05
+BOOT_WRITE_EEPROM                 0x09
+BOOT_WRITE_FLASH                  0x02
+BOOT_WRITE_ID                     0x07
+BOR                               00000000
+BRG16                             00000003
+BRGH                              00000002
+BSR                               00000FE0
+BSTALL                            2
+BTOEE                             00000004
+BTOEF                             00000004
+BTSEE                             00000007
+BTSEF                             00000007
+C                                 00000000
+C1INA                             00000000
+C1INB                             00000003
+C2INA                             00000001
+C2INB                             00000002
+CAL0                              00000000
+CAL1                              00000001
+CAL2                              00000002
+CAL3                              00000003
+CAL4                              00000004
+CAL5                              00000005
+CAL6                              00000006
+CAL7                              00000007
+CCH0                              00000000
+CCH1                              00000001
+CCP1CON                           00000FBA
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1IP                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           00000FB4
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2IP                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000FBB
+CCPR1H                            00000FBC
+CCPR1L                            00000FBB
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 24
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CCPR2                             00000FB5
+CCPR2H                            00000FB6
+CCPR2L                            00000FB5
+CFG_ATTRIBUTES                    _DEFAULT
+CHIME                             00000006
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CK1                               00000006
+CKE                               00000006
+CKP                               00000004
+CLASS                             (0x01 << 5)
+CLKI                              00000007
+CLKO                              00000006
+CLR_FEATURE                       .1
+CM                                00000005
+CM1CON                            00000FD2
+CM1CON1                           00000FD2
+CM1IE                             00000005
+CM1IF                             00000005
+CM1IP                             00000005
+CM2CON                            00000FD1
+CM2CON1                           00000FD1
+CM2IE                             00000006
+CM2IF                             00000006
+CM2IP                             00000006
+CMPL0                             00000006
+CMPL1                             00000007
+CMSTAT                            00000F70
+CMSTATUS                          00000F70
+COE                               00000006
+CON                               00000007
+COUT1                             00000000
+COUT2                             00000001
+CPOL                              00000005
+CPU_5V_HS                         1
+CRC16EE                           00000002
+CRC16EF                           00000002
+CRC5EE                            00000001
+CRC5EF                            00000001
+CREF                              00000002
+CREN                              00000004
+CSRC                              00000007
+CTEDG1                            00000002
+CTEDG2                            00000003
+CTMUCONH                          00000FB3
+CTMUCONL                          00000FB2
+CTMUEN                            00000007
+CTMUICON                          00000FB1
+CTMUIE                            00000002
+CTMUIF                            00000002
+CTMUIP                            00000002
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CTMUSIDL                          00000005
+CTPLS                             00000002
+CTTRIG                            00000000
+CVREF_MINUS                       00000002
+Count                             00000000
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+DC2B0                             00000004
+DC2B1                             00000005
+DDRA                              TRISA
+DDRB                              TRISB
+DDRC                              TRISC
+DDRD                              TRISD
+DDRE                              TRISE
+DEVICE_REMOTE_WAKEUP              0x01
+DEV_TO_HOST                       1
+DFN8EE                            00000003
+DFN8EF                            00000003
+DIR                               00000002
+DLYCYC0                           00000004
+DLYCYC1                           00000005
+DLYCYC2                           00000006
+DLYCYC3                           00000007
+DLYINTEN                          00000001
+DMABCH                            00000F66
+DMABCL                            00000F67
+DMACON1                           00000F88
+DMACON2                           00000F86
+DMAEN                             00000000
+DONE                              00000001
+DS                                00000003
+DSBOR                             00000001
+DSCONH                            00000F4D
+DSCONL                            00000F4C
+DSC_CFG                           0x02
+DSC_DEV                           0x01
+DSC_EP                            0x05
+DSC_HID                           0x21
+DSC_INTF                          0x04
+DSC_PHY                           0x23
+DSC_RPT                           0x22
+DSC_STR                           0x03
+DSEN                              00000007
+DSFLT                             00000007
+DSGPR0                            00000F4E
+DSGPR1                            00000F4F
+DSINT0                            00000000
+DSMCLR                            00000002
+DSPOR                             00000000
+DSRTC                             00000003
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 26
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+DSULP                             00000005
+DSULPEN                           00000001
+DSWAKEH                           00000F4B
+DSWAKEL                           00000F4A
+DSWDT                             00000004
+DT1                               00000007
+DTS                               6
+DTSEN                             3
+DUPLEX0                           00000002
+DUPLEX1                           00000003
+D_A                               00000005
+D_MINUS                           00000004
+D_NOT_A                           00000005
+D_PLUS                            00000005
+DataDir                           7
+ECCP1AS                           00000FBE
+ECCP1AS0                          00000004
+ECCP1AS1                          00000005
+ECCP1AS2                          00000006
+ECCP1ASE                          00000007
+ECCP1CON                          00000FBA
+ECCP1DEL                          00000FBD
+ECCP1OD                           00000000
+ECCP2AS                           00000FB8
+ECCP2AS0                          00000004
+ECCP2AS1                          00000005
+ECCP2AS2                          00000006
+ECCP2ASE                          00000007
+ECCP2CON                          00000FB4
+ECCP2DEL                          00000FB7
+ECCP2OD                           00000001
+EDG1POL                           00000004
+EDG1SEL0                          00000002
+EDG1SEL1                          00000003
+EDG1STAT                          00000000
+EDG2POL                           00000007
+EDG2SEL0                          00000005
+EDG2SEL1                          00000006
+EDG2STAT                          00000001
+EDGEN                             00000003
+EDGSEQEN                          00000002
+EECON1                            00000FA6
+EECON2                            00000FA7
+EEPROM_MARK                       0x5A
+EEPROM_MARK_ADDR                  0x00
+ENCODE_EEPROM                     0
+ENCODE_ID                         0
+ENDP0                             00000003
+ENDP1                             00000004
+ENDP2                             00000005
+ENDP3                             00000006
+ENDPOINT_HALT                     0x00
+EP00_IN                           ((0x00 << 3) | (IN << 2))
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 27
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+EP00_OUT                          ((0x00 << 3) | (OUT << 2))
+EP0_BUFF_SIZE                     .64
+EPCONDIS                          00000003
+EPDir                             7
+EPHSHK                            00000004
+EPINEN                            00000001
+EPNum                             5
+EPOUTEN                           00000002
+EPSTALL                           00000000
+EP_CTRL                           0x06
+EP_IN                             0x0A
+EP_OUT                            0x0C
+EP_OUT_IN                         0x0E
+EVPOL0                            00000003
+EVPOL1                            00000004
+FAST                              00000001
+FERR                              00000002
+FREE                              00000004
+FRM0                              00000000
+FRM1                              00000001
+FRM10                             00000002
+FRM2                              00000002
+FRM3                              00000003
+FRM4                              00000004
+FRM5                              00000005
+FRM6                              00000006
+FRM7                              00000007
+FRM8                              00000000
+FRM9                              00000001
+FSEN                              00000002
+FSR0                              00000000
+FSR0H                             00000FEA
+FSR0L                             00000FE9
+FSR1                              00000001
+FSR1H                             00000FE2
+FSR1L                             00000FE1
+FSR2                              00000002
+FSR2H                             00000FDA
+FSR2L                             00000FD9
+FW_VER_CODE                       ((FW_VER_MAJOR << 8) | (FW_VER_MINOR << 4) | (FW_VER_SUB_MINOR))
+FW_VER_MAJOR                      0
+FW_VER_MINOR                      2
+FW_VER_SUB_MINOR                  2
+GCEN                              00000007
+GET_CFG                           .8
+GET_DSC                           .6
+GET_IDLE                          0x02
+GET_INTF                          .10
+GET_PROTOCOL                      0x03
+GET_REPORT                        0x01
+GET_SET_IDLE                      0
+GET_SET_PROTOCOL                  0
+GET_STATUS                        .0
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 28
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GIE                               00000007
+GIEH                              00000007
+GIEL                              00000006
+GIE_GIEH                          00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HALFSEC                           00000003
+HID_BD_IN                         ep1Bi
+HID_BD_OUT                        ep1Bo
+HID_INTF                          0x03
+HID_INTF_ID                       0x00
+HID_IN_EP_SIZE                    .64
+HID_NUM_OF_DSC                    0x01
+HID_OUT_EP_SIZE                   EP0_BUFF_SIZE
+HID_PROTOCOL_KEYBOAD              0x01
+HID_PROTOCOL_MOUSE                0x02
+HID_PROTOCOL_NONE                 0x00
+HID_RPT01_SIZE                    .23
+HID_UEP                           UEP1
+HLVDCON                           00000F85
+HLVDEN                            00000004
+HLVDIN                            00000005
+HLVDL0                            00000000
+HLVDL1                            00000001
+HLVDL2                            00000002
+HLVDL3                            00000003
+HOST_TO_DEV                       0
+HSHK_EN                           0x10
+I2C_DAT                           00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IDISSEN                           00000001
+IDLEIE                            00000004
+IDLEIF                            00000004
+IDLEN                             00000007
+IN                                1
+INCDIS                            4
+INDF0                             00000FEF
+INDF1                             00000FE7
+INDF2                             00000FDF
+INT0                              00000000
+INT0E                             00000004
+INT0F                             00000001
+INT0IE                            00000004
+INT0IF                            00000001
+INT1E                             00000003
+INT1F                             00000000
+INT1IE                            00000003
+INT1IF                            00000000
+INT1IP                            00000006
+INT1P                             00000006
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INT2E                             00000004
+INT2F                             00000001
+INT2IE                            00000004
+INT2IF                            00000001
+INT2IP                            00000007
+INT2P                             00000007
+INT3E                             00000005
+INT3F                             00000002
+INT3IE                            00000005
+INT3IF                            00000002
+INT3IP                            00000001
+INT3P                             00000001
+INTCON                            00000FF2
+INTCON2                           00000FF1
+INTCON3                           00000FF0
+INTEDG0                           00000006
+INTEDG1                           00000005
+INTEDG2                           00000004
+INTEDG3                           00000003
+INTLVL0                           00000000
+INTLVL1                           00000001
+INTLVL2                           00000002
+INTLVL3                           00000003
+INTSRC                            00000007
+IN_TOKEN                          0x24
+IOLOCK                            00000000
+IPEN                              00000007
+IPR1                              00000F9F
+IPR2                              00000FA2
+IPR3                              00000FA5
+IRCF0                             00000004
+IRCF1                             00000005
+IRCF2                             00000006
+IRNG0                             00000000
+IRNG1                             00000001
+IRVST                             00000005
+ITRIM0                            00000002
+ITRIM1                            00000003
+ITRIM2                            00000004
+ITRIM3                            00000005
+ITRIM4                            00000006
+ITRIM5                            00000007
+JP_BOOTLOADER_LAT                 LATB
+JP_BOOTLOADER_PIN                 6
+JP_BOOTLOADER_PORT                PORTB
+JP_BOOTLOADER_PULLUP              INTCON2
+JP_BOOTLOADER_PULLUP_BIT          7
+JP_BOOTLOADER_TRIS                TRISB
+KBI0                              00000004
+KBI1                              00000005
+KBI2                              00000006
+KBI3                              00000007
+KEN                               5
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+LATA                              00000F89
+LATA0                             00000000
+LATA1                             00000001
+LATA2                             00000002
+LATA3                             00000003
+LATA5                             00000005
+LATA6                             00000006
+LATA7                             00000007
+LATB                              00000F8A
+LATB0                             00000000
+LATB1                             00000001
+LATB2                             00000002
+LATB3                             00000003
+LATB4                             00000004
+LATB5                             00000005
+LATB6                             00000006
+LATB7                             00000007
+LATC                              00000F8B
+LATC0                             00000000
+LATC1                             00000001
+LATC2                             00000002
+LATC4                             00000004
+LATC5                             00000005
+LATC6                             00000006
+LATC7                             00000007
+LED                               LATA
+LED_PIN                           0
+LED_TRIS                          TRISA
+LVDIE                             00000002
+LVDIF                             00000002
+LVDIP                             00000002
+LVDSTAT                           00000006
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MSK6                              00000006
+MSK7                              00000007
+MUID_CDC                          3
+MUID_HID                          2
+MUID_NULL                         0
+MUID_USB9                         1
+N                                 00000004
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BOR                           00000000
+NOT_CM                            00000005
+NOT_DONE                          00000001
+NOT_PD                            00000002
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_RC8                           00000006
+NOT_RI                            00000004
+NOT_SS1                           00000005
+NOT_TO                            00000003
+NOT_TX8                           00000006
+NOT_UOE                           00000001
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NO_SUBCLASS                       0x00
+ODCON1                            00000F42
+ODCON2                            00000F41
+ODCON3                            00000F40
+OERR                              00000001
+OSC1                              00000007
+OSC2                              00000006
+OSCCON                            00000FD3
+OSCFIE                            00000007
+OSCFIF                            00000007
+OSCFIP                            00000007
+OSCTUNE                           00000F9B
+OSTS                              00000003
+OUT                               0
+OUT_TOKEN                         0x04
+OV                                00000003
+P                                 00000004
+P1DC0                             00000000
+P1DC1                             00000001
+P1DC2                             00000002
+P1DC3                             00000003
+P1DC4                             00000004
+P1DC5                             00000005
+P1DC6                             00000006
+P1M0                              00000006
+P1M1                              00000007
+P1RSEN                            00000007
+P2DC0                             00000000
+P2DC1                             00000001
+P2DC2                             00000002
+P2DC3                             00000003
+P2DC4                             00000004
+P2DC5                             00000005
+P2DC6                             00000006
+P2M0                              00000006
+P2M1                              00000007
+P2RSEN                            00000007
+PADCFG1                           00000F3C
+PC                                00000FF9
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG10                            00000002
+PCFG11                            00000003
+PCFG12                            00000004
+PCFG2                             00000002
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PCFG3                             00000003
+PCFG4                             00000004
+PCFG8                             00000000
+PCFG9                             00000001
+PCL                               00000FF9
+PCLATH                            00000FFA
+PCLATU                            00000FFB
+PD                                00000002
+PEIE                              00000006
+PEIE_GIEL                         00000006
+PEN                               00000002
+PGC                               00000006
+PGD                               00000007
+PID0                              2
+PID1                              3
+PID2                              4
+PID3                              5
+PIDEE                             00000000
+PIDEF                             00000000
+PIE1                              00000F9D
+PIE2                              00000FA0
+PIE3                              00000FA3
+PIR1                              00000F9E
+PIR2                              00000FA1
+PIR3                              00000FA4
+PKTDIS                            00000004
+PLLEN                             00000006
+PLUSW0                            00000FEB
+PLUSW1                            00000FE3
+PLUSW2                            00000FDB
+PMPTTL                            00000000
+POR                               00000001
+PORTA                             00000F80
+PORTB                             00000F81
+PORTC                             00000F82
+POSTDEC0                          00000FED
+POSTDEC1                          00000FE5
+POSTDEC2                          00000FDD
+POSTINC0                          00000FEE
+POSTINC1                          00000FE6
+POSTINC2                          00000FDE
+PPB0                              00000000
+PPB1                              00000001
+PPBI                              00000001
+PPBRST                            00000006
+PPSCON                            00000EFF
+PR2                               00000FCB
+PR4                               00000F77
+PREINC0                           00000FEC
+PREINC1                           00000FE4
+PREINC2                           00000FDC
+PROD                              00000FF3
+PRODH                             00000FF4
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PRODL                             00000FF3
+PSA                               00000003
+PSS1AC0                           00000002
+PSS1AC1                           00000003
+PSS1BD0                           00000000
+PSS1BD1                           00000001
+PSS2AC0                           00000002
+PSS2AC1                           00000003
+PSS2BD0                           00000000
+PSS2BD1                           00000001
+PSTR1CON                          00000FBF
+PSTR2CON                          00000FB9
+PWM1CON                           00000FBD
+PWM2CON                           00000FB7
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA5                               00000005
+RA6                               00000006
+RA7                               00000007
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RBIP                              00000000
+RBPU                              00000007
+RC0                               00000000
+RC1                               00000001
+RC1IE                             00000005
+RC1IF                             00000005
+RC1IP                             00000005
+RC2                               00000002
+RC2IE                             00000005
+RC2IF                             00000005
+RC2IP                             00000005
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIDL                             00000006
+RCIE                              00000005
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RCIF                              00000005
+RCIP                              00000005
+RCON                              00000FD0
+RCPT_DEV                          0
+RCPT_EP                           2
+RCPT_INTF                         1
+RCPT_MASK                         0x1F
+RCPT_OTH                          3
+RCREG                             00000FAF
+RCREG1                            00000FAF
+RCREG2                            00000FAA
+RCSTA                             00000FAC
+RCSTA1                            00000FAC
+RCSTA2                            00000F9C
+RCV                               00000005
+RD16                              00000001
+READ_WRITE                        00000002
+REFO                              00000002
+REFOCON                           00000F3D
+REGSLP                            00000007
+RELEASE                           00000000
+RESUME                            00000002
+RI                                00000004
+RODIV0                            00000000
+RODIV1                            00000001
+RODIV2                            00000002
+RODIV3                            00000003
+ROON                              00000007
+ROSEL                             00000004
+ROSSLP                            00000005
+RP0                               00000000
+RP1                               00000001
+RP10                              00000007
+RP11                              00000000
+RP12                              00000001
+RP13                              00000002
+RP17                              00000006
+RP18                              00000007
+RP2                               00000005
+RP3                               00000000
+RP4                               00000001
+RP5                               00000002
+RP6                               00000003
+RP7                               00000004
+RP8                               00000005
+RP9                               00000006
+RPINR1                            00000EE7
+RPINR12                           00000EF2
+RPINR13                           00000EF3
+RPINR16                           00000EF6
+RPINR17                           00000EF7
+RPINR2                            00000EE8
+RPINR21                           00000EFB
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RPINR22                           00000EFC
+RPINR23                           00000EFD
+RPINR24                           00000EFE
+RPINR3                            00000EE9
+RPINR4                            00000EEA
+RPINR6                            00000EEC
+RPINR7                            00000EED
+RPINR8                            00000EEE
+RPOR0                             00000EC6
+RPOR1                             00000EC7
+RPOR10                            00000ED0
+RPOR11                            00000ED1
+RPOR12                            00000ED2
+RPOR13                            00000ED3
+RPOR17                            00000ED7
+RPOR18                            00000ED8
+RPOR2                             00000EC8
+RPOR3                             00000EC9
+RPOR4                             00000ECA
+RPOR5                             00000ECB
+RPOR6                             00000ECC
+RPOR7                             00000ECD
+RPOR8                             00000ECE
+RPOR9                             00000ECF
+RQ_TYPE_MASK                      (0x03 << 5)
+RSEN                              00000001
+RTCC                              00000001
+RTCCAL                            00000F3E
+RTCCFG                            00000F3F
+RTCCIE                            00000000
+RTCCIF                            00000000
+RTCCIP                            00000000
+RTCEN                             00000007
+RTCOE                             00000002
+RTCPTR0                           00000000
+RTCPTR1                           00000001
+RTCSYNC                           00000004
+RTCVALH                           00000F99
+RTCVALL                           00000F98
+RTCWDIS                           00000000
+RTCWREN                           00000005
+RTSECSEL0                         00000001
+RTSECSEL1                         00000002
+RX1                               00000007
+RX9                               00000006
+RX9D                              00000000
+RXADDRH                           00000F68
+RXADDRL                           00000F69
+RXDTP                             00000005
+RXINC                             00000004
+R_NOT_W                           00000002
+R_W                               00000002
+Recipient                         0
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 36
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+S                                 00000003
+SCK1                              00000004
+SCL1                              00000004
+SCS0                              00000000
+SCS1                              00000001
+SDA1                              00000005
+SDI1                              00000005
+SDO1                              00000007
+SE0                               00000005
+SEN                               00000000
+SENDB                             00000003
+SETUP_TOKEN                       0x34
+SET_ADR                           .5
+SET_CFG                           .9
+SET_DSC                           .7
+SET_FEATURE                       .3
+SET_IDLE                          0x0A
+SET_INTF                          .11
+SET_PROTOCOL                      0x0B
+SET_REPORT                        0x09
+SMP                               00000007
+SOFIE                             00000006
+SOFIF                             00000006
+SP0                               00000000
+SP1                               00000001
+SP2                               00000002
+SP3                               00000003
+SP4                               00000004
+SPBRG                             00000FB0
+SPBRG1                            00000FB0
+SPBRG2                            00000FAB
+SPBRGH                            00000F7F
+SPBRGH1                           00000F7F
+SPBRGH2                           00000F7D
+SPEN                              00000007
+SPI1OD                            00000000
+SPI2OD                            00000001
+SREN                              00000005
+SSCON0                            00000006
+SSCON1                            00000007
+SSP1ADD                           00000FC8
+SSP1BUF                           00000FC9
+SSP1CON1                          00000FC6
+SSP1CON2                          00000FC5
+SSP1IE                            00000003
+SSP1IF                            00000003
+SSP1IP                            00000003
+SSP1STAT                          00000FC7
+SSP2ADD                           00000F74
+SSP2BUF                           00000F75
+SSP2CON1                          00000F72
+SSP2CON2                          00000F71
+SSP2IE                            00000007
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 37
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSP2IF                            00000007
+SSP2IP                            00000007
+SSP2STAT                          00000F73
+SSPADD                            00000FC8
+SSPBUF                            00000FC9
+SSPCON1                           00000FC6
+SSPCON2                           00000FC5
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPIP                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000FC7
+STALLIE                           00000005
+STALLIF                           00000005
+STANDARD                          (0x00 << 5)
+STATUS                            00000FD8
+STKFUL                            00000007
+STKPTR                            00000FFC
+STKUNF                            00000006
+STRA                              00000000
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
+SUSPND                            00000001
+SWDTE                             00000000
+SWDTEN                            00000000
+SYNC                              00000004
+SYNCH_FRAME                       .12
+SetupPkt                          00000000
+SetupPktCopy                      00000000
+T08BIT                            00000006
+T0CON                             00000FD5
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0IP                              00000002
+T0PS0                             00000000
+T0PS1                             00000001
+T0PS2                             00000002
+T0SE                              00000004
+T1CK                              00000000
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000FCD
+T1DONE                            00000003
+T1GCON                            00000F9A
+T1GGO                             00000003
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 38
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T1GGO_T1DONE                      00000003
+T1GPOL                            00000006
+T1GSPM                            00000004
+T1GSS0                            00000000
+T1GSS1                            00000001
+T1GTM                             00000005
+T1GVAL                            00000002
+T1OSCEN                           00000003
+T1OSI                             00000001
+T1OSO                             00000000
+T1RUN                             00000004
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000FCA
+T2OUTPS0                          00000003
+T2OUTPS1                          00000004
+T2OUTPS2                          00000005
+T2OUTPS3                          00000006
+T3CCP1                            00000000
+T3CCP2                            00000001
+T3CKPS0                           00000004
+T3CKPS1                           00000005
+T3CON                             00000F79
+T3DONE                            00000003
+T3GCON                            00000F97
+T3GGO                             00000003
+T3GGO_T3DONE                      00000003
+T3GPOL                            00000006
+T3GSPM                            00000004
+T3GSS0                            00000000
+T3GSS1                            00000001
+T3GTM                             00000005
+T3GVAL                            00000002
+T3SYNC                            00000002
+T4CKPS0                           00000000
+T4CKPS1                           00000001
+T4CON                             00000F76
+T4OUTPS0                          00000003
+T4OUTPS1                          00000004
+T4OUTPS2                          00000005
+T4OUTPS3                          00000006
+TABLAT                            00000FF5
+TBLPTR                            00000FF6
+TBLPTRH                           00000FF7
+TBLPTRL                           00000FF6
+TBLPTRU                           00000FF8
+TCLKCON                           00000F52
+TGEN                              00000004
+TMR0H                             00000FD7
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR0IP                            00000002
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 39
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TMR0L                             00000FD6
+TMR0ON                            00000007
+TMR1CS0                           00000006
+TMR1CS1                           00000007
+TMR1GE                            00000007
+TMR1H                             00000FCF
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1IP                            00000000
+TMR1L                             00000FCE
+TMR1ON                            00000000
+TMR2                              00000FCC
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2IP                            00000001
+TMR2ON                            00000002
+TMR3CS0                           00000006
+TMR3CS1                           00000007
+TMR3GE                            00000007
+TMR3GIE                           00000001
+TMR3GIF                           00000001
+TMR3GIP                           00000001
+TMR3H                             00000F7B
+TMR3IE                            00000001
+TMR3IF                            00000001
+TMR3IP                            00000001
+TMR3L                             00000F7A
+TMR3ON                            00000000
+TMR4                              00000F78
+TMR4IE                            00000003
+TMR4IF                            00000003
+TMR4IP                            00000003
+TMR4ON                            00000002
+TO                                00000003
+TOS                               00000FFD
+TOSH                              00000FFE
+TOSL                              00000FFD
+TOSU                              00000FFF
+TRISA                             00000F92
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA5                            00000005
+TRISA6                            00000006
+TRISA7                            00000007
+TRISB                             00000F93
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 40
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000F94
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRMT                              00000001
+TRNIE                             00000003
+TRNIF                             00000003
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TUN5                              00000005
+TX1                               00000006
+TX1IE                             00000004
+TX1IF                             00000004
+TX1IP                             00000004
+TX2IE                             00000004
+TX2IF                             00000004
+TX2IP                             00000004
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXADDRH                           00000F6A
+TXADDRL                           00000F6B
+TXCKP                             00000004
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXINC                             00000005
+TXIP                              00000004
+TXREG                             00000FAE
+TXREG1                            00000FAE
+TXREG2                            00000FA9
+TXSTA                             00000FAD
+TXSTA1                            00000FAD
+TXSTA2                            00000FA8
+U1OD                              00000000
+U2OD                              00000001
+UA                                00000001
+UADDR                             00000F38
+UART_DEBUG                        0
+UCFG                              00000F39
+UCON                              00000F65
+UD_INIT                           
+UD_TX                             
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 41
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+UD_TXB                            
+UEIE                              00000F37
+UEIR                              00000F63
+UEP0                              00000F26
+UEP1                              00000F27
+UEP10                             00000F30
+UEP11                             00000F31
+UEP12                             00000F32
+UEP13                             00000F33
+UEP14                             00000F34
+UEP15                             00000F35
+UEP2                              00000F28
+UEP3                              00000F29
+UEP4                              00000F2A
+UEP5                              00000F2B
+UEP6                              00000F2C
+UEP7                              00000F2D
+UEP8                              00000F2E
+UEP9                              00000F2F
+UERRIE                            00000001
+UERRIF                            00000001
+UFRM                              00000F60
+UFRMH                             00000F61
+UFRML                             00000F60
+UIE                               00000F36
+UIR                               00000F62
+ULPEN                             00000002
+ULPLVL                            00000005
+ULPSINK                           00000001
+ULPWDIS                           00000002
+ULPWU                             00000000
+UOEMON                            00000006
+UOWN                              7
+UPUEN                             00000004
+URSTIE                            00000000
+URSTIF                            00000000
+USBEN                             00000003
+USBIE                             00000004
+USBIF                             00000004
+USBIP                             00000004
+USB_CFG_DESC_SIZE                 .9
+USB_CFG_TOTAL_SIZE                (USB_CFG_DESC_SIZE + USB_IF_DESC_SIZE + USB_HID_DESC_SIZE + USB_EP_DESC_SIZE)
+USB_DEV_DESC_SIZE                 .18
+USB_EP_DESC_SIZE                  .7
+USB_HID_DESC                      00000000
+USB_HID_DESC_SIZE                 .9
+USB_HID_RPT                       00000000
+USB_HID_RPT_SIZE                  .23
+USB_IF_DESC_SIZE                  .9
+USB_LANG_DESC_SIZE                .4
+USB_MFG_DESC_SIZE                 .22
+USB_SM_ADDRESS                    5
+USB_SM_ADR_PENDING                4
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 42
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+USB_SM_ATTACHED                   1
+USB_SM_CONFIGURED                 6
+USB_SM_CTRL_TRF_RX                2
+USB_SM_CTRL_TRF_TX                1
+USB_SM_CTRL_WAIT_SETUP            0
+USB_SM_DEFAULT                    3
+USB_SM_DETACHED                   0
+USB_SM_POWERED                    2
+USE_EEPROM_MARK                   1
+USE_HID_EP_OUT                    0
+USE_JP_BOOTLOADER_EN              1
+USE_LED                           1
+USE_PROD_STRING                   0
+USTAT                             00000F64
+UTEYE                             00000007
+UTRDIS                            00000003
+VBG2EN                            00000006
+VBGEN                             00000007
+VCFG0                             00000006
+VCFG1                             00000007
+VDIRMAG                           00000007
+VENDOR                            (0x02 << 5)
+VM                                00000004
+VMO                               00000002
+VP                                00000005
+VPO                               00000003
+VREF_MINUS                        00000002
+VREF_PLUS                         00000003
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000FC0
+WPROG                             00000005
+WR                                00000001
+WREG                              00000FE8
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BSTALL                           0x04
+_BULK                             0x02
+_CTRL                             0x00
+_DAT0                             0x00
+_DAT1                             0x40
+_DEFAULT                          0x01 << 7
+_DEVID1                           003FFFFE
+_DEVID2                           003FFFFF
+_DTSEN                            0x08
+_DTSMASK                          0x40
+_EP01_IN                          0x81
+_EP01_OUT                         0x01
+_INCDIS                           0x10
+_INT                              0x03
+_ISO                              0x01
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 43
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_KEN                              0x20
+_RAM                              0
+_ROM                              1
+_RWU                              0x01 << 5
+_SELF                             0x01 << 6
+_UCPU                             0x00
+_USIE                             0x80
+__18F24J50                        00000001
+active_protocol                   00000000
+bAltID                            2
+bAltID_H                          3
+bCfgRSD                           3
+bCfgValue                         2
+bDevADR                           2
+bDevADRH                          3
+bDscIndex                         2
+bDscType                          3
+bFeature                          2
+bIntfID                           4
+bIntfID_H                         5
+bRequest                          1
+bmRequestType                     0
+boot_cmd                          00000002
+boot_rep                          00000042
+bootloader                        0000002E
+bootloader_loop                   00000036
+cleanupandexit                    00000026
+cmd                               0
+cmdata                            2
+copy_boot_rep                     00000000
+ctrl_trf_mem                      00000000
+ctrl_trf_session_owner            00000000
+eep_mark_set                      00000000
+ep1Bi                             00000000
+ep1Bo                             00000000
+hid_process_cmd                   00000000
+hid_report_in                     00000540
+hid_report_out                    00000500
+hid_send_report                   000000C4
+hid_send_report_end               000000E2
+id                                1
+idle_rate                         00000001
+main                              00000000
+pDst                              00000000
+pSrc                              00000000
+usb_init                          00000000
+usb_sm_HID_init_EP                000000AC
+usb_sm_HID_request                000000E4
+usb_sm_HID_request_end            00000168
+usb_sm_HID_rq_cls                 0000012E
+usb_sm_HID_rq_cls_rq              00000138
+usb_sm_HID_rq_cls_rq_end          00000162
+usb_sm_HID_rq_cls_rq_end_ses      00000166
+MPASM  5.34                          BOOT.ASM   1-22-2010  17:47:22         PAGE 44
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+usb_sm_HID_rq_cls_rq_gidle        00000168
+usb_sm_HID_rq_cls_rq_gprot        00000168
+usb_sm_HID_rq_cls_rq_grpt         00000154
+usb_sm_HID_rq_cls_rq_grpt_end     00000156
+usb_sm_HID_rq_cls_rq_sidle        00000168
+usb_sm_HID_rq_cls_rq_sprot        00000168
+usb_sm_HID_rq_cls_rq_srpt         00000158
+usb_sm_HID_rq_cls_rq_srpt_end     00000160
+usb_sm_HID_rq_cls_rq_unknown      00000152
+usb_sm_HID_rq_dsc_end             00000126
+usb_sm_HID_rq_dsc_hid             0000010C
+usb_sm_HID_rq_dsc_hid_end         00000116
+usb_sm_HID_rq_dsc_phy             00000124
+usb_sm_HID_rq_dsc_phy_end         00000124
+usb_sm_HID_rq_dsc_rpt             00000118
+usb_sm_HID_rq_dsc_rpt_end         00000122
+usb_sm_HID_rq_dsc_unknown         0000010A
+usb_sm_HID_rq_rcpt                000000EE
+usb_sm_HID_rq_rcpt_id             000000F6
+usb_sm_ctrl                       00000000
+usb_sm_ctrl_state                 00000000
+usb_sm_prepare_next_setup_trf     00000000
+usb_sm_reset                      00000000
+usb_sm_state                      00000000
+usb_state_machine                 00000040
+usb_state_machine_actif           00000040
+usb_state_machine_actif_end       0000004E
+usb_state_machine_err             0000008E
+usb_state_machine_err_end         00000098
+usb_state_machine_idleif          0000005C
+usb_state_machine_idleif_end      00000072
+usb_state_machine_rstif           00000052
+usb_state_machine_rstif_end       0000005C
+usb_state_machine_sof             00000072
+usb_state_machine_sof_end         0000007C
+usb_state_machine_stallif         0000007C
+usb_state_machine_stallif_clr     0000008C
+usb_state_machine_stallif_end     0000008E
+usb_state_machine_trnif           0000009E
+usb_state_machine_trnif_end       000000AA
+wIndex                            4
+wLangID                           4
+wLength                           6
+wValue                            2
+
+Errors   :    28
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+
