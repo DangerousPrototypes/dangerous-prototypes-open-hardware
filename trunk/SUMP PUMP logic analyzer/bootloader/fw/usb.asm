@@ -88,27 +88,36 @@ BOOT_ASM_CODE	CODE
 ; OUTPUT: no
 ;-----------------------------------------------------------------------------
 	global	usb_init
-usb_init
+usb_init ;!!!18f24j50 change!!!
+	movlb 0x0f	;select the correct bank
 	movlw	0x14		; Enable Internal Pull-Up
 	movwf	UCFG		; Enable Internal Transceiver
 				; Full Speed
 				; Disable ping-pong
 	clrf	UIE
+	movlb	0x00 ;move back to main bank
+
 	movlw	0x08
 	movwf	UCON		;UCON = 0b00001000;	; Enable USBEN only
+
 	; After enabling the USB module, it takes some time for the voltage
 	; on the D+ or D- line to rise high enough to get out of the SE0 condition.
 	; The USB Reset interrupt should not be unmasked until the SE0 condition is
 	; cleared. This helps preventing the firmware from misinterpreting this
 	; unique event as a USB bus reset from the USB host.
 	; Wait USB module normal operation
+	;if(!USBSE0Event)
 	btfsc	UCON, SE0
 	bra	$ - 2		; while(UCONbits.SE0);
 	
 	clrf	UIR		; Clear all USB interrupts
+	
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	movlw	0x11
 	movwf	UIE		; UIE = 0b00010001	; Unmask RESET & IDLE interrupts only
-	
+	movlb	0x00	;back to main bank
+
 	movlw	USB_SM_POWERED
 	movwf	usb_sm_state
 	
@@ -123,11 +132,15 @@ usb_init
 usb_sm_reset
 	UD_TX	'R'
 	clrf	UIR		; Clears all USB interrupts
+
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	movlw	0x7B
 	movwf	UIE		; Enable all interrupts except ACTVIE
 	clrf	UADDR		; Reset to default address
 	movlw	EP_CTRL | HSHK_EN
 	movwf	UEP0		; Init EP0 as a Control EP
+	movlb	0x00	;back to main bank
 	; Flush any pending transactions
 usb_sm_reset_trnif
 	btfss	UIR, TRNIF
@@ -271,9 +284,13 @@ usb_sm_ctrl_in
 	cpfseq	usb_sm_state
 	bra	usb_sm_ctrl_in_addr_end
 usb_sm_ctrl_in_addr
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	; SetupPkt copyed to SetupPktCopy
 	movf	(SetupPktCopy + bDevADR), W
 	movwf	UADDR
+	movlb	0x00	;back to main bank	
+
 	andlw	0xFF
 	btfss	STATUS, Z
 	movlw	USB_SM_ADDRESS
@@ -673,7 +690,10 @@ usb_sm_ctrl_setup_sdtrq_getc_end
 ;--------	SET_CFG
 usb_sm_ctrl_setup_sdtrq_setc
 	bsf	ctrl_trf_session_owner, 0
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	clrf	UEP1	; Disable EP1
+	movlb	0x00	;back to main bank
 	movf	(SetupPktCopy + bCfgValue), W
 	movwf	usb_active_cfg
 	andlw	0xFF

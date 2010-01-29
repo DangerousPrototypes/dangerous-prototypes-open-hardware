@@ -53,38 +53,18 @@
 
 	CONFIG	PLLDIV = 5			; OSC/4 for 16MHz
 	CONFIG  CPUDIV = OSC1	; CPU_clk = PLL/2
-	CONFIG 	USBDIV = 2			; USB_clk = PLL/2
-	CONFIG 	FOSC = HSPLL_HS			; HS osc PLL
+;	CONFIG 	USBDIV = 2			; USB_clk = PLL/2
+	CONFIG 	OSC = HSPLL			; HS osc PLL
 	CONFIG  FCMEN = ON			; Fail Safe Clock Monitor
 	CONFIG  IESO = OFF			; Int/Ext switchover mode
-	CONFIG  PWRT = ON			; PowerUp Timer
-	CONFIG  BOR = OFF			; Brown Out
-	CONFIG  VREGEN = ON			; Int Voltage Regulator
-	CONFIG  WDT = OFF			; WatchDog Timer
-	CONFIG  MCLRE = ON			; MCLR
+	CONFIG  WDTEN = OFF			; WatchDog Timer
 	CONFIG  LPT1OSC = OFF			; Low Power OSC
-	CONFIG  PBADEN = ON			; PORTB<4:0> A/D
-	CONFIG  CCP2MX = ON			; CCP2 Mux RC1
 	CONFIG  STVREN = ON			; Stack Overflow Reset
-	CONFIG  LVP = OFF			; Low Voltage Programming
-;	CONFIG  ICPRT = OFF			; ICP
 	CONFIG  XINST = OFF			; Ext CPU Instruction Set
-	CONFIG	DEBUG = OFF			; Background Debugging
-	CONFIG  CP0 = OFF			; Code Protect
-	CONFIG  CP1 = OFF
-	CONFIG  CP2 = OFF
-	CONFIG  CPB = OFF   			; Boot Sect Code Protect
-	CONFIG  CPD = OFF  			; EEPROM Data Protect
-	CONFIG  WRT0 = OFF 			; Table Write Protect
-	CONFIG  WRT1 = OFF
-	CONFIG  WRT2 = OFF 
-	CONFIG  WRTB = ON  			; Boot Table Write Protest
-	CONFIG  WRTC = ON  			; CONFIG Write Protect
-	CONFIG  WRTD = OFF 			; EEPROM Write Protect
-	CONFIG  EBTR0 = OFF			; Ext Table Read Protect
-	CONFIG  EBTR1 = OFF
-	CONFIG  EBTR2 = OFF
-	CONFIG  EBTRB = OFF 			; Boot Table Read Protect
+	CONFIG  WPFP = PAGE_1       ;Write Protect Program Flash Page 0
+    ;CONFIG  WPFP = PAGE_1        ;Write Protect Program Flash Page 1
+
+
 
 ;--------------------------------------------------------------------------
 ; External declarations
@@ -99,7 +79,6 @@
 	extern	Count
 	extern	ctrl_trf_session_owner
 	extern	ctrl_trf_mem
-	extern	eep_mark_set
 ;--------------------------------------------------------------------------
 ; Variables
 BOOT_DATA	UDATA
@@ -143,6 +122,14 @@ BOOT_ASM_CODE CODE
 ;--------------------------------------------------------------------------
 	global	main
 main
+	; All I/O to Digital mode
+	movlb 	0x0f	;select the correct bank
+	movlw	0xff
+	movwf	ANCON0
+	movlw	0x1f
+	movwf	ANCON1
+	movlb	0x00	;back to main bank
+
 	;18f24j50 must be manually switched to PLL, even if the fuse is set
 	bsf		OSCTUNE, PLLEN	;enable PLL
 	;now wait at least 2ms	
@@ -171,7 +158,7 @@ tmrlp:  btfss INTCON, TMR0IF
 	nop
 	nop
 	btfsc	JP_BOOTLOADER_PORT, JP_BOOTLOADER_PIN	;skip app go to BL if bit is clear
-	bra		cleanupandexit	;disable and skip to user app
+	;bra		cleanupandexit	;disable and skip to user app
 	;bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
 	;setf	JP_BOOTLOADER_TRIS		;trisB back input
 #endif
@@ -209,7 +196,6 @@ bootloader
 	bcf	LED_TRIS, LED_PIN
 	bsf	LED, LED_PIN
 #endif
-	clrf	eep_mark_set	; EEP_MARK will be cleared
 	rcall	usb_init
 ; Main Loop
 bootloader_loop
@@ -234,13 +220,20 @@ usb_state_machine
 usb_state_machine_actif
 	btfss	UIR, ACTVIF
 	bra	usb_state_machine_actif_end
-	btfss	UIE, ACTVIE
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
+	btfss	UIE, ACTVIE 
 	bra	usb_state_machine_actif_end
+	movlb	0x00	;back to main bank
 	UD_TX	'A'
 	bcf	UCON, SUSPND
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	bcf	UIE, ACTVIE
+	movlb	0x00	;back to main bank
 	bcf	UIR, ACTVIF
 usb_state_machine_actif_end
+	movlb	0x00	;back to main bank
 	; Pointless to continue servicing if the device is in suspend mode.
 	btfsc	UCON, SUSPND
 	return
@@ -255,60 +248,90 @@ usb_state_machine_actif_end
 usb_state_machine_rstif
 	btfss	UIR, URSTIF
 	bra	usb_state_machine_rstif_end
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	btfss	UIE, URSTIE
 	bra	usb_state_machine_rstif_end
+	movlb	0x00	;back to main bank
 	rcall	usb_sm_reset
 usb_state_machine_rstif_end
+	movlb	0x00	;back to main bank
 	; Idle condition detected
 usb_state_machine_idleif
 	btfss	UIR, IDLEIF
 	bra	usb_state_machine_idleif_end
-	btfss	UIE, IDLEIE
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
+	btfss	UIE, IDLEIE	
 	bra	usb_state_machine_idleif_end
+	movlb	0x00	;back to main bank
 	UD_TX	'I'
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	bsf	UIE, ACTVIE	; Enable bus activity interrupt
+	movlb	0x00	;back to main bank
 	bcf	UIR, IDLEIF
 	bsf	UCON, SUSPND	; Put USB module in power conserve
 				; mode, SIE clock inactive
         ; Now, go into power saving
+	bsf OSCCON, IDLEN ;18f24j50 change
         bcf	PIR2, USBIF	; Clear flag
         bsf	PIE2, USBIE	; Set wakeup source
 	sleep
         bcf	PIE2, USBIE
 usb_state_machine_idleif_end
+	movlb	0x00	;back to main bank
 	; SOF Flag
 usb_state_machine_sof
 	btfss	UIR, UERRIF
 	bra	usb_state_machine_sof_end
-	btfss	UIE, UERRIE
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
+	btfss	UIE, UERRIE 
 	bra	usb_state_machine_sof_end
+	movlb	0x00	;back to main bank
 	UD_TX	'F'
 	bcf	UIR, SOFIF
 usb_state_machine_sof_end
-
+	movlb	0x00	;back to main bank
 	; A STALL handshake was sent by the SIE
 usb_state_machine_stallif
 	btfss	UIR, STALLIF
 	bra	usb_state_machine_stallif_end
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	btfss	UIE, STALLIE
 	bra	usb_state_machine_stallif_end
+	movlb	0x00	;back to main bank
 	UD_TX	'T'
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	btfss	UEP0, EPSTALL
 	bra	usb_state_machine_stallif_clr
+	movlb	0x00	;back to main bank
 	rcall	usb_sm_prepare_next_setup_trf	; Firmware Work-Around
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	bcf	UEP0, EPSTALL
+	movlb	0x00	;back to main bank
 usb_state_machine_stallif_clr
+	movlb	0x00	;back to main bank
 	bcf	UIR, STALLIF
 usb_state_machine_stallif_end
+	movlb	0x00	;back to main bank
 	; USB Error flag
 usb_state_machine_err
 	btfss	UIR, UERRIF
 	bra	usb_state_machine_err_end
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	btfss	UIE, UERRIE
 	bra	usb_state_machine_err_end
+	movlb	0x00	;back to main bank
 	UD_TX	'E'
 	bcf	UIR, UERRIF
 usb_state_machine_err_end
+	movlb	0x00	;back to main bank
 	; Pointless to continue servicing if the host has not sent a bus reset.
 	; Once bus reset is received, the device transitions into the DEFAULT
 	; state and is ready for communication.
@@ -321,13 +344,17 @@ usb_state_machine_err_end
 usb_state_machine_trnif
 	btfss	UIR, TRNIF
 	bra	usb_state_machine_trnif_end
-	btfss	UIE, TRNIE
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
+	btfss	UIE, TRNIE 
 	bra	usb_state_machine_trnif_end
+	movlb	0x00	;back to main bank
 	; Only services transactions over EP0.
 	; Ignore all other EP transactions.
 	rcall	usb_sm_ctrl
 	bcf	UIR, TRNIF
 usb_state_machine_trnif_end
+	movlb	0x00	;back to main bank
 	return
 ;-----------------------------------------------------------------------------
 ; HID
@@ -342,7 +369,10 @@ usb_sm_HID_init_EP
 #define USE_HID_EP_OUT 0
 #if USE_HID_EP_OUT
 	movlw	EP_OUT_IN | HSHK_EN
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	movwf	HID_UEP		; Enable 2 data pipes
+	movlb	0x00	;back to main bank
 	movlb	HIGH(HID_BD_OUT)
 	movlw	HID_OUT_EP_SIZE
 	movwf	BDT_CNT(HID_BD_OUT)
@@ -353,8 +383,11 @@ usb_sm_HID_init_EP
 	movlw	(_USIE | _DAT0 | _DTSEN)
 	movwf	BDT_STAT(HID_BD_OUT)
 #else
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	movlw	(EP_IN | HSHK_EN)
 	movwf	HID_UEP		; Enable 1 data pipe
+	movlb	0x00	;back to main bank
 #endif
 	movlb	HIGH(HID_BD_IN)
 	movlw	LOW(hid_report_in)
