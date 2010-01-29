@@ -69,9 +69,7 @@ BOOT_ASM_CODE	CODE
 ;	GLOBAL	erase_code    
 ;	GLOBAL	set_eep_mark
 ;	GLOBAL	clr_eep_mark
-#if USE_EEPROM_MARK
-	GLOBAL	bootloader_soft_reset
-#endif
+
 	GLOBAL	hid_process_cmd
 	GLOBAL	copy_boot_rep
 ;-----------------------------------------------------------------------------
@@ -280,13 +278,7 @@ hid_process_cmd
 	movwf	boot_rep + CMD_OFFS			; boot_rep.cmd = boot_cmd.cmd
 	movff	boot_cmd + ID_OFFS, boot_rep + ID_OFFS	; boot_rep.id = boot_cmd.id
 	
-#if USE_EEPROM_MARK 
-	; Set EEPROM Mark on first command received
-	btfss	eep_mark_set, 0	; if( eeprom_mark_set == 0 )
-	rcall	set_eep_mark	;     set_eeprom_mark
-	; WREG corrupted, reload command
-	movf	boot_cmd + CMD_OFFS, W			; W = boot_cmd.cmd
-#endif
+
 	clrf	boot_cmd + CMD_OFFS			; boot_cmd.cmd = 0
 	; switch( boot_cmd.cmd )
 	dcfsnz	WREG

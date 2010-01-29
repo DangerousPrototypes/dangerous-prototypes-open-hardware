@@ -32,16 +32,6 @@
 ; If CPU_5V_HS is 1 then CPU run from 48 MHz PLL clock. REQUIRE 5V Power Supply
 ; If CPU_5V_HS is 0 then CPU run from 16 MHz OSC directly. Possible 3.3V Power Supply
 #define CPU_5V_HS		1
-;-----------------------------------------------------------------------------
-; EEPROM Mark to run bootloader
-#define USE_EEPROM_MARK		0	; Enable EEPROM MARK. To disable = 0
-#define EEPROM_MARK_ADDR	0x00	; EEPROM Address for MARK
-#define EEPROM_MARK		0x5A	; MARK value
-;-----------------------------------------------------------------------------
-; EEPROM and ID encoding by XTEA support
-#define ENCODE_EEPROM		0	; Disable EEPROM encoding. To enable = 1
-#define ENCODE_ID		0	; Disable ID encoding. To enable = 1
-;-----------------------------------------------------------------------------
 ; Debug messages over UART
 #define UART_DEBUG	0
 #if UART_DEBUG

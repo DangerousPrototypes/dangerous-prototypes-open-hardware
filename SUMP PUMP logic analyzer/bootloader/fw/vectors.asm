@@ -38,10 +38,7 @@ VECTORS		CODE	0x0000
 	org	0x0008
 	goto	APP_HIGH_INTERRUPT_VECTOR
 ;-----------------------------------------------------------------------------
-pre_main
-	; All I/O to Digital mode
-	movlw	0x0F
-	movwf	ADCON1
+pre_main ;!!!18f24750 change!!!
 	bra		main
 ;-----------------------------------------------------------------------------
 ; Here is 4 bytes (2 program words) free
