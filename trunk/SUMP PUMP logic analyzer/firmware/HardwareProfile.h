@@ -41,6 +41,8 @@
 	#define TRIS_FLASH_CS	TRISAbits.TRISA2
 	#define PIN_FLASH_CS	PORTAbits.RA2
 
+	#define BootloaderJump() _asm goto 0x16 _endasm
+
 	//these are unneeded, but the stack complains if they're not defined
     //#define USE_SELF_POWER_SENSE_IO
     #define tris_self_power     TRISCbits.TRISC2    

@@ -25,6 +25,7 @@ unsigned char buf[64];
 #define ERASE 5
 #define ERROR 6
 #define STATUS 7
+#define VERSION 8
 
 static struct _sm {
 	unsigned char state;
@@ -52,10 +53,6 @@ void main(void){
 	usbbufflush();//setup the USB byte buffer
 	
 	if(PIN_UPDATE==0){
-		PIN_LED=1;
-		setupROMSPI();
-		sm.state=COMMAND;
-		sm.cmdcnt=0;
 		mode=UPGRADE;
 	}else{//self test (move to function)
 		//self test
@@ -68,13 +65,26 @@ void main(void){
 		}
 	
 		//wait for DONE to go high
+		i=0;
 		while(PIN_DONE==0){
 			unsigned int timer=0xffff;
 			while(timer--);
 			PIN_LED^=1;
+			i++;
+			if(i==0x50){
+				mode=UPGRADE;
+				break;
+			}
 		}
 	
 		PIN_LED=0; //OK, LED on
+	}
+
+	if(mode==UPGRADE){
+		PIN_LED=1;
+		setupROMSPI();
+		sm.state=COMMAND;
+		sm.cmdcnt=0;
 	}
 
     while(1){
@@ -122,6 +132,9 @@ void main(void){
 				if(sm.cmdcnt>3){//got all four command bytes
 					sm.cmdcnt=0;
 					switch(sm.cmdbuf[0]){
+						case 0x00:
+							sm.state=VERSION;
+							break;
 						case 0x01: //CMD_ID:	//read out ID and send back 0x01 00 00 00
 							sm.state=ID;
 							break;
@@ -159,14 +172,42 @@ void main(void){
 						case 0x05://CMD_STATUS
 							sm.state=STATUS;
 							break;
-						case 0xff:
-							//return 1; //return to normal mode
+						case '$': //jump to bootloader
+							BootloaderJump();
+							break;
+						case 0xff://return to normal mode
+							//sm.state=COMMAND;
+							//sm.cmdcnt=0;
+							//PIN_LED=0;
+							//mode==SUMP;
+							teardownROMSPI();
+							_asm RESET _endasm;
+							break;
 						default:
 							sm.state=ERROR;//return 0xff or 0x00		
 					}
 				}
 				break;
-
+			case VERSION:
+				if(mUSBUSARTIsTxTrfReady()){
+					buf[0]='H';
+					buf[1]=0x01;
+					buf[2]='F';
+					buf[3]=0x00;
+					buf[4]=0x01;
+					buf[5]='B';
+					//read 0x7fe for the bootloader version string
+					TBLPTRU=0;
+					TBLPTRH=0x7;
+					TBLPTRL=0xfe;
+					_asm TBLRDPOSTINC _endasm; //read into TABLAT and increment
+					buf[6]=TABLAT;
+					//_asm TBLRDPOSTINC _endasm; //read into TABLAT and increment
+					//buf[6]=TABLAT;
+					putUSBUSART(buf,7);
+					sm.state=COMMAND;
+				}
+				break;
 			case ID:
 				if(mUSBUSARTIsTxTrfReady()){
 					PIN_FLASH_CS=0; //CS low
@@ -312,7 +353,7 @@ static void init(void){
 	RPINR16=3;
 
 	SPBRGH2=0;
-	SPBRG2=25;
+	SPBRG2=25;//25=115200, 77=38400
 	BAUDCON2=0b00000000;
 	TXSTA2=0b00100110;
 	RCSTA2=0b10010000;
@@ -447,4 +488,45 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     return TRUE; 
 }
 
+#define REMAPPED_RESET_VECTOR_ADDRESS			0x800
+#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
+#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
+
+//We didn't use the low priority interrupts, 
+// but you could add your own code here
+#pragma interruptlow InterruptHandlerLow
+void InterruptHandlerLow(void){}
+
+//We didn't use the low priority interrupts, 
+// but you could add your own code here
+#pragma interrupthigh InterruptHandlerHigh
+void InterruptHandlerHigh(void){}
+
+//these statements remap the vector to our function
+//When the interrupt fires the PIC checks here for directions
+#pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
+void Remapped_High_ISR (void){
+     _asm goto InterruptHandlerHigh _endasm
+}
+
+#pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
+void Remapped_Low_ISR (void){
+     _asm goto InterruptHandlerLow _endasm
+}
+
+//relocate the reset vector
+extern void _startup (void);  
+#pragma code REMAPPED_RESET_VECTOR = REMAPPED_RESET_VECTOR_ADDRESS
+void _reset (void){
+    _asm goto _startup _endasm
+}
+//set the initial vectors so this works without the bootloader too.
+#pragma code HIGH_INTERRUPT_VECTOR = 0x08
+void High_ISR (void){
+     _asm goto REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS _endasm
+}
+#pragma code LOW_INTERRUPT_VECTOR = 0x18
+void Low_ISR (void){
+     _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
+}
 
