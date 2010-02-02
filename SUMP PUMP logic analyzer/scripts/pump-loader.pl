@@ -32,10 +32,13 @@ my $results = GetOptions(
 			"e"=>\my $opt_e,
             "s"=>\my $opt_s,
             "i"=>\my $opt_i,
+			"v"=>\my $opt_v,
+			"b"=>\my $opt_b,
             "p=s"=>\my $opt_p,
             "w=s"=> \my $opt_w,
             "r=s"=> \my $opt_r,
-            "l=i"=> \my $opt_l );
+            "l=i"=> \my $opt_l ,
+			"x"=> \my $opt_x ,);
 
 print "PUMP-Loader v0.1\n";
 			
@@ -46,6 +49,9 @@ if( (!(defined $opt_r)) &&
 	(!(defined $opt_w)) &&
 	(!(defined $opt_i)) &&
 	(!(defined $opt_e)) &&
+	(!(defined $opt_x)) &&
+	(!(defined $opt_v)) &&
+	(!(defined $opt_b)) &&
 	(!(defined $opt_s)) ){
 	print "# PUMP ROM programmer,\n"; 
 	print "# \n";
@@ -55,7 +61,10 @@ if( (!(defined $opt_r)) &&
 	print "# -e erase ROM\n";
 	print "# -s ROM status byte\n";
 	print "# -i ROM JEDEC ID\n";
-	print "# -l <pages> limit write or read to first <pages>\n#\n";
+	print "# -x Reset to run mode when complete\n";	
+	print "# -l <pages> limit write or read to first <pages>\n";
+	print "# -v Get firmware version string\n";		
+	print "# -b Jump to bootloader\n";	
 	print "# use: pump-loader.pl -p COM2 -w pump.bin\n\n";
 	print "Nothing to do.";
 	exit;
@@ -106,13 +115,40 @@ $port->write_settings		|| undef $port; #set
 unless ($port)			{ die "couldn't configure serial port."; }
 #
 # Protocol:
+# 00 00 00 00 - get PUMP hardware/firmware/bootloader string (return 7bytes)
 # 01 00 00 00 - get 4 byte JDEC ID (returns 4 bytes)
 # 02 XX YY 00 + 264 data bytes + CRC - XX=page (upper 4 bits XXXXA987) YY=page (lower 7 bits = 6543210X), CRC = 2s compliment, (returns 1 when done, 0 for CRC error)
 # 03 XX YY 00 - XX=page (upper 4 bits XXXXA987) YY=page (lower 7 bits = 6543210X), (returns 264 bytes, 1 page)
 # 04 00 00 00 - erase chip (returns 1 on completion, takes up to 6 seconds)
 # 05 00 00 00 - get status byte (returns 1 byte)
-#
+# $ $ $ $ - jump to bootloader
 
+#
+#	Grab hardware/firmware/bootloader version string
+#
+print "Reading firmware version:\n";
+$port->write("\x00\x00\x00\x00"); #send get id command
+select(undef,undef,undef, .02); #sleep for fraction of second for data to arrive #sleep(1);
+my $H=$port->read(1);
+my $Hnum=ord($port->read(1));
+my $F=$port->read(1);
+my $Fmaj=ord($port->read(1));
+my $Fmin=ord($port->read(1));
+my $B=$port->read(1);
+my $Bnum=ord($port->read(1));
+print "Hardware: $Hnum, Firmware: $Fmaj.$Fmin, Bootloader: $Bnum\n";
+
+#
+#	Jump to bootloader
+#
+if(defined $opt_b){
+	print "Jumping to bootloader!\n";
+	$port->write("\x24\x24\x24\x24"); 
+	select(undef,undef,undef, .02); #sleep for fraction of second for data to arrive #sleep(1);
+	$port->close || warn "close failed";
+	undef $port;
+	exit;
+}
 
 #
 #	Grab ROM JEDEC chip ID
@@ -264,10 +300,18 @@ if(defined $opt_r){
 		print OUTPUT $readflash; 
 		
 	}
-	$port->close || warn "close failed";
-	undef $port;
-
 	#success
 	print "done.\n";
 	
 }
+
+if(defined $opt_x){
+	print "Reset PUMP to run mode.\n";
+	$port->write("\xFF");
+	$port->write("\xFF");
+	$port->write("\xFF");
+	$port->write("\xFF");
+}
+
+$port->close || warn "close failed";
+undef $port;
