@@ -30,16 +30,26 @@
 #include "fu_usage.h"
 
 #ifdef BUILD_WIN32
-#pragma comment(lib, "c:\\WINDDK\\lib\\w2k\\i386\\hid.lib")
-#pragma comment(lib, "c:\\WINDDK\\lib\\w2k\\i386\\setupapi.lib")
+
+#pragma comment(lib, "hid.lib")
+#pragma comment(lib, "setupapi.lib")
+
+#include <wtypes.h>
+#include <sal.h>
+#include <sal_supp.h>
+#include <driverspecs.h>
+#include <windows.h>
+
 extern "C"
 {
-#include "c:\WINDDK\inc\w2k\hidsdi.h"
+    #include <api/hidsdi.h>
 }
+
 #include <setupapi.h>
+
 #else
 #include <usb.h>
-#endif /* BUILD_WIN32 */
+#endif /* BUILD_WIN32 */ 
 
 PicBootloader::MemoryType PicBootloader::memory_type(const Parameters& params)
 {
@@ -177,7 +187,7 @@ size_t PicBootloader::page_size(PicBootloader::MemoryType memory)
 	switch (memory)
 	{
 		case MEM_FLASH:
-			return 32;
+			return 2;
 		case MEM_EEPROM:
 			return 8;
 		case MEM_ID:
@@ -205,17 +215,11 @@ void PicBootloader::erase(string memory, const Parameters &params)
 	{
 		show_progress(OP_ERASING, type(), memory, 0);
 		open(params);
-		// erase 0x800-0x4000
+		// erase 0x800-0x4000 //!!! 18f24j50 change
 		command.erase_flash.echo = ++command_id;
 		command.erase_flash.addr_hi = 0x08;
 		command.erase_flash.addr_lo = 0x00;
-		command.erase_flash.size_x64 = 0xE0;
-		transaction(&command, &response);
-		// erase 0x4000-0x6000
-		command.erase_flash.echo = ++command_id;
-		command.erase_flash.addr_hi = 0x40;
-		command.erase_flash.addr_lo = 0x00;
-		command.erase_flash.size_x64 = 0x80;
+		command.erase_flash.size_x64 = 0x0D;
 		transaction(&command, &response);
 		close();
 		show_progress(OP_ERASING, type(), memory, OPERATION_DONE);
@@ -375,8 +379,9 @@ void PicBootloader::program(Buffer::Iterator* buffer, string memory, const Param
 			command.write_flash.echo = ++command_id;
 			command.write_flash.addr_hi = (unsigned char)((address >> 8) & 0xFF);
 			command.write_flash.addr_lo = (unsigned char)(address & 0xFF);
+			command.write_flash.flush = (unsigned char) 0xff;
 			// size must be 8 dividable
-			eAssert(size % 8 == 0);
+			//eAssert(size % 8 == 0);
 			command.write_flash.size8 = size;
 			transaction(&command, &response);
 			show_progress(OP_PROGRAMMING, type(), memory, buffer->progress());
