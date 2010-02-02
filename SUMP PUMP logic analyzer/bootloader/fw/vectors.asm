@@ -24,6 +24,7 @@
 ; Externals
 ;-----------------------------------------------------------------------------
 	extern	main  
+	extern	bootloader_soft_reset
 ;-----------------------------------------------------------------------------
 ; START
 ;-----------------------------------------------------------------------------
@@ -47,7 +48,7 @@ pre_main ;!!!18f24750 change!!!
 ;-----------------------------------------------------------------------------
 ;--- BOOTLOADER External Entry Point                         
 	org	0x0016
-    
+    bra	bootloader_soft_reset
         
         ;--- HIGH Interrupt Vector
 	org	0x0018
@@ -58,4 +59,12 @@ pre_main ;!!!18f24750 change!!!
 APPSTRT CODE APP_RESET_VECTOR
 	bra	$
 ;-----------------------------------------------------------------------------
+;Used these to test page erase
+VERSION CODE 0x7FE
+	blver db 0x01
+
+;TEST2 CODE 0x3BFC
+;	goto 0x01
+
+
 	END

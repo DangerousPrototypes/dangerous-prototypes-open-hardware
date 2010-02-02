@@ -284,10 +284,10 @@ usb_sm_ctrl_in
 	cpfseq	usb_sm_state
 	bra	usb_sm_ctrl_in_addr_end
 usb_sm_ctrl_in_addr
-	;!!!18f24j50 change!!!
-	movlb 	0x0f	;select the correct bank
 	; SetupPkt copyed to SetupPktCopy
 	movf	(SetupPktCopy + bDevADR), W
+	;!!!18f24j50 change!!!
+	movlb 	0x0f	;select the correct bank
 	movwf	UADDR
 	movlb	0x00	;back to main bank	
 
