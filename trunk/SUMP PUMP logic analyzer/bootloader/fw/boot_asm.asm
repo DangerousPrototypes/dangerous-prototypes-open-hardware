@@ -29,6 +29,7 @@ CMD_OFFS	equ	0
 ID_OFFS		equ	1
 ADDR_LO_OFFS	equ	2
 ADDR_HI_OFFS	equ	3
+FLUSH_OFFS	equ 4
 SIZE_OFFS	equ	5
 CODE_OFFS	equ	6
 VER_MAJOR_OFFS	equ	2
@@ -50,6 +51,7 @@ EEDATA_OFFS	equ	6
 ;	EXTERN	restore_fsr1_fsr2
 ;	EXTERN	xtea_encode
 ;	EXTERN	xtea_decode
+	EXTERN jumpentry
 
 ;-----------------------------------------------------------------------------
 ; Local Variables
@@ -69,7 +71,7 @@ BOOT_ASM_CODE	CODE
 ;	GLOBAL	erase_code    
 ;	GLOBAL	set_eep_mark
 ;	GLOBAL	clr_eep_mark
-
+	GLOBAL	bootloader_soft_reset
 	GLOBAL	hid_process_cmd
 	GLOBAL	copy_boot_rep
 ;-----------------------------------------------------------------------------
@@ -81,20 +83,31 @@ BOOT_ASM_CODE	CODE
 ; NOTES : Assume TBLPTRU=0
 ;-----------------------------------------------------------------------------
 erase_code
+	;!!!18f24j50 change!!! setup the write
+	movlw 	0x08
+	movf	boot_cmd + ADDR_HI_OFFS, W
+	clrf	boot_cmd + ADDR_LO_OFFS
+
 	rcall	load_address	; TBLPTR = addr
+	;!!!18f24j50 change!!! setup the size
+	movlw 0x0D ;16 pages -2 bootloader, -1 CFG protection
+	movwf boot_cmd + SIZE_OFFS	
 
 erase_code_loop
 	; while( size_x64 )
-	
-	; Erase 64 bytes block
+
+	;!!!18f24j50 change!!!	
+	; Erase 1024 (not 64) bytes block
 	bsf	EECON1, FREE	; Enable row Erase (not PRORGRAMMING)
 	rcall	flash_write	; Erase block. EECON1.FREE will be cleared by HW
 	
-	; TBLPTR += 64
-	movlw	0x40
-	addwf	TBLPTRL
-	movlw	0x00
-	addwfc	TBLPTRH
+	; TBLPTR += 1024
+	;!!!18f24j50 change!!!
+	;movlw	0x00
+	;addwf	TBLPTRL
+	movlw	0x04	;1024/0x400 bytes erased at a time
+	;addwfc	TBLPTRH
+	addwf	TBLPTRH
 	
 	decfsz	boot_cmd + SIZE_OFFS
 	bra	erase_code_loop
@@ -138,13 +151,15 @@ write_code
 write_code_loop
 	movff	POSTINC0, TABLAT
 	tblwt+*			; *(++Holding_Register) = *data++
-	incf	hold_r		; hold_r++
-	btfsc	hold_r, 5	; if( hold_r == 0x20 )  End of Holding Area
-	rcall	flash_write	;     write_flash       Dump Holding Area to Flash
+;	incf	hold_r		; hold_r++
+;	btfsc	hold_r, 5	; if( hold_r == 0x20 )  End of Holding Area
+;	rcall	flash_write	;     write_flash       Dump Holding Area to Flash
 	decfsz	cntr
 	bra	write_code_loop
 	
-	tstfsz	hold_r		; if( hold_r != 0 )     Holding Area not dumped
+;	tstfsz	hold_r		; if( hold_r != 0 )     Holding Area not dumped
+;	tstfsz	boot_cmd + FLUSH_OFFS		; if packet says flush, save to eeprom
+	btfsc boot_cmd + FLUSH_OFFS, 0	;if bit 0 is set, write the data
 	rcall	flash_write	;       write_flash     Dump Holding Area to Flash
 
         return
@@ -216,7 +231,7 @@ rdwr_id_init
 ;-----------------------------------------------------------------------------
 write_eeprom
 	rcall	eeprom_init
-	lfsr	FSR0, boot_cmd + EEDATA_OFFS	; FSR0=&boot_cmd.write_eeprom.data
+;	lfsr	FSR0, boot_cmd + EEDATA_OFFS	; FSR0=&boot_cmd.write_eeprom.data
         ; while( cntr-- )
 write_eeprom_loop
 ;	movff	POSTINC0, EEDATA
@@ -235,7 +250,7 @@ write_eeprom_loop
 ;-----------------------------------------------------------------------------
 read_eeprom
 	rcall	eeprom_init
-	lfsr	FSR0, boot_rep + EEDATA_OFFS	; FSR0=&boot_rsp.read_eeprom.data
+;	lfsr	FSR0, boot_rep + EEDATA_OFFS	; FSR0=&boot_rsp.read_eeprom.data
         ; while( cntr-- )
 read_eeprom_loop
 ;	bsf	EECON1, RD			; Read data
@@ -295,10 +310,10 @@ hid_process_cmd
 	bra	read_id		; cmd=6 BOOT_READ_ID
 	dcfsnz	WREG
 	bra	write_id	; cmd=7 BOOT_WRITE_ID
-	dcfsnz	WREG
-	bra	read_eeprom	; cmd=8 BOOT_READ_EEPROM
-	dcfsnz	WREG
-	bra	write_eeprom	; cmd=9 BOOT_WRITE_EEPROM
+;	dcfsnz	WREG
+;	bra	read_eeprom	; cmd=8 BOOT_READ_EEPROM
+;	dcfsnz	WREG
+;	bra	write_eeprom	; cmd=9 BOOT_WRITE_EEPROM
 
         ; If command is not processed sned back BOOT_CMD_UNKNOWN                                                                         
 unknown_cmd
@@ -335,9 +350,20 @@ get_fw_version
 ; NOTES : 
 ;-----------------------------------------------------------------------------
 ; Soft Reset and run Application FW
-soft_reset
+bootloader_soft_reset
+	bcf     UCON,USBEN      ; Disable USB Engine
+	
+	; Delay to show USB device reset
+	clrf	cntr
+	clrf	WREG
+	decfsz	WREG
+	bra	$ - 2
+	decfsz	cntr
+	bra	$ - 8
 
-	; Reset USB        
+	bra jumpentry ;jump to entry point
+
+soft_reset	; Reset USB    
 soft_reset2
 	bcf     UCON,USBEN      ; Disable USB Engine
 	
@@ -409,7 +435,7 @@ write_eep_mark
 ; cntr = boot_rep_size8 = boot_cmd.size8 & 0x3C
 load_address_size8
 	movf	boot_cmd + SIZE_OFFS, W
-	andlw	0x3C
+	;andlw	0x3C ;!!! 18f24j50
 	movwf	cntr
 	movwf	boot_rep + SIZE_OFFS
 
@@ -427,7 +453,9 @@ load_address
 
 ; write flash (if EECON1.FREE is set will perform block erase)          
 flash_write
-;	bsf	EECON1, EEPGD	; Access code memory (not EEPROM)
+	bcf	EECON1, WPROG	; 64byte writes
+	btfsc boot_cmd + FLUSH_OFFS, 1	;if bit 1 is set, this is a 2byte write
+	bsf	EECON1, WPROG	; 2byte writes
 ; write eeprom EEADR,EEDATA must be preset, EEPGD must be cleared       
 eeprom_write
 ;	bcf	EECON1, CFGS	; Access code memory (not Config)

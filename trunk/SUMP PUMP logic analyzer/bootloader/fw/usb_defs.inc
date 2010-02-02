@@ -45,7 +45,7 @@
 #define OUT_TOKEN	0x04
 #define IN_TOKEN	0x24
 
-#define EP0_BUFF_SIZE	.64	
+#define EP0_BUFF_SIZE	.64
 
 ; HID
 #define HID_INTF_ID	0x00

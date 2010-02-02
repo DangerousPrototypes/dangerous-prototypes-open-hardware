@@ -15,6 +15,22 @@
 ;;  You should have received a copy of the GNU General Public License       ;;
 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>    ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;	Ported to 18f24j50 by Ian Lesnet (c) 2010
+;	http://dangerousprototypes.com
+;
+;	Changes:
+;	(from USB IR Toy):
+;	Removed xtea encryption
+;	Replaced extended instructon set instructions
+;	(for 24J50, search key: !!!18f24j50):
+;	Changed config fuses
+;	Added PLL EN startup delay
+;	Removed EEPROM stuff
+;	Added bank select for applicable registers (mostly USB)
+;	Changed sleep to IDLE when waiting for USB interrupt
+;	Forced erase size and location in erase_code
+;
+;
 ; BootLoader Main code
 ;-----------------------------------------------------------------------------
 	#include "P18F24J50.INC"
@@ -53,7 +69,6 @@
 
 	CONFIG	PLLDIV = 5			; OSC/4 for 16MHz
 	CONFIG  CPUDIV = OSC1	; CPU_clk = PLL/2
-;	CONFIG 	USBDIV = 2			; USB_clk = PLL/2
 	CONFIG 	OSC = HSPLL			; HS osc PLL
 	CONFIG  FCMEN = ON			; Fail Safe Clock Monitor
 	CONFIG  IESO = OFF			; Int/Ext switchover mode
@@ -61,9 +76,11 @@
 	CONFIG  LPT1OSC = OFF			; Low Power OSC
 	CONFIG  STVREN = ON			; Stack Overflow Reset
 	CONFIG  XINST = OFF			; Ext CPU Instruction Set
-	CONFIG  WPFP = PAGE_1       ;Write Protect Program Flash Page 0
-    ;CONFIG  WPFP = PAGE_1        ;Write Protect Program Flash Page 1
-
+	CONFIG  WPFP = PAGE_4       ;Write Protect Program Flash Page 0
+	CONFIG WPEND = PAGE_0       ;Start protection at page 0
+    CONFIG WPCFG = ON          ;Write/Erase last page protect Disabled
+    CONFIG WPDIS = OFF          ;WPFP[5:0], WPEND, and WPCFG bits ignored  
+	CONFIG CP0 = OFF  
 
 
 ;--------------------------------------------------------------------------
@@ -108,6 +125,7 @@ BOOT_ASM_CODE CODE
 	extern	USB_HID_DESC
 	extern	USB_HID_RPT
 	extern	hid_process_cmd
+	global jumpentry
 ;--------------------------------------------------------------------------
 ; main
 ; DESCR : Boot Loader main routine.
@@ -122,6 +140,22 @@ BOOT_ASM_CODE CODE
 ;--------------------------------------------------------------------------
 	global	main
 main
+	; Check bootloader enable jumper
+#ifdef USE_JP_BOOTLOADER_EN
+	bcf		LATA, 3	;PROG_B to ground
+	bcf 	TRISA, 3 ;PROG_B output
+	clrf	PORTB		;PORTB low
+	clrf	TRISB		;TRISB output
+	bcf		INTCON2, RBPU ;clear RBPU to enable B pullups
+	bsf		TRISB, 6	;PGC to input
+	nop
+	nop
+	btfsc	PORTB, 6	;skip app go to BL if bit is clear
+	bra		cleanupandexit	;disable and skip to user app
+	bsf		INTCON2, RBPU	;turn PORTB pullups off
+	setf	TRISB		;trisB back input
+#endif
+jumpentry
 	; All I/O to Digital mode
 	movlb 	0x0f	;select the correct bank
 	movlw	0xff
@@ -144,31 +178,15 @@ main
 tmrlp:  btfss INTCON, TMR0IF
 		bra tmrlp
 		clrf T0CON
-
-
 	UD_INIT
 	UD_TX	'X'
-
-	; Check bootloader enable jumper
-#ifdef USE_JP_BOOTLOADER_EN
-	;clrf	JP_BOOTLOADER_PORT		;PORTB low
-	;clrf	JP_BOOTLOADER_TRIS		;TRISB output
-	;bcf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT ;clear RBPU to enable B pullups
-	bsf		JP_BOOTLOADER_LAT, JP_BOOTLOADER_PIN	;PGD to input
-	nop
-	nop
-	btfsc	JP_BOOTLOADER_PORT, JP_BOOTLOADER_PIN	;skip app go to BL if bit is clear
-	;bra		cleanupandexit	;disable and skip to user app
-	;bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
-	;setf	JP_BOOTLOADER_TRIS		;trisB back input
-#endif
 	; Run bootloader
 	bra	bootloader
 	reset
 
 cleanupandexit:
-	;bsf		JP_BOOTLOADER_PULLUP, JP_BOOTLOADER_PULLUP_BIT	;turn PORTB pullups off
-	;setf	JP_BOOTLOADER_TRIS		;trisB back input
+	bsf		INTCON2, RBPU	;turn PORTB pullups off
+	setf	TRISB		;trisB back input
 	goto	APP_RESET_VECTOR	; Run Application FW
 
 
