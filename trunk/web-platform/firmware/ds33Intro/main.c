@@ -6,17 +6,17 @@
 
 //it's important to keep configuration bits that are compatibale with the bootloader
 //if you change it from the internall/PLL clock, the bootloader won't run correctly
-_FOSCSEL(FNOSC_FRCPLL)		//always keep this setting
-_FOSC(OSCIOFNC_OFF & POSCMD_NONE)	//always keep this setting
-_FWDT(FWDTEN_OFF)				
-_FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
+_FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
+_FOSC(OSCIOFNC_OFF & POSCMD_NONE)	//disable external OSC (always keep this setting)
+_FWDT(FWDTEN_OFF)				//watchdog timer off
+_FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
 
 unsigned char UART1RXRdy(void);
 unsigned char UART1RX(void);
 void UART1TX(char c);
 void InitializeUART1(void);
 
-int main(void){
+int main(void){ //main function, execution starts here
 	char c;
 
 	AD1PCFGL = 0xFFFF; //digital pins
@@ -27,14 +27,6 @@ int main(void){
 	PLLFBD=41; //pll multiplier (M) = +2
 	CLKDIVbits.PLLPOST=0;// PLLPOST (N1) 0=/2
     while(!OSCCONbits.LOCK);//wait for PLL ready
-
-	//setup LEDs
-	SD_TRIS = 0;
-	IO1_TRIS = 0;
-	LD1_TRIS = 0;
-	SD_O = 1;
-	LD1_O = 1;
-	IO1_O=1;
 
 	//uart
 	//UART can be placed on any RPx pin
@@ -50,11 +42,19 @@ int main(void){
 	//InitializeUART1();	
 	//setup UART
     U1BRG = 85;//86@80mhz, 85@79.xxx=115200
-    U1MODE = 0;
-    U1MODEbits.BRGH = 1;
-    U1STA = 0;
-    U1MODEbits.UARTEN = 1;
-    IFS0bits.U1RXIF = 0;
+    U1MODE = 0; //clear mode register
+    U1MODEbits.BRGH = 1; //use high percison baud generator
+    U1STA = 0;	//clear status register
+    U1MODEbits.UARTEN = 1; //enable the UART RX
+    IFS0bits.U1RXIF = 0;  //clear the receive flag
+
+	//setup LEDs
+	SD_TRIS = 0; //set pin direction to output
+	IO1_TRIS = 0;
+	LD1_TRIS = 0;
+	SD_O = 1;	//set all pins high (LED on)
+	LD1_O = 1;
+	IO1_O=1;
 
     while(1){//never ending loop
 
