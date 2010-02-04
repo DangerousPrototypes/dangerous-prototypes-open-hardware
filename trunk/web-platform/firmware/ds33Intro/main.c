@@ -1,7 +1,8 @@
 //The compiled firmware can be used 'as-is' with the ds30 Loader bootloader
 //you may need to locate your own p33FJ128gp204.gld file.
 //   It's in the C30 compiler directory:
-// .\C30\support\dsPIC33F\gld\
+/* \C30\support\dsPIC33F\gld\ */
+
 #include "HardwareProfile.h"
 
 //it's important to keep configuration bits that are compatibale with the bootloader
