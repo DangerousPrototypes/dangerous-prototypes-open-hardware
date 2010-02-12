@@ -1,5 +1,6 @@
-# Taken from: http://whereisian.com/forum/index.php?topic=304
+#http://whereisian.com/forum/index.php?topic=304
 #    Copyright (C) 2009 Yaron Inger, http://ingeration.blogspot.com
+#                  2010 Andrew Bolin (#twatch additions)
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 #    Revision History:
 #
 #    2010-02-06: Initial version of winamp_twatch.py
+#    2010-02-07: Minor tidy-ups
 
 
 # winamp code from http://pywinamp.googlecode.com/files/winamp.py
@@ -35,6 +37,7 @@ import os
 import random
 import time
 from socket import *
+import sys
 
 class Winamp(object):
         # Winamp main window IPC
@@ -430,15 +433,6 @@ class Winamp(object):
                 address = self.__sendUserMessage(0, self.IPC_GET_PLAYING_TITLE)
 
                 return self.__readStringFromMemory(address, True)
-
-        # Andrew HACK
-        def getIPC_Thing(self, number):
-                """Grabs an IPC thing and reads it"""
-                address = self.__sendUserMessage(0, number)
-
-                return self.__readStringFromMemory(address, True)
-
-
         
         def getPlaylistFile(self, position):
                 """Returns the filename of the current selected file in the playlist."""
@@ -500,24 +494,27 @@ def printMediaLibraryItem(item):
         print "Filename: %s\nTrack: %s, Album: %s, Artist: %s\nComment: %s, Genre: %s" % (item.filename, item.track, item.album, item.artist, item.comment, item.genre)
 
 def tGoto(x,y):
+        """Place cursor at desired location"""
         # 1,1 is top left.
         x = min(max(x,1),TWATCH_X)
         y = min(max(y,1),TWATCH_Y)
         
-        return chr(0xFE) + chr(0x47) + chr(x) + chr(y)
+        return chr(254) + chr(71) + chr(x) + chr(y)
 
 def tPrint(s, data, x, y):
+        """Display message at given location"""
         s.send(tGoto(x,y))
         s.send(data)
         # for testing
         #print (" "*(x-1) + data)[:TWATCH_X]
 
 def tPrintScroll(s, data, tick, y):
-        if len(data) <= 20:
+        """Magical scrolling text. tick should be a counter that increments regularly (eg. every 0.1s)"""
+        if len(data) <= TWATCH_X:
                 x = ((TWATCH_X - len(data))/2) + 1
                 tPrint(s, data, x, y)
         else:
-                scroll_delay = SCROLL_STEPS / (len(data) )
+                scroll_delay = SCROLL_TICKS / len(data)
                 if tick % scroll_delay == 0:
                         data = data[1:] + data[0]
                 tPrint(s, data[:TWATCH_X], 1, y)
@@ -525,41 +522,33 @@ def tPrintScroll(s, data, tick, y):
 
 
 if __name__ == "__main__":
-        
-
-        # this bit stolen from "twonk" on dangerous prototypes forum
-        #Command strings for the LCD
-        ONCMD = chr(0xFE) + chr(0x42) + chr(0x00)   #backlight on
-        OFFCMD = chr(0xFE) + chr(0x46)              #backlight off
-        #establish matrixmode and clear the screen
-        MATRIXMODE  = chr(0xFE) + chr(0x47) + chr (0x01) + chr (0x01) + chr(0xFE) + chr(0x58)
-        HOME   = chr(0XFE) + chr(0x48)              #position cursor at home
-        #return to standard functionality
-        RESTART =  chr(0xFE) + chr(0x9A) + chr(0xFE) + chr(0x58) + chr(0xFE) + chr(0x48)
-        # end thievery
-        
+        STOP_TWIT = chr(254) + chr(71) + chr(1) + chr(1)
         BLANK = chr(254) + chr(88)
 
         TWATCH_X = 20
         TWATCH_Y = 4
 
-        SCROLL_STEPS = 200 # every string will complete 1 scroll in this many ticks
+        SCROLL_TICKS = 200 # this many ticks  makes a line scroll completely (ignoring rounding errors)
         TICK = 0.1 # sleep time between LCD updates, in seconds
-        TICKS_PER_WINAMP_CHECK = 10
         
         w = Winamp()
+        # TODO: what happens if no winamp?
 
         s = socket(AF_INET, SOCK_STREAM)
         s.connect(("192.168.1.101",1337))
+        # TODO: do something more productive than crashing when connection fails.
 
         # turn off twitter mode
-        s.send(MATRIXMODE)
+        s.send(STOP_TWIT)
 
         #                1         2         3
-        #       1234567890123456789012345678901234    
-        test = "A REALLY REALLY DAMN LOOONG STRING"
+        #       1234567890123456789012345678901234567    
+        test = "A REALLY REALLY DAMN LOOONG STRING | "
 
         lastRaw = ""
+        t = 0
+        artist = ""
+        title = ""
         while(1==1):
                 raw = w.getCurrentPlayingTitle()
                 if raw != lastRaw: # if track has changed
@@ -584,14 +573,17 @@ if __name__ == "__main__":
                         
                         print artist
                         print title
-                        print "*********************************"
+                        print "*"*20
                         
-                for t in (range(1, TICKS_PER_WINAMP_CHECK)):
-                        #todo: change to use persistent tick counter
-                        # this current method will fail if scroll_delay > TICKS_PER_WINAMP_CHECK
-                        artist = tPrintScroll(s, artist, t, 1)
-                        title = tPrintScroll(s, title, t, 2)                
-                        test = tPrintScroll(s, test, t, 3)
-                        time.sleep(TICK)
+                # just in case someone leaves it running for 7 years        
+                if t == sys.maxint: 
+                        t = 0
+                else:
+                        t += 1
+                        
+                artist = tPrintScroll(s, artist, t, 1)
+                title = tPrintScroll(s, title, t, 2)                
+                #test = tPrintScroll(s, test, t, 3)
+                time.sleep(TICK)
                 
         
