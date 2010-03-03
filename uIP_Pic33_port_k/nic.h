@@ -18,7 +18,7 @@
 *****************************************************************************/
 
 #include "uip.h"
-#include "compiler.h"
+//#include "compiler.h"
 
 #define RTL8019		1
 #define AX88796		2
