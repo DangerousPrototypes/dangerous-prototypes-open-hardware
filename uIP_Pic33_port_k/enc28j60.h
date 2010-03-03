@@ -10,9 +10,9 @@
 ************************************************************/
 #ifndef ENC28J60_H
 #define ENC28J60_H
-
-
-// ENC28J60 PINS CONFIGURATION
+#include "HardwareProfile.h"
+/*
+// ENC28J60 PINS CONFIGURATION for Atmega32
 #define ENC28J60_CONTROL_PORT	PORTB
 #define ENC28J60_CONTROL_DDR	DDRB
 #define ENC28J60_CONTROL_CS		4 
@@ -21,6 +21,8 @@
 #define ENC28J60_MISO_PIN	6
 #define ENC28J60_MOSI_PIN	5
 #define ENC28J60_SS_PIN		4
+*///AVR 
+
 //
 
 
