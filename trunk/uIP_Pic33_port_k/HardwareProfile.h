@@ -38,8 +38,10 @@
 //CS and RST pins
 #define ENC_RST_TRIS		(TRISBbits.TRISB2)	
 #define ENC_RST_IO			(PORTBbits.RB2)
+#define ENC_RST_LAT         (LATBbits.LATB2)
 #define ENC_CS_TRIS			(TRISBbits.TRISB3)
 #define ENC_CS_IO			(PORTBbits.RB3)
+#define ENC_CS_LAT          (LATBbits.LATB3)
 //assign SPI module to ENC28J60
 #define ENC_SPI_IF			(IFS0bits.SPI1IF)
 #define ENC_SSPBUF			(SPI1BUF)
@@ -156,3 +158,6 @@
 #define RP22_O RPOR11bits.RP22R
 #define RP23_O RPOR11bits.RP23R
 #define RP24_O RPOR12bits.RP24R
+
+#define u8 unsigned char 
+#define u16 unsigned short 

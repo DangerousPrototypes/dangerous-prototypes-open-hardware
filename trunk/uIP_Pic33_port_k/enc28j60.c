@@ -7,7 +7,9 @@
 // Created		: 9/22/2005
 // Revised		: 9/22/2005
 // Version		: 0.1
-// Target MCU	: Atmel AVR series
+//
+// 
+// Target MCU	: DsPIC33
 // Editor Tabs	: 4
 //
 // Description	: This driver provides initialization and transmit/receive
@@ -28,8 +30,8 @@
 *
 ************************************************************/
 
-#include "compiler.h"
 #include "enc28j60.h"
+#include "HardwareProfile.h"
 #include "uip.h"
 
 // include configuration
@@ -81,9 +83,11 @@ void nicRegDump(void)
 	enc28j60RegDump();
 }
 */
-#define CS_EN() ENC_CS_LAT=0 
-#define CS_DIS() ENC_CS_LAT=1
-#define SPIBUF ENC_SSPBUF
+
+#define CS_EN()    ENC_CS_LAT=0 
+#define CS_DIS()   ENC_CS_LAT=1
+#define HARDRESET() ENC_RST_LAT = 0;ENC_ENC_RST_LAT = 1
+#define SPI_BUF     ENC_SSPBUF
 #define SPITXRX() 	while(!SPISTAT_RBF)
 
 u8 enc28j60ReadOp(u8 op, u8 address)
@@ -94,21 +98,21 @@ u8 enc28j60ReadOp(u8 op, u8 address)
 	CS_EN();
 	
 	// issue read command
-	SPIBUF = op | (address & ADDR_MASK);
+	SPI_BUF = op | (address & ADDR_MASK);
 	SPITXRX();
 	// read data
-	SPIBUF = 0x00;
+	SPI_BUF = 0x00;
 	SPITXRX();
 	// do dummy read if needed
 	if(address & 0x80)
 	{
-		SPIBUF = 0x00;
+		SPI_BUF = 0x00;
 		SPITXRX();
 	}
-	data = SPIBUF;
+	data = SPI_BUF;
 	
 	// release CS
-	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
+	CS_DIS();
 
 	return data;
 }
@@ -119,14 +123,14 @@ void enc28j60WriteOp(u8 op, u8 address, u8 data)
 	CS_EN();
 
 	// issue write command
-	SPIBUF = op | (address & ADDR_MASK);
+	SPI_BUF = op | (address & ADDR_MASK);
 	SPITXRX();
 	// write data
-	SPIBUF = data;
+	SPI_BUF = data;
 	SPITXRX();
 
 	// release CS
-	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
+    CS_DIS();
 }
 
 void enc28j60ReadBuffer(u16 len, u8* data)
@@ -135,35 +139,35 @@ void enc28j60ReadBuffer(u16 len, u8* data)
 	CS_EN();
 	
 	// issue read command
-	SPIBUF = ENC28J60_READ_BUF_MEM;
+	SPI_BUF = ENC28J60_READ_BUF_MEM;
 	SPITXRX();
 	while(len--)
 	{
 		// read data
-		SPIBUF = 0x00;
+		SPI_BUF = 0x00;
 		SPITXRX();
-		*data++ = SPIBUF;
+		*data++ = SPI_BUF;
 	}	
 	// release CS
-	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
+	CS_DIS();
 }
 
 void enc28j60WriteBuffer(u16 len, u8* data)
 {
 	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1<<ENC28J60_CONTROL_CS);
+	CS_EN();
 	
 	// issue write command
-	SPIBUF = ENC28J60_WRITE_BUF_MEM;
+	SPI_BUF = ENC28J60_WRITE_BUF_MEM;
 	SPITXRX();
 	while(len--)
 	{
 		// write data
-		SPIBUF = *data++;
+		SPI_BUF = *data++;
 		SPITXRX();
 	}	
 	// release CS
-	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
+	CS_DIS();
 }
 
 void enc28j60SetBank(u8 address)
@@ -232,8 +236,11 @@ void enc28j60Init(void)
 {
 	u8 i,j;
 	// initialize I/O
-	sbi(ENC28J60_CONTROL_DDR, ENC28J60_CONTROL_CS);
-	sbi(ENC28J60_CONTROL_PORT, ENC28J60_CONTROL_CS);
+	/* Atmega style
+    sbi(ENC28J60_CONTROL_DDR, ENC28J60_CONTROL_CS); replaced with
+   
+    sbi(ENC28J60_CONTROL_PORT, ENC28J60_CONTROL_CS); replaced with
+   
 
 	// setup SPI I/O pins
 	sbi(PORTB, ENC28J60_SCK_PIN);	// set SCK hi
@@ -254,8 +261,36 @@ void enc28j60Init(void)
 	sbi(SPSR, SPI2X);
 	// enable SPI
 	sbi(SPCR, SPE);
+    */
 
+    //custom pin assignments for our hardware
+        // ENC28J60 I/O pins
+        //mapping:
+        //A2 ETH-INT
+        //C2 MISO
+        //C1 MOSI
+        //C0 CLK
+        //B3 CS
+        //B2 RST
+        //CS and RST pins
+        
+    ENC_CS_TRIS  = 0; //set direction of CS pin as output (master)
+    ENC_RST_TRIS = 0; //set direction of RST pin as output
+    
+    //MISO1 C2/RP18 (input)
+    SDI1R_I = 18;                   
+    //CLK1 C0/RP16 (output)
+    RP16_O = SCK1OUT_O;     
+    //MOSI1 C1/RP17 (output)
+    RP17_O = SDO1_O;
+    ENC_SPICON1bits.MSTEN = 1;
+    ENC_SPICON1bits.CKP = 0;
+	ENC_SPICON1bits.SSEN = 0;
+    ENC_SPICON1bits.CKE = 1;
+    ENC_SPISTATbits.SPIEN = 1;
+    CS_DIS();
 	// perform system reset
+   
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
 	// check CLKRDY bit to see if reset is complete
 	for(i=0;i<0x10;i++){
