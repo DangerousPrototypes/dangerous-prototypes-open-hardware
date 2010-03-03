@@ -34,7 +34,6 @@
 
 // include configuration
 //#include "ax88796conf.h"
-
 u8 Enc28j60Bank;
 u16 NextPacketPtr;
 /*
@@ -82,27 +81,31 @@ void nicRegDump(void)
 	enc28j60RegDump();
 }
 */
+#define CS_EN() ENC_CS_LAT=0 
+#define CS_DIS() ENC_CS_LAT=1
+#define SPIBUF ENC_SSPBUF
+#define SPITXRX() 	while(!SPISTAT_RBF)
 
 u8 enc28j60ReadOp(u8 op, u8 address)
 {
 	u8 data;
    
 	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1<<ENC28J60_CONTROL_CS);
+	CS_EN();
 	
 	// issue read command
-	SPDR = op | (address & ADDR_MASK);
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = op | (address & ADDR_MASK);
+	SPITXRX();
 	// read data
-	SPDR = 0x00;
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = 0x00;
+	SPITXRX();
 	// do dummy read if needed
 	if(address & 0x80)
 	{
-		SPDR = 0x00;
-		while(!(SPSR & (1<<SPIF)));
+		SPIBUF = 0x00;
+		SPITXRX();
 	}
-	data = SPDR;
+	data = SPIBUF;
 	
 	// release CS
 	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
@@ -113,14 +116,14 @@ u8 enc28j60ReadOp(u8 op, u8 address)
 void enc28j60WriteOp(u8 op, u8 address, u8 data)
 {
 	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1<<ENC28J60_CONTROL_CS);
+	CS_EN();
 
 	// issue write command
-	SPDR = op | (address & ADDR_MASK);
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = op | (address & ADDR_MASK);
+	SPITXRX();
 	// write data
-	SPDR = data;
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = data;
+	SPITXRX();
 
 	// release CS
 	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
@@ -129,17 +132,17 @@ void enc28j60WriteOp(u8 op, u8 address, u8 data)
 void enc28j60ReadBuffer(u16 len, u8* data)
 {
 	// assert CS
-	ENC28J60_CONTROL_PORT &= ~(1<<ENC28J60_CONTROL_CS);
+	CS_EN();
 	
 	// issue read command
-	SPDR = ENC28J60_READ_BUF_MEM;
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = ENC28J60_READ_BUF_MEM;
+	SPITXRX();
 	while(len--)
 	{
 		// read data
-		SPDR = 0x00;
-		while(!(SPSR & (1<<SPIF)));
-		*data++ = SPDR;
+		SPIBUF = 0x00;
+		SPITXRX();
+		*data++ = SPIBUF;
 	}	
 	// release CS
 	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
@@ -151,13 +154,13 @@ void enc28j60WriteBuffer(u16 len, u8* data)
 	ENC28J60_CONTROL_PORT &= ~(1<<ENC28J60_CONTROL_CS);
 	
 	// issue write command
-	SPDR = ENC28J60_WRITE_BUF_MEM;
-	while(!(SPSR & (1<<SPIF)));
+	SPIBUF = ENC28J60_WRITE_BUF_MEM;
+	SPITXRX();
 	while(len--)
 	{
 		// write data
-		SPDR = *data++;
-		while(!(SPSR & (1<<SPIF)));
+		SPIBUF = *data++;
+		SPITXRX();
 	}	
 	// release CS
 	ENC28J60_CONTROL_PORT |= (1<<ENC28J60_CONTROL_CS);
