@@ -23,7 +23,7 @@
 #include "nic.h"
 #include "uip_arp.h"
 
-#include "compiler.h"
+//#include "compiler.h"
 
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 
