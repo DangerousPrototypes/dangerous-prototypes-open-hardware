@@ -1,6 +1,6 @@
 /*
 *
-*	USB infrared remote control receiver transmitter firmware
+*	USB infrared remote control receiver transmitter firmware v1.0
 *	License: creative commons - attribution, share-alike 
 *	Copyright Ian Lesnet 2010
 *	http://dangerousprototypes.com
@@ -40,6 +40,8 @@ static struct _RC5decoder{
 
 void SetupRC5(void){
 	decoderState=IDLE;
+	CCP1CON=0; //disable any PWM
+	T2CON=0;
 	T2IE=0; //disable any Timer 2 interrupt
 	T2IF=0;
 	IRRX_IF=0;

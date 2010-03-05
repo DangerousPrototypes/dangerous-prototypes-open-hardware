@@ -66,6 +66,7 @@ void InterruptHandlerLow();
 #pragma code
 void main(void){   		
 	static unsigned char inByte, usbcfg;
+	volatile static unsigned int cnt;
 
 	SetupBoard(); 	//setup the hardware, USB
 	usbbufflush();	//flush USB input buffer system
@@ -151,6 +152,66 @@ void main(void){
 						mode=IR_IO;
 						irIOsetup();
 						break;
+					case 'T':
+					case 't'://self test
+						IRRX_IE=0; 				//disable RX interrupts
+						T2IE=0; 				//disable any Timer 2 interrupt
+						inByte=0x30;//use inbyte at error flag
+						IRRX_TRIS |=IRRX_PIN; //ir to input
+						IRTX_LAT  &=(~IRTX_PIN);//TX LED off
+						IRTX_TRIS &=(~IRTX_PIN);						
+						CCP1CON=0;
+						T2CON=0;
+						cnt=1024;
+						while(cnt--);
+						if(!(IRRX_PORT & IRRX_PIN)) inByte|=0b1; //test IR RX pullup, should be high
+
+						//setup for IR TX
+						/*
+						 * PWM registers configuration
+						 * Fosc = 48000000 Hz
+						 * Fpwm = 36144.58 Hz (Requested : 36000 Hz)
+						 * Duty Cycle = 50 %
+						 * Resolution is 10 bits
+						 * Prescaler is 4
+						 * Ensure that your PWM pin is configured as digital output
+						 * see more details on http://www.micro-examples.com/
+						 * this source code is provided 'as is',
+						 * use it at your own risks
+						 * http://www.micro-examples.com/public/microex-navig/doc/097-pwm-calculator
+						 */
+						//IRTX_TRIS &=(~IRTX_PIN); //output
+						//IRTX_LAT&=(~IRTX_PIN); //start low
+						T2IF=0;//clear the interrupt flag
+						T2IE=0; //disable interrupts
+						PR2 = 0b01010010 ; //82
+						T2CON = 0b00000101 ;
+						CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
+						CCP1CON = 0b00011100 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
+
+						cnt=10000;
+						while(cnt--);
+
+						if(IRRX_PORT & IRRX_PIN) inByte|=0b10;//IR LED should activate RX
+
+					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+							if(inByte>0x30){
+								LED_LAT &=(~LED_PIN); //LED off
+								irToy.usbOut[0]='F';//answer fail
+								irToy.usbOut[1]='A';
+								irToy.usbOut[2]='I';
+								irToy.usbOut[3]=inByte;
+							}else{
+								LED_LAT |=LED_PIN; //LED on
+								irToy.usbOut[0]='V';//answer OK
+								irToy.usbOut[1]='1';
+								irToy.usbOut[2]='0';
+								irToy.usbOut[3]='1';
+							}
+							putUSBUSART(irToy.usbOut,4);
+						}
+		
+						break;
 					case '$'://bootloader jump
 						BootloaderJump();
 						break;
@@ -175,7 +236,7 @@ void SetupBoard(void){
     USBDeviceInit();		//initialize USB (usb_device.c)
 
 	//setup IR LED for IR TX
-	IRTX_TRIS|=IRTX_PIN;	//digital INPUT (no PWM until active)
+	IRTX_TRIS&=(~IRTX_PIN);	//digital OUTPUT (must ground transistor)
 	IRTX_LAT&=(~IRTX_PIN); 	//output to ground
 
 	//visual indicator LED config
