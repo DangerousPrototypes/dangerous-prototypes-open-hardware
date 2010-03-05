@@ -62,6 +62,7 @@ struct _irtoy irToy;
 void SetupBoard(void);
 void InterruptHandlerHigh();
 void InterruptHandlerLow();
+unsigned char SelfTest(void);
 
 #pragma code
 void main(void){   		
@@ -156,43 +157,8 @@ void main(void){
 					case 't'://self test
 						IRRX_IE=0; 				//disable RX interrupts
 						T2IE=0; 				//disable any Timer 2 interrupt
-						inByte=0x30;//use inbyte at error flag
-						IRRX_TRIS |=IRRX_PIN; //ir to input
-						IRTX_LAT  &=(~IRTX_PIN);//TX LED off
-						IRTX_TRIS &=(~IRTX_PIN);						
-						CCP1CON=0;
-						T2CON=0;
-						cnt=1024;
-						while(cnt--);
-						if(!(IRRX_PORT & IRRX_PIN)) inByte|=0b1; //test IR RX pullup, should be high
 
-						//setup for IR TX
-						/*
-						 * PWM registers configuration
-						 * Fosc = 48000000 Hz
-						 * Fpwm = 36144.58 Hz (Requested : 36000 Hz)
-						 * Duty Cycle = 50 %
-						 * Resolution is 10 bits
-						 * Prescaler is 4
-						 * Ensure that your PWM pin is configured as digital output
-						 * see more details on http://www.micro-examples.com/
-						 * this source code is provided 'as is',
-						 * use it at your own risks
-						 * http://www.micro-examples.com/public/microex-navig/doc/097-pwm-calculator
-						 */
-						//IRTX_TRIS &=(~IRTX_PIN); //output
-						//IRTX_LAT&=(~IRTX_PIN); //start low
-						T2IF=0;//clear the interrupt flag
-						T2IE=0; //disable interrupts
-						PR2 = 0b01010010 ; //82
-						T2CON = 0b00000101 ;
-						CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
-						CCP1CON = 0b00011100 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
-
-						cnt=10000;
-						while(cnt--);
-
-						if(IRRX_PORT & IRRX_PIN) inByte|=0b10;//IR LED should activate RX
+						inByte=SelfTest(); //do it twice
 
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 							if(inByte>0x30){
@@ -222,6 +188,53 @@ void main(void){
 	    CDCTxService(); //service the CDC stack
     }//end while
 }//end main
+
+unsigned char SelfTest(void){
+	unsigned char err=0x30; //error flag starts with ASCII 0
+	volatile static unsigned int cnt;
+
+	IRRX_TRIS |=IRRX_PIN; //ir to input
+	IRTX_LAT  &=(~IRTX_PIN);//TX LED off
+	IRTX_TRIS &=(~IRTX_PIN);						
+	CCP1CON=0;
+	T2CON=0;
+	cnt=1024;
+	while(cnt--);
+	if(!(IRRX_PORT & IRRX_PIN)) err|=0b1; //test IR RX pullup, should be high
+
+	//setup for IR TX
+	/*
+	 * PWM registers configuration
+	 * Fosc = 48000000 Hz
+	 * Fpwm = 36144.58 Hz (Requested : 36000 Hz)
+	 * Duty Cycle = 50 %
+	 * Resolution is 10 bits
+	 * Prescaler is 4
+	 * Ensure that your PWM pin is configured as digital output
+	 * see more details on http://www.micro-examples.com/
+	 * this source code is provided 'as is',
+	 * use it at your own risks
+	 * http://www.micro-examples.com/public/microex-navig/doc/097-pwm-calculator
+	 */
+	//IRTX_TRIS &=(~IRTX_PIN); //output
+	//IRTX_LAT&=(~IRTX_PIN); //start low
+	T2IF=0;//clear the interrupt flag
+	T2IE=0; //disable interrupts
+	PR2 = 0b01010010 ; //82
+	T2CON = 0b00000101 ;
+	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
+	CCP1CON = 0b00011100 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
+
+	cnt=10000;
+	while(cnt--);
+
+	if(IRRX_PORT & IRRX_PIN) err|=0b10;//IR LED should activate RX
+	
+	return err;
+
+
+}
+
 
 //
 //
