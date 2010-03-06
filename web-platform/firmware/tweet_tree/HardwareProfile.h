@@ -9,7 +9,7 @@
 _FOSCSEL(FNOSC_FRCPLL)			// PLL enabled
 _FOSC(OSCIOFNC_OFF & POSCMD_NONE)	// XT Osc
 _FWDT(FWDTEN_OFF)				// Disable Watchdog timer
-_FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
+_FICD(JTAGEN_OFF & ICS_PGD1)
 //_CONFIG2(FNOSC_FRCPLL & OSCIOFNC_ON &POSCMOD_NONE)		//HACKADAY: this is our custom oscillator configuration
 //_CONFIG1(JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx3) //HACKADAY: define debugging pin pair 3, watchdog, jtag disabled.
 #endif
@@ -27,12 +27,12 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 #define LED0_TRIS			TRISAbits.TRISA8		// LD1
 #define LED0_IO				LATAbits.LATA8
 #define LED1_TRIS			TRISAbits.TRISA9		// LD2
-#define LED1_IO				LATAbits.LATA9		
-#define LED2_TRIS			TRISAbits.TRISA10 		//SD LED		
+#define LED1_IO				LATAbits.LATA9
+#define LED2_TRIS			TRISAbits.TRISA10 		//SD LED
 #define LED2_IO				LATAbits.LATA10
 
 #define LED_GET() (0)
-#define LED_PUT(a)					
+#define LED_PUT(a)
 
 //custom pin assignments for our hardware
 // ENC28J60 I/O pins
@@ -44,7 +44,7 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 //B3 CS
 //B2 RST
 //CS and RST pins
-#define ENC_RST_TRIS		(TRISBbits.TRISB2)	
+#define ENC_RST_TRIS		(TRISBbits.TRISB2)
 #define ENC_RST_IO			(PORTBbits.RB2)
 #define ENC_CS_TRIS			(TRISBbits.TRISB3)
 #define ENC_CS_IO			(PORTBbits.RB3)
