@@ -6,10 +6,10 @@
 
 //configuration fuse setting
 #ifdef THIS_IS_STACK_APPLICATION
-_FOSCSEL(FNOSC_FRCPLL)		
-_FOSC(OSCIOFNC_OFF & POSCMD_NONE)	
-_FWDT(FWDTEN_OFF)				
-_FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
+_FOSCSEL(FNOSC_FRCPLL)
+_FOSC(OSCIOFNC_OFF & POSCMD_NONE)
+_FWDT(FWDTEN_OFF)
+_FICD(JTAGEN_OFF & ICS_PGD1);
 #endif
 
 // dsPIC33F processor
@@ -20,7 +20,7 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 #define LED0_TRIS			TRISAbits.TRISA8		// LD1
 #define LED0_IO				LATAbits.LATA8
 #define LED1_TRIS			TRISAbits.TRISA9		// LD2 (I/O 1)
-#define LED1_IO				LATAbits.LATA9		
+#define LED1_IO				LATAbits.LATA9
 #define LED2_TRIS			TRISCbits.TRISC3	// I/O 2
 #define LED2_IO				LATCbits.LATC3
 #define LED3_TRIS			TRISCbits.TRISC4	// I/O 3
@@ -38,7 +38,7 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 #define	BUTTON3_IO			PORTBbits.RB7
 
 #define LED_GET() (0)
-#define LED_PUT(a)					
+#define LED_PUT(a)
 
 //custom pin assignments for our hardware
 // ENC28J60 I/O pins
@@ -50,7 +50,7 @@ _FICD(JTAGEN_OFF & 0b11);//0b11=ICD_PGx1
 //B3 CS
 //B2 RST
 //CS and RST pins
-#define ENC_RST_TRIS		(TRISBbits.TRISB2)	
+#define ENC_RST_TRIS		(TRISBbits.TRISB2)
 #define ENC_RST_IO			(PORTBbits.RB2)
 #define ENC_CS_TRIS			(TRISBbits.TRISB3)
 #define ENC_CS_IO			(PORTBbits.RB3)
