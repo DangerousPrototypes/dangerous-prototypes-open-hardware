@@ -56,12 +56,13 @@ void initTimer(void)
   sbi( TIMSK, TOIE0 ) ;
   timerCounter = 0;
 */
-
+/*
   TCCR0=0x05;
   TCNT0=0x00;
   OCR0=0x00;
   TIMSK |= _BV(TOIE0);
   timerCounter = 0;
+*/
 }
 
 #ifdef __IMAGECRAFT__
