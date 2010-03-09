@@ -34,7 +34,7 @@ void nic_send(void)
 		NICSendPacketData((u8 *)uip_buf, uip_len);
 	}
 	else{
-		enc28j60PacketSend2(54, (u8 *)uip_buf, uip_len-40-UIP_LLH_LEN, (u8 *)uip_appdata);
+		NICSendPacketData2(54, (u8 *)uip_buf, uip_len-40-UIP_LLH_LEN, (u8 *)uip_appdata);
 	}
 
 /*

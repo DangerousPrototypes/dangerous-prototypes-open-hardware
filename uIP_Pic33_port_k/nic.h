@@ -18,46 +18,19 @@
 *****************************************************************************/
 
 #include "uip.h"
-//#include "compiler.h"
-
-#define RTL8019		1
-#define AX88796		2
-#define ENC28J60	3
-
-#define NIC_CHOICE ENC28J60
-
-#if NIC_CHOICE == RTL8019
-#include "rtl8019.h"
-#define NICInit rtl8019Init
-#define NICBeginPacketSend rtl8019BeginPacketSend
-#define NICSendPacketData rtl8019SendPacketData
-#define NICEndPacketSend rtl8019EndPacketSend
-#define NICBeginPacketRetreive rtl8019BeginPacketRetreive
-#define NICRetreivePacketData rtl8019RetreivePacketData
-#define NICEndPacketRetreive rtl8019EndPacketRetreive
-#endif
-
-#if NIC_CHOICE == AX88796
-#include "ax88796.h"
-#define NICInit ax88796Init
-#define NICBeginPacketSend ax88796BeginPacketSend
-#define NICSendPacketData ax88796SendPacketData
-#define NICEndPacketSend ax88796EndPacketSend
-#define NICBeginPacketRetreive ax88796BeginPacketRetreive
-#define NICRetreivePacketData ax88796RetreivePacketData
-#define NICEndPacketRetreive ax88796EndPacketRetreive
-#endif
-
-#if NIC_CHOICE == ENC28J60
 #include "enc28j60.h"
-#define NICInit enc28j60Init
-#define NICBeginPacketSend enc28j60BeginPacketSend
-#define NICSendPacketData enc28j60PacketSend
-#define NICEndPacketSend enc28j60EndPacketSend
-#define NICBeginPacketRetreive enc28j60BeginPacketReceive
-#define NICRetreivePacketData enc28j60PacketReceive
-#define NICEndPacketRetreive enc28j60EndPacketReceive
-#endif
+
+
+
+#define NICInit                  enc28j60Init
+#define NICBeginPacketSend       enc28j60BeginPacketSend
+#define NICSendPacketData        enc28j60PacketSend
+#define NICSendPacketData2       enc28j60PacketSend2
+#define NICEndPacketSend         enc28j60EndPacketSend
+#define NICBeginPacketRetreive   enc28j60BeginPacketReceive
+#define NICRetreivePacketData    enc28j60PacketReceive
+#define NICEndPacketRetreive     enc28j60EndPacketReceive
+
 
 
 /*****************************************************************************
@@ -95,4 +68,4 @@ unsigned int nic_poll(void);
 unsigned char nic_poll(void);
 #endif /* UIP_BUFSIZE > 255 */
 
-#endif /* __RTL8019DEV_H__ */
+#endif /* __NIC_H__ */
