@@ -22,8 +22,13 @@ void initTimer(void)
 IPC0  = IPC0 | 0x1000;  // Priority level is 1
 IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
 PR1   = 10000;
-T1CON = 0x8030;
+T1CON = 0x8030; 1000000000110000
 }
+
+#define TIMERCOUNTER_PERIODIC_TIMEOUT 2000000
+static unsigned long timerCounter=0;
+
+
 //I don't know how to call interrupts in DSPIC
 int main(void)
 { //main function, execution starts here
@@ -54,11 +59,55 @@ int main(void)
 
      
     
-    while(1)
-    {//never ending loop
-    
+ while(1){
+	timerCounter++; //increment timer
+    // look for a packet
+    uip_len = nic_poll();
+    if(uip_len == 0){
+      // if timed out, call periodic function for each connection
+      if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
+        timerCounter = 0;
+        
+        for(i = 0; i < UIP_CONNS; i++){
+          uip_periodic(i);
+		
+          // transmit a packet, if one is ready
+          if(uip_len > 0){
+            uip_arp_out();
+            nic_send();
+          }
+        }
 
-	}
+        /* Call the ARP timer function every 10 seconds. */
+        if(++arptimer == 20){	
+          uip_arp_timer();
+          arptimer = 0;
+        }
+      }
+ }else{  // packet received
+      // process an IP packet
+      if(BUF->type == htons(UIP_ETHTYPE_IP)){
+        // add the source to the ARP cache
+        // also correctly set the ethernet packet length before processing
+        uip_arp_ipin();
+        uip_input();
+
+        // transmit a packet, if one is ready
+        if(uip_len > 0){
+          uip_arp_out();
+          nic_send();
+        }
+       // process an ARP packet
+ 	  }else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
+        uip_arp_arpin();
+
+        // transmit a packet, if one is ready
+        if(uip_len > 0)
+          nic_send();
+      }
+    }
+  }
+
 }
 
 
