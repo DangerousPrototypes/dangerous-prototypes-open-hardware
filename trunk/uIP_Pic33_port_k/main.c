@@ -16,6 +16,9 @@ _FOSC(OSCIOFNC_OFF & POSCMD_NONE)	//disable external OSC (always keep this setti
 _FWDT(FWDTEN_OFF)				//watchdog timer off
 _FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
 
+void _T1Interrupt(void);
+void initTimer(void);
+
 void initTimer(void)
 {
 /*//timer init routine here.
@@ -114,6 +117,13 @@ int main(void){ //main function, execution starts here
 }
 
 
-
+void __attribute__ ((interrupt,address(0xF00), no_auto_psv)) _T1Interrupt(){
+	IFS0bits.T1IF = 0;
+	IEC0bits.T1IE = 0;
+	PR1 = 0xFFFF;
+	T1CON = 0;
+	irqFlag=1;
+	
+}
 
 
