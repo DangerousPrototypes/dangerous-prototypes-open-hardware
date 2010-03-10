@@ -88,7 +88,8 @@ void nicRegDump(void)
 #define CS_DIS()   ENC_CS_LAT=1
 #define HARDRESET() ENC_RST_LAT = 0;ENC_ENC_RST_LAT = 1
 #define SPI_BUF     ENC_SSPBUF
-#define SPITXRX() 	while(!SPISTAT_RBF)
+//#define SPITXRX() 	while(!SPI1STATbits.SPIRBF)
+#define SPITXRX() 	while(!ENC_SPI_IF)
 
 u8 enc28j60ReadOp(u8 op, u8 address)
 {
@@ -277,6 +278,9 @@ void enc28j60Init(void)
     ENC_CS_TRIS  = 0; //set direction of CS pin as output (master)
     ENC_RST_TRIS = 0; //set direction of RST pin as output
     
+    ENC_CS_LAT = 1; //set CS pin high
+    ENC_RST_LAT= 1; //set RST pin high
+
     //MISO1 C2/RP18 (input)
     SDI1R_I = 18;                   
     //CLK1 C0/RP16 (output)

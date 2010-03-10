@@ -20,18 +20,17 @@ void _T1Interrupt(void);
 
 void initTimer(void);
 
-void initTimer(void)
-{
-//timer init routine here.
-// Set up the timer interrupt
-IPC0  = IPC0 | 0x1000;  // Priority level is 1
-IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
-PR1   = 0xffff;
-T1CON = 0x8030;
-
+void initTimer(void){
+	//timer init routine here.
+	// Set up the timer interrupt
+	IPC0  = IPC0 | 0x1000;  // Priority level is 1
+	IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
+	PR1   = 0xffff;
+	T1CON = 0x8030;
 }
 
 #define TIMERCOUNTER_PERIODIC_TIMEOUT 2000000
+static long timerCounter=0;
 static int irqFlag=0;
 
 
@@ -71,10 +70,10 @@ int main(void){ //main function, execution starts here
     uip_len = nic_poll();
     if(uip_len == 0){
       // if timed out, call periodic function for each connection
-     // if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
-        if(irqFlag){
-        irqFlag=0;
-        
+     if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
+        //if(irqFlag){
+        //irqFlag=0;
+        timerCounter=0;
         for(i = 0; i < UIP_CONNS; i++){
           uip_periodic(i);
 		
@@ -91,7 +90,7 @@ int main(void){ //main function, execution starts here
           arptimer = 0;
         }
       }
- }else{  // packet received
+ 	}else{  // packet received
       // process an IP packet
       if(BUF->type == htons(UIP_ETHTYPE_IP)){
         // add the source to the ARP cache
@@ -120,10 +119,10 @@ int main(void){ //main function, execution starts here
 //this interrupt triggers every
 void __attribute__ ((interrupt,address(0xF00), no_auto_psv)) _T1Interrupt(){
 	IFS0bits.T1IF = 0;
-	IEC0bits.T1IE = 0;
-	T1CON = 0;
+//	IEC0bits.T1IE = 0;
+//	T1CON = 0;
 	irqFlag=1;
-	IEC0bits.T1IE = 1;
+//	IEC0bits.T1IE = 1;
 }
 
 
