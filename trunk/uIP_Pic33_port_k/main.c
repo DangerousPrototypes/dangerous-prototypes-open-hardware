@@ -14,7 +14,7 @@
 _FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
 _FOSC(OSCIOFNC_OFF & POSCMD_NONE)	//disable external OSC (always keep this setting)
 _FWDT(FWDTEN_OFF)				//watchdog timer off
-_FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
+_FICD(JTAGEN_OFF & ICS_PGD1);//JTAG debugging off, debugging on PG1 pins enabled
 
 void _T1Interrupt(void);
 
