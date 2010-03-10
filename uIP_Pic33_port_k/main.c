@@ -15,14 +15,16 @@ _FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
 _FOSC(OSCIOFNC_OFF & POSCMD_NONE)	//disable external OSC (always keep this setting)
 _FWDT(FWDTEN_OFF)				//watchdog timer off
 _FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
+
 void initTimer(void)
 {
-//timer init routine here.
+/*//timer init routine here.
 // Set up the timer interrupt
 IPC0  = IPC0 | 0x1000;  // Priority level is 1
 IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
 PR1   = 10000;
-T1CON = 0x8030; 1000000000110000
+T1CON = 0x8030;
+*/
 }
 
 #define TIMERCOUNTER_PERIODIC_TIMEOUT 2000000
@@ -30,8 +32,9 @@ static unsigned long timerCounter=0;
 
 
 //I don't know how to call interrupts in DSPIC
-int main(void)
-{ //main function, execution starts here
+int main(void){ //main function, execution starts here
+  unsigned char i;
+  unsigned char arptimer=0;
 
 	AD1PCFGL = 0xFFFF; //digital pins
 
