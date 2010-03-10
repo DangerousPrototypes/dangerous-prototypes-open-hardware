@@ -8,7 +8,7 @@
 #include "uip_arp.h"
 #include "enc28j60.h"
 #include "nic.h"
-
+#define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 //it's important to keep configuration bits that are compatibale with the bootloader
 //if you change it from the internall/PLL clock, the bootloader won't run correctly
 _FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
@@ -17,21 +17,22 @@ _FWDT(FWDTEN_OFF)				//watchdog timer off
 _FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
 
 void _T1Interrupt(void);
+
 void initTimer(void);
 
 void initTimer(void)
 {
-/*//timer init routine here.
+//timer init routine here.
 // Set up the timer interrupt
 IPC0  = IPC0 | 0x1000;  // Priority level is 1
 IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
-PR1   = 10000;
+PR1   = 0xffff;
 T1CON = 0x8030;
-*/
+
 }
 
 #define TIMERCOUNTER_PERIODIC_TIMEOUT 2000000
-static unsigned long timerCounter=0;
+static int irqFlag=0;
 
 
 //I don't know how to call interrupts in DSPIC
@@ -66,13 +67,13 @@ int main(void){ //main function, execution starts here
      
     
  while(1){
-	timerCounter++; //increment timer
     // look for a packet
     uip_len = nic_poll();
     if(uip_len == 0){
       // if timed out, call periodic function for each connection
-      if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
-        timerCounter = 0;
+     // if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
+        if(irqFlag){
+        irqFlag=0;
         
         for(i = 0; i < UIP_CONNS; i++){
           uip_periodic(i);
@@ -116,14 +117,13 @@ int main(void){ //main function, execution starts here
 
 }
 
-
+//this interrupt triggers every
 void __attribute__ ((interrupt,address(0xF00), no_auto_psv)) _T1Interrupt(){
 	IFS0bits.T1IF = 0;
 	IEC0bits.T1IE = 0;
-	PR1 = 0xFFFF;
 	T1CON = 0;
 	irqFlag=1;
-	
+	IEC0bits.T1IE = 1;
 }
 
 
