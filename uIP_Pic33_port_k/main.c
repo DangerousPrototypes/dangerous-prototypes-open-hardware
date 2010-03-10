@@ -18,8 +18,13 @@ _FICD(JTAGEN_OFF & 0b11);//JTAG debugging off, debugging on PG1 pins enabled
 void initTimer(void)
 {
 //timer init routine here.
+// Set up the timer interrupt
+IPC0  = IPC0 | 0x1000;  // Priority level is 1
+IEC0  = IEC0 | 0x0008;  // Timer1 interrupt enabled
+PR1   = 10000;
+T1CON = 0x8030;
 }
-
+//I don't know how to call interrupts in DSPIC
 int main(void)
 { //main function, execution starts here
 
