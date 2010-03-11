@@ -33,6 +33,7 @@
 #include "enc28j60.h"
 #include "HardwareProfile.h"
 #include "uip.h"
+#include "delay.h"
 
 // include configuration
 //#include "ax88796conf.h"
@@ -83,13 +84,6 @@ void nicRegDump(void)
 	enc28j60RegDump();
 }
 */
-
-#define CS_EN()    ENC_CS_LAT=0 
-#define CS_DIS()   ENC_CS_LAT=1
-#define HARDRESET() ENC_RST_LAT = 0;ENC_ENC_RST_LAT = 1
-#define SPI_BUF     ENC_SSPBUF
-//#define SPITXRX() 	while(!SPI1STATbits.SPIRBF)
-#define SPITXRX() 	while(!ENC_SPI_IF)
 
 u8 enc28j60ReadOp(u8 op, u8 address)
 {
@@ -294,7 +288,7 @@ void enc28j60Init(void)
     ENC_SPISTATbits.SPIEN = 1;
     CS_DIS();
 	// perform system reset
-   
+    HARDRESET();
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
 	// check CLKRDY bit to see if reset is complete
 	for(i=0;i<0x10;i++){

@@ -4,6 +4,7 @@
 /* \C30\support\dsPIC33F\gld\ */
 
 #include "HardwareProfile.h"
+#include "delay.h"
 #include "uip.h"
 #include "uip_arp.h"
 #include "enc28j60.h"
@@ -17,8 +18,6 @@ _FWDT(FWDTEN_OFF)				//watchdog timer off
 _FICD(JTAGEN_OFF & ICS_PGD1);//JTAG debugging off, debugging on PG1 pins enabled
 
 void _T1Interrupt(void);
-
-void initTimer(void);
 
 void initTimer(void){
 	//timer init routine here.
@@ -54,16 +53,14 @@ int main(void){ //main function, execution starts here
     // init uIP
     uip_init();
 
-    // init app
-    example1_init();
-
     // init ARP cache
     uip_arp_init();
 
     // init periodic timer
     initTimer();
 
-     
+      // init app
+    example1_init();
     
  while(1){
     // look for a packet

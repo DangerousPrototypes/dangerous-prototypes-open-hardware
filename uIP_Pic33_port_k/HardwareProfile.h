@@ -161,3 +161,8 @@
 
 #define u8 unsigned char 
 #define u16 unsigned short 
+#define CS_EN()    ENC_CS_LAT=0 
+#define CS_DIS()   ENC_CS_LAT=1
+#define HARDRESET() ENC_RST_LAT = 0; delay_ms(10);ENC_RST_LAT = 1
+#define SPI_BUF     ENC_SSPBUF
+#define SPITXRX() 	while(!ENC_SPI_IF)
