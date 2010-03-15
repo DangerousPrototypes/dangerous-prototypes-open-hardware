@@ -160,8 +160,12 @@
 #define RP23_O RPOR11bits.RP23R
 #define RP24_O RPOR12bits.RP24R
 
-#define u8 unsigned char 
-#define u16 unsigned short 
+#define u8 unsigned char
+#define uint8_t u8
+#define u16 unsigned short
+#define uint16_t u16 
+#define u32 unsigned long
+#define uint32_t u32 
 #define CS_EN()    ENC_CS_LAT=0 
 #define CS_DIS()   ENC_CS_LAT=1
 #define HARDRESET() ENC_RST_LAT = 0; delay_ms(10);ENC_RST_LAT = 1

@@ -1,14 +1,52 @@
 #include "dsPICSDRoutines.h"
-
-int DFS_ReadSector(uint8_t unit,uint8_t *buffer, uint32_t sector, uint32_t count)
+#include "HardwareProfile.h"
+/*Function required by DosFS to read from sector# = sector with 
+count number of sectors into buffer.
+*/
+uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count)
 {
-
+    uint8_t response;
+    uint16_t i;
+    uint32_t offset;
+    offset =  sector * 512;
+    
+  	SD_CS_EN();
+    
+	SD_sendCMD(0x51,offset,0xff);
+    
+	if(SD_GET_Response()==0)
+ 	{
+    	do
+    	{
+      		SD_SPI_Send(0xFF);
+      		response = SD_SPI_BUF; 
+    	}while(response==0xff);
+    	if (response == 0xFE)
+		{
+ 			for( i=0; i<512; count++)      
+           		*buffer++ = SD_SPI_Send(0xFF);
+        	SD_SPI_Send(0xFF);
+			SD_SPI_Send(0xFF);
+			SD_CS_DIS();
+			return 0;
+		}
+	}
+    SD_CS_DIS();
+    return 1;
+    	
 }
-int DFS_WriteSector(uint8_t unit,uint8_t *buffer, uint32_t sector, uint32_t count)
+
+/*Function required by DosFS to write the data contained by buffer
+ into sector# = sector with count number of sectors.
+*/
+uint32_t DFS_WriteSector(uint8_t unit,uint8_t *buffer, uint32_t sector, uint32_t count)
 {
-
+return 1;
 }
 
+/*
+initialize SPI for SD.
+*/
 void SD_SPI_Init()
 {
     SD_CS_TRIS  = 0; //set direction of CS pin as output (master)
@@ -36,7 +74,12 @@ void SD_SPI_Init()
     SD_CS_DIS();
 }
 
-SD_sendCMD(uint8_t cmd,uint32_t data, uint8_t crc)
+/*
+Function for sending a command to the SD card.
+cmd is the command, data is the 4-byte parameter in 
+Big Endian and crc is the Checksum.
+*/
+void SD_sendCMD(uint8_t cmd,uint32_t data, uint8_t crc)
 {
      uint8_t i;
      SD_SPITXRX();
@@ -49,13 +92,38 @@ SD_sendCMD(uint8_t cmd,uint32_t data, uint8_t crc)
      }
      SD_SPI_Send(crc);
 }
-SD_GET_Response()
-{
 
-}
-void initSD()
+/*
+FUnction to get the response from SD
+*/
+unsigned char SD_GET_Response()
 {
-   uint8_t i;
+ //Response comes 1-8bytes after command
+  //the first bit will be a 0
+  //followed by an error code
+  //data will be 0xff until response
+  int i=0;
+
+  char response;
+
+  while(i<=64)
+  {
+    SD_SPI_Send(0xff);
+    response = SD_SPI_BUF;
+    if(response==0x00)break;
+    if(response==0x01)break;
+    i++;
+  }
+  return response;
+}
+
+
+/*
+initialize SD card
+*/
+unsigned char initSD()
+{
+   uint8_t i, response;
    SD_SPI_Init();
    SD_CS_DIS();
     
@@ -64,5 +132,14 @@ void initSD()
       SD_SPI_Send(0xff);
    SD_CS_EN();
    SD_sendCMD(0x40,0,0x95); // send CMD0 command;
-   
+   while ((response = SD_GET_Response())== 0x01)
+   { 
+      SD_CS_DIS();
+      SD_SPI_Send(0xff);    
+      SD_CS_EN();
+      SD_sendCMD(0x41,0,0x95); //send CMD1
+      
+   }
+   SD_CS_DIS();
+   return 0;  
 }
