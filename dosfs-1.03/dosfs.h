@@ -6,7 +6,8 @@
 #ifndef _DOSFS_H
 #define _DOSFS_H
 
-#include <stdint.h>
+//#include <stdlib.h>
+#include "HardwareProfile.h"
 
 //===================================================================
 // User-supplied functions

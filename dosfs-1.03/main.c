@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "HardwareProfile.h"
+#include "dsPICSDRoutines.h"
 #include "dosfs.h"
 
 _FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
@@ -38,6 +39,10 @@ int main(void)
     while(!OSCCONbits.LOCK);//wait for PLL ready
 
     initSD();
-
+	
+	while(1)
+	{
+	
+	}
 	return 0;
 }
