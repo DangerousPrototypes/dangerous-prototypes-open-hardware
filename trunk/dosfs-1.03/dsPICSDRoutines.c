@@ -11,7 +11,7 @@ uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t
     offset =  sector * 512;
     
   	SD_CS_EN();
-    
+    //send read command
 	SD_sendCMD(0x51,offset,0xff);
     
 	if(SD_GET_Response()==0)
@@ -20,11 +20,15 @@ uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t
     	{
       		SD_SPI_Send(0xFF);
       		response = SD_SPI_BUF; 
-    	}while(response==0xff);
+    	}while(response==0xff);//wait
     	if (response == 0xFE)
+    	//start of sector data
 		{
- 			for( i=0; i<512; count++)      
-           		*buffer++ = SD_SPI_Send(0xFF);
+ 			for( i=0; i<512; count++)
+ 			{
+ 			    SD_SPI_Send(0xFF);      
+           		*buffer++ = SD_SPI_BUF;
+    		}       	
         	SD_SPI_Send(0xFF);
 			SD_SPI_Send(0xFF);
 			SD_CS_DIS();
@@ -41,7 +45,39 @@ uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t
 */
 uint32_t DFS_WriteSector(uint8_t unit,uint8_t *buffer, uint32_t sector, uint32_t count)
 {
-return 1;
+	uint8_t response;
+    uint16_t i;
+    uint32_t offset;
+    offset =  sector * 512;
+    
+  	SD_CS_EN();
+    //send write command
+	SD_sendCMD(0x58,offset,0xff);
+	if(SD_GET_Response()==0)//command accepted
+ 	{
+	 	SD_SPI_Send(0xFF);//one byte gap
+	 	SD_SPI_Send(0xFE);//send start data token
+	 	for(i=0;i<512;i++)//send 512 bytes
+	 		SD_SPI_Send(buffer[i]);
+	 	SD_SPI_Send(0xFF);//crc lo
+	 	SD_SPI_Send(0xFF);//crc hi
+	 	SD_SPI_Send(0xFF);
+	 	response = SD_SPI_BUF;
+	 	if (response &0x0F == 0x05)
+	 	{
+		 	do
+	 		{
+	 			SD_SPI_Send(0xFF);
+	 			response = SD_SPI_BUF;
+	 		}while(response !=0xFF); // wait till not busy
+	 		SD_CS_DIS();
+	 		return 0; //success
+	 	}
+	 	SD_CS_DIS();
+		return 1; //error writing
+	}
+	SD_CS_DIS();
+	return 1; //error writing
 }
 
 /*
