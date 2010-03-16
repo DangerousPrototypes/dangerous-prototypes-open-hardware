@@ -18,14 +18,12 @@ _FICD(JTAGEN_OFF & ICS_PGD1);//JTAG debugging off, debugging on PG1 pins enabled
 int main(void)
 {
 	uint8_t sector[SECTOR_SIZE], sector2[SECTOR_SIZE];
-	uint32_t pstart, psize, i;
+	uint32_t pstart, psize, i,filelen;
 	uint8_t pactive, ptype;
 	VOLINFO vi;
-	DIRINFO di;
-	DIRENT de;
 	uint32_t cache;
 	FILEINFO fi;
-	uint8_t *p;
+	uint8_t p[512];
     
     AD1PCFGL = 0xFFFF; //digital pins
 
@@ -40,9 +38,38 @@ int main(void)
 
     initSD();
 	
-	while(1)
-	{
-	
+//	while(1)
+//	{
+	// Obtain pointer to first partition on first (only) unit
+	pstart = DFS_GetPtnStart(0, sector, 0, &pactive, &ptype, &psize);
+	if (pstart == 0xffffffff) {
+		return -1;
 	}
+	if (DFS_GetVolInfo(0, sector, pstart, &vi)) {
+		return -1;
+	}
+
+//------------------------------------------------------------
+// File read test
+
+	if (DFS_OpenFile(&vi, "TEST.TXT", DFS_READ, sector, &fi)) {
+		return -1;
+	}
+	memset(p, 0xaa, 512);
+	filelen=fi.filelen;
+	DFS_ReadFile(&fi, sector, p, &i, fi.filelen);	
+
+
+// File write test
+
+	if (DFS_OpenFile(&vi, "TEST2.TXT", DFS_WRITE, sector, &fi)) {
+		return -1;
+	}
+	DFS_WriteFile(&fi, sector, p, &cache, filelen);
+
+
+
+
+//	}
 	return 0;
 }

@@ -10,8 +10,8 @@
 #define SD_SPI_Send(data) SD_SPI_BUF = data; SD_SPITXRX()
 
 
-uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count);
-uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count);
+//uint32_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count);
+//uint32_t DFS_WriteSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t count);
 
 void SD_SPI_Init(void);
 
