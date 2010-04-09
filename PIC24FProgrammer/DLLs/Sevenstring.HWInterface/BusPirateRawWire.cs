@@ -53,7 +53,7 @@ namespace Sevenstring.HWInterface
 
         public bool PeekAtInputPin()
         {
-        const int DELAY=10;
+        const int DELAY=100;
         return myBusPirate.SendUartDataAndCheckReply(new byte[] {(byte)(BPC_PeekAtInputPin)} ,DELAY);
         }
 
@@ -61,7 +61,7 @@ namespace Sevenstring.HWInterface
 
         public bool SetPortState(Pins pins,PinState pinState)
         {
-        const int DELAY=10;
+        const int DELAY=100;
         bool Status=false;
         byte ByteToBeOred=0;
         if(pinState==PinState.Hi)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO.Ports;
+using System.Threading;
 
 namespace Sevenstring.HWInterface
 {
@@ -65,7 +66,9 @@ namespace Sevenstring.HWInterface
 	        } while (ctr!=-1);
 
         DataLow();
+        Thread.Sleep(10); // P19 1ms
         MCLRHigh();
+        Thread.Sleep(30); // P7 25ms
         return true;
         }
 
@@ -195,14 +198,16 @@ namespace Sevenstring.HWInterface
 
 #region Pin Manipulations
 
-        private bool MCLRLow()
+        public bool MCLRLow()
         {
-        return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Hi);
+        //return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Hi);
+        return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Lo);
         }
 
-        private bool MCLRHigh()
+        public bool MCLRHigh()
         {
-        return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Lo);
+        //return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Lo);
+        return myBusPirate.BusPirateRawWire.SetPortState(BusPirateRawWire.Pins.CS,BusPirateRawWire.PinState.Hi);
         }
 
         private bool ClockLow()
@@ -232,7 +237,7 @@ namespace Sevenstring.HWInterface
         {
         uint [] MyReturn=new uint[3];
         uint temp;
-        //SendSixSerialExec(false,0);//nop
+        SendSixSerialExec(false,0);//nop
         SendSixSerialExec(false,0x040200);
         SendSixSerialExec(false,0);//nop
 
@@ -270,6 +275,38 @@ namespace Sevenstring.HWInterface
         }
 
 
+
+        public void EraseChip()
+        {
+        SendSixSerialExec(false,0);
+        //SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0x040200);
+        SendSixSerialExec(false,0);
+
+        SendSixSerialExec(false,0x2404FA);
+        SendSixSerialExec(false,0x883B0A);
+
+        SendSixSerialExec(false,0x200000);
+        SendSixSerialExec(false,0x880190);
+        SendSixSerialExec(false,0x200000);
+        SendSixSerialExec(false,0xBB0800);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+
+        SendSixSerialExec(false,0xA8E761);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+
+        SendSixSerialExec(false,0x040200);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0x803B02);
+        SendSixSerialExec(false,0x883C22);
+        SendSixSerialExec(false,0);
+        System.Threading.Thread.Sleep(2000);
+        SendSixSerialExec(false,0);
+
+
+        }
 
     }
 }

@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmBusPirate : Form
     {
-        private const string FRM_VERSION= " 00.08.03 Alpha Version";
+        private const string FRM_VERSION= " 00.08.10 Alpha Version";
         private const string FRM_TITLE="Pirate Bus Tester .NET (SVN)";
 
         private const int TEMP_DELAY=200;
@@ -99,7 +99,8 @@ namespace WindowsFormsApplication1
 
         SetStatusString("===============================\r\n");
         SetStatusString("Configure!\r\n");
-        if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,true,true)==true)
+        //if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,true,true)==true)
+        if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,false,false)==true)
             {
             SetStatusString("SetModeConfig Successful!\r\n");
             }
@@ -116,6 +117,9 @@ namespace WindowsFormsApplication1
             SetStatusString("SetPeripheralConfig Failed!\r\n");
             }
 
+        SetStatusString("Delay 2000msec!\r\n");
+        Thread.Sleep(2000);
+
         SetStatusString("Entering Normal ICSP!\r\n");
         if(myPIC24Program.EnterICSPMode(PIC24Program.SECURE_ID_NORMAL_ICSP)==false)
             {
@@ -123,9 +127,11 @@ namespace WindowsFormsApplication1
             }
         else
             {
-            myPIC24Program.SendSixSerialExec(true,0); // send NOP
-
-
+            myPIC24Program.SendSixSerialExec(true,0); // send NOP 
+            SetStatusString("Erase Chip!\r\n");
+            myPIC24Program.EraseChip();
+            myPIC24Program.ExitICSPMode();
+#if N_COMP // DONT COMPILE
             uint [] RetDat;
             string temp;
             SetStatusString("Reading 0xFF0000!\r\n");
@@ -139,6 +145,7 @@ namespace WindowsFormsApplication1
             RetDat= myPIC24Program.ReadCodeMem(0xFF0002);
             temp=String.Format("Data: {0:x2} {1:x2} {2:x2} \r\n",RetDat[0],RetDat[1],RetDat[2]);
             SetStatusString(temp);
+#endif
             }
 
 #if N_COMP // DONT COMPILE
@@ -153,10 +160,40 @@ namespace WindowsFormsApplication1
             SetStatusString(String.Format("Dev ID Experiment: 0x{0:x4} \r\n",myPIC24Program.Read16BitCommamd() ) );
             }
 #endif
-
+        SetStatusString("Done!\r\n");
         Application.DoEvents();
         btnRunTest.Enabled=true;
         }
+
+
+
+        private void btnInitMCLR_Click(object sender, EventArgs e)
+        {
+        txtStatus.Clear();
+        SetStatusString("Entering Normal ICSP!\r\n");
+        if(myPIC24Program.EnterICSPMode(PIC24Program.SECURE_ID_NORMAL_ICSP)==false)
+            {
+            SetStatusString("Error Entering Normal ICSP!\r\n");
+            }
+        }
+
+
+
+        private void btnExitMCLR_Click(object sender, EventArgs e)
+        {
+        txtStatus.Clear();
+        SetStatusString("MCLR Low!\r\n");
+        myPIC24Program.MCLRLow();
+        }
+
+        private void btnInitMCLRPin_Click(object sender, EventArgs e)
+        {
+        txtStatus.Clear();
+        SetStatusString("MCLR High!\r\n");
+        myPIC24Program.MCLRHigh();
+        }
+
+
 
 
 
