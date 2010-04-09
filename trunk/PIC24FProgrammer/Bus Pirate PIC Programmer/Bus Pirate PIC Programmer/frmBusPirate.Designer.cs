@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
         this.grpSerial = new System.Windows.Forms.GroupBox();
-        this.cmbSerial = new System.Windows.Forms.ComboBox();
         this.btnConnect = new System.Windows.Forms.Button();
+        this.cmbSerial = new System.Windows.Forms.ComboBox();
         this.txtStatus = new System.Windows.Forms.TextBox();
         this.btnRunTest = new System.Windows.Forms.Button();
         this.grpTest = new System.Windows.Forms.GroupBox();
+        this.btnInitICSP = new System.Windows.Forms.Button();
+        this.btnExitMCLR = new System.Windows.Forms.Button();
+        this.btnInitMCLRPin = new System.Windows.Forms.Button();
         this.grpSerial.SuspendLayout();
         this.grpTest.SuspendLayout();
         this.SuspendLayout();
@@ -44,10 +47,20 @@
         this.grpSerial.Controls.Add(this.cmbSerial);
         this.grpSerial.Location = new System.Drawing.Point(12, 12);
         this.grpSerial.Name = "grpSerial";
-        this.grpSerial.Size = new System.Drawing.Size(138, 78);
+        this.grpSerial.Size = new System.Drawing.Size(138, 87);
         this.grpSerial.TabIndex = 0;
         this.grpSerial.TabStop = false;
         this.grpSerial.Text = "Serial Port";
+        // 
+        // btnConnect
+        // 
+        this.btnConnect.Location = new System.Drawing.Point(6, 46);
+        this.btnConnect.Name = "btnConnect";
+        this.btnConnect.Size = new System.Drawing.Size(126, 31);
+        this.btnConnect.TabIndex = 1;
+        this.btnConnect.Text = "Connect";
+        this.btnConnect.UseVisualStyleBackColor = true;
+        this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
         // 
         // cmbSerial
         // 
@@ -58,51 +71,74 @@
         this.cmbSerial.Size = new System.Drawing.Size(126, 21);
         this.cmbSerial.TabIndex = 0;
         // 
-        // btnConnect
-        // 
-        this.btnConnect.Location = new System.Drawing.Point(6, 46);
-        this.btnConnect.Name = "btnConnect";
-        this.btnConnect.Size = new System.Drawing.Size(126, 23);
-        this.btnConnect.TabIndex = 1;
-        this.btnConnect.Text = "Connect";
-        this.btnConnect.UseVisualStyleBackColor = true;
-        this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
-        // 
         // txtStatus
         // 
-        this.txtStatus.Location = new System.Drawing.Point(12, 96);
+        this.txtStatus.Location = new System.Drawing.Point(12, 172);
         this.txtStatus.Multiline = true;
         this.txtStatus.Name = "txtStatus";
         this.txtStatus.ReadOnly = true;
         this.txtStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-        this.txtStatus.Size = new System.Drawing.Size(284, 186);
+        this.txtStatus.Size = new System.Drawing.Size(284, 209);
         this.txtStatus.TabIndex = 1;
         // 
         // btnRunTest
         // 
-        this.btnRunTest.Location = new System.Drawing.Point(7, 25);
+        this.btnRunTest.Location = new System.Drawing.Point(0, 19);
         this.btnRunTest.Name = "btnRunTest";
-        this.btnRunTest.Size = new System.Drawing.Size(126, 23);
+        this.btnRunTest.Size = new System.Drawing.Size(134, 23);
         this.btnRunTest.TabIndex = 2;
-        this.btnRunTest.Text = "RunTest";
+        this.btnRunTest.Text = "Run Test";
         this.btnRunTest.UseVisualStyleBackColor = true;
         this.btnRunTest.Click += new System.EventHandler(this.btnRunTest_Click);
         // 
         // grpTest
         // 
+        this.grpTest.Controls.Add(this.btnInitMCLRPin);
+        this.grpTest.Controls.Add(this.btnExitMCLR);
+        this.grpTest.Controls.Add(this.btnInitICSP);
         this.grpTest.Controls.Add(this.btnRunTest);
         this.grpTest.Location = new System.Drawing.Point(156, 18);
         this.grpTest.Name = "grpTest";
-        this.grpTest.Size = new System.Drawing.Size(140, 72);
+        this.grpTest.Size = new System.Drawing.Size(140, 108);
         this.grpTest.TabIndex = 3;
         this.grpTest.TabStop = false;
         this.grpTest.Text = "Test";
+        // 
+        // btnInitICSP
+        // 
+        this.btnInitICSP.Location = new System.Drawing.Point(0, 48);
+        this.btnInitICSP.Name = "btnInitICSP";
+        this.btnInitICSP.Size = new System.Drawing.Size(134, 23);
+        this.btnInitICSP.TabIndex = 4;
+        this.btnInitICSP.Text = "Init ICSP";
+        this.btnInitICSP.UseVisualStyleBackColor = true;
+        this.btnInitICSP.Click += new System.EventHandler(this.btnInitMCLR_Click);
+        // 
+        // btnExitMCLR
+        // 
+        this.btnExitMCLR.Location = new System.Drawing.Point(69, 79);
+        this.btnExitMCLR.Name = "btnExitMCLR";
+        this.btnExitMCLR.Size = new System.Drawing.Size(65, 23);
+        this.btnExitMCLR.TabIndex = 5;
+        this.btnExitMCLR.Text = "MCLR Low";
+        this.btnExitMCLR.UseVisualStyleBackColor = true;
+        this.btnExitMCLR.Click += new System.EventHandler(this.btnExitMCLR_Click);
+        // 
+        // btnInitMCLRPin
+        // 
+        this.btnInitMCLRPin.Location = new System.Drawing.Point(0, 79);
+        this.btnInitMCLRPin.Name = "btnInitMCLRPin";
+        this.btnInitMCLRPin.Size = new System.Drawing.Size(65, 23);
+        this.btnInitMCLRPin.TabIndex = 6;
+        this.btnInitMCLRPin.Text = "MCLR Hi";
+        this.btnInitMCLRPin.UseVisualStyleBackColor = true;
+        this.btnInitMCLRPin.Click += new System.EventHandler(this.btnInitMCLRPin_Click);
         // 
         // frmBusPirate
         // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(313, 299);
+        this.ClientSize = new System.Drawing.Size(313, 393);
         this.Controls.Add(this.grpTest);
         this.Controls.Add(this.txtStatus);
         this.Controls.Add(this.grpSerial);
@@ -125,6 +161,9 @@
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Button btnRunTest;
         private System.Windows.Forms.GroupBox grpTest;
+        private System.Windows.Forms.Button btnExitMCLR;
+        private System.Windows.Forms.Button btnInitICSP;
+        private System.Windows.Forms.Button btnInitMCLRPin;
     }
 }
 
