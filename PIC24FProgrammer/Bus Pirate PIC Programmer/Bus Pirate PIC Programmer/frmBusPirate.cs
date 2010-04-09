@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmBusPirate : Form
     {
-        private const string FRM_VERSION= " 00.08.02 Alpha Version";
+        private const string FRM_VERSION= " 00.08.03 Alpha Version";
         private const string FRM_TITLE="Pirate Bus Tester .NET (SVN)";
 
         private const int TEMP_DELAY=200;
@@ -116,10 +116,32 @@ namespace WindowsFormsApplication1
             SetStatusString("SetPeripheralConfig Failed!\r\n");
             }
 
-        SetStatusString("Entering Enhanced ICSP!\r\n");
-        if(myPIC24Program.EnterICSPMode(PIC24Program.SECURE_ID_ENHANCED_ICSP)==false)
-            SetStatusString("Error Entering Enhanced ICSP!\r\n");;
+        SetStatusString("Entering Normal ICSP!\r\n");
+        if(myPIC24Program.EnterICSPMode(PIC24Program.SECURE_ID_NORMAL_ICSP)==false)
+            {
+            SetStatusString("Error Entering Normal ICSP!\r\n");
+            }
+        else
+            {
+            myPIC24Program.SendSixSerialExec(true,0); // send NOP
 
+
+            uint [] RetDat;
+            string temp;
+            SetStatusString("Reading 0xFF0000!\r\n");
+            RetDat= myPIC24Program.ReadCodeMem(0xFF0000);
+            
+            temp=String.Format("Data: {0:x2} {1:x2} {2:x2} \r\n",RetDat[0],RetDat[1],RetDat[2]);
+            SetStatusString(temp);
+
+            SetStatusString("Reading 0xFF0002!\r\n");
+            myPIC24Program.SendSixSerialExec(false,0);
+            RetDat= myPIC24Program.ReadCodeMem(0xFF0002);
+            temp=String.Format("Data: {0:x2} {1:x2} {2:x2} \r\n",RetDat[0],RetDat[1],RetDat[2]);
+            SetStatusString(temp);
+            }
+
+#if N_COMP // DONT COMPILE
         //Read device ID
         myPIC24Program.Send16BitCommamd((PIC24Program.PEC_READC<<12)|3);
         myPIC24Program.Send16BitCommamd((8U<<8)|0xFF);
@@ -130,6 +152,7 @@ namespace WindowsFormsApplication1
             {
             SetStatusString(String.Format("Dev ID Experiment: 0x{0:x4} \r\n",myPIC24Program.Read16BitCommamd() ) );
             }
+#endif
 
         Application.DoEvents();
         btnRunTest.Enabled=true;
