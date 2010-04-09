@@ -42,10 +42,11 @@ namespace Sevenstring.HWInterface
 
         public bool EnterICSPMode(uint SecureID)
         {
-        uint secureID = SecureID;
+        //uint secureID = SecureID;
         int ctr;
 
         if(ClockLow()==false) return false;
+        DataLow();
         MCLRLow();
         MCLRHigh();
         MCLRLow();
@@ -53,7 +54,7 @@ namespace Sevenstring.HWInterface
         ctr=31;
         do
 	        {
-            if((secureID& (1<<ctr))!=0)
+            if((SecureID& (1<<ctr))!=0)
                 DataHigh();
             else
                 DataLow();
@@ -69,10 +70,13 @@ namespace Sevenstring.HWInterface
         }
 
 
+        public bool ExitICSPMode()
+        {
+        return MCLRLow();
+        }
 
-
-
-        public void Send16BitCommamd(uint Data)
+#if N_COMP
+        public void Send16BitCommand(uint Data)
         {
         //MSB first
         int ctr=15;
@@ -105,12 +109,12 @@ namespace Sevenstring.HWInterface
             }while(ctr!=-1);
         return Result;
         }
+#endif
 
 
 
 
-
-        public void SendSixSerialExec(uint Data1,uint Data2)
+        public void SendSixSerialExec(bool InitialRun,uint Data)
         {
         int ctr;
         DataLow();
@@ -119,23 +123,33 @@ namespace Sevenstring.HWInterface
             ClockHigh();
             ClockLow();
             }
+#if N_COMP
+            // 5 byte
+            for(ctr=0;ctr<5;ctr++)
+                {
+                //if( (Data1&(1<<ctr)) !=0)
+                //    DataHigh();
+                //else
+                //    DataLow();
+                ClockHigh();
+                ClockLow();
+                }
+#endif
 
-        // 5 byte
-        for(ctr=0;ctr<5;ctr++)
+        if(InitialRun)
             {
-            if( (Data1&(1<<ctr)) !=0)
-                DataHigh();
-            else
-                DataLow();
-            ClockHigh();
-            ClockLow();
-            
+            // 5 byte
+            for(ctr=0;ctr<5;ctr++)
+                {
+                ClockHigh();
+                ClockLow();
+                }
             }
 
         // 24 byte
         for(ctr=0;ctr<24;ctr++)
             {
-            if( (Data2&(1<<ctr)) !=0)
+            if( (Data&(1U<<ctr)) !=0)
                 DataHigh();
             else
                 DataLow();
@@ -156,6 +170,7 @@ namespace Sevenstring.HWInterface
         DataHigh();
         ClockHigh();
         ClockLow();
+
         DataLow();
         for(ctr=0;ctr<7;ctr++)
             {
@@ -211,6 +226,49 @@ namespace Sevenstring.HWInterface
         }
 
 #endregion
+
+
+        public uint [] ReadCodeMem(uint Address)
+        {
+        uint [] MyReturn=new uint[3];
+        uint temp;
+        //SendSixSerialExec(false,0);//nop
+        SendSixSerialExec(false,0x040200);
+        SendSixSerialExec(false,0);//nop
+
+        temp=(Address>>16)&0xFF;
+        SendSixSerialExec(false,0x200000 | (temp<<4));
+        SendSixSerialExec(false,0x880190);
+        temp=Address&0xFFFF;
+        SendSixSerialExec(false,0x200006 | (temp<<4));
+
+        SendSixSerialExec(false,0x207847);
+        SendSixSerialExec(false,0);
+
+        SendSixSerialExec(false,0xBA0B96);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+        MyReturn[0]=SendRegOut();
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0xBADBB6);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0xBAD3D6);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+        MyReturn[1]=SendRegOut();
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0xBA0BB6);
+        SendSixSerialExec(false,0);
+        SendSixSerialExec(false,0);
+        MyReturn[2]=SendRegOut();
+        SendSixSerialExec(false,0);
+
+        SendSixSerialExec(false,0x040200);
+        SendSixSerialExec(false,0);
+        return MyReturn;
+        }
+
 
 
     }
