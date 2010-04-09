@@ -1,0 +1,22 @@
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.exe.config
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.exe
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.pdb
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Sevenstring.HWInterface.dll
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Sevenstring.HWInterface.pdb
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\ResolveAssemblyReference.cache
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\WindowsFormsApplication1.frmBusPirate.resources
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.csproj.GenerateResource.Cache
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.exe
+E:\Projects\Dangerous Prototype\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.pdb
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.exe.config
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.exe
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.pdb
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.exe
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Bus Pirate PIC Programmer.pdb
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Sevenstring.HWInterface.dll
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\bin\Release\Sevenstring.HWInterface.pdb
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\ResolveAssemblyReference.cache
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\WindowsFormsApplication1.frmBusPirate.resources
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+E:\Projects\Dangerous Prototype\From Taguig PC\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer\obj\Release\Bus Pirate PIC Programmer.csproj.GenerateResource.Cache
