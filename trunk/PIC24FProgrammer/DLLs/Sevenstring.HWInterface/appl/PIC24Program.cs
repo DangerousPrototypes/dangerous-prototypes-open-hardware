@@ -297,14 +297,17 @@ namespace Sevenstring.HWInterface
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0);
 
+        System.Threading.Thread.Sleep(2000);
+
         SendSixSerialExec(false,0x040200);
         SendSixSerialExec(false,0);
+        /*
         SendSixSerialExec(false,0x803B02);
         SendSixSerialExec(false,0x883C22);
         SendSixSerialExec(false,0);
         System.Threading.Thread.Sleep(2000);
         SendSixSerialExec(false,0);
-
+        */
 
         }
 

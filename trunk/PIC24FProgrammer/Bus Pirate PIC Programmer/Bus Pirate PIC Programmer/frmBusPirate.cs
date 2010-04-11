@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class frmBusPirate : Form
     {
-        private const string FRM_VERSION= " 00.08.10 Alpha Version";
+        private const string FRM_VERSION= " 00.08.11 Alpha Version";
         private const string FRM_TITLE="Pirate Bus Tester .NET (SVN)";
 
         private const int TEMP_DELAY=200;
