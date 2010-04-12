@@ -13,14 +13,12 @@ namespace WindowsFormsApplication1
 {
     public partial class frmBusPirate : Form
     {
-        private const string FRM_VERSION= " 00.08.11 Alpha Version";
-        private const string FRM_TITLE="Pirate Bus Tester .NET (SVN)";
+        private const string FRM_VERSION= " 00.08.13 Alpha Version";
+        private const string FRM_TITLE="Pirate Bus Tester .NET";
 
         private const int TEMP_DELAY=200;
-        //BusPirate myBusPirate=null;
-        PIC24Program myPIC24Program=null;
 
-        //StringBuilder prvStrBuilder=new StringBuilder();
+        PIC24Program myPIC24Program=null;
 
         public frmBusPirate()
         {
@@ -34,7 +32,7 @@ namespace WindowsFormsApplication1
         cmbSerial.Items.Clear();
         cmbSerial.Items.AddRange(SerialPort.GetPortNames());
         cmbSerial.SelectedIndex=0;
-        grpTest.Enabled=false;
+        tabBPControls.Enabled=false;
         txtStatus.Text=FRM_TITLE+FRM_VERSION;
         }
 
@@ -46,9 +44,8 @@ namespace WindowsFormsApplication1
         myPIC24Program=new PIC24Program(myBusPirate);
         myPIC24Program.Open();
 
-
         grpSerial.Enabled=false;
-        grpTest.Enabled=true;
+        tabBPControls.Enabled=true;
         txtStatus.Clear();
         SetStatusString(String.Format("Connected to {0}!",cmbSerial.SelectedItem.ToString()));
         }
@@ -84,7 +81,6 @@ namespace WindowsFormsApplication1
             {
             SetStatusString("Reset Failed!\r\n");
             }
-
 
         SetStatusString("===============================\r\n");
         SetStatusString("Enter Raw Wire Mode!\r\n");
@@ -175,6 +171,11 @@ namespace WindowsFormsApplication1
             {
             SetStatusString("Error Entering Normal ICSP!\r\n");
             }
+        else
+            {
+            SetStatusString("Entered Normal ICSP!\r\n");
+            myPIC24Program.SendSixSerialExec(true,0); // send NOP immediately
+            }
         }
 
 
@@ -192,6 +193,101 @@ namespace WindowsFormsApplication1
         SetStatusString("MCLR High!\r\n");
         myPIC24Program.MCLRHigh();
         }
+
+
+
+        private void btnSend24Bit_Click(object sender, EventArgs e)
+        {
+        uint Data;
+        txtStatus.Clear();
+
+        try
+            {
+            Data=Convert.ToUInt32(mtxt_SendData.Text,16);
+            myPIC24Program.SendSixSerialExec(false,Data);
+            string temp=String.Format("Sent 0x{0:x6}!\r\n",Data);
+            SetStatusString(temp);
+            }
+        catch
+            {
+            SetStatusString("Invalid Input!\r\n");
+            }
+        }
+
+
+
+        private void btnReadData_Click(object sender, EventArgs e)
+        {
+        uint? ReadData;
+        txtReadData.Clear();
+        ReadData=myPIC24Program.SendRegOut();
+        if(ReadData==null)
+            {
+            txtReadData.Text="Error!";
+            }
+        else
+            {
+            string temp=String.Format("0x{0:x6}",ReadData);
+            txtReadData.Text=temp;
+            }
+        }
+
+
+
+
+        private void btnInitBusPirate_Click(object sender, EventArgs e)
+        {
+        btnInitBusPirate.Enabled=false;
+        txtStatus.Clear();
+        SetStatusString("===============================\r\n");
+        SetStatusString("Reset!\r\n");
+        if(myPIC24Program.BusPirate.EnterReset()==true)
+            {
+            SetStatusString("Reset Successful!\r\n");
+            }
+        else
+            {
+            SetStatusString("Reset Failed!\r\n");
+            }
+
+
+        SetStatusString("===============================\r\n");
+        SetStatusString("Enter Raw Wire Mode!\r\n");
+        if(myPIC24Program.BusPirate.EnterRawWireMode()==true)
+            {
+            SetStatusString("Raw Wire Mode Successful!\r\n");
+            }
+        else
+            {
+            SetStatusString("Raw Wire Mode Failed!\r\n");
+            }
+
+        SetStatusString("===============================\r\n");
+        SetStatusString("Configure!\r\n");
+        //if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,true,true)==true)
+        if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,false,false)==true)
+            {
+            SetStatusString("SetModeConfig Successful!\r\n");
+            }
+        else
+            {
+            SetStatusString("SetModeConfig Failed!\r\n");
+            }
+        if(myPIC24Program.BusPirate.BusPirateRawWire.SetPeripheralConfig(true,true,true,true)==true)
+            {
+            SetStatusString("SetPeripheralConfig Successful!\r\n");
+            }
+        else
+            {
+            SetStatusString("SetPeripheralConfig Failed!\r\n");
+            }
+        Application.DoEvents();
+        btnInitBusPirate.Enabled=true;
+        }
+
+
+
+
 
 
 

@@ -66,9 +66,9 @@ namespace Sevenstring.HWInterface
 	        } while (ctr!=-1);
 
         DataLow();
-        Thread.Sleep(10); // P19 1ms
+        Thread.Sleep(50); // P19 1ms
         MCLRHigh();
-        Thread.Sleep(30); // P7 25ms
+        Thread.Sleep(50); // P7 25ms
         return true;
         }
 
@@ -164,13 +164,12 @@ namespace Sevenstring.HWInterface
 
 
 
-        public uint SendRegOut()
+        public uint? SendRegOut()
         {
-        uint Result=0;
+        uint? Result=0;
         int ctr;
 
-
-        DataHigh();
+        if(DataHigh()==false)return null;
         ClockHigh();
         ClockLow();
 
@@ -187,7 +186,6 @@ namespace Sevenstring.HWInterface
 
             if(myBusPirate.BusPirateRawWire.PeekAtInputPin()==true)
                 Result|=(1U<<ctr);
-
             ClockLow();
             }
         return Result;
@@ -233,9 +231,9 @@ namespace Sevenstring.HWInterface
 #endregion
 
 
-        public uint [] ReadCodeMem(uint Address)
+        public uint? [] ReadCodeMem(uint Address)
         {
-        uint [] MyReturn=new uint[3];
+        uint? [] MyReturn=new uint?[3];
         uint temp;
         SendSixSerialExec(false,0);//nop
         SendSixSerialExec(false,0x040200);
