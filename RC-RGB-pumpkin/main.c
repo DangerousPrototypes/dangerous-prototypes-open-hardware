@@ -1,3 +1,19 @@
+/*
+* This file is part of a project from Dangerous Prototypes (http://dangerousprototypes.com/).
+*
+* Written and maintained by DangerousPrototypes.com.
+*
+* To the extent possible under law, the project has
+* waived all copyright and related or neighboring rights to this code. This
+* work is published from United States.
+*
+* For details see: http://creativecommons.org/publicdomain/zero/1.0/.
+*
+*    This program is distributed in the hope that it will be useful,
+*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*/
+
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x1000
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x1008
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x1018
