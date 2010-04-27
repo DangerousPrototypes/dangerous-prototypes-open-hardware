@@ -7,10 +7,7 @@
 *
 */
 //Our custom USB configuration
-//see XXXX for a full list of options
-#ifndef USBCFG_H
-#define USBCFG_H
-
+//see the Microchip CDC demo for a full list of configuration options
 #define USB_EP0_BUFF_SIZE 8									
 #define USB_MAX_NUM_INT 1
 
@@ -50,6 +47,3 @@
 
 #define USB_CDC_SUPPORT_ABSTRACT_CONTROL_MANAGEMENT_CAPABILITIES_D1 
 
-
-
-#endif //USBCFG_H
