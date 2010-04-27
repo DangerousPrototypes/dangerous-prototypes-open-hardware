@@ -174,7 +174,7 @@ void main(void){
 								irToy.usbOut[0]='V';//answer OK
 								irToy.usbOut[1]='1';
 								irToy.usbOut[2]='0';
-								irToy.usbOut[3]='1';
+								irToy.usbOut[3]='2';
 							}
 							putUSBUSART(irToy.usbOut,4);
 						}
