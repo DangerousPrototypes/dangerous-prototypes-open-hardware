@@ -16,7 +16,12 @@
 //4. That's it. You've got the latest source and we're compliant with the license.
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
-
+//
+//	Other options:
+//	We also changed the default usb_descriptors.c to fit our needs. 
+//	You may need to double check these settings depending on your USB stack version.
+//	*configDescriptor1[] remove _SELF from the attributes
+//	*manufacturer and product string descriptors
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -24,13 +29,10 @@
 //USB stack
 #include "./USB/usb.h"
 #include "./USB/usb_function_cdc.h"
-//#include ".\USB\usb.h"
-//#include ".\USB\usb_function_cdc.h"
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 #include "usb_config.h" //download these files from Microchip
 #include ".\USB\usb_device.h" 
-//#include "USB\usb.h"
 
 //IR Toy functions
 #include "SUMP.h" 		//sump functions
@@ -198,7 +200,7 @@ unsigned char SelfTest(void){
 	IRTX_TRIS &=(~IRTX_PIN);						
 	CCP1CON=0;
 	T2CON=0;
-	cnt=1024;
+	cnt=10000;
 	while(cnt--);
 	if(!(IRRX_PORT & IRRX_PIN)) err|=0b1; //test IR RX pullup, should be high
 
@@ -225,14 +227,12 @@ unsigned char SelfTest(void){
 	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
 	CCP1CON = 0b00011100 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
 
-	cnt=10000;
+	cnt=40000;
 	while(cnt--);
 
 	if(IRRX_PORT & IRRX_PIN) err|=0b10;//IR LED should activate RX
 	
 	return err;
-
-
 }
 
 

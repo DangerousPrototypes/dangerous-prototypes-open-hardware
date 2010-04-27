@@ -6,9 +6,6 @@
 *	http://dangerousprototypes.com
 *
 */
-#ifndef HARDWARE_PROFILE_H
-#define HARDWARE_PROFILE_H
-
 #define SAMPLE_ARRAY_SIZE 0x0080 //0x0010
 #define SAMPLE_SIZE 0x0400 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
 struct _irtoy{
@@ -122,5 +119,3 @@ struct _irtoy{
 #define POST_x14 0b1101000
 #define POST_x15 0b1110000
 #define POST_x16 0b1111000
-	
-#endif  //HARDWARE_PROFILE_H
