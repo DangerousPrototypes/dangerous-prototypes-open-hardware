@@ -8,13 +8,14 @@ using System.Windows.Forms;
 using Sevenstring.HWInterface;
 using System.IO.Ports;
 using System.Threading;
+using System.IO;
 
 namespace WindowsFormsApplication1
 {
     public partial class frmBusPirate : Form
     {
-        private const string FRM_VERSION= " 00.08.13 Alpha Version";
-        private const string FRM_TITLE="Pirate Bus Tester .NET";
+        private const string FRM_VERSION= " 00.08.19 Alpha Version";
+        private const string FRM_TITLE="PIC24F Pirate Bus Tester .NET" + FRM_VERSION;
 
         private const int TEMP_DELAY=200;
 
@@ -33,7 +34,7 @@ namespace WindowsFormsApplication1
         cmbSerial.Items.AddRange(SerialPort.GetPortNames());
         cmbSerial.SelectedIndex=0;
         tabBPControls.Enabled=false;
-        txtStatus.Text=FRM_TITLE+FRM_VERSION;
+        txtStatus.Text=FRM_TITLE;
         }
 
         
@@ -47,7 +48,7 @@ namespace WindowsFormsApplication1
         grpSerial.Enabled=false;
         tabBPControls.Enabled=true;
         txtStatus.Clear();
-        SetStatusString(String.Format("Connected to {0}!",cmbSerial.SelectedItem.ToString()));
+        SetStatusString(String.Format("Connected to {0}!\r\n ============ \r\n",cmbSerial.SelectedItem.ToString()));
         }
 
 
@@ -81,7 +82,6 @@ namespace WindowsFormsApplication1
             {
             SetStatusString("Reset Failed!\r\n");
             }
-
         SetStatusString("===============================\r\n");
         SetStatusString("Enter Raw Wire Mode!\r\n");
         if(myPIC24Program.BusPirate.EnterRawWireMode()==true)
@@ -92,7 +92,6 @@ namespace WindowsFormsApplication1
             {
             SetStatusString("Raw Wire Mode Failed!\r\n");
             }
-
         SetStatusString("===============================\r\n");
         SetStatusString("Configure!\r\n");
         //if(myPIC24Program.BusPirate.BusPirateRawWire.SetModeConfig(true,true,true)==true)
@@ -199,18 +198,25 @@ namespace WindowsFormsApplication1
         private void btnSend24Bit_Click(object sender, EventArgs e)
         {
         uint Data;
-        txtStatus.Clear();
+        string temp;
+        //txtStatus.Clear();
 
         try
             {
-            Data=Convert.ToUInt32(mtxt_SendData.Text,16);
-            myPIC24Program.SendSixSerialExec(false,Data);
-            string temp=String.Format("Sent 0x{0:x6}!\r\n",Data);
+            Data=Convert.ToUInt32(mtxt_SendData.Text.Trim(),16);
+            if(myPIC24Program.SendSixSerialExec(false,Data)==false)
+                {
+                temp=String.Format("Failure on sending Six Command: 0x{0:x6}!\r\n",Data);
+                SetStatusString(temp);
+                return;
+                }
+            temp=String.Format("Sent 0x{0:x6}!\r\n",Data);
             SetStatusString(temp);
             }
         catch
             {
             SetStatusString("Invalid Input!\r\n");
+            mtxt_SendData.Clear();
             }
         }
 
@@ -220,7 +226,7 @@ namespace WindowsFormsApplication1
         {
         uint? ReadData;
         txtReadData.Clear();
-        ReadData=myPIC24Program.SendRegOut();
+        ReadData=myPIC24Program.ReadRegOut();
         if(ReadData==null)
             {
             txtReadData.Text="Error!";
@@ -248,8 +254,8 @@ namespace WindowsFormsApplication1
         else
             {
             SetStatusString("Reset Failed!\r\n");
+            goto IMMEDIATE_EXIT;
             }
-
 
         SetStatusString("===============================\r\n");
         SetStatusString("Enter Raw Wire Mode!\r\n");
@@ -260,6 +266,7 @@ namespace WindowsFormsApplication1
         else
             {
             SetStatusString("Raw Wire Mode Failed!\r\n");
+            goto IMMEDIATE_EXIT;
             }
 
         SetStatusString("===============================\r\n");
@@ -272,6 +279,7 @@ namespace WindowsFormsApplication1
         else
             {
             SetStatusString("SetModeConfig Failed!\r\n");
+            goto IMMEDIATE_EXIT;
             }
         if(myPIC24Program.BusPirate.BusPirateRawWire.SetPeripheralConfig(true,true,true,true)==true)
             {
@@ -280,9 +288,100 @@ namespace WindowsFormsApplication1
         else
             {
             SetStatusString("SetPeripheralConfig Failed!\r\n");
+            goto IMMEDIATE_EXIT;
             }
+
+        IMMEDIATE_EXIT:
         Application.DoEvents();
         btnInitBusPirate.Enabled=true;
+        }
+
+
+
+        private void btnOpenAndLoadScript_Click(object sender, EventArgs e)
+        {
+        string temp;
+        P24Script.ScriptData [] myScriptData;
+        txtStatus.Clear();
+
+        SetStatusString("Pinging Bus Pirate...\r\n");
+        if(myPIC24Program.MCLRLow()==false)
+            {
+            SetStatusString("Error Pinging Bus Pirate!\r\n");
+            MessageBox.Show("No Response from Bus Pirate!","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+            return;
+            }
+
+        if(ofdScipt.ShowDialog()==DialogResult.OK)
+            {
+            temp=String.Format("Running Script {0} ...\r\n",ofdScipt.FileName);
+            SetStatusString(temp);
+            P24Script myScript=new P24Script(ofdScipt.FileName);
+
+            try
+                {
+                myScriptData= myScript.GetScriptData();
+                }
+            catch(Exception ex)
+                {
+                SetStatusString("Error!\r\n");
+                MessageBox.Show(ex.Message,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                return;
+                }
+
+            for(int ctr=0;ctr<myScriptData.Length;ctr++)
+                {
+                Application.DoEvents();
+                if(myScriptData[ctr].Command==P24Script.Commands.ENTERICSPNORMAL)
+                    {
+                    myPIC24Program.EnterICSPMode(PIC24Program.SECURE_ID_NORMAL_ICSP);
+                    SetStatusString("Entering ICSP Normal Mode!\r\n");
+                    }
+                else if(myScriptData[ctr].Command==P24Script.Commands.EXITICSP)
+                    {
+                    myPIC24Program.ExitICSPMode();
+                    SetStatusString("Exit ICSP Mode!\r\n");
+                    }
+                else if(myScriptData[ctr].Command==P24Script.Commands.FORCEDSIX)
+                    {
+                    temp=String.Format("Sending ForcedSix Command with Data: 0x{0:x6}!\r\n",myScriptData[ctr].HexData);
+                    SetStatusString(temp);
+                    //myPIC24Program.SendSixSerialExec(true,myScriptData[ctr].HexData);
+                    myPIC24Program.SendSixSerialExec(true,0);
+                    }
+                else if(myScriptData[ctr].Command==P24Script.Commands.SIX)
+                    {
+                    temp=String.Format("Sending Six Command with Data: 0x{0:x6}!\r\n",myScriptData[ctr].HexData);
+                    SetStatusString(temp);
+                    myPIC24Program.SendSixSerialExec(false,myScriptData[ctr].HexData);
+                    }
+                else if(myScriptData[ctr].Command==P24Script.Commands.REGOUT)
+                    {
+                    uint ? MyReading=myPIC24Program.ReadRegOut();
+                    temp=String.Format("Data Read: 0x{0:x6}!\r\n",MyReading);
+                    SetStatusString(temp);
+                    }
+
+                Thread.Sleep(myScriptData[ctr].Delay);
+                }
+            SetStatusString("Done!");
+            }
+        else
+            {
+            SetStatusString("Aborted!\r\n");
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        Application.Exit();
+        }
+
+
+
+        private void btnShowSampleScript_Click(object sender, EventArgs e)
+        {
+        txtStatus.Text=File.ReadAllText(Application.StartupPath + "\\" + "samplescript.txt");
         }
 
 

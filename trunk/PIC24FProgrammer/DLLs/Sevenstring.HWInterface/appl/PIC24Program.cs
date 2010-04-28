@@ -66,9 +66,9 @@ namespace Sevenstring.HWInterface
 	        } while (ctr!=-1);
 
         DataLow();
-        Thread.Sleep(50); // P19 1ms
+        Thread.Sleep(5); // P19 1ms
         MCLRHigh();
-        Thread.Sleep(50); // P7 25ms
+        Thread.Sleep(30); // P7 25ms
         return true;
         }
 
@@ -117,10 +117,10 @@ namespace Sevenstring.HWInterface
 
 
 
-        public void SendSixSerialExec(bool InitialRun,uint Data)
+        public bool SendSixSerialExec(bool InitialRun,uint Data)
         {
         int ctr;
-        DataLow();
+        if(DataLow()==false) return false;
         for(ctr=0;ctr<4;ctr++)
             {
             ClockHigh();
@@ -159,12 +159,13 @@ namespace Sevenstring.HWInterface
             ClockHigh();
             ClockLow();
             }
+        return true;
         }
         
 
 
 
-        public uint? SendRegOut()
+        public uint? ReadRegOut()
         {
         uint? Result=0;
         int ctr;
@@ -174,13 +175,16 @@ namespace Sevenstring.HWInterface
         ClockLow();
 
         DataLow();
-        for(ctr=0;ctr<7;ctr++)
+
+        //for(ctr=0;ctr<7;ctr++)
+        for(ctr=0;ctr<11;ctr++)
             {
             ClockHigh();
             ClockLow();
             }
 
-        for(ctr=0;ctr<24;ctr++)
+        //for(ctr=0;ctr<24;ctr++)
+        for(ctr=0;ctr<16;ctr++)
             {
             ClockHigh();
 
@@ -251,7 +255,7 @@ namespace Sevenstring.HWInterface
         SendSixSerialExec(false,0xBA0B96);
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0);
-        MyReturn[0]=SendRegOut();
+        MyReturn[0]=ReadRegOut();
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0xBADBB6);
         SendSixSerialExec(false,0);
@@ -259,12 +263,12 @@ namespace Sevenstring.HWInterface
         SendSixSerialExec(false,0xBAD3D6);
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0);
-        MyReturn[1]=SendRegOut();
+        MyReturn[1]=ReadRegOut();
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0xBA0BB6);
         SendSixSerialExec(false,0);
         SendSixSerialExec(false,0);
-        MyReturn[2]=SendRegOut();
+        MyReturn[2]=ReadRegOut();
         SendSixSerialExec(false,0);
 
         SendSixSerialExec(false,0x040200);
