@@ -8,6 +8,8 @@ FORCEDSIX,0x000000,10, This is forced SIX Command usually sent after entering to
 SIX,0x000000,10, This is for SIX Command. It sends 0x000000 Data. It has a delay of 10msec
 SIX,0x0000FF,20, This is for SIX Command. It sends 0x0000FF Data. It has a delay of 20msec
 
+NORMAL,0x000000,10, This is for Normal Command. 24-bits of data will be transmitted w/o the six command.
+
 REGOUT,0x000000,20, This is for reading. The Data is not used. It has a delay of 20msec
 
 EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
