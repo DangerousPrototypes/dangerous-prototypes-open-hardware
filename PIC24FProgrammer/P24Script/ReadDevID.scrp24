@@ -1,11 +1,11 @@
 // By 7  
-// TABLE 3-10: SERIAL INSTRUCTION EXECUTION FOR READING THE APPLICATION ID WORD
+// TABLE 3-10: SERIAL INSTRUCTION EXECUTION FOR READING THE DEVICE ID WORD
 
 ENTERICSPNORMALMODE,0x000000,5, This is for entering ICSP Mode. The Data is not used.  It has a delay of 10msec
 
 FORCEDSIX,0x000000,5, This is forced SIX Command usually sent after entering to ICSP Mode. It sends 0x000000 Data. It has a delay of 10msec
 
-// Step 1: Exit the Reset Vector
+
 SIX,0x000000,5, NOP
 SIX,0x000000,5, NOP
 SIX,0x040200,5, goto 0x200
@@ -13,20 +13,112 @@ SIX,0x000000,5, NOP
 SIX,0x000000,5, NOP
 
 
-// Step 2: Set TBLPAG
-SIX,0x200800,5, N/A
+SIX,0x200FF0,5, N/A
 SIX,0x880190,5, N/A
-SIX,0x205BE0,5, N/A
-SIX,0x207841,5, N/A
-SIX,0x000000,5, N/A
-SIX,0xBA0890,5, N/A
-SIX,0x000000,5, N/A
+SIX,0x200006,5, N/A
+
+SIX,0x207847,5, N/A
 SIX,0x000000,5, N/A
 
-// Step 3: Output VISI
+SIX,0xBA0BB6,5, N/A
+SIX,0x000000,5, N/A
+SIX,0x000000,5, N/A
 REGOUT,0x000000,5, read VISI register
-SIX,0x000000,5, NOP
+
+SIX,0xBA0BB6,5, N/A
+SIX,0x000000,5, N/A
+SIX,0x000000,5, N/A
+REGOUT,0x000000,5, read VISI register
+
+SIX,0x040200,5, goto 0x200
+SIX,0x000000,5, N/A
 
 EXIT_ICSP,0x000000,0, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
 
 
+// Below are the code extracted from the Open Programmer in Reading the Device ID
+
+//	bufferU[j++]=WAIT_T3;
+//	bufferU[j++]=TX16;
+//	bufferU[j++]=2;
+//	bufferU[j++]=0x4D;
+//	bufferU[j++]=0x43;
+//	bufferU[j++]=0x48;
+//	bufferU[j++]=0x51;
+//	bufferU[j++]=WAIT_T3;			//min 1ms
+//	bufferU[j++]=EN_VPP_VCC;		//VDD + VPP
+//	bufferU[j++]=0x5;
+//	bufferU[j++]=SET_PARAMETER;
+//	bufferU[j++]=SET_T3;
+//	bufferU[j++]=30000>>8;
+//	bufferU[j++]=30000&0xff;
+//	bufferU[j++]=WAIT_T3;			//min 25ms
+//	//Additional 5 clock cycles upon entering program mode
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x4;				//CK=1
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x4;				//CK=1
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x4;				//CK=1
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x4;				//CK=1
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x4;				//CK=1
+//	bufferU[j++]=SET_CK_D;
+//	bufferU[j++]=0x0;				//CK=0
+//	bufferU[j++]=ICSP_NOP;
+//	bufferU[j++]=SIX;				//GOTO 0x200
+//	bufferU[j++]=0x04;
+//	bufferU[j++]=0x02;
+//	bufferU[j++]=0x00;
+//	bufferU[j++]=ICSP_NOP;
+//	bufferU[j++]=ICSP_NOP;
+//	bufferU[j++]=FLUSH;
+//	for(;j<DIMBUF;j++) bufferU[j]=0x0;
+//	write();
+//	msDelay(37);
+//	read();
+//	if(saveLog)WriteLogIO();
+//	j=1;
+//	//Read DeviceID @0xFF0000, DevRev @0xFF0002
+//	bufferU[j++]=SIX_N;
+//	bufferU[j++]=4;
+//	bufferU[j++]=0x20;				//MOV XXXX,W0
+//	bufferU[j++]=0x0F;
+//	bufferU[j++]=0xF0;				//0xFF
+//	bufferU[j++]=0x88;				//MOV W0,TABLPAG
+//	bufferU[j++]=0x01;
+//	bufferU[j++]=0x90;
+//	bufferU[j++]=0x20;				//MOV XXXX,W6
+//	bufferU[j++]=0x00;
+//	bufferU[j++]=0x06;				//0x0000
+//	bufferU[j++]=0x20;				//MOV #VISI,W7
+//	bufferU[j++]=0x78;
+//	bufferU[j++]=0x47;
+//	bufferU[j++]=ICSP_NOP;
+//	bufferU[j++]=SIX_LONG;				//TBLRDL [W6++],[W7]
+//	bufferU[j++]=0xBA;
+//	bufferU[j++]=0x0B;
+//	bufferU[j++]=0xB6;
+//	bufferU[j++]=REGOUT;
+//	bufferU[j++]=SIX_LONG;				//TBLRDL [W6++],[W7]
+//	bufferU[j++]=0xBA;
+//	bufferU[j++]=0x0B;
+//	bufferU[j++]=0xB6;
+//	bufferU[j++]=REGOUT;
+//	bufferU[j++]=SIX;				//GOTO 0x200
+//	bufferU[j++]=0x04;
+//	bufferU[j++]=0x02;
+//	bufferU[j++]=0x00;
+//	bufferU[j++]=ICSP_NOP;
+//	bufferU[j++]=FLUSH;
