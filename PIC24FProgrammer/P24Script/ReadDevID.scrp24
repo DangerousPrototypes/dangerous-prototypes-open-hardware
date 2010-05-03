@@ -7,7 +7,9 @@ FORCEDSIX,0x000000,5, This is forced SIX Command usually sent after entering to 
 
 // Step 1: Exit the Reset Vector
 SIX,0x000000,5, NOP
+SIX,0x000000,5, NOP
 SIX,0x040200,5, goto 0x200
+SIX,0x000000,5, NOP
 SIX,0x000000,5, NOP
 
 
