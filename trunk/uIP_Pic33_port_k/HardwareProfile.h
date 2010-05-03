@@ -165,4 +165,4 @@
 #define CS_DIS()   ENC_CS_LAT=1
 #define HARDRESET() ENC_RST_LAT = 0; delay_ms(10);ENC_RST_LAT = 1
 #define SPI_BUF     ENC_SSPBUF
-#define SPITXRX() 	while(!ENC_SPI_IF)
+#define SPITXRX() 	while ((ENC_SPISTATbits.SPITBF == 1) || (ENC_SPISTATbits.SPIRBF == 0));

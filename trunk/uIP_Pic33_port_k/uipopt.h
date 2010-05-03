@@ -130,16 +130,16 @@ typedef unsigned short uip_stats_t;
  */
 #define UIP_PINGADDRCONF 0
 
-#define UIP_IPADDR0     192 /**< The first octet of the IP address of
+#define UIP_IPADDR0     10 /**< The first octet of the IP address of
 			       this uIP node, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_IPADDR1     168 /**< The second octet of the IP address of
+#define UIP_IPADDR1     0 /**< The second octet of the IP address of
 			       this uIP node, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_IPADDR2     1   /**< The third octet of the IP address of
+#define UIP_IPADDR2     0   /**< The third octet of the IP address of
 			       this uIP node, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_IPADDR3     25   /**< The fourth octet of the IP address of
+#define UIP_IPADDR3     251   /**< The fourth octet of the IP address of
 			       this uIP node, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
 
@@ -156,16 +156,16 @@ typedef unsigned short uip_stats_t;
 			       this uIP node, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
 
-#define UIP_DRIPADDR0   192 /**< The first octet of the IP address of
+#define UIP_DRIPADDR0   10 /**< The first octet of the IP address of
 			       the default router, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_DRIPADDR1   168 /**< The second octet of the IP address of
+#define UIP_DRIPADDR1   0 /**< The second octet of the IP address of
 			       the default router, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_DRIPADDR2   1   /**< The third octet of the IP address of
+#define UIP_DRIPADDR2   0   /**< The third octet of the IP address of
 			       the default router, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
-#define UIP_DRIPADDR3   1   /**< The fourth octet of the IP address of
+#define UIP_DRIPADDR3   3   /**< The fourth octet of the IP address of
 			       the default router, if UIP_FIXEDADDR is
 			       1. \hideinitializer */
 
@@ -178,26 +178,14 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_FIXEDETHADDR 0
+#define UIP_FIXEDETHADDR 1
 
-#define UIP_ETHADDR0    0x00  /**< The first octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
-#define UIP_ETHADDR1    0xbd  /**< The second octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
-#define UIP_ETHADDR2    0x3b  /**< The third octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
-#define UIP_ETHADDR3    0x33  /**< The fourth octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
-#define UIP_ETHADDR4    0x05  /**< The fifth octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
-#define UIP_ETHADDR5    0x71  /**< The sixth octet of the Ethernet
-				 address if UIP_FIXEDETHADDR is
-				 1. \hideinitializer */
+#define UIP_ETHADDR0    0x00
+#define UIP_ETHADDR1    0x04
+#define UIP_ETHADDR2    0xA3
+#define UIP_ETHADDR3    0x00
+#define UIP_ETHADDR4    0x10
+#define UIP_ETHADDR5    0x05
 
 /** @} */
 /*------------------------------------------------------------------------------*/
@@ -444,7 +432,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_LOGGING     0
+#define UIP_LOGGING     1
 
 /**
  * Print out a uIP log message.

@@ -34,6 +34,7 @@
 #include "HardwareProfile.h"
 #include "uip.h"
 #include "delay.h"
+//#include <stdio.h>
 
 // include configuration
 //#include "ax88796conf.h"
@@ -87,25 +88,30 @@ void nicRegDump(void)
 
 u8 enc28j60ReadOp(u8 op, u8 address)
 {
-	u8 data;
-   
+	volatile u8 data;
 	// assert CS
 	CS_EN();
 	
 	// issue read command
 	SPI_BUF = op | (address & ADDR_MASK);
 	SPITXRX();
+	data = SPI_BUF;
+
 	// read data
 	SPI_BUF = 0x00;
 	SPITXRX();
+
 	// do dummy read if needed
 	if(address & 0x80)
 	{
+		data = SPI_BUF;
 		SPI_BUF = 0x00;
 		SPITXRX();
+
 	}
-	data = SPI_BUF;
 	
+	data = SPI_BUF;
+
 	// release CS
 	CS_DIS();
 
@@ -114,28 +120,37 @@ u8 enc28j60ReadOp(u8 op, u8 address)
 
 void enc28j60WriteOp(u8 op, u8 address, u8 data)
 {
+	volatile u8 Dummy;
+
 	// assert CS
 	CS_EN();
-
 	// issue write command
 	SPI_BUF = op | (address & ADDR_MASK);
+//putchar('W');
 	SPITXRX();
+//putchar('X');
+	Dummy = SPI_BUF;
 	// write data
 	SPI_BUF = data;
+//putchar('Y');
 	SPITXRX();
-
+//putchar('Z');
+	Dummy = SPI_BUF;
+//putchar('\n');
 	// release CS
     CS_DIS();
 }
 
 void enc28j60ReadBuffer(u16 len, u8* data)
 {
+	volatile u8 Dummy;
 	// assert CS
 	CS_EN();
 	
 	// issue read command
 	SPI_BUF = ENC28J60_READ_BUF_MEM;
 	SPITXRX();
+	Dummy = SPI_BUF;
 	while(len--)
 	{
 		// read data
@@ -149,17 +164,20 @@ void enc28j60ReadBuffer(u16 len, u8* data)
 
 void enc28j60WriteBuffer(u16 len, u8* data)
 {
+	volatile u8 Dummy;
 	// assert CS
 	CS_EN();
 	
 	// issue write command
 	SPI_BUF = ENC28J60_WRITE_BUF_MEM;
 	SPITXRX();
+	Dummy = SPI_BUF;
 	while(len--)
 	{
 		// write data
 		SPI_BUF = *data++;
 		SPITXRX();
+		Dummy = SPI_BUF;
 	}	
 	// release CS
 	CS_DIS();
@@ -268,24 +286,22 @@ void enc28j60Init(void)
         //B3 CS
         //B2 RST
         //CS and RST pins
-        
     ENC_CS_TRIS  = 0; //set direction of CS pin as output (master)
     ENC_RST_TRIS = 0; //set direction of RST pin as output
     
     ENC_CS_LAT = 1; //set CS pin high
     ENC_RST_LAT= 1; //set RST pin high
 
-    //MISO1 C2/RP18 (input)
-    SDI1R_I = 18;                   
-    //CLK1 C0/RP16 (output)
-    RP16_O = SCK1OUT_O;     
-    //MOSI1 C1/RP17 (output)
-    RP17_O = SDO1_O;
-    ENC_SPICON1bits.MSTEN = 1;
-    ENC_SPICON1bits.CKP = 0;
-	ENC_SPICON1bits.SSEN = 0;
+	ENC_SPICON2 = 0;
+	ENC_SPICON1 = 0;
+
     ENC_SPICON1bits.CKE = 1;
-    ENC_SPISTATbits.SPIEN = 1;
+	ENC_SPICON1bits.MSTEN = 1;
+    //ENC_SPICON1bits.SPRE = 6; // 2:1
+	ENC_SPICON1bits.SPRE = 7; // 1:1
+	ENC_SPICON1bits.PPRE = 2; // 4:1
+	ENC_SPISTATbits.SPIEN = 1;
+
     CS_DIS();
 	// perform system reset
     HARDRESET();
@@ -294,7 +310,11 @@ void enc28j60Init(void)
 	for(i=0;i<0x10;i++){
 		for(j=0;j<0xff;j++) ;
 	}
-	while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY));
+	//while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY));
+	do{
+		i = enc28j60Read(ESTAT);
+	}
+	while((i & 0x08) || (~i & ESTAT_CLKRDY));
 
 	// do bank 0 stuff
 	// initialize receive buffer
