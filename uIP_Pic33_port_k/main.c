@@ -9,6 +9,8 @@
 #include "uip_arp.h"
 #include "enc28j60.h"
 #include "nic.h"
+#include <stdio.h>
+
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 //it's important to keep configuration bits that are compatibale with the bootloader
 //if you change it from the internall/PLL clock, the bootloader won't run correctly
@@ -32,39 +34,72 @@ void initTimer(void){
 static long timerCounter=0;
 static int irqFlag=0;
 
+extern void InitHardware(void);
+
+void uip_log(char *msg){
+	puts( msg );
+	putchar('\n');
+}
 
 //I don't know how to call interrupts in DSPIC
 int main(void){ //main function, execution starts here
+  unsigned int rcon = RCON;
   unsigned char i;
   unsigned char arptimer=0;
 
-	AD1PCFGL = 0xFFFF; //digital pins
+   	// Initiate Clock Switch to Fast RC with NO PLL (NOSC=0b000)
+//	__builtin_write_OSCCONH(0x00);
+//	__builtin_write_OSCCONL(0x01);
+	// Wait for Clock switch to occur
+//	while (OSCCONbits.COSC != 0b000);
 
+	//AD1PCFGL = 0xFFFF; //digital pins
 	//setup internal clock for 80MHz/40MIPS
 	//7.37/2=3.685*43=158.455/2=79.2275
-	CLKDIVbits.PLLPRE=0; // PLLPRE (N2) 0=/2 
 	PLLFBD=41; //pll multiplier (M) = +2
 	CLKDIVbits.PLLPOST=0;// PLLPOST (N1) 0=/2
+	CLKDIVbits.PLLPRE=0; // PLLPRE (N2) 0=/2 
     
-   
+   	// Initiate Clock Switch to Fast RC with PLL (NOSC = 0b001)
+//	__builtin_write_OSCCONH(0x01);
+//	__builtin_write_OSCCONL(0x01);
+	// Wait for Clock switch to occur
+//	while (OSCCONbits.COSC != 0b001);
+
     while(!OSCCONbits.LOCK);//wait for PLL ready
+
+	InitHardware();
+puts("READY\n");
+/*
+printf("Reset Control Word: %04x\n", rcon );
+unsigned int osccon = OSCCON;
+printf("OSCCON: %04x\n", osccon );
+printf("CLKDIV: %04x\n", CLKDIV );
+printf("PLLFBD: %04x\n", PLLFBD );
+*/
     nic_init(); // Initialize ENC28j60. At this point uIP is not used yet
+    puts("nic init\n");
 
     // init uIP
     uip_init();
+    puts("uip init\n");
 
     // init ARP cache
     uip_arp_init();
+    puts("arp init\n");
 
     // init periodic timer
     initTimer();
+    puts("timer init\n");
 
       // init app
     example1_init();
-    
+    puts("example1 init\n");
  while(1){
     // look for a packet
     uip_len = nic_poll();
+//printf("uip_len: %u", uip_len );
+
     if(uip_len == 0){
       // if timed out, call periodic function for each connection
      if(timerCounter > TIMERCOUNTER_PERIODIC_TIMEOUT){
@@ -122,4 +157,30 @@ void __attribute__ ((interrupt,address(0xF00), no_auto_psv)) _T1Interrupt(){
 //	IEC0bits.T1IE = 1;
 }
 
+//Address Error Trap
+union DWORD
+{
+	struct
+	{
+		unsigned short low;
+		unsigned short high;
+	} word;
+	unsigned long value;
+};
+
+	
+//static unsigned short StkAddrLo;  // order matters
+//static unsigned short StkAddrHi;
+static union DWORD StkAddress;
+void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
+	"mov #_StkAddress+2,w1\n 	\
+	pop [w1--]\n			\
+	pop [w1]\n			\
+	push [w1]\n			\
+	push [++w1]")))) _AddressError(){
+	
+	INTCON1bits.ADDRERR = 0;
+	StkAddress.value -= 2;
+	printf("\nAddress Error @ %08lx",StkAddress.value );
+}
 

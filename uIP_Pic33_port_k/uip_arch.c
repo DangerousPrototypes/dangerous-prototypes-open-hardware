@@ -35,7 +35,7 @@
 
 #include "uip.h"
 #include "uip_arch.h"
-
+//#include <stdio.h>
 #define BUF ((uip_tcpip_hdr *)&uip_buf[UIP_LLH_LEN])
 #define IP_PROTO_TCP    6
 
@@ -71,7 +71,7 @@ u16_t
 uip_chksum(u16_t *sdata, u16_t len)
 {
   u16_t acc;
-  
+//  printf("uip_chksum sdata,len: %p,%04x\n",sdata,len);
   for(acc = 0; len > 1; len -= 2) {
     acc += *sdata;
     if(acc < *sdata) {
@@ -102,16 +102,25 @@ uip_ipchksum(void)
 u16_t
 uip_tcpchksum(void)
 {
-  u16_t hsum, sum;
+  u16_t hsum, sum = 0;
 
+  
   
   /* Compute the checksum of the TCP header. */
   hsum = uip_chksum((u16_t *)&uip_buf[20 + UIP_LLH_LEN], 20);
 
   /* Compute the checksum of the data in the TCP packet and add it to
      the TCP header checksum. */
-  sum = uip_chksum((u16_t *)uip_appdata,
-		   (u16_t)(((((u16_t)(BUF->len[0]) << 8) + BUF->len[1]) - 40)));
+  u16_t tcp_size = ((((u16_t)(BUF->len[0]) << 8) + BUF->len[1]) - 40);
+  if( tcp_size > 0 )
+  {
+  	/*
+	NOTE: Casting uip_appdata to u16_t* REQUIRES that
+	uip_appdata is aligned to a even address (use attribute aligned(2) )
+	OTHERWISE the checksum calc may cause address error traps.
+	*/
+	sum = uip_chksum((u16_t *)uip_appdata,tcp_size);
+  }
 
   if((sum += hsum) < hsum) {
     ++sum;
