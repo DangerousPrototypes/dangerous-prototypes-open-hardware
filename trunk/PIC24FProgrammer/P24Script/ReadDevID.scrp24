@@ -1,0 +1,30 @@
+// By 7  
+// TABLE 3-10: SERIAL INSTRUCTION EXECUTION FOR READING THE APPLICATION ID WORD
+
+ENTERICSPNORMALMODE,0x000000,5, This is for entering ICSP Mode. The Data is not used.  It has a delay of 10msec
+
+FORCEDSIX,0x000000,5, This is forced SIX Command usually sent after entering to ICSP Mode. It sends 0x000000 Data. It has a delay of 10msec
+
+// Step 1: Exit the Reset Vector
+SIX,0x000000,5, NOP
+SIX,0x040200,5, goto 0x200
+SIX,0x000000,5, NOP
+
+
+// Step 2: Set TBLPAG
+SIX,0x200800,5, N/A
+SIX,0x880190,5, N/A
+SIX,0x205BE0,5, N/A
+SIX,0x207841,5, N/A
+SIX,0x000000,5, N/A
+SIX,0xBA0890,5, N/A
+SIX,0x000000,5, N/A
+SIX,0x000000,5, N/A
+
+// Step 3: Output VISI
+REGOUT,0x000000,5, read VISI register
+SIX,0x000000,5, NOP
+
+EXIT_ICSP,0x000000,0, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
+
+
