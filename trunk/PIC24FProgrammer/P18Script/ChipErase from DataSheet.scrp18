@@ -1,5 +1,6 @@
 // By 7
-// Erase for PIC18  
+// Bulk Erase for PIC18
+// See Programming Specs Page 9  
 
 PIC18ENTERICSP,0x000000,10, This is for entering ICSP Mode. The Data is not used. It has a delay of 10msec
 
