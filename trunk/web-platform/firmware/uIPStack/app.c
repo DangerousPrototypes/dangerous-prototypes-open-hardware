@@ -3,8 +3,10 @@
 *****************************************************************************/
 
 #include "app.h"
+#include "hardware/rtcc.h"
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 unsigned char sendBuf[UIP_TCP_MSS] __attribute__((aligned(2)));
 unsigned int last_sent_size;
@@ -29,6 +31,7 @@ void tcp_send( unsigned int size )
 
 void example1_app(void)
 {
+	struct tm time;
 	unsigned char conn_id =  *(uip_conn->appstate);
 	if(uip_connected()){
 		*(uip_conn->appstate) = connectionID;
@@ -43,6 +46,9 @@ void example1_app(void)
 	else if(uip_newdata())
 	{
 		printf("app: newdata. Connection ID: %hhd. len=%u\n", conn_id, uip_datalen() );
+		rtcc_get_tm( &time );
+			
+		printf("\ntime: %s\n", asctime(&time) );
 		u16_t i;
 		for( i = 0; i < uip_datalen() ; i++ ){
 			printf("%hhx ", uip_appdata[i]);

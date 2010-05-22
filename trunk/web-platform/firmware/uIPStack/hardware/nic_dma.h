@@ -36,8 +36,10 @@ extern volatile union SHORT_BITFIELD UIP_DMA_STATUS ;
 #define UIP_DMA_BUFFER_FREE ( UIP_DMA_STATUS.bits.bit1 )
 //a packet has been RX DMA'd, and is in the buffer
 #define UIP_DMA_RX_PACKET_READY ( UIP_DMA_STATUS.bits.bit2 )
+//a periodic timer event had occurred
+#define UIP_DMA_PERIODIC_TIMEOUT ( UIP_DMA_STATUS.bits.bit3 )
 
-#define UIP_DMA_BUFFER_STATUS_RESET() 	UIP_DMA_STATUS.value = 1
+#define UIP_DMA_BUFFER_STATUS_RESET() 	UIP_DMA_BUFFER_FREE = 1
 
 //number of packets that are waiting in the ENC for retrieval.
 //This is incremented in the INT handler if the buffer is not 
