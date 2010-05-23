@@ -12,8 +12,6 @@ SIX,0x0000FF,20, This is for SIX Command. It sends 0x0000FF Data. It has a delay
 
 SIX_AFTER_REGOUT,0x040200,10, This is SIX after Regout
 
-NORMAL,0x000000,10, This is for Normal Command. 24-bits of data will be transmitted w/o the six command. DONT USE THIS
-
 REGOUT,0x000000,20, This is for reading. The Data is not used. It has a delay of 20msec
 
 EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
@@ -25,5 +23,7 @@ PIC18ENTERICSP,0x000000,10, This is for entering ICSP Mode. The Data is not used
 SEND4BITCOMMANDMSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0x000001. It has a delay of 10msec
 
 SEND16BITDATALSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0x000001. It has a delay of 10msec
+
+READ8BITLSBFIRST, 0x000000,10, Data is unused this is for reading.
 
 EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
