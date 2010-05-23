@@ -20,10 +20,12 @@ EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It h
 // ================= FOR PIC18 =======================
 PIC18ENTERICSP,0x000000,10, This is for entering ICSP Mode. The Data is not used. It has a delay of 10msec
 
-SEND4BITCOMMANDMSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0x000001. It has a delay of 10msec
+SEND4BITCOMMANDMSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0b0001. It has a delay of 10msec
 
-SEND16BITDATALSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0x000001. It has a delay of 10msec
+SEND16BITDATALSBFIRST,0x000001,10, This is for Sending 16-bit Data. It sends 0x0001. It has a delay of 10msec
 
-READ8BITLSBFIRST, 0x000000,10, Data is unused this is for reading.
+SEND8BITDATALSBFIRST,0x000001,10, This is for Sending 8-bit Command. It sends 0x01. It has a delay of 10msec
+
+READ8BITLSBFIRST, 0x000000,10, Data is unused. It has a delay of 10msec
 
 EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
