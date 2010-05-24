@@ -41,16 +41,20 @@ void __attribute__ ((interrupt,auto_psv)) _CNInterrupt(){
 
 /*
 * We'll have this interrupt handler for the dummy DMA channel
-* But it won't do anything except clear the int
-* We'll try to setup the channel so it never actually occurs
+* It will trigger the end of packet transmission because
+* we cannot lower CS until the END of the transmission 
+* (ie, AFTER the dummy has READ the last byte )
 */
 void ENC_DMADUMMY_INTERRUPT(){
+	enc28j60EndPacketSend();
+	if( 0 == ( uip_dma_rx_pending_packets = NICBeginPacketRetrieveDMA() ) )
+	{
+		UIP_DMA_BUFFER_STATUS_RESET();
+	}
 	ENC_DMADUMMY_INTIF = 0;	
 }
 
 void ENC_DMA_INTERRUPT(){
-	ENC_DMACONbits.CHEN = 0;
-	ENC_DMADUMMYCONbits.CHEN = 0;
 	if( ENC_DMACONbits.DIR == 0 ) //DIR 0 = read from peripheral to RAM
 	{
 		//do rx finished cleanup
@@ -59,11 +63,7 @@ void ENC_DMA_INTERRUPT(){
 	}
 	else
 	{
-		enc28j60EndPacketSend();
-		if( 0 == ( uip_dma_rx_pending_packets = NICBeginPacketRetrieveDMA() ) )
-		{
-			UIP_DMA_BUFFER_STATUS_RESET();
-		}
+		//end of packet send handled by other DMA channel
 	}
 	
 	ENC_DMA_INTIF = 0; //clear DMA int flag

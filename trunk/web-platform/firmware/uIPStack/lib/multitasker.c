@@ -2,10 +2,12 @@
 #include <p33Fxxxx.h>
 #include "multitasker.h"
 
+
+//state of a task
 struct task{
-	short sp;
-	short fp;
-	short stack[STACK_SIZE];
+	short sp;	//stack pointer
+	short fp;	//frame pointer
+	short stack[STACK_SIZE];	//the task's stack
 };
 
 union DWORD
@@ -18,13 +20,24 @@ union DWORD
 	unsigned long value;
 };
 
-struct task tasks[TASK_COUNT];
+
+//pointer for jumping back into the scheduler
 void * schedule_return;
+//scheduler's stack pointer
 short original_stack;
+//scheduler's frame pointer
 short original_frame;
+//scheduler's stack limit pointer
 short original_splim;
+
+//pointer to the currently executing task
+//Not valid when the scheduler function is running
 struct task *current_task;
 
+//the id of the current task
+unsigned int current_task_id;
+
+struct task tasks[TASK_COUNT];
 
 void task_init( int task_id, void *entry_point )
 {
@@ -32,6 +45,9 @@ void task_init( int task_id, void *entry_point )
 	union DWORD ep;
 	ep.value = entry_point;
 	short *stack_ptr = t->stack;
+	//put the entry point of the function onto this stack
+	//we'll be jumping to the function later by switching to
+	//this stack then "return"-ing
 	*stack_ptr++ = ep.word.low;
 	*stack_ptr++ = ep.word.high;
 	*stack_ptr++ = (short)t->stack;
@@ -50,11 +66,11 @@ void task_schedule()
 
 	while(1)
 	{
-		unsigned int t = 0 ;
+		current_task_id = 0;
 		schedule_return = &&sch_ret;
 		while(1)
 		{
-			current_task = &(tasks[t]);
+			current_task = &(tasks[current_task_id]);
 			SPLIM = (unsigned int) (current_task->stack + (STACK_SIZE ));
 			asm volatile ( " \
 				disi #0x06	\n \
@@ -65,8 +81,8 @@ void task_schedule()
 				: 
 				: "m"(current_task->sp), "m"(current_task->fp) );
 			
-sch_ret:	t++;
-			if( t >= TASK_COUNT ) t=0;
+sch_ret:	current_task_id++;
+			if( current_task_id >= TASK_COUNT ) current_task_id=0;
 			
 		}
 	}
@@ -90,5 +106,9 @@ void task_yield()
 	goto *schedule_return;
 }
 
+int task_stack_used(int task_id){
+	struct task *ptr = &tasks[task_id];
+	return (int)(ptr->sp) - (int)(ptr->stack);
+}
 
-
+int __attribute__((inline)) task_current_task_id(){ return current_task_id; }

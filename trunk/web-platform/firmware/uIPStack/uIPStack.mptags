@@ -13,7 +13,7 @@ ARP_REQUEST::1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_
 BANK_MASK::0x60	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	22;"	d	line:22
 BIG_ENDIAN::1234	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	473;"	d	line:473
 BUF::((structarp_hdr*)&uip_buf[0])	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	119;"	d	line:119	file:
-BUF::((structuip_eth_hdr*)&uip_buf[	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	16;"	d	line:16	file:
+BUF::((structuip_eth_hdr*)&uip_buf[	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c	12;"	d	line:12	file:
 BUF::((uip_tcpip_hdr*)&uip_buf[UIP_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	39;"	d	line:39	file:
 BUF::((uip_tcpip_hdr*)&uip_buf[UIP_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	156;"	d	line:156	file:
 BYTE_ORDER::LITTLE_ENDIAN	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	485;"	d	line:485
@@ -23,12 +23,12 @@ CLOSED::0	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	963
 CLOSING::6	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	969;"	d	line:969
 CS_DIS::ENC_CS_LAT=1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	195;"	d	line:195
 CS_EN::ENC_CS_LAT=0	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	194;"	d	line:194
-DWORD	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	11;"	u	line:11	file:
-DWORD	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	174;"	u	line:174	file:
+DWORD	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	13;"	u	line:13	file:
+DWORD	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	248;"	u	line:248	file:
 Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	102;"	l	line:102
 Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	123;"	l	line:123
-Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	386;"	l	line:386
-Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	477;"	l	line:477
+Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	357;"	l	line:357
+Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	446;"	l	line:446
 Dummy	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	84;"	l	line:84
 EBSTCON::(0x07|0x60)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	108;"	d	line:108
 EBSTCSH::(0x09|0x60)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	110;"	d	line:110
@@ -116,7 +116,7 @@ ENC_DMADUMMYPAD::DMA0PAD	C:\Documents and Settings\tony\My Documents\PIC\uIPStac
 ENC_DMADUMMYREQ::DMA0REQ	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	73;"	d	line:73
 ENC_DMADUMMYREQbits::DMA0REQbits	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	74;"	d	line:74
 ENC_DMADUMMYSTA::DMA0STA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	75;"	d	line:75
-ENC_DMADUMMY_INTERRUPT	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	47;"	f	line:47
+ENC_DMADUMMY_INTERRUPT	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	48;"	f	line:48
 ENC_DMADUMMY_INTERRUPT::__attribute__((interrupt,auto_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	80;"	d	line:80
 ENC_DMADUMMY_INTIE::(IEC0bits.DMA0IE)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	78;"	d	line:78
 ENC_DMADUMMY_INTIF::(IFS0bits.DMA0IF)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	79;"	d	line:79
@@ -124,7 +124,7 @@ ENC_DMAPAD::DMA1PAD	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\har
 ENC_DMAREQ::DMA1REQ	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	59;"	d	line:59
 ENC_DMAREQbits::DMA1REQbits	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	60;"	d	line:60
 ENC_DMASTA::DMA1STA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	61;"	d	line:61
-ENC_DMA_INTERRUPT	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	51;"	f	line:51
+ENC_DMA_INTERRUPT	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	57;"	f	line:57
 ENC_DMA_INTERRUPT::__attribute__((interrupt,auto_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	66;"	d	line:66
 ENC_DMA_INTIE::(IEC0bits.DMA1IE)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	64;"	d	line:64
 ENC_DMA_INTIF::(IFS0bits.DMA1IF)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	65;"	d	line:65
@@ -229,9 +229,7 @@ IP_HLEN::20	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	3
 IP_MF::0x20	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	350;"	d	line:350	file:
 IP_PROTO_TCP::6	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	40;"	d	line:40	file:
 IP_TCP_HEADER_LENGTH::40	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	22;"	d	line:22	file:
-InitHardware	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	73;"	f	line:73	signature:(void)
-InitHardware	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	36;"	p	line:36	file:	signature:(void)
-InitializeUART1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	15;"	f	line:15	signature:(void)
+InitHardware	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	50;"	f	line:50	signature:(void)
 LAST_ACK::8	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	971;"	d	line:971
 LD1_I::(PORTAbits.RA8)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	8;"	d	line:8
 LD1_O::(LATAbits.LATA8)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	9;"	d	line:9
@@ -274,7 +272,7 @@ MAIPGL::(0x06|0x40|0x80)	C:\Documents and Settings\tony\My Documents\PIC\uIPStac
 MAMXFLH::(0x0B|0x40|0x80)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	91;"	d	line:91
 MAMXFLL::(0x0A|0x40|0x80)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	90;"	d	line:90
 MAPHSUP::(0x0D|0x40|0x80)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	92;"	d	line:92
-MAX_FRAMELEN::1500	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	240;"	d	line:240
+MAX_FRAMELEN::512	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	240;"	d	line:240
 MICMD::(0x12|0x40|0x80)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	94;"	d	line:94
 MICMD_MIIRD::0x01	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	189;"	d	line:189
 MICMD_MIISCAN::0x02	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	188;"	d	line:188
@@ -390,10 +388,10 @@ SS1OUT_O::9	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\Ha
 SS1R_I::RPINR21bits.SS1R	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	139;"	d	line:139
 SS2OUT_O::12	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	158;"	d	line:158
 SS2R_I::RPINR23bits.SS2R	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	142;"	d	line:142
-STACK_SIZE::50	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	15;"	d	line:15
+STACK_SIZE::500	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	15;"	d	line:15
 SYN_RCVD::1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	964;"	d	line:964
 SYN_SENT::2	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	965;"	d	line:965
-StkAddress	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	188;"	v	line:188	file:
+StkAddress	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	258;"	v	line:258	file:
 T2CKR_I::RPINR3bits.T2CKR	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	124;"	d	line:124
 T3CKR_I::RPINR3bits.T3CKR	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	125;"	d	line:125
 T4CKR_I::RPINR4bits.T4CKR	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h	126;"	d	line:126
@@ -426,15 +424,15 @@ UIP_APPCALL::example1_app	C:\Documents and Settings\tony\My Documents\PIC\uIPSta
 UIP_APPSTATE_SIZE::1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h	10;"	d	line:10
 UIP_ARPTAB_SIZE::8	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	386;"	d	line:386
 UIP_ARP_MAXAGE::120	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	394;"	d	line:394
-UIP_BUFSIZE::1500	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	414;"	d	line:414
+UIP_BUFSIZE::512	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	414;"	d	line:414
 UIP_CLOSE::16	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	921;"	d	line:921
 UIP_CONNECTED::64	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	931;"	d	line:931
 UIP_CONNS::10	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	298;"	d	line:298
 UIP_DATA::1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	952;"	d	line:952
-UIP_DMA_BUFFER_FREE::(UIP_DMA_STATUS.bits.bit1)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	36;"	d	line:36
-UIP_DMA_BUFFER_STATUS_RESET::UIP_DMA_BUFFER_FREE=1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	42;"	d	line:42
-UIP_DMA_PERIODIC_TIMEOUT::(UIP_DMA_STATUS.bits.bit3)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	40;"	d	line:40
-UIP_DMA_RX_PACKET_READY::(UIP_DMA_STATUS.bits.bit2)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	38;"	d	line:38
+UIP_DMA_BUFFER_FREE::(UIP_DMA_STATUS.bits.bit1)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	35;"	d	line:35
+UIP_DMA_BUFFER_STATUS_RESET::UIP_DMA_BUFFER_FREE=1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	41;"	d	line:41
+UIP_DMA_PERIODIC_TIMEOUT::(UIP_DMA_STATUS.bits.bit3)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	39;"	d	line:39
+UIP_DMA_RX_PACKET_READY::(UIP_DMA_STATUS.bits.bit2)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	37;"	d	line:37
 UIP_DMA_STATUS	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	6;"	v	line:6
 UIP_DRIPADDR0::10	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	159;"	d	line:159
 UIP_DRIPADDR1::0	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	162;"	d	line:162
@@ -494,21 +492,22 @@ UIP_UDP_APPCALL::udp_appcall	C:\Documents and Settings\tony\My Documents\PIC\uIP
 UIP_UDP_CHECKSUMS::0	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	254;"	d	line:254
 UIP_UDP_CONNS::10	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	261;"	d	line:261
 UIP_UDP_TIMER::3	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	959;"	d	line:959
-UIP_URGDATA::1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	329;"	d	line:329
+UIP_URGDATA::0	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	329;"	d	line:329
 _APP_H_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h	2;"	d	line:2
-_AddressError	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	194;"	f	line:194
+_AddressError	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	264;"	f	line:264
 _CNInterrupt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	19;"	f	line:19
 _DELAY_H_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.h	2;"	d	line:2
 _NIC_DMA_H_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	2;"	d	line:2
-_RTCCInterrupt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	167;"	f	line:167
-_T1Interrupt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	24;"	v	line:24
+_RTCCInterrupt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	241;"	f	line:241
+_StackError	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	277;"	f	line:277
+_UIPSOCKETTASK_H_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.h	2;"	d	line:2
 __NIC_H__	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	2;"	d	line:2
 __UIPOPT_H__	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	58;"	d	line:58
 __UIP_ARCH_H__	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.h	57;"	d	line:57
 __UIP_ARP_H__	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.h	53;"	d	line:53
 __UIP_H__	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	53;"	d	line:53
-_mon_getc	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	63;"	f	line:63
-_mon_putc	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	37;"	f	line:37	signature:(char c)
+_mon_getc	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	40;"	f	line:40
+_mon_putc	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	14;"	f	line:14	signature:(char c)
 acc	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	73;"	l	line:73
 ackerr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	872;"	m	line:872	struct:uip_stats::<anonymous>
 ackno	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	996;"	m	line:996
@@ -518,7 +517,7 @@ arp_entry	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c
 arp_hdr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	66;"	s	line:66	file:
 arp_table	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	112;"	v	line:112	file:
 arptime	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	116;"	v	line:116	file:
-arptimer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	46;"	l	line:46
+arptimer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c	14;"	v	line:14
 bcdH2char	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	53;"	f	line:53	signature:( short val )
 bcdL2char	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	46;"	f	line:46	signature:( short val )
 bit1	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	12;"	m	line:12	struct:SHORT_BITFIELD::<anonymous>
@@ -539,7 +538,7 @@ bit8	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h
 bit9	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	20;"	m	line:20	struct:SHORT_BITFIELD::<anonymous>
 bitmap_bits	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	342;"	v	line:342	file:
 bits	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	28;"	m	line:28	union:SHORT_BITFIELD
-buf	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	64;"	l	line:64
+buf	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	41;"	l	line:41
 c	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	140;"	v	line:140	file:
 c	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	114;"	v	line:114	file:
 cconn	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	208;"	l	line:208
@@ -549,11 +548,13 @@ conn	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	208;"	l	
 conn	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	276;"	l	line:276
 conn_id	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	35;"	l	line:35
 connectionID	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	13;"	v	line:13	file:
-count	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	65;"	l	line:65
-count	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	41;"	l	line:41
-current_task	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	26;"	v	line:26
+count	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	42;"	l	line:42
+count	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	40;"	l	line:40
+current_task	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	35;"	v	line:35
+current_task_id	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	38;"	v	line:38
 data	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	172;"	l	line:172
 data	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	52;"	l	line:52
+debug_task_main	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	138;"	f	line:138
 delay_cnt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.c	6;"	l	line:6
 delay_cnt_buffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.c	8;"	l	line:8
 delay_ms	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.c	4;"	f	line:4	signature:(unsigned char ms)
@@ -570,27 +571,27 @@ dipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	7
 drop	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	840;"	m	line:840	struct:uip_stats::<anonymous>
 drop	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	860;"	m	line:860	struct:uip_stats::<anonymous>
 drop	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	867;"	m	line:867	struct:uip_stats::<anonymous>
-enc28j60BeginPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	423;"	f	line:423	signature:(void)
+enc28j60BeginPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	392;"	f	line:392	signature:(void)
 enc28j60BeginPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	287;"	p	line:287	signature:(void)
-enc28j60BeginPacketReceiveDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	463;"	f	line:463	signature:(void)
+enc28j60BeginPacketReceiveDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	432;"	f	line:432	signature:(void)
 enc28j60BeginPacketReceiveDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	304;"	p	line:304	signature:(void)
-enc28j60BeginPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	357;"	f	line:357	signature:(unsigned int packetLength)
+enc28j60BeginPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	328;"	f	line:328	signature:(unsigned int packetLength)
 enc28j60BeginPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	270;"	p	line:270	signature:(unsigned int packetLength)
-enc28j60BeginPacketSendDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	335;"	f	line:335	signature:(unsigned int packetLength)
+enc28j60BeginPacketSendDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	308;"	f	line:308	signature:(unsigned int packetLength)
 enc28j60BeginPacketSendDMA	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	307;"	p	line:307	signature:(unsigned int packetLength)
-enc28j60DMAInit	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	610;"	f	line:610
+enc28j60DMAInit	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	578;"	f	line:578
 enc28j60DMAInit	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	299;"	p	line:299	signature:(void)
-enc28j60EndPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	500;"	f	line:500	signature:(void)
+enc28j60EndPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	469;"	f	line:469	signature:(void)
 enc28j60EndPacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	288;"	p	line:288	signature:(void)
-enc28j60EndPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	384;"	f	line:384	signature:(void)
+enc28j60EndPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	355;"	f	line:355	signature:(void)
 enc28j60EndPacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	271;"	p	line:271	signature:(void)
 enc28j60Init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	204;"	f	line:204	signature:(void)
 enc28j60Init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	267;"	p	line:267	signature:(void)
-enc28j60PacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	494;"	f	line:494	signature:(unsigned char * packet, unsigned int maxlen)
+enc28j60PacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	463;"	f	line:463	signature:(unsigned char * packet, unsigned int maxlen)
 enc28j60PacketReceive	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	289;"	p	line:289	signature:(unsigned char* packet, unsigned int maxlen)
-enc28j60PacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	374;"	f	line:374	signature:(unsigned char * packet, unsigned int len)
+enc28j60PacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	345;"	f	line:345	signature:(unsigned char * packet, unsigned int len)
 enc28j60PacketSend	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	278;"	p	line:278	signature:(unsigned char* packet, unsigned int len)
-enc28j60PacketSend2	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	399;"	f	line:399	signature:(unsigned int len1, unsigned char* packet1, unsigned int len2, unsigned char* packet2)
+enc28j60PacketSend2	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	368;"	f	line:368	signature:(unsigned int len1, unsigned char* packet1, unsigned int len2, unsigned char* packet2)
 enc28j60PacketSend2	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	279;"	p	line:279	signature:(unsigned int len1, unsigned char* packet1, unsigned int len2, unsigned char* packet2)
 enc28j60PhyRead	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	170;"	f	line:170	signature:(u8 address)
 enc28j60PhyRead	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	262;"	p	line:262	signature:(u8 address)
@@ -602,9 +603,9 @@ enc28j60ReadBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hard
 enc28j60ReadBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	252;"	p	line:252	signature:(u16 len, u8* data)
 enc28j60ReadOp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	50;"	f	line:50	signature:(u8 op, u8 address)
 enc28j60ReadOp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	248;"	p	line:248	signature:(u8 op, u8 address)
-enc28j60ReceiveOverflowRecover	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	516;"	f	line:516	signature:(void)
+enc28j60ReceiveOverflowRecover	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	484;"	f	line:484	signature:(void)
 enc28j60ReceiveOverflowRecover	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	293;"	p	line:293	signature:(void)
-enc28j60RegDump	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	523;"	f	line:523	signature:(void)
+enc28j60RegDump	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	491;"	f	line:491	signature:(void)
 enc28j60RegDump	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	296;"	p	line:296	signature:(void)
 enc28j60SetBank	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	142;"	f	line:142	signature:(u8 address)
 enc28j60SetBank	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	256;"	p	line:256	signature:(u8 address)
@@ -615,7 +616,7 @@ enc28j60WriteBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\har
 enc28j60WriteOp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	82;"	f	line:82	signature:(u8 op, u8 address, u8 data)
 enc28j60WriteOp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h	250;"	p	line:250	signature:(u8 op, u8 address, u8 data)
 encDMADummyStorage	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	45;"	v	line:45
-ep	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	32;"	l	line:32
+ep	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	45;"	l	line:45
 ethaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	101;"	m	line:101	struct:arp_entry	file:
 ethhdr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	67;"	m	line:67	struct:arp_hdr	file:
 ethhdr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	80;"	m	line:80	struct:ethip_hdr	file:
@@ -625,11 +626,11 @@ example1_app	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h	15;"
 example1_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	15;"	f	line:15	signature:(void)
 example1_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h	14;"	p	line:14	signature:(void)
 flags	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	998;"	m	line:998
-fp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	7;"	m	line:7	struct:task	file:
+fp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	9;"	m	line:9	struct:task	file:
 fragerr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	852;"	m	line:852	struct:uip_stats::<anonymous>
 hblenerr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	848;"	m	line:848	struct:uip_stats::<anonymous>
-high	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	16;"	m	line:16	struct:DWORD::<anonymous>	file:
-high	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	179;"	m	line:179	struct:DWORD::<anonymous>	file:
+high	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	18;"	m	line:18	struct:DWORD::<anonymous>	file:
+high	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	253;"	m	line:253	struct:DWORD::<anonymous>	file:
 hsum	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	105;"	l	line:105
 htons	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	1499;"	f	line:1499	signature:(u16_t val)
 htons	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	720;"	p	line:720	signature:(u16_t val)
@@ -637,16 +638,15 @@ hwlen	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	70;
 hwtype	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	68;"	m	line:68	struct:arp_hdr	file:
 i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	52;"	l	line:52
 i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	206;"	l	line:206
-i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	103;"	l	line:103
-i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	111;"	l	line:111
 i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	356;"	l	line:356
 i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	114;"	v	line:114	file:
-i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	45;"	l	line:45
+i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	150;"	l	line:150
+i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	158;"	l	line:158
+i	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c	13;"	v	line:13
 icmp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	865;"	m	line:865	struct:uip_stats
 icmpchksum	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1020;"	m	line:1020
 icode	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1019;"	m	line:1019
 id	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1021;"	m	line:1021
-initTimer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	26;"	f	line:26	signature:(void)
 initialmss	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	785;"	m	line:785	struct:uip_conn
 ip	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	858;"	m	line:858	struct:uip_stats
 ipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	100;"	m	line:100	struct:arp_entry	file:
@@ -669,20 +669,20 @@ j	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	2
 last_sent_size	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	12;"	v	line:12
 lastport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	134;"	v	line:134	file:
 lblenerr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	850;"	m	line:850	struct:uip_stats::<anonymous>
-len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	426;"	l	line:426
-len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	469;"	l	line:469
+len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	395;"	l	line:395
+len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	438;"	l	line:438
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	355;"	l	line:355
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1010;"	m	line:1010
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1030;"	m	line:1030
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	782;"	m	line:782	struct:uip_conn
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	983;"	m	line:983
 len	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	84;"	m	line:84	struct:ethip_hdr	file:
-low	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	15;"	m	line:15	struct:DWORD::<anonymous>	file:
-low	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	178;"	m	line:178	struct:DWORD::<anonymous>	file:
+low	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	17;"	m	line:17	struct:DWORD::<anonymous>	file:
+low	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	252;"	m	line:252	struct:DWORD::<anonymous>	file:
 lport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	774;"	m	line:774	struct:uip_conn
 lport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	825;"	m	line:825	struct:uip_udp_conn
 m	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	1077;"	l	line:1077
-main	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	44;"	f	line:44	signature:(void)
+main	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	187;"	f	line:187	signature:(void)
 min_sec	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	114;"	l	line:114
 min_sec	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	72;"	l	line:72
 min_sec	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	94;"	l	line:94
@@ -692,10 +692,9 @@ month_date	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtc
 mss	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	783;"	m	line:783	struct:uip_conn
 nic_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	26;"	f	line:26	signature:(void)
 nic_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	43;"	p	line:43	signature:(void)
-nic_poll	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	94;"	f	line:94	signature:(void)
 nic_poll	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	67;"	p	line:67	signature:(void)
 nic_poll	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	69;"	p	line:69	signature:(void)
-nic_rx_maybe	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	188;"	f	line:188
+nic_rx_maybe	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	65;"	f	line:65
 nic_rx_maybe	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	78;"	p	line:78	signature:(void)
 nic_send	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	32;"	f	line:32	signature:(void)
 nic_send	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.h	53;"	p	line:53	signature:(void)
@@ -705,11 +704,11 @@ offset	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	355;"	
 opcode	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	72;"	m	line:72	struct:arp_hdr	file:
 opt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	140;"	v	line:140	file:
 optdata	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1002;"	m	line:1002
-original_frame	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	24;"	v	line:24
-original_splim	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	25;"	v	line:25
-original_stack	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	23;"	v	line:23
+original_frame	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	29;"	v	line:29
+original_splim	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	31;"	v	line:31
+original_stack	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	27;"	v	line:27
 oscconl	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	39;"	l	line:39
-p	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	49;"	l	line:49
+p	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	26;"	l	line:26
 proto	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1014;"	m	line:1014
 proto	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1034;"	m	line:1034
 proto	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	987;"	m	line:987
@@ -717,9 +716,10 @@ proto	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	88;
 protocol	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	69;"	m	line:69	struct:arp_hdr	file:
 protoerr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	856;"	m	line:856	struct:uip_stats::<anonymous>
 protolen	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	71;"	m	line:71	struct:arp_hdr	file:
+ptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	110;"	l	line:110
 rcv_nxt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	778;"	m	line:778	struct:uip_conn
-read	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	45;"	f	line:45	signature:(int handle, void *buffer, unsigned int len)
-readCount	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	48;"	l	line:48
+read	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	22;"	f	line:22	signature:(int handle, void *buffer, unsigned int len)
+readCount	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\stdioimpl.c	25;"	l	line:25
 recv	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	842;"	m	line:842	struct:uip_stats::<anonymous>
 recv	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	861;"	m	line:861	struct:uip_stats::<anonymous>
 recv	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	868;"	m	line:868	struct:uip_stats::<anonymous>
@@ -733,6 +733,8 @@ rport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	826;"	m
 rst	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	874;"	m	line:874	struct:uip_stats::<anonymous>
 rtcc_enable	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	28;"	f	line:28	signature:(void)
 rtcc_enable	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h	15;"	p	line:15	signature:(void)
+rtcc_enable_alarm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	130;"	f	line:130
+rtcc_enable_alarm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h	36;"	p	line:36	signature:()
 rtcc_get_tm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	65;"	f	line:65	signature:(struct tm *tptr)
 rtcc_get_tm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h	20;"	p	line:20	signature:(struct tm *tptr)
 rtcc_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	35;"	f	line:35	signature:(void)
@@ -745,9 +747,9 @@ rtcc_set_tm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rt
 rtcc_set_tm	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h	25;"	p	line:25	signature:(const struct tm time)
 rtcc_tm_to_vals	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	84;"	f	line:84	signature:( const struct tm time, short *year, short *month_date, short *wday_hour, short *min_sec )
 rto	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	791;"	m	line:791	struct:uip_conn
-rxstat	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	425;"	l	line:425
+rxstat	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c	394;"	l	line:394
 sa	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	787;"	m	line:787	struct:uip_conn
-schedule_return	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	22;"	v	line:22
+schedule_return	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	25;"	v	line:25
 sendBuf	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	11;"	v	line:11
 sent	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	844;"	m	line:844	struct:uip_stats::<anonymous>
 sent	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	862;"	m	line:862	struct:uip_stats::<anonymous>
@@ -758,7 +760,7 @@ short2bcd	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc
 shwaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	73;"	m	line:73	struct:arp_hdr	file:
 sipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	74;"	m	line:74	struct:arp_hdr	file:
 snd_nxt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	780;"	m	line:780	struct:uip_conn
-sp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	6;"	m	line:6	struct:task	file:
+sp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	8;"	m	line:8	struct:task	file:
 src	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.h	72;"	m	line:72	struct:uip_eth_hdr
 srcipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1016;"	m	line:1016
 srcipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1036;"	m	line:1036
@@ -766,25 +768,28 @@ srcipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	989
 srcipaddr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	90;"	m	line:90	struct:ethip_hdr	file:
 srcport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1040;"	m	line:1040
 srcport	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	993;"	m	line:993
-stack	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	8;"	m	line:8	struct:task	file:
-stack_ptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	34;"	l	line:34
+stack	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	10;"	m	line:10	struct:task	file:
+stack_ptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	47;"	l	line:47
 sum	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	105;"	l	line:105
 sv	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	789;"	m	line:789	struct:uip_conn
 syndrop	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	876;"	m	line:876	struct:uip_stats::<anonymous>
 synrst	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	878;"	m	line:878	struct:uip_stats::<anonymous>
-t	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	31;"	l	line:31
-t	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	53;"	l	line:53
+t	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	44;"	l	line:44
 tabptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	147;"	l	line:147
 tabptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	163;"	l	line:163
 tabptr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	355;"	l	line:355
-task	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	5;"	s	line:5	file:
-task_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	29;"	f	line:29	signature:( int task_id, void *entry_point )
+task	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	7;"	s	line:7	file:
+task_current_task_id	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	114;"	f	line:114
+task_current_task_id	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	56;"	p	line:56	signature:()
+task_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	42;"	f	line:42	signature:( int task_id, void *entry_point )
 task_init	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	25;"	p	line:25	signature:( int task_id, void *entry_point )
-task_schedule	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	43;"	f	line:43
+task_schedule	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	59;"	f	line:59
 task_schedule	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	45;"	p	line:45	signature:()
-task_yield	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	76;"	f	line:76
+task_stack_used	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	109;"	f	line:109	signature:(int task_id)
+task_stack_used	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	51;"	p	line:51	signature:(int)
+task_yield	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	92;"	f	line:92
 task_yield	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h	36;"	p	line:36	signature:()
-tasks	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	21;"	v	line:21
+tasks	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	40;"	v	line:40
 tcp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	880;"	m	line:880	struct:uip_stats
 tcp_copy_send	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	20;"	f	line:20	signature:( const char * data, unsigned int size )
 tcp_send	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	26;"	f	line:26	signature:( unsigned int size )
@@ -794,7 +799,7 @@ tcpoffset	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	997
 tcpstateflags	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	792;"	m	line:792	struct:uip_conn
 time	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c	34;"	l	line:34
 time	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	102;"	m	line:102	struct:arp_entry	file:
-time	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	58;"	l	line:58
+time	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	193;"	l	line:193
 timer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	793;"	m	line:793	struct:uip_conn
 tmp16	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	141;"	v	line:141	file:
 tmpage	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.c	117;"	v	line:117	file:
@@ -820,7 +825,7 @@ uip_aborted::(uip_flags&UIP_ABORT)	C:\Documents and Settings\tony\My Documents\P
 uip_acc32	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	139;"	v	line:139
 uip_acked::(uip_flags&UIP_ACKDATA)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	532;"	d	line:532
 uip_acquireBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.c	74;"	f	line:74
-uip_acquireBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	55;"	p	line:55	signature:()
+uip_acquireBuffer	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	54;"	p	line:54	signature:()
 uip_add32	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	44;"	f	line:44	signature:(u8_t *op32, u16_t op16)
 uip_add32	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.h	79;"	p	line:79	signature:(u8_t *op32, u16_t op16)
 uip_add_rcv_nxt	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	470;"	f	line:470	file:	signature:(u16_t n)
@@ -879,7 +884,7 @@ uip_listen	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	34
 uip_listenports	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	117;"	v	line:117
 uip_log	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h	443;"	p	line:443	signature:(char *msg)
 uip_log	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	170;"	p	line:170	file:	signature:(char *msg)
-uip_log	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	38;"	f	line:38	signature:(char *msg)
+uip_log	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	127;"	f	line:127	signature:(char *msg)
 uip_mss::(uip_conn->mss)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	621;"	d	line:621
 uip_newdata::(uip_flags&UIP_NEWDATA)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	521;"	d	line:521
 uip_outstanding::(conn)((conn)->len)	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	406;"	d	line:406
@@ -909,6 +914,8 @@ uip_stats_t	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\u
 uip_stop::(uip_conn->tcpstateflags|=UIP_	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	485;"	d	line:485
 uip_stopped::(conn)((conn)->tcpstateflags&U	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	493;"	d	line:493
 uip_surglen	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	100;"	v	line:100
+uip_task_main	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c	19;"	f	line:19	signature:(void)
+uip_task_main	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.h	7;"	p	line:7	signature:(void)
 uip_tcpchksum	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c	103;"	f	line:103	signature:(void)
 uip_tcpchksum	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.h	126;"	p	line:126	signature:(void)
 uip_tcpip_hdr	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1003;"	t	line:1003
@@ -930,8 +937,8 @@ uip_urgdatalen::uip_urglen	C:\Documents and Settings\tony\My Documents\PIC\uIPSt
 uip_urglen	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c	100;"	v	line:100
 urgp	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1001;"	m	line:1001
 value	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\nic_dma.h	29;"	m	line:29	union:SHORT_BITFIELD
-value	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	18;"	m	line:18	union:DWORD	file:
-value	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	181;"	m	line:181	union:DWORD	file:
+value	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	20;"	m	line:20	union:DWORD	file:
+value	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	255;"	m	line:255	union:DWORD	file:
 vhl	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1008;"	m	line:1008
 vhl	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	1028;"	m	line:1028
 vhl	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	981;"	m	line:981
@@ -941,9 +948,9 @@ wday_hour	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc
 wday_hour	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	71;"	l	line:71
 wday_hour	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	94;"	l	line:94
 wnd	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.h	999;"	m	line:999
-word	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	17;"	m	line:17	union:DWORD	file:
-word	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	180;"	m	line:180	union:DWORD	file:
-x	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c	99;"	l	line:99
+word	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c	19;"	m	line:19	union:DWORD	file:
+word	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	254;"	m	line:254	union:DWORD	file:
+x	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c	143;"	l	line:143
 year	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	114;"	l	line:114
 year	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	69;"	l	line:69
 year	C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c	94;"	l	line:94
