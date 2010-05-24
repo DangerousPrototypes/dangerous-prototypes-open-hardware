@@ -326,7 +326,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_URGDATA      1
+#define UIP_URGDATA      0
 
 /**
  * The initial retransmission timeout counted in timer pulses.
@@ -411,7 +411,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_BUFSIZE     1500
+#define UIP_BUFSIZE     512
 
 
 /**

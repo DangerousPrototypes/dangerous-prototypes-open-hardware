@@ -236,7 +236,6 @@ void enc28j60Init(void)
 		for(j=0;j<0xff;j++) ;
 	}
 
-	//while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY));
 	do{
 		i = enc28j60Read(ESTAT);
 	}
@@ -275,6 +274,10 @@ void enc28j60Init(void)
 	// set inter-frame gap (back-to-back)
 	enc28j60Write(MABBIPG, 0x12);
 	// Set the maximum packet size which the controller will accept
+	#if MAX_FRAMELEN != UIP_BUFSIZE
+		#warning MAX_FRAMELEN != UIP_BUFSIZE: The maximum enc28j60 frame size should be set to the same size as the UIP buffer size
+	#endif
+
 	enc28j60Write(MAMXFLL, MAX_FRAMELEN&0xFF);	
 	enc28j60Write(MAMXFLH, MAX_FRAMELEN>>8);
 
@@ -297,37 +300,7 @@ void enc28j60Init(void)
 	enc28j60WriteOp(ENC28J60_BIT_FIELD_SET, EIE, EIE_INTIE|EIE_PKTIE);
 	// enable packet reception
 	enc28j60WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
-/*
-	enc28j60PhyWrite(PHLCON, 0x0AA2);
 
-	// setup duplex ----------------------
-
-	// Disable receive logic and abort any packets currently being transmitted
-	enc28j60WriteOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_TXRTS|ECON1_RXEN);
-	
-	{
-		u16 temp;
-		// Set the PHY to the proper duplex mode
-		temp = enc28j60PhyRead(PHCON1);
-		temp &= ~PHCON1_PDPXMD;
-		enc28j60PhyWrite(PHCON1, temp);
-		// Set the MAC to the proper duplex mode
-		temp = enc28j60Read(MACON3);
-		temp &= ~MACON3_FULDPX;
-		enc28j60Write(MACON3, temp);
-	}
-
-	// Set the back-to-back inter-packet gap time to IEEE specified 
-	// requirements.  The meaning of the MABBIPG value changes with the duplex
-	// state, so it must be updated in this function.
-	// In full duplex, 0x15 represents 9.6us; 0x12 is 9.6us in half duplex
-	//enc28j60Write(MABBIPG, DuplexState ? 0x15 : 0x12);	
-	
-	// Reenable receive logic
-	enc28j60WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
-
-	// setup duplex ----------------------
-*/
 	//Setup DMA
 	enc28j60DMAInit();
 }
@@ -336,13 +309,12 @@ void enc28j60BeginPacketSendDMA(unsigned int packetLength)
 {
 	uip_dma_tx_last_packet_length = packetLength;
 	enc28j60BeginPacketSend(packetLength);
-
 	// assert CS
 	ENC_DMADUMMY_INTIF = 0; //clear DMA dummy int flag
 	ENC_DMA_INTIF = 0; //clear DMA int flag
 	CS_EN();		
 	ENC_DMACNT = packetLength - 1; // -1, as first byte is sent from here
-	ENC_DMADUMMYCNT = packetLength + 1; //+1, because we don't want the dummy DMA int to fire
+	ENC_DMADUMMYCNT = packetLength ; // number of reads we want to do
 
 	ENC_DMACONbits.NULLW = 0; //no null writes
 	ENC_DMACONbits.DIR = 1;   //write to SPI from RAM
@@ -351,7 +323,6 @@ void enc28j60BeginPacketSendDMA(unsigned int packetLength)
 	ENC_DMADUMMYCONbits.CHEN=1; //enable dummy reads
 	// issue write command
 	SPI_BUF = ENC28J60_WRITE_BUF_MEM; //this should start DMA
-
 }
 
 void enc28j60BeginPacketSend(unsigned int packetLength)
@@ -384,11 +355,9 @@ void enc28j60PacketSend(unsigned char * packet, unsigned int len)
 void enc28j60EndPacketSend(void)
 {
 	volatile u8 Dummy;
-	SPITXRX();	//if using DMA, the DMA finished interrupt occurs after the last byte is written
-				//We need to wait for that byte to be actually sent before lowering INT_CS
+
 	Dummy = SPI_BUF; //clear SPI buffer rx flag (never hurts)
 	CS_DIS(); //in case called from end of DMA operation
-
 	// send the contents of the transmit buffer onto the network
 	enc28j60WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
 	//sync this up now
@@ -499,7 +468,6 @@ void enc28j60PacketReceive(unsigned char * packet, unsigned int maxlen)
 
 void enc28j60EndPacketReceive(void)
 {
-//putchar('R');
 	CS_DIS(); //in case of end of DMA read, will need clearing	
 	// Move the RX read pointer to the start of the next received packet
 	// This frees the memory we just read out

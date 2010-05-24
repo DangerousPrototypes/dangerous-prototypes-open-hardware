@@ -4,6 +4,8 @@
 /* \C30\support\dsPIC33F\gld\ */
 
 #include "hardware/HardwareProfile.h"
+#include "lib/multitasker.h"
+#include "uipsockettask.h"
 #include "lib/uip.h"
 #include "lib/uip_arp.h"
 #include "libConfig/nic.h"
@@ -11,7 +13,6 @@
 #include "hardware/rtcc.h"
 #include <stdio.h>
 
-#define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 //it's important to keep configuration bits that are compatibale with the bootloader
 //if you change it from the internall/PLL clock, the bootloader won't run correctly
 _FOSCSEL(FNOSC_FRCPLL)		//INT OSC with PLL (always keep this setting)
@@ -128,10 +129,62 @@ void uip_log(char *msg){
 	putchar('\n');
 }
 
+
+
+//A "debugger" task that takes command characters from the serial
+//port and prints debugging info out.
+//Would be good to expand this into a general "debugger" tool
+//(eg, read/write memory; show uIP statistics; set ip params; set rtcc, etc )
+void debug_task_main()
+{
+	while(1)
+	{
+	
+		int x ;
+		do{
+			task_yield();
+			x = _mon_getc();
+		}while( x == -1 );
+		
+		if( (char) x == 'r' ){
+			u16_t i;
+			printf("\nlast rx: %u bytes:\n", uip_dma_rx_last_packet_length);
+			for( i = 0; i < uip_dma_rx_last_packet_length ; i++ ){
+				printf("%02hhx ", uip_buf[i]);
+			}
+			puts("\n");
+		}
+		if( (char) x == 't' ){
+			u16_t i;
+			printf("\nlast tx: %u bytes:\n", uip_dma_tx_last_packet_length);
+			for( i = 0; i < uip_dma_tx_last_packet_length ; i++ ){
+				printf("%02hhx ", uip_buf[i]);
+			}
+			puts("\n");
+		}
+		if( (char) x == 's' ){
+			printf("\nUIP_DMA_STATUS: %04x ", UIP_DMA_STATUS.value);
+			printf("\nlast tx: %u ", uip_dma_tx_last_packet_length);
+			printf("\nlast rx: %u ", uip_dma_rx_last_packet_length);
+			printf("\nrx pending count: %u ", uip_dma_rx_pending_packets);
+			printf("\nDMA0CON (DUMMY): %04x ", DMA0CON);
+			printf("\nDMA1CON: %04x ", DMA1CON);
+			puts("\n");
+		}
+		if( (char) x == 'x' ){
+			puts("\nbuf status reset");
+			UIP_DMA_BUFFER_FREE=0;
+			
+			CS_DIS();
+			Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();
+			nic_rx_maybe();
+		}	  
+	}
+}
+
+
 //main function, execution starts here
 int main(void){
-	unsigned char i;
-	unsigned char arptimer=0;
 
 	InitHardware();
 	rtcc_init();
@@ -170,75 +223,17 @@ int main(void){
 	// init app
     example1_init();
     puts("example1 init\n");
-	while(1){
-	    // look for a packet
-		uip_len = nic_poll();
-		//printf("uip_len: %u", uip_len );
-		
-	    if(uip_len == 0){
-			//no packet rxed
-			if(UIP_DMA_PERIODIC_TIMEOUT && uip_acquireBuffer()){
-				UIP_DMA_PERIODIC_TIMEOUT=0;
-	
-				//blink LED to show we're alive
-		        LD1_O = !LD1_O;
-	
-		        for(i = 0; i < UIP_CONNS; i++){
-					uip_periodic(i);
-				
-		    	    // transmit a packet, if one is ready
-		        	if(uip_len > 0){
-		            	uip_arp_out();
-		            	nic_send();
-	//the problem here is that we can't send from the second connection 
-	//until the first finishes. Need to address that
-		          	}
-		        }
-		
-		        /* Call the ARP timer function every 10 seconds. */
-		        if(++arptimer == 20){	
-			        uip_arp_timer();
-		    	    arptimer = 0;
-		        }
-				if( ENC_DMACONbits.CHEN == 0 ) nic_rx_maybe();
-			}
-		}
-		else
-		{
-			// packet received - buffer is already acquired
-	
-	      	// process an IP packet
-	      	if(BUF->type == HTONS(UIP_ETHTYPE_IP)){
-	        	// add the source to the ARP cache
-	        	// also correctly set the ethernet packet length before processing
-	        	uip_arp_ipin();
-	        	uip_input();
-	
-	     		// transmit a packet, if one is ready
-	        	if(uip_len > 0){
-	          		uip_arp_out();
-	          		nic_send();
-	        	}
-				else nic_rx_maybe();
-			}
-			else if(BUF->type == HTONS(UIP_ETHTYPE_ARP)){
-	
-				// process an ARP packet
-	 	  		uip_arp_arpin();
-	
-	        	// transmit a packet, if one is ready
-	        	if(uip_len > 0)
-	          		nic_send();
-				else nic_rx_maybe();
-	      	}
-			else //don't know how to process this packet. Discard
-			{
-				puts("Unknown packet discarded");
-				nic_rx_maybe();
-			}
-		}
-	} //end while
 
+	//all configuration done
+
+	//task setup
+	task_init( 0 , &uip_task_main );
+	task_init( 1, &debug_task_main );
+
+	//start task scheduler execution
+	task_schedule();
+
+	return 0; //will never get here
 } //end main
 
 //This occurs every half second, driven by the RTCC chime
@@ -273,4 +268,16 @@ void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
 	printf("\nAddress Error @ %08lx",StkAddress.value );
 }
 
+
+void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
+	"mov #_StkAddress+2,w1\n 	\
+	pop [w1--]\n			\
+	pop [w1]\n			\
+	push [w1]\n			\
+	push [++w1]")))) _StackError(){
+	
+	INTCON1bits.STKERR = 0;
+	StkAddress.value -= 2;
+	printf("\nStack Error @ %08lx",StkAddress.value );
+}
 

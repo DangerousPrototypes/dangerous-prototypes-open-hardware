@@ -10,6 +10,7 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\uip_arch.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.h
@@ -22,3 +23,4 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip_arp.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.h

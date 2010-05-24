@@ -12,7 +12,7 @@
 /* The number of tasks in the list */
 #define TASK_COUNT 2
 /* The size of the stack for each task */
-#define STACK_SIZE 50
+#define STACK_SIZE 500
 
 /*
 * Initialise a task with the address of the task entry
@@ -43,3 +43,15 @@ void task_yield();
 * Then the next task in the list will be allowed to execute.
 */
 void task_schedule();
+
+/*
+* Get the number of bytes used by the task from it's stack.
+* Probably not that useful (depends when you call it)
+*/
+int task_stack_used(int);
+
+/*
+* Get the id of the task currently executing.
+*/
+int task_current_task_id();
+

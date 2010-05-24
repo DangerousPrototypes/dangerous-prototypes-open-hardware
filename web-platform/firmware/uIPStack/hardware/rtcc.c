@@ -129,6 +129,6 @@ void rtcc_set_alarm(struct tm time, unsigned char mask, unsigned char repeat, bo
 
 void rtcc_enable_alarm()
 {
-	IPC15bits.RTCIP = 7;
+	IPC15bits.RTCIP = 3;
 	IEC3bits.RTCIE = 1;
 }

@@ -29,7 +29,6 @@ union SHORT_BITFIELD
 	unsigned short value;
 };
 
-//static volatile union SHORT_BITFIELD UIP_DMA_STATUS ;
 extern volatile union SHORT_BITFIELD UIP_DMA_STATUS ;
 
 //buffer is not in use at this time
@@ -53,4 +52,7 @@ extern unsigned int uip_dma_tx_last_packet_length;
 
 
 unsigned int uip_acquireBuffer();
+
+
+
 #endif
