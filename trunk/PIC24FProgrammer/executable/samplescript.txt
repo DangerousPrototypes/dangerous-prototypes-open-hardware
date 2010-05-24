@@ -28,4 +28,6 @@ SEND8BITDATALSBFIRST,0x000001,10, This is for Sending 8-bit Command. It sends 0x
 
 READ8BITLSBFIRST, 0x000000,10, Data is unused. It has a delay of 10msec
 
+DELAYCLKON4THBIT, 0x000000,10, Data is unused. It has a delay of 10msec
+
 EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
