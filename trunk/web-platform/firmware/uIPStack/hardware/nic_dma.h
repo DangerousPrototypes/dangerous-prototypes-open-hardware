@@ -52,7 +52,7 @@ extern unsigned int uip_dma_tx_last_packet_length;
 
 
 unsigned int uip_acquireBuffer();
-
+void uip_releaseBuffer();
 
 
 #endif

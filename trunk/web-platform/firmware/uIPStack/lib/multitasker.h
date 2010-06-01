@@ -10,7 +10,7 @@
 
 
 /* The number of tasks in the list */
-#define TASK_COUNT 2
+#define TASK_COUNT 3
 /* The size of the stack for each task */
 #define STACK_SIZE 500
 

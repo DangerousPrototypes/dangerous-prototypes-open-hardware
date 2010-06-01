@@ -6,11 +6,13 @@
 #include "hardware/HardwareProfile.h"
 #include "lib/multitasker.h"
 #include "uipsockettask.h"
+#include "telnettask.h"
 #include "lib/uip.h"
 #include "lib/uip_arp.h"
 #include "libConfig/nic.h"
 #include "hardware/nic_dma.h"
 #include "hardware/rtcc.h"
+#include "lib/socket.h"
 #include <stdio.h>
 
 //it's important to keep configuration bits that are compatibale with the bootloader
@@ -129,7 +131,9 @@ void uip_log(char *msg){
 	putchar('\n');
 }
 
-
+extern struct buffer_t rxbuf;
+extern struct buffer_t txbuf;
+char c1;
 
 //A "debugger" task that takes command characters from the serial
 //port and prints debugging info out.
@@ -178,8 +182,38 @@ void debug_task_main()
 			CS_DIS();
 			Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();
 			nic_rx_maybe();
+		}
+		if( (char)x == 'f' )
+		{
+			file_debug();
+		}
+/*		if( (char)x == 'p' ){
+			int av = buffer_available( &rxbuf );
+			int i;
+			printf("\nrx buffer available: %d\n", av );
+			for( i = 0 ; i < av; i++ )
+			{
+				buffer_read( &rxbuf, &c1, 1 );
+				putchar(c1);
+			}			
+		}
+		if( (char)x == 'o' ){
+			int av = buffer_free( &txbuf );
+			int i;
+			printf("\ntx buffer free: %d\n", av );
+			puts("enter data to send. CR to end.\n");
+			while( (char)x != '\n' )
+			{
+				do{
+					x = _mon_getc();
+				}while( x == -1 );
+				c1 = (char)x;
+				putchar( c1 );
+				buffer_write( &txbuf, &c1, 1);
+			}
+					
 		}	  
-	}
+*/	}
 }
 
 
@@ -220,21 +254,21 @@ int main(void){
 	rtcc_enable_alarm();
     puts("timer init\n");
 
-	// init app
-    example1_init();
-    puts("example1 init\n");
-
 	//all configuration done
+
+	file_init();
 
 	//task setup
 	task_init( 0 , &uip_task_main );
 	task_init( 1, &debug_task_main );
-
+	task_init( 2, &telnet_task_main );
 	//start task scheduler execution
 	task_schedule();
 
 	return 0; //will never get here
 } //end main
+
+
 
 //This occurs every half second, driven by the RTCC chime
 //This is being used to drive the uip periodic processing

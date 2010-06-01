@@ -304,7 +304,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_LISTENPORTS 10
+#define UIP_LISTENPORTS 5
 
 /**
  * The size of the advertised receiver's window.
@@ -315,7 +315,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_RECEIVE_WINDOW   32768
+#define UIP_RECEIVE_WINDOW   2048
 
 /**
  * Determines if support for TCP urgent data notification should be
@@ -421,7 +421,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_STATISTICS  1
+#define UIP_STATISTICS  0
 
 /**
  * Determines if logging of certain events should be compiled in.
@@ -432,7 +432,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_LOGGING     1
+#define UIP_LOGGING     0
 
 /**
  * Print out a uIP log message.
@@ -539,7 +539,7 @@ struct httpd_state {
 /* Include the header file for the application program that should be
    used. If you don't use the example web server, you should change
    this. */
-#include "app.h"
+#include "../uipsockettask.h"
 
 
 #endif /* __UIPOPT_H__ */

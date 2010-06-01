@@ -61,6 +61,22 @@ unsigned short short2bcd( short val )
 	return (( val / 10 ) << 4 ) + val % 10;
 }
 
+void rtcc_get_bcd_tm(struct rtcc_bcd_tm *tptr)
+{
+	while(RCFGCALbits.RTCSYNC==1);
+	RCFGCALbits.RTCPTR=3;
+	short year=RTCVAL;
+	short month_date=RTCVAL;
+	short wday_hour=RTCVAL;
+	short min_sec=RTCVAL;
+	
+	tptr->sec =  min_sec & 0xff ;
+	tptr->min =  min_sec >> 8;
+	tptr->hour = wday_hour & 0xff;
+	tptr->day = month_date & 0xff;
+	tptr->mon = month_date >> 8;
+	tptr->year = short2bcd(year); //assuming rtcc year is years since 2000
+}
 
 void rtcc_get_tm(struct tm *tptr)
 {
@@ -132,3 +148,5 @@ void rtcc_enable_alarm()
 	IPC15bits.RTCIP = 3;
 	IEC3bits.RTCIE = 1;
 }
+
+

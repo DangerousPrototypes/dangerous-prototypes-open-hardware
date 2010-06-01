@@ -85,3 +85,14 @@ unsigned int uip_acquireBuffer(){
 	return retval;
 }
 
+void uip_releaseBuffer()
+{
+	if( ENC_DMACONbits.CHEN == 1 ) return;
+	IEC1bits.CNIE = 0; //disable CN int
+	if( ENC_DMACONbits.CHEN == 0  )
+	{
+		UIP_DMA_BUFFER_FREE=1;
+	}
+	IEC1bits.CNIE = 1; //enable CN int
+	
+}

@@ -4,7 +4,6 @@
 */
 
 #include "HardwareProfile.h"
-
 /*
 _mon_putc - required for puts(), printf() and friends
 Outputs to UART1 ( USB Serial port )
