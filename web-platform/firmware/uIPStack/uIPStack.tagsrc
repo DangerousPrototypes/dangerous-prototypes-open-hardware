@@ -1,5 +1,4 @@
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\main.c
-C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\uip.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.c
@@ -11,7 +10,9 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\nic.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c
-C:\Documents and Settings\tony\My Documents\PIC\uIPStack\app.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\buffer.c
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\file.c
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\telnettask.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h
@@ -24,3 +25,7 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\libConfig\uipopt.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\rtcc.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\multitasker.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\buffer.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\file.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\telnettask.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\socket.h

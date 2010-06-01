@@ -341,7 +341,7 @@ extern u8_t uip_buf[UIP_BUFSIZE+2];
  *
  * \param port A 16-bit port number in network byte order.
  */
-void uip_listen(u16_t port);
+int uip_listen(u16_t port);
 
 /**
  * Stop listening to the specified port.
@@ -958,6 +958,7 @@ void uip_process(u8_t flag);
 #if UIP_UDP
 #define UIP_UDP_TIMER 3
 #endif /* UIP_UDP */
+#define UIP_NEED_SEND 4
 
 /* The TCP states used in the uip_conn->tcpstateflags. */
 #define CLOSED      0

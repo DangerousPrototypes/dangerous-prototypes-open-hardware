@@ -99,6 +99,7 @@ volatile u8_t *uip_urgdata;  /* The uip_urgdata pointer points to
 				present. */
 volatile u8_t uip_urglen, uip_surglen;
 #endif /* UIP_URGDATA > 0 */
+u16_t uip_this_ack;
 
 volatile u16_t uip_len, uip_slen;
                              /* The uip_len is either 8 or 16 bits,
@@ -322,15 +323,16 @@ uip_unlisten(u16_t port)
   }
 }
 /*-----------------------------------------------------------------------------------*/
-void
+int
 uip_listen(u16_t port)
 {
   for(c = 0; c < UIP_LISTENPORTS; ++c) {
     if(uip_listenports[c] == 0) {
       uip_listenports[c] = port;
-      return;
+      return c;
     }
   }
+  return -1;
 }
 /*-----------------------------------------------------------------------------------*/
 /* XXX: IP fragment reassembly: not well-tested. */
@@ -1060,6 +1062,7 @@ uip_process(u8_t flag)
      the outstanding data, calculate RTT estimations, and reset the
      retransmission timer. */
   if((BUF->flags & TCP_ACK) && uip_outstanding(uip_connr)) {
+	uip_this_ack = uip_connr->len;
     uip_add32(uip_connr->snd_nxt, uip_connr->len);
     if(BUF->ackno[0] == uip_acc32[0] &&
        BUF->ackno[1] == uip_acc32[1] &&

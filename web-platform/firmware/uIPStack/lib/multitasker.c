@@ -111,4 +111,4 @@ int task_stack_used(int task_id){
 	return (int)(ptr->sp) - (int)(ptr->stack);
 }
 
-int __attribute__((inline)) task_current_task_id(){ return current_task_id; }
+int __attribute__((always_inline)) task_current_task_id(){ return current_task_id; }
