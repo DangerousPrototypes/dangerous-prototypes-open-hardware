@@ -1,5 +1,6 @@
 #include "file.h"                                                                     
 #include <stdio.h>
+#include "multitasker.h"
 
 struct file_t file_handles[ FILE_HANDLE_MAX ];
 
