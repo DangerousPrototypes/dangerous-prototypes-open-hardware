@@ -94,7 +94,7 @@ void buffer_init( register struct buffer_t *buffer, register char * data, const 
 }
 
 
-const char* buffer_read_const_ptr( register const struct buffer_t * buffer)
+char* buffer_read_ptr( register const struct buffer_t * buffer)
 {
 	return buffer->buffer;
 }

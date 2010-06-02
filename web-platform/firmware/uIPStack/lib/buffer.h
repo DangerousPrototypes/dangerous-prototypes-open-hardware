@@ -28,7 +28,7 @@ void buffer_seek( struct buffer_t * buffer, unsigned short count);
 
 //get a pointer to the data that we could read from this buffer
 //The pointer is only valid for the next [buffer_available()] bytes
-const char* buffer_read_const_ptr( const struct buffer_t * buffer);
+char* buffer_read_ptr( const struct buffer_t * buffer);
 
 //return the number of bytes we may write to [buffer] right now
 unsigned short buffer_free( const struct buffer_t * buffer);
