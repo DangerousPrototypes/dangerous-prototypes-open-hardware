@@ -8,10 +8,9 @@
 */
 #include "globals.h"
 
-
 //static u8 SevenSegDispMode;
 static volatile u8 SeveSegmentArray[7];
-
+static volatile u8 decimalPoint=7; //variable to note which block should have a decimal point
 
 static const char SEVENSEGMENTARRAY[][2]=
 	{ // A_B, C D E F G
@@ -50,7 +49,7 @@ return SevenSegDispMode;
 
 void hal_7SegDrv_SetDispMode(u8 DispMode)
 {
-//SevenSegDispMode=DispMode;
+decimalPoint=7; //clear any decimal point
 
 switch(DispMode)
 	{
@@ -126,6 +125,21 @@ switch(DispMode)
 
 void hal_7SegDrv_ExtractNumToArray(volatile u32 Ctr)
 {
+decimalPoint=7;//clear any decimal point
+
+if(Ctr>=1000000000){ //divide and add decimal point over 1 million
+	Ctr=Ctr/1000;
+	decimalPoint=3; 	
+}else if(Ctr>=100000000){
+	Ctr=Ctr/100;
+	decimalPoint=2; 
+}else if(Ctr>=10000000){
+	Ctr=Ctr/10;
+	decimalPoint=1; 
+}else if(Ctr>=1000000){
+	decimalPoint=0;
+}
+
 SeveSegmentArray[6]=Ctr%10;
 SeveSegmentArray[5]=(Ctr%100)     /10;
 SeveSegmentArray[4]=(Ctr%1000)    /100;
@@ -133,6 +147,7 @@ SeveSegmentArray[3]=(Ctr%10000)   /1000;
 SeveSegmentArray[2]=(Ctr%100000)  /10000;
 SeveSegmentArray[1]=(Ctr%1000000) /100000;
 SeveSegmentArray[0]=(Ctr%10000000)/1000000;
+
 }
 
 
@@ -166,6 +181,10 @@ if(INTCONbits.TMR0IF)
 	LATB=0;
 
 	SevenSegment_DispOneDigit(SeveSegmentArray[CurrentDigit]);
+	
+	if(decimalPoint==CurrentDigit){
+		PORT_7SEG_DP|=0b00100000;//enable the DP as required
+	}
 
 	//Select Cathode
 	if(CurrentDigit==6)

@@ -15,10 +15,10 @@ Version:
 
 
 ////////////// CONFIG FUSES ///////////////////
-#pragma config PLLDIV = 1
+#pragma config PLLDIV = 5
 #pragma config CPUDIV = OSC1_PLL2
-#pragma config USBDIV = 1
-#pragma config FOSC = HS
+#pragma config USBDIV = 2
+#pragma config FOSC = HSPLL_HS
 #pragma config FCMEN = OFF
 #pragma config IESO = OFF
 #pragma config PWRT = OFF //ON //off for debug
@@ -95,6 +95,7 @@ MY_BIG_DELAY(50); //delay
 
 boolErase=FALSE;
 hal_7SegDrv_SetDispMode(DISP_MODE_DESTROY); //display DISTROY
+
 for(ctr=0;ctr<50;ctr++) //check for erase button press
 	{
 	if(S1_BUTTON==S1_PRESSED)
@@ -122,10 +123,9 @@ if(boolErase==TRUE) //confim erase
 EepromCtr=hal_InternalEEPROM_Read();
 
 hal_7SegDrv_ExtractNumToArray(EepromCtr);
-
 while(1)
 	{
-	MY_DELAY(0x7fff);
+	//MY_DELAY(0x7fff);
 
 	//Write
 	if (hal_EEPROM_DestroyWrite()==ERROR_I2C)
