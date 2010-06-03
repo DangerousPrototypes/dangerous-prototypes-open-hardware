@@ -46,11 +46,12 @@ enum SEVEN_SEG_DISP_MODE
 #define SevenSegment_Disable()		{TRISC|=0x03;TRISA=0xFF;}
 #define PORT_7SEG_A_B				LATC
 #define PORT_7SEG_C_D_E_F_G			LATA
+#define PORT_7SEG_DP				LATA
 
 #define SevenSegment_DispOneDigit(Number)  PORT_7SEG_A_B&=~0x03; \
 	PORT_7SEG_C_D_E_F_G=0; \
 	PORT_7SEG_A_B|=SEVENSEGMENTARRAY[(Number)][0]; \
-	PORT_7SEG_C_D_E_F_G=SEVENSEGMENTARRAY[(Number)][1];
+	PORT_7SEG_C_D_E_F_G=SEVENSEGMENTARRAY[(Number)][1]
 
 void ExtractEEPROMCtrToArray(void);
 
