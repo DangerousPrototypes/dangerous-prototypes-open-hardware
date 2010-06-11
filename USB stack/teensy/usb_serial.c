@@ -29,6 +29,7 @@
 // Version 1.5: add support for Teensy 2.0
 
 #define USB_SERIAL_PRIVATE_INCLUDE
+#include "globals.h"
 #include "usb_serial.h"
 
 
@@ -124,7 +125,7 @@
 #define CDC_TX_BUFFER		EP_DOUBLE_BUFFER
 #endif
 
-static const uint8_t PROGMEM endpoint_config_table[] = {
+static const rom uint8_t endpoint_config_table[] = {
 	0,
 	1, EP_TYPE_INTERRUPT_IN,  EP_SIZE(CDC_ACM_SIZE) | CDC_ACM_BUFFER,
 	1, EP_TYPE_BULK_OUT,      EP_SIZE(CDC_RX_SIZE) | CDC_RX_BUFFER,
@@ -144,7 +145,7 @@ static const uint8_t PROGMEM endpoint_config_table[] = {
 // in here should only be done by those who've read chapter 9 of the USB
 // spec and relevant portions of any USB class specifications!
 
-static uint8_t PROGMEM device_descriptor[] = {
+static rom uint8_t device_descriptor[] = {
 	18,					// bLength
 	1,					// bDescriptorType
 	0x00, 0x02,				// bcdUSB
@@ -162,7 +163,7 @@ static uint8_t PROGMEM device_descriptor[] = {
 };
 
 #define CONFIG1_DESC_SIZE (9+9+5+5+4+5+7+9+7+7)
-static uint8_t PROGMEM config1_descriptor[CONFIG1_DESC_SIZE] = {
+static rom uint8_t config1_descriptor[CONFIG1_DESC_SIZE] = {
 	// configuration descriptor, USB spec 9.6.3, page 264-266, Table 9-10
 	9, 					// bLength;
 	2,					// bDescriptorType;
@@ -246,22 +247,22 @@ struct usb_string_descriptor_struct {
 	uint8_t bDescriptorType;
 	int16_t wString[];
 };
-static struct usb_string_descriptor_struct PROGMEM string0 = {
+static rom struct usb_string_descriptor_struct string0 = {
 	4,
 	3,
 	{0x0409}
 };
-static struct usb_string_descriptor_struct PROGMEM string1 = {
+static rom struct usb_string_descriptor_struct string1 = {
 	sizeof(STR_MANUFACTURER),
 	3,
 	STR_MANUFACTURER
 };
-static struct usb_string_descriptor_struct PROGMEM string2 = {
+static rom struct usb_string_descriptor_struct string2 = {
 	sizeof(STR_PRODUCT),
 	3,
 	STR_PRODUCT
 };
-static struct usb_string_descriptor_struct PROGMEM string3 = {
+static rom struct usb_string_descriptor_struct string3 = {
 	sizeof(STR_SERIAL_NUMBER),
 	3,
 	STR_SERIAL_NUMBER
@@ -269,12 +270,12 @@ static struct usb_string_descriptor_struct PROGMEM string3 = {
 
 // This table defines which descriptor data is sent for each specific
 // request from the host (in wValue and wIndex).
-static struct descriptor_list_struct {
+static rom struct descriptor_list_struct {
 	uint16_t	wValue;
 	uint16_t	wIndex;
 	const uint8_t	*addr;
 	uint8_t		length;
-} PROGMEM descriptor_list[] = {
+} descriptor_list[] = {
 	{0x0100, 0x0000, device_descriptor, sizeof(device_descriptor)},
 	{0x0200, 0x0000, config1_descriptor, sizeof(config1_descriptor)},
 	{0x0300, 0x0000, (const uint8_t *)&string0, 4},
