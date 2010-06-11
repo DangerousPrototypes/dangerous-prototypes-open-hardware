@@ -27,6 +27,14 @@
 //#include <util/delay.h>
 #include "usb_serial.h"
 
+#ifdef OLS
+	#include "config-18f24j50.h"
+#endif
+
+#ifdef IRTOY
+	#include "config-18f2550.h"
+#endif
+
 // Very simple character echo test
 int main(void)
 {
