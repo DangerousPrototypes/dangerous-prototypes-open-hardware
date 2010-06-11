@@ -1,7 +1,7 @@
 #ifndef usb_serial_h__
 #define usb_serial_h__
 
-#include <stdint.h>
+//#include <stdint.h>
 
 // setup
 void usb_init(void);			// initialize everything
@@ -55,9 +55,9 @@ int8_t usb_serial_set_control(uint8_t signals); // set DSR, DCD, RI, etc
 
 // Everything below this point is only intended for usb_serial.c
 #ifdef USB_SERIAL_PRIVATE_INCLUDE
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <avr/interrupt.h>
+//#include <avr/io.h>
+//#include <avr/pgmspace.h>
+//#include <avr/interrupt.h>
 
 #define EP_TYPE_CONTROL			0x00
 #define EP_TYPE_BULK_IN			0x81
