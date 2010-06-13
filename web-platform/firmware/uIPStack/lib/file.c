@@ -139,6 +139,7 @@ int file_puts(const char* string, file_handle_t handle)
 	while( *t != 0 )
 	{
 		int free = buffer_free( w );
+		if( f->state > Open ) return -1;
 		if( free == 0 ) task_yield();
 		else
 		{
@@ -157,7 +158,11 @@ int file_putchar(const char c, file_handle_t handle){
 	struct file_t* f = file_get_by_handle(handle);
 	if( f == NULL || f->write_buffer == NULL ) return EOF;
 	struct buffer_t* w =  f->write_buffer;
-	while( buffer_write( w, &c , 1 ) != 1 ) task_yield();
+	while( buffer_write( w, &c , 1 ) != 1 )
+	{
+		if( f->state > Open ) return -1;
+		task_yield();
+	}
 	return 1;
 }
 

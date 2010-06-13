@@ -55,11 +55,15 @@ unsigned short buffer_write( register struct buffer_t * buffer, register const c
 	if( buffer->write_ptr + can_write > buf_end )
 	{
 		//will overflow. move existing data to start of buffer
+		unsigned short need_move = buffer_available( buffer );
 		buffer->write_ptr = buffer->buffer;
-		while( buffer->read_ptr < buf_end )
+		while( need_move > 0 )
 		{
 			*(buffer->write_ptr++)=*(buffer->read_ptr++);
+			need_move --;
 		}
+		//read ptr is now at the start of the buffer
+		buffer->read_ptr  = buffer->buffer;
 	}
 	unsigned short written = can_write;
 	while( can_write > 0 )
@@ -71,6 +75,45 @@ unsigned short buffer_write( register struct buffer_t * buffer, register const c
 	return written; //number of bytes written
 
 }
+
+// RaaxxPbbbW --> RaaPbbbW  when count < 0 (remove X prior items)
+// RaaaaPxxbW --> RaaaaPbW  when count > 0 (remove next X items)
+void buffer_unwrite( register struct buffer_t * buffer, char* ptr, signed short count )
+{
+	if(count == 0 ) return; //nothing to do
+	if( ptr < buffer->read_ptr  ) return;
+	if( ptr > buffer->write_ptr ) return;
+	
+	char* ptr2 = ptr + count;
+	if( ptr2 >= buffer->write_ptr )
+	{
+		//the best case scenario
+		//The bytes between ptr and write_ptr are to be deleted.
+		//just move write_ptr back to ptr
+		buffer->write_ptr = ptr; //all done!
+		return;
+	}
+	if( ptr2 < buffer->read_ptr  ) ptr2 = buffer->read_ptr;
+	
+	//all other cases require moving data in the buffer :(
+	if( count < 0 )
+	{
+		buffer->write_ptr += count; //move left X positions (count is negative)
+		while( ptr2 != buffer->write_ptr )
+		{
+			*ptr2++ = *ptr++; //ptr is to the right of ptr2
+		}
+	}
+	else
+	{
+		buffer->write_ptr -= count; //move left X positions (count is positive)
+		while( ptr != buffer->write_ptr )
+		{
+			*ptr++ = *ptr2++; //ptr2 is to the right of ptr
+		}
+	}
+}
+
 
 //number of bytes available to read
 unsigned short __attribute__((always_inline)) buffer_available( register const struct buffer_t * buffer)  
@@ -94,7 +137,7 @@ void buffer_init( register struct buffer_t *buffer, register char * data, const 
 }
 
 
-char* buffer_read_ptr( register const struct buffer_t * buffer)
+char* __attribute__((always_inline)) buffer_read_ptr( register const struct buffer_t * buffer)
 {
-	return buffer->buffer;
+	return buffer->read_ptr;
 }

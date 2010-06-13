@@ -37,6 +37,11 @@ unsigned short buffer_free( const struct buffer_t * buffer);
 //returns number of bytes written. May be lower than [count] if [buffer] is full
 unsigned short buffer_write( struct buffer_t * buffer, const char * local, unsigned short count );
 
+//Un-write [count] bytes from buffer at [ptr]
+//When [count] < 0 , that many bytes before [ptr] are removed
+//If [count] > 0, the bytes are removed from after [ptr]
+//This will change the values of available and free
+void buffer_unwrite( struct buffer_t * buffer, char* ptr, const short count );
 
 #endif
 

@@ -11,8 +11,8 @@
 
 /* The number of tasks in the list */
 #define TASK_COUNT 3
-/* The size of the stack for each task */
-#define STACK_SIZE 500
+/* The size of the stack for each task in 16 bit WORDS*/
+#define STACK_SIZE 200
 
 /*
 * Initialise a task with the address of the task entry

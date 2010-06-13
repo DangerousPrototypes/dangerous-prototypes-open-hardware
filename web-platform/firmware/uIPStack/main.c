@@ -187,6 +187,17 @@ void debug_task_main()
 		{
 			file_debug();
 		}
+		if( (char)x == 'm' )
+		{
+			puts("\r\nTask stack report:");
+			u16_t i;
+			for( i = 0; i < TASK_COUNT; i++ )
+			{
+				int hwm = task_stack_high_water_mark(i);
+				printf("\r\nTask %u: Stack HWM: %d bytes.(%d words)", i, hwm, hwm/2 );			
+			}
+			puts("\r\n");
+		}
 /*		if( (char)x == 'p' ){
 			int av = buffer_available( &rxbuf );
 			int i;

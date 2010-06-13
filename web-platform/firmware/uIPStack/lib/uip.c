@@ -101,7 +101,7 @@ volatile u8_t uip_urglen, uip_surglen;
 #endif /* UIP_URGDATA > 0 */
 u16_t uip_this_ack;
 
-volatile u16_t uip_len, uip_slen;
+volatile u16_t uip_len, uip_slen, uip_receive_window;
                              /* The uip_len is either 8 or 16 bits,
 				depending on the maximum packet
 				size. */
@@ -482,7 +482,8 @@ void
 uip_process(u8_t flag)
 {
   register struct uip_conn *uip_connr = uip_conn;
-  
+  uip_receive_window = UIP_RECEIVE_WINDOW;
+
   uip_appdata = &uip_buf[40 + UIP_LLH_LEN];
 
   
@@ -1461,8 +1462,8 @@ uip_process(u8_t flag)
        window so that the remote host will stop sending data. */
     BUF->wnd[0] = BUF->wnd[1] = 0;
   } else {
-    BUF->wnd[0] = ((UIP_RECEIVE_WINDOW) >> 8);
-    BUF->wnd[1] = ((UIP_RECEIVE_WINDOW) & 0xff); 
+    BUF->wnd[0] = ((uip_receive_window) >> 8);
+    BUF->wnd[1] = ((uip_receive_window) & 0xff); 
   }
 
  tcp_send_noconn:

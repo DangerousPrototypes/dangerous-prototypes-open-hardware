@@ -20,6 +20,7 @@ union DWORD
 	unsigned long value;
 };
 
+#define STACK_FILL 0x55AA
 
 //pointer for jumping back into the scheduler
 void * schedule_return;
@@ -43,8 +44,14 @@ void task_init( int task_id, void *entry_point )
 {
 	struct task *t = &tasks[task_id];
 	union DWORD ep;
-	ep.value = entry_point;
-	short *stack_ptr = t->stack;
+	ep.value = (unsigned short)entry_point;
+	short* stack_ptr = t->stack;
+
+	//fill stack with known value so we can report usage later
+	short* stack_end = stack_ptr + STACK_SIZE;
+	while( stack_ptr < stack_end ) *stack_ptr++ = STACK_FILL;
+	stack_ptr = t->stack;
+
 	//put the entry point of the function onto this stack
 	//we'll be jumping to the function later by switching to
 	//this stack then "return"-ing
@@ -53,6 +60,7 @@ void task_init( int task_id, void *entry_point )
 	*stack_ptr++ = (short)t->stack;
 	t->sp = (short) stack_ptr;
 	t->fp = t->sp;
+
 }
 
 
@@ -106,9 +114,12 @@ void task_yield()
 	goto *schedule_return;
 }
 
-int task_stack_used(int task_id){
+int task_stack_high_water_mark(int task_id){
 	struct task *ptr = &tasks[task_id];
-	return (int)(ptr->sp) - (int)(ptr->stack);
+	short* stack_end = ptr->stack + STACK_SIZE - 1;
+	while( stack_end > ptr->stack && (*stack_end) == STACK_FILL ) stack_end--;
+
+	return (int)(stack_end) - (int)(ptr->stack);
 }
 
 int __attribute__((always_inline)) task_current_task_id(){ return current_task_id; }
