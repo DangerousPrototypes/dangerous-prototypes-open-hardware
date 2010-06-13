@@ -20,25 +20,65 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+//use these defines to switch between compiles for OLS and IR Toy
+#define OLS
+//#define IRTOY
 
-//#include <avr/io.h>
-//#include <avr/pgmspace.h>
-//#include <stdint.h>
-//#include <util/delay.h>
 #include "usb_serial.h"
+
+static void init(void);
 
 #ifdef OLS
 	#include "config-18f24j50.h"
+	static void init(void){
+		unsigned int cnt = 2048;
+		
+		//all pins digital
+	    ANCON0 = 0xFF;                  
+	    ANCON1 = 0b00011111;// updated for lower power consumption. See datasheet page 343                  
+	
+		//there are some sensative FPGA pins, 
+		//make sure everything is input (should be on startup, but just in case)
+		TRISA=0xff;
+		TRISB=0xff;
+		TRISC=0b11111011; //LED out
+		PIN_LED=0;
+	
+		//start by holding the FPGA in reset
+		PROG_B_LOW();
+	
+		//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
+		OSCTUNEbits.PLLEN = 1;  //enable PLL
+		while(cnt--); //wait for lock
+	
+	}
 #endif
 
 #ifdef IRTOY
 	#include "config-18f2550.h"
+	static void init(void){
+		//disable some defaults
+	    ADCON1 |= 0b1111;   	//all pins digital
+		CVRCON=0b00000000;
+	
+		//setup IR LED for IR TX
+		IRTX_TRIS&=(~IRTX_PIN);	//digital OUTPUT (must ground transistor)
+		IRTX_LAT&=(~IRTX_PIN); 	//output to ground
+	
+		//visual indicator LED config
+		LED_LAT |=LED_PIN; 		//start with LED ON till USB connect 
+		LED_TRIS &=(~LED_PIN); 	//direction output
+	
+		//setup IR RX interrupt on RB32 or RB4 (see HardwareProfile.h)
+		IRRX_PULLUP=1; 	//disable port b pullups (0=enable)
+		TRISB|=0b10000; //make RB4 input so it doesn't interfere!
+		TRISB|=0b100; 	//make RB2 input so it doesn't interfere!
+	}
 #endif
 
 // Very simple character echo test
 int main(void)
 {
-	CPU_PRESCALE(0);
 	usb_init();
 	while (1) {
 		int n = usb_serial_getchar();
