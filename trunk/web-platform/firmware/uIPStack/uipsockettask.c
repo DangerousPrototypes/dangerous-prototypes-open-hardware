@@ -21,7 +21,8 @@ unsigned char next_send_id = 0;
 extern u16_t uip_listenports[UIP_LISTENPORTS];
 //additional external added to uip to hold how many bytes a current ACK is ACK-ing
 extern u16_t uip_this_ack;
-
+//additional external added to uip to let us set the receive window size
+extern u16_t uip_receive_window;
 
 //The array of callback functions to call 
 //when an incoming connection is established on a listening port
@@ -131,7 +132,6 @@ void uip_task_main(void)
 			}
 		}
 		else if(UIP_DMA_PERIODIC_TIMEOUT && uip_acquireBuffer()){
-//printf("\nperiodic timeout: id %hhd", next_conn_id);
 			if( next_conn_id != UIP_CONNS )
 			{
 				uip_len = 0;
@@ -140,12 +140,10 @@ void uip_task_main(void)
 					uip_periodic( next_conn_id );
 		    	    // transmit a packet, if one is ready
 		        	if(uip_len > 0){
-//printf("\n id %hhd sending", next_conn_id);
 		            	uip_arp_out();
 		            	nic_send();
 					}
 					next_conn_id++;
-//printf(",%hhd", next_conn_id);
 				}
 			}
 			if( next_conn_id == UIP_CONNS )
@@ -163,7 +161,6 @@ void uip_task_main(void)
 		    	    arptimer = 0;
 		        }
 				uip_releaseBuffer();
-//printf("\n state %04hx", UIP_DMA_STATUS.value);
 //possibly change test below to if( uip_len == 0)??
 				if( ENC_DMACONbits.CHEN == 0 ) nic_rx_maybe();
 			}
@@ -180,16 +177,22 @@ void uip_task_main(void)
 				struct file_t *f = file_get_by_handle(fh);
 				if(f != NULL && 
 					( f->state == ClosePending ||
-					 (f->write_buffer != NULL && buffer_available( f->write_buffer) > 0)
+					 (f->write_buffer != NULL && buffer_available( f->write_buffer) > 0 &&
+						connptr->len == 0
+					 )
 					)
 				  )
 				{
+#ifdef __DEBUG
 	printf("\n id %hhd state %hhx", next_send_id, f->state);
+#endif
 					if( uip_acquireBuffer() )
 					{
 						uip_periodic_conn(connptr);
 						if(uip_len > 0){
+#ifdef __DEBUG
 	printf("\n id %hhd sending", next_send_id);
+#endif
 			            	uip_arp_out();
 			            	nic_send();
 							break;
@@ -225,8 +228,9 @@ void uip_socket_app(void)
 
 	if(uip_connected())
 	{
+#ifdef __DEBUG
 		printf("app: connected. Ports %hd:%hd", uip_conn->lport, uip_conn->rport);
-
+#endif
 		if( file_handle == FILE_INVALID_HANDLE )
 		{
 			//it's an incoming connection (no assigned handle)
@@ -257,7 +261,9 @@ void uip_socket_app(void)
 
 	if( file->state == ClosePending )
 	{
+#ifdef __DEBUG
 		printf("\napp: freeing handle %hhd",uip_conn->appstate[0]);
+#endif
 		file_free(uip_conn->appstate[0]);
 		uip_conn->appstate[0] = FILE_INVALID_HANDLE;
 		goto close_or_abort;
@@ -272,8 +278,9 @@ void uip_socket_app(void)
 	if( uip_connected() ) file->state = Open;
 
 	if( uip_acked() ){
-		//TODO: get size of last send data from uip_conn
-		printf("\napp: acked %d bytes", uip_this_ack);
+#ifdef __DEBUG
+		printf("\r\napp: acked %d bytes", uip_this_ack);
+#endif
 		buffer_seek( txbuf, uip_this_ack );
 	}
 
@@ -281,16 +288,18 @@ void uip_socket_app(void)
 	int available = buffer_available( txbuf );//available to read
 
 	if(uip_rexmit()){
-		printf("app: rexmit. Handle: %hhd", file_handle);
-
+//#ifdef __DEBUG
+		printf("\r\napp: rexmit. Handle: %hhd", file_handle);
+//#endif
 		buffer_peek( txbuf, (char*)uip_appdata, uip_conn->len);
 		uip_send(uip_appdata, uip_conn->len);
 		may_send = false;
 	}
 	else if(uip_newdata())
 	{
+#ifdef __DEBUG
 		printf("app: newdata. Handle: %hhd. len=%u\n", file_handle, uip_datalen() );
-
+#endif
 		if( free >= uip_datalen() )
 		{
 			free -= buffer_write( rxbuf, (char*)uip_appdata, uip_datalen() );
@@ -301,19 +310,25 @@ void uip_socket_app(void)
 	}
 	else if( uip_closed() )
 	{
+#ifdef __DEBUG
 		printf("app: connection id %hhd closed\n", file_handle );
+#endif
 		file->state = Closed;
 		may_send = false;
 	}
 	else if( uip_aborted() )
 	{
+#ifdef __DEBUG
 		printf("app: connection id %hhd aborted\n", file_handle );
+#endif
 		file->state = Aborted;
 		may_send = false;
 	}
 	else if( uip_timedout() )
 	{
+#ifdef __DEBUG
 		printf("app: connection id %hhd timed out\n", file_handle );
+#endif
 		file->state = TimedOut;
 		may_send = false;
 	}
@@ -322,11 +337,20 @@ void uip_socket_app(void)
 		int size = available < uip_mss() ? available : uip_mss() ;
 		int peek = buffer_peek( txbuf, (char*)uip_appdata, size);
 		uip_appdata[peek] = '\0';
+#ifdef __DEBUG
 		printf("app: sending %d of %d available bytes: [%s] ", peek,available, (char*)uip_appdata);
-		
+#endif		
 		uip_send(uip_appdata, peek);
 		
 	}
+	/* 
+	This code prevents the "silly-window" TCP problem
+	The problem is though, that we want to fill our rx buffer entirely
+	sometimes before acting on it.
+	I've disabled this code in the meantime, until we can 
+	set the behaviour on a connection basis
+	...Or it becomes apparent that we just don't need it.
+	
 	if( free < rxbuf->size / 2 )
 	{
 		puts("\napp: stopping rx\n");
@@ -337,7 +361,9 @@ void uip_socket_app(void)
 		puts("\napp: restarting rx\n");
 		uip_restart(); //TODO NEED to be able to set the window size?
 	}
-
+	*/
+	//...instead let's try setting the window size
+	uip_receive_window = free;
 	return;
 
 close_or_abort:
