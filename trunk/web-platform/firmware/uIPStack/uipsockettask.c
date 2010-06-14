@@ -184,8 +184,16 @@ void uip_task_main(void)
 				  )
 				{
 #ifdef __DEBUG
-	printf("\n id %hhd state %hhx", next_send_id, f->state);
+	printf("\n TCP conn id: %hhd state: %hhd. File State: %hhx", next_send_id, connptr->tcpstateflags, f->state);
 #endif
+					if(  connptr->tcpstateflags == CLOSED )
+					{
+#ifdef __DEBUG
+	puts("\r\nFreed tcp conn and file ");
+#endif
+						file_free( fh );
+						connptr->appstate[0] = FILE_INVALID_HANDLE;
+					}
 					if( uip_acquireBuffer() )
 					{
 						uip_periodic_conn(connptr);
@@ -224,12 +232,15 @@ void uip_socket_app(void)
 	struct buffer_t *txbuf = NULL;
 	bool may_send = true;
 
+#ifdef __DEBUG
+		printf("\r\napp: process conn @ %p", uip_conn);
+#endif
 	
 
 	if(uip_connected())
 	{
 #ifdef __DEBUG
-		printf("app: connected. Ports %hd:%hd", uip_conn->lport, uip_conn->rport);
+		printf("\r\napp: connected. Ports %hd:%hd", uip_conn->lport, uip_conn->rport);
 #endif
 		if( file_handle == FILE_INVALID_HANDLE )
 		{
@@ -262,7 +273,7 @@ void uip_socket_app(void)
 	if( file->state == ClosePending )
 	{
 #ifdef __DEBUG
-		printf("\napp: freeing handle %hhd",uip_conn->appstate[0]);
+		printf("\r\napp: freeing handle %hhd",uip_conn->appstate[0]);
 #endif
 		file_free(uip_conn->appstate[0]);
 		uip_conn->appstate[0] = FILE_INVALID_HANDLE;
@@ -298,7 +309,7 @@ void uip_socket_app(void)
 	else if(uip_newdata())
 	{
 #ifdef __DEBUG
-		printf("app: newdata. Handle: %hhd. len=%u\n", file_handle, uip_datalen() );
+		printf("\r\napp: newdata. Handle: %hhd. len=%u\n", file_handle, uip_datalen() );
 #endif
 		if( free >= uip_datalen() )
 		{
@@ -311,7 +322,7 @@ void uip_socket_app(void)
 	else if( uip_closed() )
 	{
 #ifdef __DEBUG
-		printf("app: connection id %hhd closed\n", file_handle );
+		printf("\r\napp: connection id %hhd closed\n", file_handle );
 #endif
 		file->state = Closed;
 		may_send = false;
@@ -319,7 +330,7 @@ void uip_socket_app(void)
 	else if( uip_aborted() )
 	{
 #ifdef __DEBUG
-		printf("app: connection id %hhd aborted\n", file_handle );
+		printf("\r\napp: connection id %hhd aborted\n", file_handle );
 #endif
 		file->state = Aborted;
 		may_send = false;
@@ -327,18 +338,22 @@ void uip_socket_app(void)
 	else if( uip_timedout() )
 	{
 #ifdef __DEBUG
-		printf("app: connection id %hhd timed out\n", file_handle );
+		printf("\r\napp: connection id %hhd timed out\n", file_handle );
 #endif
 		file->state = TimedOut;
 		may_send = false;
 	}
+//	if( available >  0 && file->state > Open )
+//	{
+//		buffer_seek( txbuf, available);
+//	}
 	if( available > 0 && may_send && uip_conn->len == 0){
 		//we can send the smaller of what's available or the connection mss
 		int size = available < uip_mss() ? available : uip_mss() ;
 		int peek = buffer_peek( txbuf, (char*)uip_appdata, size);
 		uip_appdata[peek] = '\0';
 #ifdef __DEBUG
-		printf("app: sending %d of %d available bytes: [%s] ", peek,available, (char*)uip_appdata);
+		printf("\r\napp: sending %d of %d available bytes: [%s] ", peek,available, (char*)uip_appdata);
 #endif		
 		uip_send(uip_appdata, peek);
 		
@@ -369,12 +384,12 @@ void uip_socket_app(void)
 close_or_abort:
 	if( uip_closed() || uip_aborted() || uip_timedout() )
 	{
-		puts("\napp: abort chosen");
+		puts("\r\napp: abort chosen");
 		uip_abort();
 	}
 	else
 	{
-		puts("\napp: close chosen");
+		puts("\r\napp: close chosen");
 		uip_close();
 	}
 
