@@ -281,13 +281,6 @@ int main(void){
 
 
 
-//This occurs every half second, driven by the RTCC chime
-//This is being used to drive the uip periodic processing
-void __attribute__ ((interrupt, auto_psv)) _RTCCInterrupt()
-{
-	UIP_DMA_PERIODIC_TIMEOUT=1;
-	IFS3bits.RTCIF = 0;
-}
 
 //Address Error Trap
 union DWORD
@@ -299,6 +292,8 @@ union DWORD
 	} word;
 	unsigned long value;
 };
+
+
 
 static union DWORD StkAddress;
 void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
@@ -326,3 +321,22 @@ void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
 	printf("\nStack Error @ %08lx",StkAddress.value );
 }
 
+//This occurs every half second, driven by the RTCC chime
+//This is being used to drive the uip periodic processing
+#ifdef __EXTREME_DEBUG
+void __attribute__((no_auto_psv,__interrupt__(__preprologue__( \
+	"mov #_StkAddress+2,w1\n 	\
+	pop [w1--]\n			\
+	pop [w1]\n			\
+	push [w1]\n			\
+	push [++w1]")))) _RTCCInterrupt(){
+	
+	StkAddress.value -= 2;
+	printf("\nRTCC Int @ %08lx",StkAddress.value );
+#else
+void __attribute__ ((interrupt, auto_psv)) _RTCCInterrupt()
+{
+#endif
+	UIP_DMA_PERIODIC_TIMEOUT=1;
+	IFS3bits.RTCIF = 0;
+}

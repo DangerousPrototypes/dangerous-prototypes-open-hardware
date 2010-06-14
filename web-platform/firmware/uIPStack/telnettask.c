@@ -261,9 +261,9 @@ restart:
 		}
 		if( connection_event.event & Exception )
 		{
-#ifdef __DEBUG
+//#ifdef __DEBUG
 			puts("\r\nTelnet: Closing connection");
-#endif
+//#endif
 			file_close( telnet_handle );
 			telnet_handle = FILE_INVALID_HANDLE;
 			pos = 0;
