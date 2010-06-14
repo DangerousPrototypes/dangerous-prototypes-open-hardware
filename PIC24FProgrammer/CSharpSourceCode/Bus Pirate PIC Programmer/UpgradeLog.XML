@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Bus Pirate PIC Programmer">
+</Property><Property Name="Solution File" Value="E:\Projects\Dangerous Prototype\PICProgrammer\CSharpFolder\Bus Pirate PIC Programmer\Bus Pirate PIC Programmer.sln">
+</Property><Property Name="Date" Value="Thursday, May 27, 2010">
+</Property><Property Name="Time" Value="4:03 AM">
+</Property></Properties><Event ErrorLevel="0" Project="Bus Pirate PIC Programmer" Source="Bus Pirate PIC Programmer\Bus Pirate PIC Programmer.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Bus Pirate PIC Programmer" Source="Bus Pirate PIC Programmer\Bus Pirate PIC Programmer.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Sevenstring.HWInterface" Source="..\DLLs\Sevenstring.HWInterface\Sevenstring.HWInterface.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Sevenstring.HWInterface" Source="..\DLLs\Sevenstring.HWInterface\Sevenstring.HWInterface.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Bus Pirate PIC Programmer.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Bus Pirate PIC Programmer.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Bus Pirate PIC Programmer" Source="Bus Pirate PIC Programmer\app.config" Description="File converted successfully. All &lt;supportedRuntime&gt; and &lt;requiredRuntime&gt; tags were removed to enable the project to build and run with Visual Studio 2005.">
+</Event><Event ErrorLevel="3" Project="Bus Pirate PIC Programmer" Source="Bus Pirate PIC Programmer\app.config" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Sevenstring.HWInterface" Source="..\DLLs\Sevenstring.HWInterface\app.config" Description="File converted successfully. All &lt;supportedRuntime&gt; and &lt;requiredRuntime&gt; tags were removed to enable the project to build and run with Visual Studio 2005.">
+</Event><Event ErrorLevel="3" Project="Sevenstring.HWInterface" Source="..\DLLs\Sevenstring.HWInterface\app.config" Description="Converted">
+</Event></UpgradeLog>

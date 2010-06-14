@@ -1,0 +1,33 @@
+//Sample Script
+//Command, Data Byte(in hex),Delay (in msec), comment
+
+
+// ================= FOR PIC24 =======================
+ENTERICSPNORMALMODE,0x000000,10, This is for entering ICSP Mode. The Data is not used.  It has a delay of 10msec
+
+FORCEDSIX,0x000000,10, This is forced SIX Command usually sent after entering to ICSP Mode. It sends 0x000000 Data. It has a delay of 10msec
+
+SIX,0x000000,10, This is for SIX Command. It sends 0x000000 Data. It has a delay of 10msec
+SIX,0x0000FF,20, This is for SIX Command. It sends 0x0000FF Data. It has a delay of 20msec
+
+SIX_AFTER_REGOUT,0x040200,10, This is SIX after Regout
+
+REGOUT,0x000000,20, This is for reading. The Data is not used. It has a delay of 20msec
+
+EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
+
+
+// ================= FOR PIC18 =======================
+PIC18ENTERICSP,0x000000,10, This is for entering ICSP Mode. The Data is not used. It has a delay of 10msec
+
+SEND4BITCOMMANDMSBFIRST,0x000001,10, This is for Sending 4-bit Command. It sends 0b0001. It has a delay of 10msec
+
+SEND16BITDATALSBFIRST,0x000001,10, This is for Sending 16-bit Data. It sends 0x0001. It has a delay of 10msec
+
+SEND8BITDATALSBFIRST,0x000001,10, This is for Sending 8-bit Command. It sends 0x01. It has a delay of 10msec
+
+READ8BITLSBFIRST, 0x000000,10, Data is unused. It has a delay of 10msec
+
+DELAYCLKON4THBIT, 0x000000,10, Data is unused. It has a delay of 10msec on the 4th bit
+
+EXIT_ICSP,0x000000,10, This is for exiting ICSP Mode. The Data is not used. It has a delay of 10msec
