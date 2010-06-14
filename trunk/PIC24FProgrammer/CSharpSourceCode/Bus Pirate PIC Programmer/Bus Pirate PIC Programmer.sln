@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bus Pirate PIC Programmer", "Bus Pirate PIC Programmer\Bus Pirate PIC Programmer.csproj", "{88115F8B-03B3-49FD-8E72-6EFAA57A9A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sevenstring.HWInterface", "..\DLLs\Sevenstring.HWInterface\Sevenstring.HWInterface.csproj", "{B84E4E61-3A11-4D7F-BE6A-7FAB8E90BFE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sevenstring.HexParser", "..\DLLs\Sevenstring.HexParser\Sevenstring.HexParser.csproj", "{D120D601-384D-4284-8DAB-E7C3783BB50D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88115F8B-03B3-49FD-8E72-6EFAA57A9A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88115F8B-03B3-49FD-8E72-6EFAA57A9A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88115F8B-03B3-49FD-8E72-6EFAA57A9A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88115F8B-03B3-49FD-8E72-6EFAA57A9A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B84E4E61-3A11-4D7F-BE6A-7FAB8E90BFE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84E4E61-3A11-4D7F-BE6A-7FAB8E90BFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84E4E61-3A11-4D7F-BE6A-7FAB8E90BFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84E4E61-3A11-4D7F-BE6A-7FAB8E90BFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D120D601-384D-4284-8DAB-E7C3783BB50D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D120D601-384D-4284-8DAB-E7C3783BB50D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D120D601-384D-4284-8DAB-E7C3783BB50D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D120D601-384D-4284-8DAB-E7C3783BB50D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,5 @@
+E:\Project\Dangerous Prototype\PICProgrammer\CSharpFolder\DLLs\Sevenstring.HexParser\obj\Release\ResolveAssemblyReference.cache
+E:\Project\Dangerous Prototype\PICProgrammer\CSharpFolder\DLLs\Sevenstring.HexParser\bin\Release\Sevenstring.HexParser.dll
+E:\Project\Dangerous Prototype\PICProgrammer\CSharpFolder\DLLs\Sevenstring.HexParser\bin\Release\Sevenstring.HexParser.pdb
+E:\Project\Dangerous Prototype\PICProgrammer\CSharpFolder\DLLs\Sevenstring.HexParser\obj\Release\Sevenstring.HexParser.dll
+E:\Project\Dangerous Prototype\PICProgrammer\CSharpFolder\DLLs\Sevenstring.HexParser\obj\Release\Sevenstring.HexParser.pdb
