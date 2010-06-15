@@ -26,10 +26,31 @@
 
 #include "usb_serial.h"
 
-static void init(void);
-
 #ifdef OLS
 	#include "config-18f24j50.h"
+#endif
+
+#ifdef IRTOY
+	#include "config-18f2550.h"
+#endif
+
+static void init(void);
+
+// Very simple character echo test
+int main(void)
+{
+	init();
+
+	usb_init();
+
+	while (1) {
+		int n = usb_serial_getchar();
+		if (n >= 0) usb_serial_putchar(n);
+	}
+}
+
+
+#ifdef OLS
 	static void init(void){
 		unsigned int cnt = 2048;
 		
@@ -55,7 +76,6 @@ static void init(void);
 #endif
 
 #ifdef IRTOY
-	#include "config-18f2550.h"
 	static void init(void){
 		//disable some defaults
 	    ADCON1 |= 0b1111;   	//all pins digital
@@ -75,16 +95,5 @@ static void init(void);
 		TRISB|=0b100; 	//make RB2 input so it doesn't interfere!
 	}
 #endif
-
-// Very simple character echo test
-int main(void)
-{
-	usb_init();
-	while (1) {
-		int n = usb_serial_getchar();
-		if (n >= 0) usb_serial_putchar(n);
-	}
-}
-
 
 
