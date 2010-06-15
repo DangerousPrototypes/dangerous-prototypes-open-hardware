@@ -315,16 +315,15 @@ static uint8_t cdc_line_rtsdtr=0;
 // initialize USB serial
 void usb_init(void)
 {
-	HW_CONFIG();
+		//these are all hardware-dependent 
+		// pseudo functions defined in ubs_serial.h
+		HW_CONFIG();
         USB_FREEZE();				// enable USB
-        PLL_CONFIG();				// config PLL, 16 MHz xtal
-        while (!(PLLCSR & (1<<PLOCK))) ;	// wait for PLL lock
-        USB_CONFIG();				// start USB clock
-        UDCON = 0;				// enable attach resistor
-	usb_configuration = 0;
-	cdc_line_rtsdtr = 0;
-        UDIEN = (1<<EORSTE)|(1<<SOFE);
-	sei();
+        PLL_CONFIG();				// config PLL
+        USB_CONFIG();				// config USB peripheral
+		usb_configuration = 0;
+		cdc_line_rtsdtr = 0;
+		USB_INTERRUPT_CONFIG(); 	// config USB interrupt
 }
 
 // return 0 if the USB is not configured, or the configuration

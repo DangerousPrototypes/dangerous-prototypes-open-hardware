@@ -3,6 +3,9 @@
 
 //#include <stdint.h>
 
+//set USB peripheral configuration for 18F, AVR is enabled automatically by GCC
+#define PIC18F
+
 // setup
 void usb_init(void);			// initialize everything
 uint8_t usb_configured(void);		// is the USB port configured
@@ -80,24 +83,34 @@ int8_t usb_serial_set_control(uint8_t signals); // set DSR, DCD, RI, etc
 
 #if defined(__AVR_AT90USB162__)
 #define HW_CONFIG() 
-#define PLL_CONFIG() (PLLCSR = ((1<<PLLE)|(1<<PLLP0)))
-#define USB_CONFIG() (USBCON = (1<<USBE))
-#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
+#define PLL_CONFIG() (PLLCSR = ((1<<PLLE)|(1<<PLLP0))); while (!(PLLCSR & (1<<PLOCK))) // config PLL, 16 MHz xtal,wait for PLL lock
+#define USB_CONFIG() (USBCON = (1<<USBE)); UDCON = 0 //start USB clock, enable attach resistor
+#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK))) 
+#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
 #elif defined(__AVR_ATmega32U4__)
 #define HW_CONFIG() (UHWCON = 0x01)
-#define PLL_CONFIG() (PLLCSR = 0x12)
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))
+#define PLL_CONFIG() (PLLCSR = 0x12); while (!(PLLCSR & (1<<PLOCK)))
+#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
+#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
 #elif defined(__AVR_AT90USB646__)
 #define HW_CONFIG() (UHWCON = 0x81)
-#define PLL_CONFIG() (PLLCSR = 0x1A)
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))
+#define PLL_CONFIG() (PLLCSR = 0x1A); while (!(PLLCSR & (1<<PLOCK)))
+#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
+#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
 #elif defined(__AVR_AT90USB1286__)
 #define HW_CONFIG() (UHWCON = 0x81)
-#define PLL_CONFIG() (PLLCSR = 0x16)
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE)))
+#define PLL_CONFIG() (PLLCSR = 0x16); while (!(PLLCSR & (1<<PLOCK)))
+#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
 #define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
+#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
+#elif defined(PIC18F)
+#define HW_CONFIG() 
+#define PLL_CONFIG() 
+#define USB_CONFIG() 
+#define USB_FREEZE() 
+#define USB_INTERRUPT_CONFIG() 
 #endif
 
 // standard control endpoint request types
