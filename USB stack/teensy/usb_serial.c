@@ -317,13 +317,14 @@ void usb_init(void)
 {
 		//these are all hardware-dependent 
 		// pseudo functions defined in ubs_serial.h
-		HW_CONFIG();
-        USB_FREEZE();				// enable USB
-        PLL_CONFIG();				// config PLL
+		HW_CONFIG();				// (AVR)
+        USB_FREEZE();				// enable USB (AVR)
+        PLL_CONFIG();				// config PLL (AVR)
         USB_CONFIG();				// config USB peripheral
 		usb_configuration = 0;
 		cdc_line_rtsdtr = 0;
 		USB_INTERRUPT_CONFIG(); 	// config USB interrupt
+		USB_ENDPOINTS_CONFIG();		//config USB endpints (PIC only)
 }
 
 // return 0 if the USB is not configured, or the configuration
