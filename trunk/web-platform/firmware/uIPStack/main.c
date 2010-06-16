@@ -13,6 +13,7 @@
 #include "hardware/nic_dma.h"
 #include "hardware/rtcc.h"
 #include "lib/socket.h"
+#include "lib/dsPICSDRoutines.h"
 #include <stdio.h>
 
 //it's important to keep configuration bits that are compatibale with the bootloader
@@ -179,7 +180,7 @@ void debug_task_main()
 			puts("\nbuf status reset");
 			UIP_DMA_BUFFER_FREE=0;
 			
-			CS_DIS();
+			ENC_CS_DIS();
 			Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();Nop();
 			nic_rx_maybe();
 		}
@@ -264,6 +265,9 @@ int main(void){
     rtcc_set_alarm( time, 0, 0, true );
 	rtcc_enable_alarm();
     puts("timer init\n");
+
+	initSD();
+    puts("SD SPI init\n");
 
 	//all configuration done
 

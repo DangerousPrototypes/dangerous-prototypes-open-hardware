@@ -47,7 +47,7 @@
 #define ENC_INT_LAT         (LATAbits.LATA2)
 //assign SPI module to ENC28J60
 #define ENC_SPI_IF			(IFS0bits.SPI1IF)
-#define ENC_SSPBUF			(SPI1BUF)
+#define ENC_SPIBUF			(SPI1BUF)
 #define ENC_SPISTAT			(SPI1STAT)
 #define ENC_SPISTATbits		(SPI1STATbits)
 #define ENC_SPICON1			(SPI1CON1)
@@ -79,27 +79,43 @@
 #define ENC_DMADUMMY_INTIF		(IFS0bits.DMA0IF)
 #define ENC_DMADUMMY_INTERRUPT	__attribute__((interrupt,auto_psv)) _DMA0Interrupt
 
+//macro functions for working with the ENC interface
+#define ENC_CS_EN()    ENC_CS_LAT=0 
+#define ENC_CS_DIS()   ENC_CS_LAT=1
+#define ENC_HARDRESET() ENC_RST_LAT = 0; delay_ms(10);ENC_RST_LAT = 1
+#define ENC_SPITXRX() 	while ((ENC_SPISTATbits.SPITBF == 1) || (ENC_SPISTATbits.SPIRBF == 0));
 
 
-//define the SPI interface to use with the SD card
-#define SD_CS				LATBbits.LATB13
-#define SD_CS_TRIS			TRISBbits.TRISB13
-//#define SD_CD				PORTAbits.RA2
-//#define SD_CD_TRIS			TRISAbits.TRISA2
 
-//SPI module setup
+//SPI module setup - spi2 is shared by SD Card and EEPROM (but on different pins)
 #define SPICON1				SPI2CON1
+#define SPICON2				SPI2CON2
 #define SPISTAT				SPI2STAT
 #define SPIBUF				SPI2BUF
-#define SPISTAT_RBF			SPI2STATbits.SPIRBF
+//#define SPISTAT_RBF			SPI2STATbits.SPIRBF
 #define SPICON1bits			SPI2CON1bits
+#define SPICON2bits			SPI2CON2bits
 #define SPISTATbits			SPI2STATbits
-#define SPIENABLE           SPI2STATbits.SPIEN
+//#define SPIENABLE           SPI2STATbits.SPIEN
 
-//TRIS for SCK/SDI/SDO lines
-#define SPICLOCK			TRISBbits.TRISB11
-#define SPIIN				TRISBbits.TRISB10
-#define SPIOUT				TRISBbits.TRISB12
+
+//define the SPI interface to use with the SD card AND eeprom
+#define SD_CS_LAT			LATBbits.LATB13
+#define SD_CS_TRIS			TRISBbits.TRISB13
+
+//TRIS for SCK/SDI/SDO lines for SD card interface
+#define SD_SPICLOCK			TRISBbits.TRISB11
+#define SD_SPIIN			TRISBbits.TRISB10
+#define SD_SPIOUT			TRISBbits.TRISB12
+
+
+//macro functions for working with the ENC interface
+#define SD_CS_EN()    		SD_CS_LAT=0 
+#define SD_CS_DIS()   		SD_CS_LAT=1
+#define SD_SPITXRX() 		while ((SPISTATbits.SPITBF == 1) || (SPISTATbits.SPIRBF == 0));
+
+
+
 
 //EEPROM setup
 // 25LC I/O pins
@@ -134,9 +150,11 @@
 #define U1RXR_I RPINR18bits.U1RXR
 #define U2CTSR_I RPINR19bits.U2CTSR
 #define U2RXR_I RPINR19bits.U2RXR
+
 #define SDI1R_I RPINR20bits.SDI1R
 #define SCK1R_I RPINR20bits.SCK1R
 #define SS1R_I RPINR21bits.SS1R
+
 #define SDI2R_I RPINR22bits.SDI2R
 #define SCK2R_I RPINR22bits.SCK2R
 #define SS2R_I RPINR23bits.SS2R
@@ -151,9 +169,11 @@
 #define U2TX_O		5
 #define U2RTS_O		6
 #define SDO1_O		7
+
 #define SCK1OUT_O	8
 #define SS1OUT_O	9
 #define SDO2_O		10
+
 #define SCK2OUT_O	11
 #define SS2OUT_O	12
 #define OC1_O		18
@@ -189,10 +209,10 @@
 #define RP23_O RPOR11bits.RP23R
 #define RP24_O RPOR12bits.RP24R
 
-#define u8 unsigned char 
-#define u16 unsigned short 
-#define CS_EN()    ENC_CS_LAT=0 
-#define CS_DIS()   ENC_CS_LAT=1
-#define HARDRESET() ENC_RST_LAT = 0; delay_ms(10);ENC_RST_LAT = 1
-#define SPI_BUF     ENC_SSPBUF
-#define SPITXRX() 	while ((ENC_SPISTATbits.SPITBF == 1) || (ENC_SPISTATbits.SPIRBF == 0));
+#define u8 unsigned char
+#define uint8_t u8
+#define u16 unsigned short
+#define uint16_t u16 
+#define u32 unsigned long
+#define uint32_t u32 
+
