@@ -81,36 +81,44 @@ int8_t usb_serial_set_control(uint8_t signals); // set DSR, DCD, RI, etc
 #define LSB(n) (n & 255)
 #define MSB(n) ((n >> 8) & 255)
 
-#if defined(__AVR_AT90USB162__)
-#define HW_CONFIG() 
-#define PLL_CONFIG() (PLLCSR = ((1<<PLLE)|(1<<PLLP0))); while (!(PLLCSR & (1<<PLOCK))) // config PLL, 16 MHz xtal,wait for PLL lock
-#define USB_CONFIG() (USBCON = (1<<USBE)); UDCON = 0 //start USB clock, enable attach resistor
-#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK))) 
-#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
-#elif defined(__AVR_ATmega32U4__)
-#define HW_CONFIG() (UHWCON = 0x01)
-#define PLL_CONFIG() (PLLCSR = 0x12); while (!(PLLCSR & (1<<PLOCK)))
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
-#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
-#elif defined(__AVR_AT90USB646__)
-#define HW_CONFIG() (UHWCON = 0x81)
-#define PLL_CONFIG() (PLLCSR = 0x1A); while (!(PLLCSR & (1<<PLOCK)))
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
-#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
-#elif defined(__AVR_AT90USB1286__)
-#define HW_CONFIG() (UHWCON = 0x81)
-#define PLL_CONFIG() (PLLCSR = 0x16); while (!(PLLCSR & (1<<PLOCK)))
-#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
-#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
-#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
-#elif defined(PIC18F)
-#define HW_CONFIG() 
-#define PLL_CONFIG() 
-#define USB_CONFIG() 
-#define USB_FREEZE() 
-#define USB_INTERRUPT_CONFIG() 
+#if defined (AVR)
+	#if defined(__AVR_AT90USB162__)
+		#define HW_CONFIG() 
+		#define PLL_CONFIG() (PLLCSR = ((1<<PLLE)|(1<<PLLP0))); while (!(PLLCSR & (1<<PLOCK))) // config PLL, 16 MHz xtal,wait for PLL lock
+		#define USB_CONFIG() (USBCON = (1<<USBE)); UDCON = 0 //start USB clock, enable attach resistor
+	#elif defined(__AVR_ATmega32U4__)
+		#define HW_CONFIG() (UHWCON = 0x01)
+		#define PLL_CONFIG() (PLLCSR = 0x12); while (!(PLLCSR & (1<<PLOCK)))
+		#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
+	#elif defined(__AVR_AT90USB646__)
+		#define HW_CONFIG() (UHWCON = 0x81)
+		#define PLL_CONFIG() (PLLCSR = 0x1A); while (!(PLLCSR & (1<<PLOCK)))
+		#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
+	#elif defined(__AVR_AT90USB1286__)
+		#define HW_CONFIG() (UHWCON = 0x81)
+		#define PLL_CONFIG() (PLLCSR = 0x16); while (!(PLLCSR & (1<<PLOCK)))
+		#define USB_CONFIG() (USBCON = ((1<<USBE)|(1<<OTGPADE))); UDCON = 0
+	#endif
+	#define USB_FREEZE() (USBCON = ((1<<USBE)|(1<<FRZCLK)))
+	#define USB_INTERRUPT_CONFIG() UDIEN = (1<<EORSTE)|(1<<SOFE);sei()
+	#define USB_ENDPOINTS_CONFIG()
+#elif defined (PIC18F)
+	#define HW_CONFIG() 	
+	#define USB_FREEZE() 
+	#define PLL_CONFIG() 
+	#define USB_CONFIG()\
+			UCFG=0x14;	// internal pullup, enable tranceiver, fullspeed, no pingpong \
+			UIE=0x00;	//clrf UIE ?? ; disable interrupts \
+			UCON=0x08;	// USBEN only?? \
+			while(UCONbits.SEO)	// wait for se0 to end
+	#define USB_INTERRUPT_CONFIG()\
+		 	UIR=0;		//clrf UIR ;clear all usb ints \
+			UIE=0x11	// enable reset and idle INTs
+	#define USB_ENDPOINTS_CONFIG() // setup endpoints \
+			UEP0=0x16;	// endpoint, control, in/out \
+			UEP2=0x1A;	// ACM  interrupt in \
+			UEP3=0x1B;	// RX	bulk out \
+			UEP4=0x1A	// TX	bulk in 
 #endif
 
 // standard control endpoint request types
