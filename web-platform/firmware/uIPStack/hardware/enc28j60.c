@@ -51,30 +51,30 @@ u8 enc28j60ReadOp(u8 op, u8 address)
 {
 	volatile u8 data;
 	// assert CS
-	CS_EN();
+	ENC_CS_EN();
 	
 	// issue read command
-	SPI_BUF = op | (address & ADDR_MASK);
-	SPITXRX();
-	data = SPI_BUF;
+	ENC_SPIBUF = op | (address & ADDR_MASK);
+	ENC_SPITXRX();
+	data = ENC_SPIBUF;
 
 	// read data
-	SPI_BUF = 0x00;
-	SPITXRX();
+	ENC_SPIBUF = 0x00;
+	ENC_SPITXRX();
 
 	// do dummy read if needed
 	if(address & 0x80)
 	{
-		data = SPI_BUF;
-		SPI_BUF = 0x00;
-		SPITXRX();
+		data = ENC_SPIBUF;
+		ENC_SPIBUF = 0x00;
+		ENC_SPITXRX();
 
 	}
 	
-	data = SPI_BUF;
+	data = ENC_SPIBUF;
 
 	// release CS
-	CS_DIS();
+	ENC_CS_DIS();
 
 	return data;
 }
@@ -84,59 +84,59 @@ void enc28j60WriteOp(u8 op, u8 address, u8 data)
 	volatile u8 Dummy;
 
 	// assert CS
-	CS_EN();
+	ENC_CS_EN();
 	// issue write command
-	SPI_BUF = op | (address & ADDR_MASK);
-	SPITXRX();
-	Dummy = SPI_BUF;
+	ENC_SPIBUF = op | (address & ADDR_MASK);
+	ENC_SPITXRX();
+	Dummy = ENC_SPIBUF;
 	// write data
-	SPI_BUF = data;
-	SPITXRX();
-	Dummy = SPI_BUF;
+	ENC_SPIBUF = data;
+	ENC_SPITXRX();
+	Dummy = ENC_SPIBUF;
 	// release CS
-    CS_DIS();
+    ENC_CS_DIS();
 }
 
 void enc28j60ReadBuffer(u16 len, u8* data)
 {
 	volatile u8 Dummy;
 	// assert CS
-	CS_EN();
+	ENC_CS_EN();
 	
 	// issue read command
-	SPI_BUF = ENC28J60_READ_BUF_MEM;
-	SPITXRX();
-	Dummy = SPI_BUF;
+	ENC_SPIBUF = ENC28J60_READ_BUF_MEM;
+	ENC_SPITXRX();
+	Dummy = ENC_SPIBUF;
 	while(len--)
 	{
 		// read data
-		SPI_BUF = 0x00;
-		SPITXRX();
-		*data++ = SPI_BUF;
+		ENC_SPIBUF = 0x00;
+		ENC_SPITXRX();
+		*data++ = ENC_SPIBUF;
 	}	
 	// release CS
-	CS_DIS();
+	ENC_CS_DIS();
 }
 
 void enc28j60WriteBuffer(u16 len, u8* data)
 {
 	volatile u8 Dummy;
 	// assert CS
-	CS_EN();
+	ENC_CS_EN();
 	
 	// issue write command
-	SPI_BUF = ENC28J60_WRITE_BUF_MEM;
-	SPITXRX();
-	Dummy = SPI_BUF;
+	ENC_SPIBUF = ENC28J60_WRITE_BUF_MEM;
+	ENC_SPITXRX();
+	Dummy = ENC_SPIBUF;
 	while(len--)
 	{
 		// write data
-		SPI_BUF = *data++;
-		SPITXRX();
-		Dummy = SPI_BUF;
+		ENC_SPIBUF = *data++;
+		ENC_SPITXRX();
+		Dummy = ENC_SPIBUF;
 	}	
 	// release CS
-	CS_DIS();
+	ENC_CS_DIS();
 }
 
 void enc28j60SetBank(u8 address)
@@ -226,9 +226,9 @@ void enc28j60Init(void)
 	ENC_SPICON1bits.PPRE = 2; // 4:1
 	ENC_SPISTATbits.SPIEN = 1;
 
-    CS_DIS();
+    ENC_CS_DIS();
 	// perform system reset
-    HARDRESET();
+    ENC_HARDRESET();
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
 	// check CLKRDY bit to see if reset is complete
 	//TODO: shouldn't this call delay() ? 
@@ -312,7 +312,7 @@ void enc28j60BeginPacketSendDMA(unsigned int packetLength)
 	// assert CS
 	ENC_DMADUMMY_INTIF = 0; //clear DMA dummy int flag
 	ENC_DMA_INTIF = 0; //clear DMA int flag
-	CS_EN();		
+	ENC_CS_EN();		
 	ENC_DMACNT = packetLength - 1; // -1, as first byte is sent from here
 	ENC_DMADUMMYCNT = packetLength ; // number of reads we want to do
 
@@ -322,7 +322,7 @@ void enc28j60BeginPacketSendDMA(unsigned int packetLength)
 	ENC_DMACONbits.CHEN = 1; //enable data transfer
 	ENC_DMADUMMYCONbits.CHEN=1; //enable dummy reads
 	// issue write command
-	SPI_BUF = ENC28J60_WRITE_BUF_MEM; //this should start DMA
+	ENC_SPIBUF = ENC28J60_WRITE_BUF_MEM; //this should start DMA
 }
 
 void enc28j60BeginPacketSend(unsigned int packetLength)
@@ -356,8 +356,8 @@ void enc28j60EndPacketSend(void)
 {
 	volatile u8 Dummy;
 
-	Dummy = SPI_BUF; //clear SPI buffer rx flag (never hurts)
-	CS_DIS(); //in case called from end of DMA operation
+	Dummy = ENC_SPIBUF; //clear SPI buffer rx flag (never hurts)
+	ENC_CS_DIS(); //in case called from end of DMA operation
 	// send the contents of the transmit buffer onto the network
 	enc28j60WriteOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
 	//sync this up now
@@ -445,13 +445,13 @@ unsigned int enc28j60BeginPacketReceiveDMA(void)
 
 		volatile u8 Dummy;
 		// assert CS
-		CS_EN();		
+		ENC_CS_EN();		
 		// issue read command
-		SPI_BUF = ENC28J60_READ_BUF_MEM;
-		SPITXRX();
-		Dummy = SPI_BUF;
+		ENC_SPIBUF = ENC28J60_READ_BUF_MEM;
+		ENC_SPITXRX();
+		Dummy = ENC_SPIBUF;
 		ENC_DMACONbits.CHEN = 1; //enable data DMA
-		SPI_BUF = 0; //start DMA by sending first null. 
+		ENC_SPIBUF = 0; //start DMA by sending first null. 
 
 		return uip_dma_rx_pending_packets;
 	}
@@ -468,7 +468,7 @@ void enc28j60PacketReceive(unsigned char * packet, unsigned int maxlen)
 
 void enc28j60EndPacketReceive(void)
 {
-	CS_DIS(); //in case of end of DMA read, will need clearing	
+	ENC_CS_DIS(); //in case of end of DMA read, will need clearing	
 	// Move the RX read pointer to the start of the next received packet
 	// This frees the memory we just read out
 	enc28j60Write(ERXRDPTL, (NextPacketPtr));

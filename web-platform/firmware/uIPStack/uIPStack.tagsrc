@@ -13,6 +13,8 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\uipsockettask.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\buffer.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\file.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\telnettask.c
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\dsPICSDRoutines.c
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\dosfs.c
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\enc28j60.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\delay.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\hardware\HardwareProfile.h
@@ -29,3 +31,5 @@ C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\buffer.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\file.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\telnettask.h
 C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\socket.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\dsPICSDRoutines.h
+C:\Documents and Settings\tony\My Documents\PIC\uIPStack\lib\dosfs.h

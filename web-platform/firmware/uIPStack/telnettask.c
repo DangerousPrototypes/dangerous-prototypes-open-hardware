@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "hardware/rtcc.h"
+#include "lib/dosfs.h"
 
 #define SEND_BUF_SIZE 100
 #define REC_BUF_SIZE 100
@@ -106,13 +107,39 @@ void telnet_echo( file_handle_t handle, char** argv, unsigned int argc )
 	return;
 }
 
-void telnet_memdump( file_handle_t handle, char** argv, unsigned int argc )
+void memdump( file_handle_t handle, char* start, char* end )
 {
 	int i = 1;
+	char* line = malloc(64);
+	char *tmp;
+	while( start < end )
+	{
+		tmp = line;
+		tmp += sprintf(tmp,"%p\t", start);
+		for( i = 0 ; i < 8; i++ )
+		{
+			unsigned char b = start[i];
+			tmp+=sprintf(tmp, "%02hhx ", b);
+		}
+		*tmp = '\t';
+		for( i = 0 ; i < 8; i++ )
+		{
+			if( *start >= ' ' && *start <= '~' ) *tmp++ = *start;
+			else *tmp++ = '.';
+			start++;
+		}
+		*tmp = '\0';	
+		file_puts( line , telnet_handle);
+		file_puts( CRLF , telnet_handle);
+	}
+	free(line);
+}
+
+void telnet_memdump( file_handle_t handle, char** argv, unsigned int argc )
+{
 	char* memstart = NULL;
 	char* parseend;
 	unsigned int len = 0;
-	char* line = malloc(64);
 	if( argc != 3)
 	{
 		file_puts("memdump [address] [count]\r\n", telnet_handle);
@@ -120,31 +147,189 @@ void telnet_memdump( file_handle_t handle, char** argv, unsigned int argc )
 	} 
 	memstart = (char*)(unsigned short) strtoul( argv[1], &parseend, 0);
 	len = (unsigned int) strtoul( argv[2], &parseend, 0);
-	parseend = memstart + len;
-	char *tmp;
-	while( memstart < parseend )
-	{
-		tmp = line;
-		tmp += sprintf(tmp,"%p\t", memstart);
-		for( i = 0 ; i < 8; i++ )
-		{
-			unsigned char b = memstart[i];
-			tmp+=sprintf(tmp, "%02hhx ", b);
-		}
-		*tmp = '\t';
-		for( i = 0 ; i < 8; i++ )
-		{
-			if( *memstart >= ' ' && *memstart <= '~' ) *tmp++ = *memstart;
-			else *tmp++ = '.';
-			memstart++;
-		}
-		*tmp = '\0';	
-		file_puts( line , telnet_handle);
-		file_puts( CRLF , telnet_handle);
-	}
-	free(line);
+	memdump( handle, memstart, memstart + len);
+
 	return;
 }
+
+void telnet_sddump( file_handle_t handle, char** argv, unsigned int argc )
+{
+	unsigned long sector = 0;
+	char tmp[8];
+	char* parseend;
+	if( argc != 2)
+	{
+		file_puts("sddump [sector]\r\n", telnet_handle);
+		return;
+	} 
+	sector = strtoul( argv[1], &parseend, 0);
+	unsigned char* data = malloc( SECTOR_SIZE );
+	unsigned char result = DFS_ReadSector(0, data, sector, 1);
+	if( result == 0 )
+	{
+		memdump( handle, data, data + SECTOR_SIZE);
+	}
+	else
+	{
+		file_puts("Error reading sector. Response code:", handle );
+		sprintf(tmp,"%02hhx", result );
+		file_puts(tmp, handle);
+		file_puts(CRLF, handle);
+	}
+	free(data);
+	return;
+}
+
+
+
+void telnet_cat( file_handle_t handle, char** argv, unsigned int argc )
+{
+	if( argc != 2 )
+	{
+		file_puts("cat [filename]\r\n", telnet_handle);
+		return;	
+	}
+	u8_t* scratch = malloc(SECTOR_SIZE);
+	VOLINFO* volinfo = malloc( sizeof(VOLINFO) );
+	FILEINFO* file = malloc( sizeof(FILEINFO) );
+	u8_t* read_buf = malloc( SEND_BUF_SIZE );
+
+	//get partition start sector
+	uint32_t startsector = DFS_GetPtnStart( 0, scratch, 0 , NULL, NULL, NULL );
+	if( startsector == DFS_ERRMISC )
+	{
+		file_puts("Error finding partition start\r\n", handle);
+		goto exit;
+	}
+	//get volume info
+	if( DFS_GetVolInfo(0,scratch,startsector,volinfo) ) 
+	{
+		file_puts("Error getting volume info\r\n", handle);
+		goto exit;
+	}
+	//open file
+	if( DFS_OpenFile( volinfo, (u8_t*)argv[1], DFS_READ, scratch, file ) ) 
+	{
+		file_puts("Error opening file ", handle);
+		file_puts( argv[1], handle );
+		file_puts( CRLF, handle );
+		goto exit;
+	}
+	//read it to the output handle
+	uint32_t read = 0;
+	//TODO - would like the use the send buffer as THE buffer
+	while( read  < file->filelen ) 
+	{
+		uint32_t did_read;
+		DFS_ReadFile( file, scratch, read_buf, &did_read, SEND_BUF_SIZE );
+		if( did_read == 0 )
+		{
+			file_puts("Error reading file ", handle);
+			file_puts( argv[1], handle );
+			file_puts( CRLF, handle );
+			goto exit;
+		}
+		u16_t i = 0;
+		for( ; i < did_read; i++ )
+		{
+			file_putchar( read_buf[i], handle );
+		}
+		read += did_read;
+	} 
+exit:
+	free( read_buf );
+	free( file );
+	free( volinfo );
+	free( scratch );
+}
+
+void telnet_ls( file_handle_t handle, char** argv, unsigned int argc )
+{
+	if( argc != 2 )
+	{
+		file_puts("ls [path]\r\n", telnet_handle);
+		return;	
+	}
+	u8_t* scratch = malloc(SECTOR_SIZE);
+	VOLINFO* volinfo = malloc( sizeof(VOLINFO) );
+	DIRINFO* dir = malloc( sizeof(DIRINFO) );
+	DIRENT* dirent = malloc( sizeof(DIRENT) );
+
+	//get partition start sector
+	uint32_t startsector = DFS_GetPtnStart( 0, scratch, 0 , NULL, NULL, NULL );
+	if( startsector == DFS_ERRMISC )
+	{
+		file_puts("Error finding partition start\r\n", handle);
+		goto exit;
+	}
+	//get volume info
+	if( DFS_GetVolInfo(0,scratch,startsector,volinfo) ) 
+	{
+		file_puts("Error getting volume info\r\n", handle);
+		goto exit;
+	}
+	//open dir
+	dir->scratch = scratch;
+	if( DFS_OpenDir( volinfo, (u8_t*)argv[1], dir ) ) 
+	{
+		file_puts("Error opening dir ", handle);
+		file_puts( argv[1], handle );
+		file_puts( CRLF, handle );
+		goto exit;
+	}
+	file_puts("Directory of ", handle );
+	file_puts( argv[1] , handle );
+	file_puts( CRLF, handle );
+	char* tmp = malloc(64);
+	while( DFS_GetNext(volinfo, dir, dirent) == DFS_OK )
+	{
+		if( dirent->name[0] != '\0' )
+		{	
+			char* t= tmp;
+			uint32_t file_size =dirent->filesize_3;
+			file_size <<= 8;
+			file_size+=dirent->filesize_2;
+			file_size <<= 8;
+			file_size+=dirent->filesize_1;
+		 	file_size <<= 8;
+			file_size+=dirent->filesize_0; 
+
+			register uint16_t date = (dirent->wrtdate_h <<8) + dirent->wrtdate_l;
+			register uint16_t time = (dirent->wrttime_h <<8) + dirent->wrttime_l;
+			register uint8_t attr = dirent->attr;
+			t+=sprintf(t,"%04hu-%02hu-%02hu %02hu:%02hu:%02hu  ",
+				(date >> 9) + 1980,
+				(date & 0x01e0) >> 5,
+				(date & 0x1f),
+				(time >> 11),
+				(time & 0x07e0) >>5,
+				(time & 0x1f) << 1);
+
+			t+=sprintf(t,"%c%c%c%c%c  %10lu  ",
+				(attr & ATTR_READ_ONLY ? 'r':'-'),
+				(attr & ATTR_HIDDEN ? 'h':'-'),
+				(attr & ATTR_SYSTEM ? 's':'-'),
+				(attr & ATTR_DIRECTORY ? 'd':'-'),
+				(attr & ATTR_ARCHIVE ? 'a':'-'),
+				file_size);
+			sprintf(t,"%s",dirent->name);
+			t[12] = '\0';
+			t[11] = t[10];
+			t[10] = t[9];
+			t[9] = t[8];
+			t[8] = (attr & ATTR_DIRECTORY ? ' ':'.');
+			file_puts( tmp, handle );
+			file_puts( CRLF, handle );
+		}
+	}
+	free(tmp); 
+exit:
+	free( dirent );
+	free( dir );
+	free( volinfo );
+	free( scratch );
+}
+
 
 void telnet_help( file_handle_t handle, char** argv, unsigned int argc );
 
@@ -156,7 +341,10 @@ const struct command const commands[]={
 	{"echo",&telnet_echo},
 	{"time",&telnet_time},
 	{"quit",&telnet_quit},
-	{"memdump",&telnet_memdump}
+	{"memdump",&telnet_memdump},
+	{"cat", &telnet_cat},
+	{"ls", &telnet_ls},
+	{"sddump", &telnet_sddump}
 };	
 #define CMDS_SIZE  ( sizeof(commands) / sizeof(struct command) )
 
