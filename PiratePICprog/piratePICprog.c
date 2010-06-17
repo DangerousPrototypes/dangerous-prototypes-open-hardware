@@ -774,6 +774,34 @@ int main (int argc, const char** argv)
 	} else if( res == 0 ) {
 		return 0;
 	}
+	
+	if( !g_hello_only ) {
+		
+		if( !g_hexfile_path ) {
+			fprintf(stderr, "Please specify hexfile path --hex=/path/to/hexfile.hex\n");
+			return -1;
+		}
+	
+		bin_buff = (uint8*)malloc(256 << 10); //256kB
+		if( !bin_buff ) {
+			fprintf(stderr, "Could not allocate 256kB buffer\n");
+			goto Error;
+		}
+		
+		//fill the buffer with 0xFF
+		memset(bin_buff, 0xFFFFFFFF, (256 << 10));
+		
+		printf("Parsing HEX file [%s]\n", g_hexfile_path);
+		
+		res = readHEX(g_hexfile_path, bin_buff, (256 << 8), pages_used);
+		if( res <= 0 || res > PIC_FLASHSIZE ) {
+			fprintf(stderr, "Could not load HEX file, result=%d\n", res);
+			goto Error;
+		}
+		
+		printf("Found %d words (%d bytes)\n", res, res * 3);
+	
+	}
 
 	if( !g_device_path ) {
 		fprintf(stderr, "Please specify serial device path --dev=/dev/...\n");
