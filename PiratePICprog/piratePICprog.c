@@ -366,17 +366,6 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 	return num_words;
 }
 
-uint8 makeCrc(uint8* buf, uint32 len)
-{
-	uint8 crc = 0, i = 0;
-
-	for(i=0; i<len; i++){
-		crc -= *buf++;
-	}
-	
-	return crc;
-}
-
 int sendString(int fd, int length, uint8* dat)
 {
 	int res=0;
@@ -388,31 +377,6 @@ int sendString(int fd, int length, uint8* dat)
 		return -1;
 	}
 }
-
-int sendCommandAndWaitForResponse(int fd, uint8 *command)
-{
-	uint8  response[4] = {0};
-	int    res = 0;
-	
-	res = write(fd, command, HEADER_LENGTH + command[LENGTH_OFFSET]);
-	
-	if( res <= 0 ) {
-		puts("ERROR");
-		return -1;
-	}
-	
-	res = readWithTimeout(fd, response, 1, 5);
-	if( res != 1 ) {
-		puts("ERROR");
-		return -1;
-	} else if ( response[0] != BOOTLOADER_OK ) {
-		printf("ERROR [%02x]\n", response[0]);
-		return -1;
-	} else {
-		return 0;
-	}
-}
-
 
 int sendFirmware(int fd, uint8* data, uint8* pages_used)
 {
@@ -442,27 +406,7 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 			return -1;
 		}
 		
-		//erase page
-		command[0] = (u_addr & 0x00FF0000) >> 16;
-		command[1] = (u_addr & 0x0000FF00) >>  8;
-		command[2] = (u_addr & 0x000000FF) >>  0;
-		command[COMMAND_OFFSET] = 0x01; //erase command
-		command[LENGTH_OFFSET ] = 0x01; //1 byte, CRC
-		command[PAYLOAD_OFFSET] = makeCrc(command, 5);
-		
-		if( g_verbose ) {
-			dumpHex(command, HEADER_LENGTH + command[LENGTH_OFFSET]);
-		}
-		
-		printf("Erasing page %ld, %04lx...", page, u_addr);
-		
-		if( g_simulate == 0 && sendCommandAndWaitForResponse(fd, command) < 0 ) {
-			return -1;
-		}
-		
-		puts("OK");
-		
-		//write 8 rows
+		//write 64 bytes
 		for( row = 0; row < PIC_NUM_ROWS_IN_PAGE; row ++, u_addr += (PIC_NUM_WORDS_IN_ROW * 2))
 		{
 			command[0] = (u_addr & 0x00FF0000) >> 16;
@@ -473,50 +417,16 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 			
 			memcpy(&command[PAYLOAD_OFFSET], &data[PIC_ROW_ADDR(page, row)], PIC_ROW_SIZE);
 			
-			command[PAYLOAD_OFFSET + PIC_ROW_SIZE] = makeCrc(command, HEADER_LENGTH + PIC_ROW_SIZE);
-			
 			printf("Writing page %ld row %ld, %04lx...", page, row + page*PIC_NUM_ROWS_IN_PAGE, u_addr);
 			
-			if( g_simulate == 0 && sendCommandAndWaitForResponse(fd, command) < 0 ) {
-				return -1;
-			}
-			
-			puts("OK");
 			
 			sleep(0);
 			
-			if( g_verbose ) {
-				dumpHex(command, HEADER_LENGTH + command[LENGTH_OFFSET]);
-			}
 			done += PIC_ROW_SIZE;
 		}
 	}
 	
 	return done;
-}
-
-void fixJumps(uint8* bin_buff, uint8* pages_used)
-{
-	uint32 iGotoUserAppAdress = 0;
-	uint32 iGotoUserAppAdressB3 = 0, iIter = 0;
-	uint32 iBLAddress = 0;
-	
-	iBLAddress = ( PIC_FLASHSIZE - (BOOTLOADER_PLACEMENT * PIC_NUM_ROWS_IN_PAGE * PIC_NUM_WORDS_IN_ROW * 2)); //PCU
-	iGotoUserAppAdress = iBLAddress  - 4; 
-	iGotoUserAppAdressB3 = (iGotoUserAppAdress / 2) * 3;
-	
-	for ( iIter = 0; iIter < 6; iIter++ ) {
-		bin_buff[ iGotoUserAppAdressB3 + iIter ] = bin_buff[ iIter ];
-	}
-	
-	pages_used[ (iGotoUserAppAdressB3 / PIC_PAGE_SIZE) ] = 1;
-	
-	bin_buff[0] = 0x04;
-	bin_buff[1] = ( (iBLAddress & 0x0000FE) );			
-	bin_buff[2] = ( (iBLAddress & 0x00FF00) >> 8 );			
-	bin_buff[3] = 0x00;	
-	bin_buff[4] = ( (iBLAddress & 0x7F0000) >> 16 );
-	bin_buff[5] = 0x00;
 }
 
 /* non-firmware functions */
@@ -639,6 +549,25 @@ int PIC416Write(uint8 cmd, uint16 data){
 	return 0;
 }
 
+int PIC416WriteLongData(uint8 cmd, uint16 data){
+	uint8 buffer[4]={0};
+	int res = -1;
+	
+	buffer[0]='\xA4';
+	buffer[1]=cmd;
+	buffer[2]=(uint8)(data);
+	buffer[3]=(data>>8);
+
+	
+	sendString(dev_fd, 4, buffer);
+	res = readWithTimeout(dev_fd, buffer, 1, 1);
+	if( memcmp(buffer, "\x01", 1) ) {
+		puts("ERROR");
+		return -1;
+	} 
+	return 0;
+}
+
 uint16 PIC416Read(uint8 cmd){
 	uint16 PICread;
 	uint8 buffer[2]={0};
@@ -693,6 +622,15 @@ void MCLRHigh(){
 void enterLowVPPICSP(uint32 icspkey){
 	uint8	buffer[4];
 	
+	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
+	// Reconfigure the mode for LSB order
+	printf("Set mode for MCLR (MSB)...");
+	if(writetopirate("\x88")){
+		puts("ERROR");
+		//goto Error;
+	} 
+	puts("(OK)");
+	
 	ClockLow();
     DataLow();
     MCLRLow();
@@ -706,6 +644,15 @@ void enterLowVPPICSP(uint32 icspkey){
     BulkByteWrite(4,buffer);
     DataLow();
     MCLRHigh();
+	
+	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
+	// Reconfigure the mode for LSB order
+	printf("Set mode for PIC programming (LSB)...");
+	if(writetopirate("\x8A")){
+		puts("ERROR");
+		//goto Error;
+	} 
+	puts("(OK)");
 }
 
 void exitICSP(void){
@@ -751,6 +698,59 @@ void erasePIC(void){
         sleep(1);//Thread.Sleep(1000); (524ms worst case)
 }
 
+        /// <summary>
+        /// Up to 64 bytes Write
+        /// </summary>
+        /// <param name="hexAddData"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+void writePIC(uint32 tblptr, uint8* Data, int length)
+        {
+        uint16 DataByte;//, buffer[2]={0x00,0x00};
+		int ctr;
+		uint8	buffer[2] = {0};
+        
+        PIC416Write(0x00,0x8EA6);
+        PIC416Write(0x00,0x9CA6);
+        PIC416Write(0x00,0x84A6);
+        
+        // set TBLPTR
+        PIC416Write(0x00,0x0E00 | (tblptr>>16));
+        PIC416Write(0x00,0x6EF8);
+        PIC416Write(0x00,0x0E00 | (tblptr>>8));
+        PIC416Write(0x00,0x6EF7);
+        PIC416Write(0x00,0x0E00 | (tblptr));
+        PIC416Write(0x00,0x6EF6);
+
+        PIC416Write(0x00,0x6AA6);
+        PIC416Write(0x00,0x88A6);
+
+        for(ctr=0;ctr<length-2;ctr+=2)
+            {
+            DataByte=Data[ctr+1];
+            DataByte=DataByte<<8;
+            DataByte|=Data[ctr];
+            PIC416Write(0x0D,DataByte);
+            }
+        DataByte=Data[length-1];
+        DataByte=DataByte<<8;
+        DataByte|=Data[length-2];
+        PIC416Write(0x0F,DataByte);
+
+		//delay the 4th clock bit of the 20bit command to allow programming....
+		DataLow();
+		for(ctr=0; ctr<3; ctr++){
+			ClockHigh();
+			ClockLow();
+		}
+
+        ClockHigh();
+        sleep(1);
+        ClockLow();
+
+		BulkByteWrite(2, buffer);
+        }
+
 /* entry point */
 
 int main (int argc, const char** argv)
@@ -762,6 +762,7 @@ int main (int argc, const char** argv)
 	uint8 i=0, PICrev;
 	uint16 PICid;
 	char PICname[]="UNKNOWN/INVALID PIC ID";
+	uint8 test[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
 	
 	puts("+++++++++++++++++++++++++++++++++++++++++++");
 	puts("  piratePICprog for the Bus Pirate         ");
@@ -836,7 +837,7 @@ int main (int argc, const char** argv)
 	
 	//setup output pin type (normal)
 	printf("Setup mode...");
-	if(writetopirate("\x88")){
+	if(writetopirate("\x8A")){
 		puts("ERROR");
 		goto Error;
 	} 
@@ -855,15 +856,6 @@ int main (int argc, const char** argv)
 	
 	//now we're in ICSP mode, can do programming stuff with the PIC
  	//read ID
-	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
-	// Reconfigure the mode for LSB order
-	printf("Set mode for PIC programming (LSB)...");
-	if(writetopirate("\x8A")){
-		puts("ERROR");
-		goto Error;
-	} 
-	puts("(OK)");
-	
 	//determine device type
 	PICid=readID();
 	PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
@@ -882,10 +874,21 @@ int main (int argc, const char** argv)
 	puts("(OK)");
 	
 	//exit programming mode
+	puts("Exit ICSP...");
 	exitICSP();
+	
+	puts("Entering ICSP...");	
+	enterLowVPPICSP(0x4D434850);
+	puts("Writing the PIC (please wait)...");	
+	writePIC(0x00000000, test, 64);
+	//exit programming mode
+	puts("Exit ICSP...");
+	exitICSP();
+	
 
 	
 Finished:
+	puts("Done!");
 	if( bin_buff ) { 
 		free( bin_buff );
 	}
