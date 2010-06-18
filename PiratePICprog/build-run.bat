@@ -1,3 +1,3 @@
 gcc piratePICprog.c -o piratePICprog.exe
-piratepicprog --dev=COM3 --hello
+piratePICprog --dev=COM3 --hex=pump.hex --verbose
 pause

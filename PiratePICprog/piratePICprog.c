@@ -162,17 +162,13 @@
 #define OS UNKNOWN
 #endif
 
-#define BOOTLOADER_HELLO_STR "\xC1"
-#define BOOTLOADER_OK 0x4B
-#define BOOTLOADER_PLACEMENT 1
-
 #define PIC_FLASHSIZE 0xAC00
 
-#define PIC_NUM_PAGES 512
-#define PIC_NUM_ROWS_IN_PAGE  8
-#define PIC_NUM_WORDS_IN_ROW 64
+#define PIC_NUM_PAGES 256
+#define PIC_NUM_ROWS_IN_PAGE  1
+#define PIC_NUM_WORDS_IN_ROW 32
 
-#define PIC_WORD_SIZE  (3)
+#define PIC_WORD_SIZE  (2)
 #define PIC_ROW_SIZE  (PIC_NUM_WORDS_IN_ROW * PIC_WORD_SIZE)
 #define PIC_PAGE_SIZE (PIC_NUM_ROWS_IN_PAGE  * PIC_ROW_SIZE)
 
@@ -181,16 +177,13 @@
 #define PIC_WORD_ADDR(p,r,w)	(PIC_ROW_ADDR(p,r) + ((w) * PIC_WORD_SIZE))
 #define PIC_PAGE_ADDR(p)		(PIC_PAGE_SIZE * (p))
 
-#define PAYLOAD_OFFSET 5
-#define HEADER_LENGTH PAYLOAD_OFFSET
-#define LENGTH_OFFSET 4
-#define COMMAND_OFFSET 3
-
 /* type definitions */
 
 typedef unsigned char  uint8;
 typedef unsigned short uint16;
 typedef unsigned long  uint32;
+
+void writePIC(uint32 tblptr, uint8* Data, int length);
 
 /* global settings, command line arguments */
 
@@ -268,7 +261,7 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 	
 	char  line[512] = {0};
 	char  *pc;
-	char  *pline = line + 1;
+	char  *pline = line + 1; //location in the line of the start of the length????
 	int   res = 0;
 	int	  binlen = 0;
 	int   line_no = 0;
@@ -282,16 +275,16 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 	
 	while( !feof(fp) && fgets(line, sizeof(line) - 1, fp) )
 	{
-		line_no++;
-		
-		if( line[0] != ':' ) {
+		line_no++;//increment line counter
+
+		if( line[0] != ':' ) {//if the line doesn't start with : then the HEX is mangled somehow
 			break;
 		}
 		
-		res = strlen(pline);
+		res = strlen(pline); 
 		pc  = pline + res - 1;
 		
-		while( pc > pline && *pc <= ' ' ) {
+		while( pc > pline && *pc <= ' ' ) { //???get address or length????
 			*pc-- = 0;
 			res--;
 		}
@@ -304,20 +297,20 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 		hex_crc = 0;
 		
 		for( pc = pline, i = 0; i<res; i+=2, pc+=2 ) {
-			linebin[i >> 1] = hexdec(pc);
-			hex_crc += linebin[i >> 1];
+			linebin[i >> 1] = hexdec(pc);//crawl line two bytes at a time and suck up the HEX digits, put in linebin[i/2]
+			hex_crc += linebin[i >> 1];//handle CRC
 		}
 		
 		binlen = res / 2;
 		
-		if( hex_crc != 0 ) {
+		if( hex_crc != 0 ) { //each byte plus the checksum (final hex number) is 0
 			fprintf(stderr, "Checksum does not match, line %d\n", line_no);
 			return -1;
 		}
 		
-		hex_addr = (linebin[1] << 8) | linebin[2];
-		hex_len  = linebin[0];
-		hex_type = linebin[3];
+		hex_addr = (linebin[1] << 8) | linebin[2]; //this line address in program space
+		hex_len  = linebin[0]; //length of the data
+		hex_type = linebin[3]; //HEX record type
 		
 		if( binlen - (1 + 2 + 1 + hex_len + 1) != 0 ) {
 			fprintf(stderr, "Incorrect number of bytes, line %d\n", line_no);
@@ -327,7 +320,7 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 		if( hex_type == 0x00 )
 		{
 			f_addr  = (hex_base_addr | (hex_addr)) / 2; //PCU
-			
+
 			if( hex_len % 4 ) {
 				fprintf(stderr, "Misaligned data, line %d\n", line_no);
 				return -1;
@@ -336,15 +329,15 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 				return -1;
 			}
 			
-			hex_words = hex_len  / 4;
-			o_addr  = (f_addr / 2) * PIC_WORD_SIZE; //BYTES
+			hex_words = hex_len  / 2; //not 4...
+			o_addr  = (f_addr) * PIC_WORD_SIZE; //BYTES
 			
 			for( i=0; i<hex_words; i++)
 			{
-				bout[o_addr + 0] = data[(i*4) + 2];
-				bout[o_addr + 1] = data[(i*4) + 0];
-				bout[o_addr + 2] = data[(i*4) + 1];
-				
+				bout[o_addr + 0] = data[(i*2) + 0];//2 not 4
+				bout[o_addr + 1] = data[(i*2) + 1];//2 not 4
+				//bout[o_addr + 2] = data[(i*4) + 1];
+//				printf("Fad: %d Oad: %d HW: %d W1: %X W2: %X \n", f_addr, o_addr,hex_words,bout[o_addr + 0],bout[o_addr + 1] );
 				pages_used[ (o_addr / PIC_PAGE_SIZE) ] = 1;
 				
 				o_addr    += PIC_WORD_SIZE;
@@ -363,19 +356,9 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 	}
 	
 	fclose(fp);
+	//puts("Raw HEX...");
+	//dumpHex(bout,64);
 	return num_words;
-}
-
-int sendString(int fd, int length, uint8* dat)
-{
-	int res=0;
-	
-	res = write(fd, dat, length);
-	
-	if( res <= 0 ) {
-		puts("ERROR");
-		return -1;
-	}
 }
 
 int sendFirmware(int fd, uint8* data, uint8* pages_used)
@@ -390,9 +373,11 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 	
 	
 	for( page=0; page<PIC_NUM_PAGES; page++)
+	//for( page=0; page<3; page++)
 	{
 		
 		u_addr = page * ( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
+		//u_addr = page * ( 2 * 32 );
 		
 		if( pages_used[page] != 1 ) {
 			if( g_verbose && u_addr < PIC_FLASHSIZE) {
@@ -403,27 +388,24 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 		
 		if( u_addr >= PIC_FLASHSIZE ) {
 			fprintf(stderr, "Address out of flash\n");
-			return -1;
+			continue; //return -1;
 		}
 		
 		//write 64 bytes
-		for( row = 0; row < PIC_NUM_ROWS_IN_PAGE; row ++, u_addr += (PIC_NUM_WORDS_IN_ROW * 2))
-		{
-			command[0] = (u_addr & 0x00FF0000) >> 16;
-			command[1] = (u_addr & 0x0000FF00) >>  8;
-			command[2] = (u_addr & 0x000000FF) >>  0;
-			command[COMMAND_OFFSET] = 0x02; //write command
-			command[LENGTH_OFFSET ] = PIC_ROW_SIZE + 0x01; //DATA_LENGTH + CRC
+		//for( row = 0; row < PIC_NUM_ROWS_IN_PAGE; row ++, u_addr += (PIC_NUM_WORDS_IN_ROW * 2))
+		//{
+		
+			memcpy(&command[0], &data[page*64], 64);
 			
-			memcpy(&command[PAYLOAD_OFFSET], &data[PIC_ROW_ADDR(page, row)], PIC_ROW_SIZE);
+			printf("Writing page %ld, %04lx... \n", page, u_addr);
+			if( g_verbose ) {
+				dumpHex(command,64);
+			}
+
+			writePIC(u_addr, command, 64);
 			
-			printf("Writing page %ld row %ld, %04lx...", page, row + page*PIC_NUM_ROWS_IN_PAGE, u_addr);
-			
-			
-			sleep(0);
-			
-			done += PIC_ROW_SIZE;
-		}
+			done += 64;//PIC_ROW_SIZE;
+		//}
 	}
 	
 	return done;
@@ -517,6 +499,18 @@ int parseCommandLine(int argc, const char** argv)
 	}
 	
 	return 1;
+}
+
+int sendString(int fd, int length, uint8* dat)
+{
+	int res=0;
+	
+	res = write(fd, dat, length);
+	
+	if( res <= 0 ) {
+		puts("ERROR");
+		return -1;
+	}
 }
 
 int BulkByteWrite(int bwrite, uint8* val){
@@ -708,12 +702,8 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
         {
         uint16 DataByte;//, buffer[2]={0x00,0x00};
 		int ctr;
-		uint8	buffer[2] = {0};
-        
-        PIC416Write(0x00,0x8EA6);
-        PIC416Write(0x00,0x9CA6);
-        PIC416Write(0x00,0x84A6);
-        
+		uint8	buffer[4] = {0};
+
         // set TBLPTR
         PIC416Write(0x00,0x0E00 | (tblptr>>16));
         PIC416Write(0x00,0x6EF8);
@@ -738,6 +728,10 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
         PIC416Write(0x0F,DataByte);
 
 		//delay the 4th clock bit of the 20bit command to allow programming....
+		//use upper bits of 4bit command to configure the delay
+		//18f24j50 needs 1.2ms, lower parts in same family need 3.2
+		PIC416Write(0x40,0x0000);
+		/*
 		DataLow();
 		for(ctr=0; ctr<3; ctr++){
 			ClockHigh();
@@ -745,10 +739,17 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
 		}
 
         ClockHigh();
-        sleep(1);
+        //sleep(0); need shorter delay 1.2ms or 3.4ms = 12.8 chars per ms @115200bps, rx/tx 48characters for delay?
+		for(ctr=0; ctr<4; ctr++){//get the ID X times as a delay, should add final clock high as a command
+			sendString(dev_fd, 1, "\x01");
+			readWithTimeout(dev_fd, buffer, 4, 1);
+		}
+		
         ClockLow();
-
+		buffer[0]=0x00;
+		buffer[1]=0x00;
 		BulkByteWrite(2, buffer);
+		*/
         }
 
 /* entry point */
@@ -830,7 +831,7 @@ int main (int argc, const char** argv)
 	
 	
 	//enter BBIO mode 
-	
+
 	printf("Entering binary mode...");
 	sendString(dev_fd, 1, "\x00");
 	res = readWithTimeout(dev_fd, buffer, 5, 1);
@@ -904,7 +905,8 @@ int main (int argc, const char** argv)
 	//exit programming mode
 	puts("Exit ICSP...");
 	exitICSP();
-	
+
+/*	
 	puts("Entering ICSP...");	
 	enterLowVPPICSP(0x4D434850);
 	puts("Writing the PIC (please wait)...");	
@@ -912,7 +914,28 @@ int main (int argc, const char** argv)
 	//exit programming mode
 	puts("Exit ICSP...");
 	exitICSP();
+	*/
+	if( !g_hello_only ) {
+		puts("Entering ICSP...");
+		enterLowVPPICSP(0x4D434850);
+  
+        PIC416Write(0x00,0x8EA6); //setup PIC
+        PIC416Write(0x00,0x9CA6); //setup PIC
+        PIC416Write(0x00,0x84A6); //setup write page
 	
+		res = sendFirmware(dev_fd, bin_buff, pages_used);
+		
+		puts("Exit ICSP...");
+		exitICSP();
+		
+		if( res > 0 ) {
+			puts("\nFirmware updated successfully :)!");
+		} else {
+			puts("\nError updating firmware :(");
+			goto Error;
+		}
+		
+	}
 
 	
 Finished:
