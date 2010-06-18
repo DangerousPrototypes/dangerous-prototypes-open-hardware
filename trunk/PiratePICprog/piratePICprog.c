@@ -41,6 +41,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include "buspirateio.h"
+#include "serial.h"
+
 #define PIRATE_LOADER_VERSION "1.0.2"
 
 #define STR_EXPAND(tok) #tok
@@ -56,98 +59,6 @@
 	#define B115200 115200
 
 	#define OS WINDOWS
-	
-	int write(int fd, const void* buf, int len)
-	{
-		HANDLE hCom = (HANDLE)fd;
-		int res = 0;
-		unsigned long bwritten = 0;
-
-
-		res = WriteFile(hCom, buf, len, &bwritten, NULL);
-
-		if( res == FALSE ) {
-			return -1;
-		} else {
-			return bwritten;
-		}
-	}
-
-	int read(int fd, void* buf, int len)
-	{
-		HANDLE hCom = (HANDLE)fd;
-		int res = 0;
-		unsigned long bread = 0;
-
-		res = ReadFile(hCom, buf, len, &bread, NULL);
-
-		if( res == FALSE ) {
-			return -1;
-		} else {
-			return bread;
-		}
-	}
-
-	int close(int fd)
-	{
-		HANDLE hCom = (HANDLE)fd;
-
-		CloseHandle(hCom);
-		return 0;
-	}
-
-	int open(const char* path, unsigned long flags)
-	{
-		static char full_path[32] = {0};
-
-		HANDLE hCom = NULL;
-		
-		if( path[0] != '\\' ) {
-			_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", path);
-			path = full_path;
-		}
-
-		hCom = CreateFileA(path, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
-			return -1;
-		} else {
-			return (int)hCom;
-		}
-	}
-
-	int __stdcall select(int nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfs, const struct timeval* timeout)
-	{
-		time_t maxtc = time(0) + (timeout->tv_sec);
-		COMSTAT cs = {0};
-		unsigned long dwErrors = 0;
-
-		if( readfds->fd_count != 1 ) {
-			return -1;
-		}
-
-		while( time(0) <= maxtc )
-		{ //only one file supported
-			if( ClearCommError( (HANDLE)readfds->fd_array[0], 0, &cs) != TRUE ){
-				return -1;
-			}
-
-			if( cs.cbInQue > 0 ) {
-				return 1;
-			}
-
-			Sleep(10);
-		}
-		return 0;
-	}
-
-	unsigned int sleep(unsigned int sec)
-	{
-		Sleep(sec * 1000);
-		
-		return 0;
-	}
-
 #else
 	#include <unistd.h>
 	#include <termios.h>
@@ -194,39 +105,51 @@ const char* g_device_path  = NULL;
 const char* g_hexfile_path = NULL;
 int		dev_fd = -1;
 
-/* functions */
-
-int readWithTimeout(int fd, uint8* out, int length, int timeout)
+/* non-firmware functions */
+int parseCommandLine(int argc, const char** argv)
 {
-	fd_set fds;
-	struct timeval tv = {timeout, 0};
-	int res = -1;
-	int got = 0;
+	int i = 0;
 	
-	do {
-	
-		FD_ZERO(&fds);
-		FD_SET(fd, &fds);
+	for(i=1; i<argc; i++)
+	{
 		
-		res = select(fd + 1, &fds, NULL, NULL, &tv);
-		
-		if( res > 0 ) {
-			res = read(fd, out, length);
-			if( res > 0 ) {
-				length -= res;
-				got    += res;
-				out    += res;
-			} else {
-				break;
-			}
-		} else { 
-			return res;
+		if( !strncmp(argv[i], "--hex=", 6) ) {
+			g_hexfile_path = argv[i] + 6;
+		} else if ( !strncmp(argv[i], "--dev=", 6) ) {
+			g_device_path = argv[i] + 6;
+		} else if ( !strcmp(argv[i], "--verbose") ) {
+			g_verbose = 1;
+		} else if ( !strcmp(argv[i], "--hello") ) {
+			g_hello_only = 1;
+		} else if ( !strcmp(argv[i], "--simulate") ) {
+			g_simulate = 1;
+		} else if ( !strcmp(argv[i], "--help") ) {
+			argc = 1; //that's not pretty, but it works :)
+			break;
+		} else {
+			fprintf(stderr, "Unknown parameter %s, please use pirate-loader --help for usage\n", argv[i]);
+			return -1;
 		}
-	} while( length > 0);
+	}
 	
-	return got;
+	if( argc == 1 )
+	{
+		//print usage
+		puts("pirate-loader usage:\n");
+		puts(" ./pirate-loader --dev=/path/to/device --hello");
+		puts(" ./pirate-loader --dev=/path/to/device --hex=/path/to/hexfile.hex [ --verbose");
+		puts(" ./pirate-loader --simulate --hex=/path/to/hexfile.hex [ --verbose");
+		puts("");
+		
+		return 0;
+	}
+	
+	return 1;
 }
 
+//
+/* HEX file related functions */
+//
 unsigned char hexdec(const char* pc)
 {
 	return (((pc[0] >= 'A') ? ( pc[0] - 'A' + 10 ) : ( pc[0] - '0' ) ) << 4 | 
@@ -411,96 +334,8 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 	return done;
 }
 
-/* non-firmware functions */
 
-int configurePort(int fd, unsigned long baudrate)
-{
-#ifdef WIN32
-	DCB dcb = {0};
-	HANDLE hCom = (HANDLE)fd;
-
-	dcb.DCBlength = sizeof(dcb);
-
-	dcb.BaudRate = baudrate;
-	dcb.ByteSize = 8;
-	dcb.Parity = NOPARITY;
-	dcb.StopBits = ONESTOPBIT;
-
-	if( !SetCommState(hCom, &dcb) ){
-		return -1;
-	}
-
-	return (int)hCom;
-#else
-	struct termios g_new_tio;
-	
-	memset(&g_new_tio, 0x00 , sizeof(g_new_tio));
-	cfmakeraw(&g_new_tio);
-	
-	g_new_tio.c_cflag |=  (CS8 | CLOCAL | CREAD);
-	g_new_tio.c_cflag &= ~(PARENB | CSTOPB | CSIZE);
-	g_new_tio.c_oflag = 0;
-	g_new_tio.c_lflag = 0;
-	
-	
-	g_new_tio.c_cc[VTIME] = 0;
-	g_new_tio.c_cc[VMIN] = 1;
-	
-	cfsetispeed (&g_new_tio, baudrate);
-	cfsetospeed (&g_new_tio, baudrate);
-	
-	tcflush(fd, TCIOFLUSH);
-	
-	return tcsetattr(fd, TCSANOW, &g_new_tio);
-#endif
-}
-
-int openPort(const char* dev, unsigned long flags)
-{
-	return open(dev, O_RDWR | O_NOCTTY | O_NDELAY | flags);
-}
-
-int parseCommandLine(int argc, const char** argv)
-{
-	int i = 0;
-	
-	for(i=1; i<argc; i++)
-	{
-		
-		if( !strncmp(argv[i], "--hex=", 6) ) {
-			g_hexfile_path = argv[i] + 6;
-		} else if ( !strncmp(argv[i], "--dev=", 6) ) {
-			g_device_path = argv[i] + 6;
-		} else if ( !strcmp(argv[i], "--verbose") ) {
-			g_verbose = 1;
-		} else if ( !strcmp(argv[i], "--hello") ) {
-			g_hello_only = 1;
-		} else if ( !strcmp(argv[i], "--simulate") ) {
-			g_simulate = 1;
-		} else if ( !strcmp(argv[i], "--help") ) {
-			argc = 1; //that's not pretty, but it works :)
-			break;
-		} else {
-			fprintf(stderr, "Unknown parameter %s, please use pirate-loader --help for usage\n", argv[i]);
-			return -1;
-		}
-	}
-	
-	if( argc == 1 )
-	{
-		//print usage
-		puts("pirate-loader usage:\n");
-		puts(" ./pirate-loader --dev=/path/to/device --hello");
-		puts(" ./pirate-loader --dev=/path/to/device --hex=/path/to/hexfile.hex [ --verbose");
-		puts(" ./pirate-loader --simulate --hex=/path/to/hexfile.hex [ --verbose");
-		puts("");
-		
-		return 0;
-	}
-	
-	return 1;
-}
-
+/* Send an array to the serail port , maybe should be moved to serail.c */
 int sendString(int fd, int length, uint8* dat)
 {
 	int res=0;
@@ -513,6 +348,25 @@ int sendString(int fd, int length, uint8* dat)
 	}
 }
 
+//
+/* Bus Pirate BINMODE related functions */
+//
+
+//low lever send command, get reply function
+int writetopirate(uint8* val){
+	int res = -1;
+	uint8	buffer[2] = {0};
+	
+	sendString(dev_fd, 1, val);
+	res = readWithTimeout(dev_fd, buffer, 1, 1);
+	if( memcmp(buffer, "\x01", 1) ) {
+		puts("ERROR");
+		return -1;
+	} 
+	return 0;
+}
+
+//binmode: bulk write bytes to bus command
 int BulkByteWrite(int bwrite, uint8* val){
 	int i;
 	uint8 opcode=0x10;
@@ -525,25 +379,6 @@ int BulkByteWrite(int bwrite, uint8* val){
 }
 
 int PIC416Write(uint8 cmd, uint16 data){
-	uint8 buffer[4]={0};
-	int res = -1;
-	
-	buffer[0]='\xA4';
-	buffer[1]=cmd;
-	buffer[2]=(uint8)(data);
-	buffer[3]=(data>>8);
-
-	
-	sendString(dev_fd, 4, buffer);
-	res = readWithTimeout(dev_fd, buffer, 1, 1);
-	if( memcmp(buffer, "\x01", 1) ) {
-		puts("ERROR");
-		return -1;
-	} 
-	return 0;
-}
-
-int PIC416WriteLongData(uint8 cmd, uint16 data){
 	uint8 buffer[4]={0};
 	int res = -1;
 	
@@ -578,26 +413,12 @@ uint16 PIC416Read(uint8 cmd){
 	return PICread;
 }
 
-int writetopirate(uint8* val){
-	int res = -1;
-	uint8	buffer[2] = {0};
-	
-	sendString(dev_fd, 1, val);
-	res = readWithTimeout(dev_fd, buffer, 1, 1);
-	if( memcmp(buffer, "\x01", 1) ) {
-		puts("ERROR");
-		return -1;
-	} 
-	return 0;
-}
-
 void DataLow(){
 	writetopirate("\x0C");
 }
 void DataHigh(){
 	writetopirate("\x0D");
 }
-
 void ClockLow(){
 	writetopirate("\x0A");
 }
@@ -609,6 +430,15 @@ void MCLRLow(){
 }
 void MCLRHigh(){
 	writetopirate("\x05");
+}
+
+//
+/* Common programming functions */
+//
+void exitICSP(void){
+	//exit programming mode
+	MCLRLow();
+	MCLRHigh();
 }
 
 //enter ICSP on PICs with low voltage ICSP mode
@@ -649,12 +479,13 @@ void enterLowVPPICSP(uint32 icspkey){
 	puts("(OK)");
 }
 
-void exitICSP(void){
-	//exit programming mode
-	MCLRLow();
-	MCLRHigh();
-}
+//enable 13volts using high voltage programming adapter
+void enterHighVPPICSP(void){}
 
+//
+/* 18F2/4xJxx related functions, maybe other 18Fs too? */
+//
+//should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
 uint16 readID(void){
 	uint16 PICid;
 	
@@ -671,88 +502,91 @@ uint16 readID(void){
 	return PICid;
 }
 
+//erase 18F, sleep delay should be adjustable
 void erasePIC(void){
-
-        PIC416Write(0,0x0E3C);
-        PIC416Write(0,0x6EF8);
-        PIC416Write(0,0x0E00);
-        PIC416Write(0,0x6EF7);
-        PIC416Write(0,0x0E05);
-        PIC416Write(0,0x6EF6);
-        PIC416Write(0x0C,0x0101);
-        PIC416Write(0,0x0E3C);
-        PIC416Write(0,0x6EF8);
-        PIC416Write(0,0x0E00);
-        PIC416Write(0,0x6EF7);
-        PIC416Write(0,0x0E04);
-        PIC416Write(0,0x6EF6);
-        PIC416Write(0x0C,0x8080);
-        PIC416Write(0,0);
-        PIC416Write(0,0);
-        sleep(1);//Thread.Sleep(1000); (524ms worst case)
+	PIC416Write(0,0x0E3C);
+	PIC416Write(0,0x6EF8);
+	PIC416Write(0,0x0E00);
+	PIC416Write(0,0x6EF7);
+	PIC416Write(0,0x0E05);
+	PIC416Write(0,0x6EF6);
+	PIC416Write(0x0C,0x0101);
+	PIC416Write(0,0x0E3C);
+	PIC416Write(0,0x6EF8);
+	PIC416Write(0,0x0E00);
+	PIC416Write(0,0x6EF7);
+	PIC416Write(0,0x0E04);
+	PIC416Write(0,0x6EF6);
+	PIC416Write(0x0C,0x8080);
+	PIC416Write(0,0);
+	PIC416Write(0,0);
+	sleep(1);//Thread.Sleep(1000); (524ms worst case)
 }
 
-        /// <summary>
-        /// Up to 64 bytes Write
-        /// </summary>
-        /// <param name="hexAddData"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
+//a few things need to be done once at the beginning of a sequence of write operations
+//this configures the PIC, and enables page writes
+//call it once, then call PIC18F_write() as needed
+void PIC18F_setupwrite(void){
+	PIC416Write(0x00,0x8EA6); //setup PIC
+	PIC416Write(0x00,0x9CA6); //setup PIC
+	PIC416Write(0x00,0x84A6); //enable page writes
+}
+//18F setup write location and write length bytes of data to PIC
 void writePIC(uint32 tblptr, uint8* Data, int length)
-        {
-        uint16 DataByte;//, buffer[2]={0x00,0x00};
-		int ctr;
-		uint8	buffer[4] = {0};
+{
+	uint16 DataByte;//, buffer[2]={0x00,0x00};
+	int ctr;
+	uint8	buffer[4] = {0};
 
-        // set TBLPTR
-        PIC416Write(0x00,0x0E00 | (tblptr>>16));
-        PIC416Write(0x00,0x6EF8);
-        PIC416Write(0x00,0x0E00 | (tblptr>>8));
-        PIC416Write(0x00,0x6EF7);
-        PIC416Write(0x00,0x0E00 | (tblptr));
-        PIC416Write(0x00,0x6EF6);
+	// set TBLPTR
+	PIC416Write(0x00,0x0E00 | (tblptr>>16));
+	PIC416Write(0x00,0x6EF8);
+	PIC416Write(0x00,0x0E00 | (tblptr>>8));
+	PIC416Write(0x00,0x6EF7);
+	PIC416Write(0x00,0x0E00 | (tblptr));
+	PIC416Write(0x00,0x6EF6);
 
-        PIC416Write(0x00,0x6AA6);
-        PIC416Write(0x00,0x88A6);
+	PIC416Write(0x00,0x6AA6);
+	PIC416Write(0x00,0x88A6);
 
-        for(ctr=0;ctr<length-2;ctr+=2)
-            {
-            DataByte=Data[ctr+1];
-            DataByte=DataByte<<8;
-            DataByte|=Data[ctr];
-            PIC416Write(0x0D,DataByte);
-            }
-        DataByte=Data[length-1];
-        DataByte=DataByte<<8;
-        DataByte|=Data[length-2];
-        PIC416Write(0x0F,DataByte);
-
-		//delay the 4th clock bit of the 20bit command to allow programming....
-		//use upper bits of 4bit command to configure the delay
-		//18f24j50 needs 1.2ms, lower parts in same family need 3.2
-		PIC416Write(0x40,0x0000);
-		/*
-		DataLow();
-		for(ctr=0; ctr<3; ctr++){
-			ClockHigh();
-			ClockLow();
+	for(ctr=0;ctr<length-2;ctr+=2)
+		{
+		DataByte=Data[ctr+1];
+		DataByte=DataByte<<8;
+		DataByte|=Data[ctr];
+		PIC416Write(0x0D,DataByte);
 		}
+	DataByte=Data[length-1];
+	DataByte=DataByte<<8;
+	DataByte|=Data[length-2];
+	PIC416Write(0x0F,DataByte);
 
-        ClockHigh();
-        //sleep(0); need shorter delay 1.2ms or 3.4ms = 12.8 chars per ms @115200bps, rx/tx 48characters for delay?
-		for(ctr=0; ctr<4; ctr++){//get the ID X times as a delay, should add final clock high as a command
-			sendString(dev_fd, 1, "\x01");
-			readWithTimeout(dev_fd, buffer, 4, 1);
-		}
-		
-        ClockLow();
-		buffer[0]=0x00;
-		buffer[1]=0x00;
-		BulkByteWrite(2, buffer);
-		*/
-        }
+	//delay the 4th clock bit of the 20bit command to allow programming....
+	//use upper bits of 4bit command to configure the delay
+	//18f24j50 needs 1.2ms, lower parts in same family need 3.2
+	PIC416Write(0x40,0x0000);
+	
+	/*Old way of doing clock high for program delay.
 
+	DataLow();
+	for(ctr=0; ctr<3; ctr++){
+		ClockHigh();
+		ClockLow();
+	}
+
+	ClockHigh();
+	sleep(0); //need shorter delay 1.2ms or 3.4ms = 12.8 chars per ms @115200bps, rx/tx 48characters for delay?
+	ClockLow();
+
+	buffer[0]=0x00;
+	buffer[1]=0x00;
+	BulkByteWrite(2, buffer);
+	*/
+}
+
+//
 /* entry point */
+//
 
 int main (int argc, const char** argv)
 {
@@ -763,13 +597,12 @@ int main (int argc, const char** argv)
 	uint8 i=0, PICrev;
 	uint16 PICid;
 	char PICname[]="UNKNOWN/INVALID PIC ID";
-	uint8 test[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
 	
 	puts("+++++++++++++++++++++++++++++++++++++++++++");
 	puts("  piratePICprog for the Bus Pirate         ");
 	puts("  Loader version: " PIRATE_LOADER_VERSION "  OS: " OS_NAME(OS));
 	puts("+++++++++++++++++++++++++++++++++++++++++++\n");
-	
+
 	if( (res = parseCommandLine(argc, argv)) < 0 ) {
 		return -1;
 	} else if( res == 0 ) {
@@ -880,16 +713,19 @@ int main (int argc, const char** argv)
 	} 
 	puts("(OK)");
 	
+	//enter ICSP
 	puts("Entering ICSP...");
-	enterLowVPPICSP(0x4D434850);
+	enterLowVPPICSP(0x4D434850);//key should be part of device info
 	
 	//now we're in ICSP mode, can do programming stuff with the PIC
  	//read ID
-	//determine device type
 	PICid=readID();
+
+	//determine device type
 	PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
 	PICid=(PICid>>5); //isolate PIC device ID (upper 11 bits)
-	//could this be an array and we lookup that value?
+
+	//could this be an array/lookup table or part of a type info struct???
 	switch(PICid){
 		case 0x260:
 			strcpy(PICname,"18F24J50"); 
@@ -906,25 +742,19 @@ int main (int argc, const char** argv)
 	puts("Exit ICSP...");
 	exitICSP();
 
-/*	
-	puts("Entering ICSP...");	
-	enterLowVPPICSP(0x4D434850);
-	puts("Writing the PIC (please wait)...");	
-	writePIC(0x00000000, test, 64);
-	//exit programming mode
-	puts("Exit ICSP...");
-	exitICSP();
-	*/
+	//write a HEX is there is one
 	if( !g_hello_only ) {
+		//enter ICSP mode
 		puts("Entering ICSP...");
-		enterLowVPPICSP(0x4D434850);
+		enterLowVPPICSP(0x4D434850); //key should be part of device info
   
-        PIC416Write(0x00,0x8EA6); //setup PIC
-        PIC416Write(0x00,0x9CA6); //setup PIC
-        PIC416Write(0x00,0x84A6); //setup write page
+		//some initial programming setup stuff, enable page writes, etc
+		PIC18F_setupwrite();
 	
+		//write the firmware to the PIC 
 		res = sendFirmware(dev_fd, bin_buff, pages_used);
 		
+		//exit ICSP
 		puts("Exit ICSP...");
 		exitICSP();
 		
