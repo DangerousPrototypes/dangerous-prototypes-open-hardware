@@ -397,7 +397,7 @@ int PIC416Write(uint8 cmd, uint16 data){
 	return 0;
 }
 
-uint16 PIC416Read(uint8 cmd){
+uint8 PIC416Read(uint8 cmd){
 	uint16 PICread;
 	uint8 buffer[2]={0};
 	int res = -1;
@@ -509,14 +509,15 @@ uint16 readID(uint32 tblptr){
 	return PICid;
 }
 
-void PIC18Fread(uint32 tblptr, uint8* Data, int length)
+void PIC18F_read(uint32 tblptr, uint8* Data, int length)
 {
 	int ctr;
 	//setup read 
 	settblptr(tblptr);
 	//read device
-	for(ctr=0;ctr<length-2;ctr+=2)
+	for(ctr=0;ctr<length;ctr++)
 	{
+		//printf("%X ", PIC416Read(0x09) );
 		Data[ctr]=PIC416Read(0x09);
 	}
 }
@@ -739,6 +740,7 @@ int main (int argc, const char** argv)
 
 	//write a HEX is there is one
 	if( !g_hello_only ) {
+
 		//enter ICSP mode
 		puts("Entering ICSP...");
 		enterLowVPPICSP(0x4D434850); //key should be part of device info
@@ -752,7 +754,20 @@ int main (int argc, const char** argv)
 		//exit ICSP
 		puts("Exit ICSP...");
 		exitICSP();
+
+		puts("Read PIC test...");
 		
+		puts("Entering ICSP...");
+		enterLowVPPICSP(0x4D434850); //key should be part of device info
+
+		//read the PIC
+		PIC18F_read(0x000000, bin_buff, 0xff);
+		dumpHex(bin_buff,0xff); //dump to screen
+		
+		//exit ICSP
+		puts("Exit ICSP...");
+		exitICSP();
+				
 		if( res > 0 ) {
 			puts("\nFirmware updated successfully :)!");
 		} else {
