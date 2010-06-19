@@ -485,44 +485,41 @@ void enterHighVPPICSP(void){}
 //
 /* 18F2/4xJxx related functions, maybe other 18Fs too? */
 //
+
+void settblptr(uint32 tblptr)
+{
+	// set TBLPTR
+	PIC416Write(0x00,0x0E00 | ((tblptr>>16)&0xff));
+	PIC416Write(0x00,0x6EF8);
+	PIC416Write(0x00,0x0E00 | ((tblptr>>8)&0xff));
+	PIC416Write(0x00,0x6EF7);
+	PIC416Write(0x00,0x0E00 | ((tblptr)&0xff));
+	PIC416Write(0x00,0x6EF6);
+}
 //should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
-uint16 readID(void){
+uint16 readID(uint32 tblptr){
 	uint16 PICid;
-	
+	//0x3ffffe
 	//setup read from device ID bits
-	PIC416Write(0,0x0E3F);
-	PIC416Write(0,0x6EF8);	
-	PIC416Write(0,0x0EFF);
-	PIC416Write(0,0x6EF7);
-	PIC416Write(0,0x0EFE);
-	PIC416Write(0,0x6EF6);
+	settblptr(tblptr);
+	
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	PICid=PIC416Read(0x09);	//lower 8 bits
 	PICid|=PIC416Read(0x09)<<8;	//upper 8 bits
 	return PICid;
 }
 
-//erase 18F, sleep delay should be adjustable
-void erasePIC(void){
-	PIC416Write(0,0x0E3C);
-	PIC416Write(0,0x6EF8);
-	PIC416Write(0,0x0E00);
-	PIC416Write(0,0x6EF7);
-	PIC416Write(0,0x0E05);
-	PIC416Write(0,0x6EF6);
-	PIC416Write(0x0C,0x0101);
-	PIC416Write(0,0x0E3C);
-	PIC416Write(0,0x6EF8);
-	PIC416Write(0,0x0E00);
-	PIC416Write(0,0x6EF7);
-	PIC416Write(0,0x0E04);
-	PIC416Write(0,0x6EF6);
-	PIC416Write(0x0C,0x8080);
-	PIC416Write(0,0);
-	PIC416Write(0,0);
-	sleep(1);//Thread.Sleep(1000); (524ms worst case)
+void PIC18Fread(uint32 tblptr, uint8* Data, int length)
+{
+	int ctr;
+	//setup read 
+	settblptr(tblptr);
+	//read device
+	for(ctr=0;ctr<length-2;ctr+=2)
+	{
+		Data[ctr]=PIC416Read(0x09);
+	}
 }
-
 //a few things need to be done once at the beginning of a sequence of write operations
 //this configures the PIC, and enables page writes
 //call it once, then call PIC18F_write() as needed
@@ -539,15 +536,10 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
 	uint8	buffer[4] = {0};
 
 	// set TBLPTR
-	PIC416Write(0x00,0x0E00 | (tblptr>>16));
-	PIC416Write(0x00,0x6EF8);
-	PIC416Write(0x00,0x0E00 | (tblptr>>8));
-	PIC416Write(0x00,0x6EF7);
-	PIC416Write(0x00,0x0E00 | (tblptr));
-	PIC416Write(0x00,0x6EF6);
+	settblptr(tblptr); 
 
-	PIC416Write(0x00,0x6AA6);
-	PIC416Write(0x00,0x88A6);
+	//PIC416Write(0x00,0x6AA6); //doesn't seem to be needed now
+	//PIC416Write(0x00,0x88A6);
 
 	for(ctr=0;ctr<length-2;ctr+=2)
 		{
@@ -565,23 +557,26 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
 	//use upper bits of 4bit command to configure the delay
 	//18f24j50 needs 1.2ms, lower parts in same family need 3.2
 	PIC416Write(0x40,0x0000);
-	
-	/*Old way of doing clock high for program delay.
-
-	DataLow();
-	for(ctr=0; ctr<3; ctr++){
-		ClockHigh();
-		ClockLow();
-	}
-
-	ClockHigh();
-	sleep(0); //need shorter delay 1.2ms or 3.4ms = 12.8 chars per ms @115200bps, rx/tx 48characters for delay?
-	ClockLow();
-
-	buffer[0]=0x00;
-	buffer[1]=0x00;
-	BulkByteWrite(2, buffer);
-	*/
+}
+//erase 18F, sleep delay should be adjustable
+void erasePIC(void){
+	PIC416Write(0,0x0E3C);
+	PIC416Write(0,0x6EF8);
+	PIC416Write(0,0x0E00);
+	PIC416Write(0,0x6EF7);
+	PIC416Write(0,0x0E05);
+	PIC416Write(0,0x6EF6);
+	PIC416Write(0x0C,0x0101);//special for each PIC
+	PIC416Write(0,0x0E3C);
+	PIC416Write(0,0x6EF8);
+	PIC416Write(0,0x0E00);
+	PIC416Write(0,0x6EF7);
+	PIC416Write(0,0x0E04);
+	PIC416Write(0,0x6EF6);
+	PIC416Write(0x0C,0x8080);//special for each pic
+	PIC416Write(0,0);
+	PIC416Write(0,0);
+	sleep(1);//Thread.Sleep(1000); (524ms worst case)
 }
 
 //
@@ -719,7 +714,7 @@ int main (int argc, const char** argv)
 	
 	//now we're in ICSP mode, can do programming stuff with the PIC
  	//read ID
-	PICid=readID();
+	PICid=readID(0x3ffffe); //give it the ID address
 
 	//determine device type
 	PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
