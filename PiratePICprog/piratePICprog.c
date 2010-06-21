@@ -413,6 +413,40 @@ uint8 PIC416Read(uint8 cmd){
 	return PICread;
 }
 
+uint16 PIC424Read(void){
+	uint8 buffer[4]={0};
+	int res = -1;
+	uint16 r;
+	
+	sendString(dev_fd, 1, "\xA5");
+	res = readWithTimeout(dev_fd, buffer, 2, 1);
+	
+	//read device ID, two bytes takes 2 read operations, each gets a byte
+	r=buffer[0];	//lower 8 bits
+	r|=buffer[1]<<8;	//upper 8 bits
+	return r;
+}
+
+int PIC424Write(uint32 data){
+	uint8 buffer[4]={0};
+	int res = -1;
+	
+	buffer[0]='\xA4';
+	buffer[1]=(uint8)(data);
+	buffer[2]=(data>>8);
+	buffer[3]=(data>>16);
+
+	
+	sendString(dev_fd, 4, buffer);
+	res = readWithTimeout(dev_fd, buffer, 1, 1);
+	if( memcmp(buffer, "\x01", 1) ) {
+		puts("ERROR");
+		return -1;
+	} 
+	return 0;
+}
+#define PIC24NOP() 	PIC424Write(0x000000)
+
 void DataLow(){
 	writetopirate("\x0C");
 }
@@ -448,12 +482,12 @@ void enterLowVPPICSP(uint32 icspkey){
 	
 	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
 	// Reconfigure the mode for LSB order
-	printf("Set mode for MCLR (MSB)...");
+	//printf("Set mode for MCLR (MSB)...");
 	if(writetopirate("\x88")){
-		puts("ERROR");
+		puts("Set mode for MCLR (MSB)...ERROR");
 		//goto Error;
 	} 
-	puts("(OK)");
+	//puts("(OK)");
 	
 	ClockLow();
     DataLow();
@@ -471,12 +505,60 @@ void enterLowVPPICSP(uint32 icspkey){
 	
 	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
 	// Reconfigure the mode for LSB order
-	printf("Set mode for PIC programming (LSB)...");
+	//printf("Set mode for PIC programming (LSB)...");
 	if(writetopirate("\x8A")){
-		puts("ERROR");
+		puts("Set mode for PIC programming (LSB)...ERROR");
 		//goto Error;
 	} 
-	puts("(OK)");
+	//puts("(OK)");
+}
+
+//this is aboiut the same as the 18FxxJxx chip, except it also does the first 9bit SIX command
+void PIC24_enterLowVPPICSP(uint32 icspkey){
+	uint8	buffer[4];
+	
+	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
+	// Reconfigure the mode for LSB order
+	//printf("Set mode for MCLR (MSB)...");
+	if(writetopirate("\x88")){
+		puts("Set mode for MCLR (MSB)...ERROR");
+		//goto Error;
+	} 
+	//puts("(OK)");
+	
+	ClockLow();
+    DataLow();
+    MCLRLow();
+    MCLRHigh();
+    MCLRLow();
+   //send ICSP key 0x4D434850
+	buffer[0]=icspkey>>24;
+	buffer[1]=icspkey>>16;
+	buffer[2]=icspkey>>8;
+	buffer[3]=icspkey;	
+    BulkByteWrite(4,buffer);
+    DataLow();
+    MCLRHigh();
+	
+	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
+	// Reconfigure the mode for LSB order
+	//printf("Set mode for PIC programming (LSB)...");
+	if(writetopirate("\x8A")){
+		puts("Set mode for PIC programming (LSB)...ERROR");
+		//goto Error;
+	} 
+	//puts("(OK)");
+
+	//first 9bit SIX command, setup the PIC ICSP
+	writetopirate("\x34");//five extra clocks on first SIX command after ICSP mode
+	writetopirate("\x00");//all 0
+	PIC424Write(0x040200);
+	PIC424Write(0x040200);//SIX,0x040200,5, NOP
+	PIC24NOP();//SIX,0x000000,5, NOP
+	PIC24NOP();//SIX,0x000000,5, NOP
+	PIC24NOP();//SIX,0x000000,5, NOP
+	PIC424Write(0x040200);//SIX,0x040200,5, goto 0x200
+	PIC24NOP();//SIX,0x000000,5, NOP
 }
 
 //enable 13volts using high voltage programming adapter
@@ -509,6 +591,74 @@ uint16 readID(uint32 tblptr){
 	return PICid;
 }
 
+void PIC24_read(uint32 addr, uint16* Data, int length){
+	int ctr, nopctr=0;
+	
+	PIC424Write(0x200000|((addr&0xffff0000)>>12));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
+	PIC424Write(0x880190);//SIX,0x880190,5, N/AMOV W0, TBLPAG
+	PIC424Write(0x200006|((addr&0x000ffff)<<4) );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+	
+	PIC424Write(0x207847);//SIX,0x200007,5, N/A  //MOV #VISI,W7
+	PIC24NOP();//SIX,0x000000,5, N/A
+	
+	for(ctr=0; ctr<length; ctr++){
+		PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+		PIC24NOP();//SIX,0x000000,5, N/A
+		PIC24NOP();//SIX,0x000000,5, N/A
+		Data[ctr]=PIC424Read(); //REGOUT,0x000000,5, read VISI register
+		//printf("Read: %X \n",Data[ctr]); //REGOUT,0x000000,5, read VISI register
+		PIC24NOP();//SIX,0x000000,5, N/A
+		PIC24NOP();//SIX,0x000000,5, N/A
+		
+		//every so often we need to reset the address pointer or it will fall off the end
+		//also do it the last time
+		nopctr++;
+		if((nopctr>10)||((ctr+1)==length)){
+			nopctr=0; //only do occasionally
+			PIC24NOP();//SIX,0x000000,5, N/A
+			PIC424Write(0x040200);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+			PIC24NOP();//SIX,0x000000,5, N/A
+			PIC24NOP();//SIX,0x000000,5, N/A		
+		}
+	}
+}
+
+void PIC24_readID(uint32 idaddress){
+	//printf("%X \n",(0x200000|((idaddress&0xffff0000)>>12)));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
+	//printf("%X \n",(0x200006|((idaddress&0x000ffff)<<8) ));//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
+	
+	PIC424Write(0x200000|((idaddress&0xffff0000)>>12));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
+	PIC424Write(0x880190);//SIX,0x880190,5, N/AMOV W0, TBLPAG
+	PIC424Write(0x200006|((idaddress&0x000ffff)<<4) );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+	
+	PIC424Write(0x207847);//SIX,0x200007,5, N/A  //MOV #VISI,W7
+	PIC24NOP();//SIX,0x000000,5, N/A
+	
+	PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+	printf("Read: %X \n",PIC424Read()); //REGOUT,0x000000,5, read VISI register
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+	
+	PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+	printf("Read: %X \n",PIC424Read()); //REGOUT,0x000000,5, read VISI register
+	PIC24NOP(); //SIX_AFTER_REGOUT,0x000000,10, This is SIX after Regout
+	PIC24NOP(); //SIX,0x000000,5, N/A
+	
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC424Write(0x040200);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC24NOP();//SIX,0x000000,5, N/A
+}
+
+//should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
 void PIC18F_read(uint32 tblptr, uint8* Data, int length)
 {
 	int ctr;
@@ -560,38 +710,78 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
 	PIC416Write(0x40,0x0000);
 }
 //erase 18F, sleep delay should be adjustable
-void erasePIC(void){
-	PIC416Write(0,0x0E3C);
-	PIC416Write(0,0x6EF8);
-	PIC416Write(0,0x0E00);
-	PIC416Write(0,0x6EF7);
-	PIC416Write(0,0x0E05);
-	PIC416Write(0,0x6EF6);
-	PIC416Write(0x0C,0x0101);//special for each PIC
-	PIC416Write(0,0x0E3C);
-	PIC416Write(0,0x6EF8);
-	PIC416Write(0,0x0E00);
-	PIC416Write(0,0x6EF7);
-	PIC416Write(0,0x0E04);
-	PIC416Write(0,0x6EF6);
-	PIC416Write(0x0C,0x8080);//special for each pic
+void erasePIC(uint16 key1, uint16 key2){
+	settblptr(0x3C0005); //set pinter to erase register
+	PIC416Write(0x0C,key1);//write special erase token
+	settblptr(0x3C0004); //set pointer to second erase register
+	PIC416Write(0x0C,key2);//write erase command
 	PIC416Write(0,0);
 	PIC416Write(0,0);
 	sleep(1);//Thread.Sleep(1000); (524ms worst case)
 }
 
+void PIC24F_erase(void){
+
+	//FORCEDSIX,0x040200,10, This is forced SIX Command usually sent after entering to ICSP Mode. It sends 0x000000 Data. It has a delay of 10msec
+	writetopirate("\x34");//five extra clocks on first SIX command after ICSP mode
+	writetopirate("\x00");//all 0
+	PIC424Write(0x040200);
+	
+	PIC424Write(0x040200);
+
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	
+	PIC424Write(0x040200);
+	PIC424Write(0x000000);
+	
+	//set NVMCON
+	PIC424Write(0x2404FA);
+	PIC424Write(0x883B0A);
+
+	// Step 3: Set TBLPAG
+	PIC424Write(0x200000);
+	PIC424Write(0x880190);
+	PIC424Write(0x200000);
+	PIC424Write(0xBB0800);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+
+	PIC424Write(0xA8E761);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	sleep(1);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+
+/*	PIC424Write(0xA9E761);
+
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	*/
+}
+
 //
 /* entry point */
 //
+enum { PIC614=0,
+	   PIC416,
+	   PIC424,
+	};
 
 int main (int argc, const char** argv)
 {
-	int		res = -1;
+	int		res = -1, picMode=2;
 	uint8	buffer[256] = {0};
 	uint8	pages_used[PIC_NUM_PAGES] = {0};
 	uint8*	bin_buff = NULL;
 	uint8 i=0, PICrev;
-	uint16 PICid;
+	uint16 PICid, buffer16[256]={0};
 	char PICname[]="UNKNOWN/INVALID PIC ID";
 	
 	puts("+++++++++++++++++++++++++++++++++++++++++++");
@@ -709,35 +899,90 @@ int main (int argc, const char** argv)
 	} 
 	puts("(OK)");
 	
-	//enter ICSP
-	puts("Entering ICSP...");
-	enterLowVPPICSP(0x4D434850);//key should be part of device info
-	
-	//now we're in ICSP mode, can do programming stuff with the PIC
- 	//read ID
-	PICid=readID(0x3ffffe); //give it the ID address
+	switch(picMode){
+		case PIC416:
+			//setup rawwire for the correct PIC type
+			printf("Set 4/16 programming mode...");
+			sendString(dev_fd, 1, "\xA0");
+			if(writetopirate("\x01")){
+				puts("ERROR");
+				goto Error;
+			} 
+			puts("(OK)");
+			
+			//enter ICSP
+			puts("Entering ICSP...");
+			enterLowVPPICSP(0x4D434850);//key should be part of device info
+			
+			//now we're in ICSP mode, can do programming stuff with the PIC
+			//read ID
+			PICid=readID(0x3ffffe); //give it the ID address
 
-	//determine device type
-	PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
-	PICid=(PICid>>5); //isolate PIC device ID (upper 11 bits)
+			//determine device type
+			PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
+			PICid=(PICid>>5); //isolate PIC device ID (upper 11 bits)
 
-	//could this be an array/lookup table or part of a type info struct???
-	switch(PICid){
-		case 0x260:
-			strcpy(PICname,"18F24J50"); 
+			//could this be an array/lookup table or part of a type info struct???
+			switch(PICid){
+				case 0x260:
+					strcpy(PICname,"18F24J50"); 
+					break;
+			}	
+			printf ("PIC ID: %#X (%s) REV: %#X \n", PICid, PICname, PICrev);
+			
+			//erase device
+			printf("Erasing the PIC (please wait)...");
+			erasePIC(0x0101,0x8080);
+			puts("(OK)");
+			
+			//exit programming mode
+			puts("Exit ICSP...");
+			exitICSP();
 			break;
-	}	
-	printf ("PIC ID: %#X (%s) REV: %#X \n", PICid, PICname, PICrev);
-	
-	//erase device
-	printf("Erasing the PIC (please wait)...");
-	erasePIC();
-	puts("(OK)");
-	
-	//exit programming mode
-	puts("Exit ICSP...");
-	exitICSP();
+		case PIC424:
+			printf("Set 4/24 programming mode...");
+			sendString(dev_fd, 1, "\xA0");
+			if(writetopirate("\x02")){
+				puts("ERROR");
+				goto Error;
+			} 
+			puts("(OK)");
+			
+			//enter ICSP
+			puts("Entering ICSP...");
+			PIC24_enterLowVPPICSP(0x4D434851);//key should be part of device info
+			
+			//now we're in ICSP mode, can do programming stuff with the PIC
+			//read ID
+			PIC24_read(0x00FF0000, buffer16, 2); //give it the ID address
+			//printf("Read: %X \n",buffer16[0]); //first byte is the ID
+			//printf("Read: %X \n",buffer16[1]); //second byte is major.minor revision
 
+			//determine device type
+			//PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
+			//PICid=(); //isolate PIC device ID (upper 11 bits)
+
+			//could this be an array/lookup table or part of a type info struct???
+			switch(buffer16[0]){
+				case 0x0447:
+					strcpy(PICname,"24FJ64GA002"); 
+					break;
+			}	
+			printf ("PIC ID: %#X (%s) REV: %#X (%#d.%#d) \n", buffer16[0], PICname, buffer16[1], ((buffer16[1]>>6)&0x07),(buffer16[1]&0x07));
+			
+			//erase device
+			//printf("Erasing the PIC (please wait)...");
+			//PIC24F_erase();
+			//puts("(OK)");
+			
+			//exit programming mode
+			puts("Exit ICSP...");
+			exitICSP();
+			break;
+		
+	}
+	
+/*
 	//write a HEX is there is one
 	if( !g_hello_only ) {
 
@@ -777,7 +1022,7 @@ int main (int argc, const char** argv)
 		
 	}
 
-	
+	*/
 Finished:
 	puts("Done!");
 	if( bin_buff ) { 
