@@ -94,7 +94,7 @@ typedef unsigned char  uint8;
 typedef unsigned short uint16;
 typedef unsigned long  uint32;
 
-void writePIC(uint32 tblptr, uint8* Data, int length);
+void PIC18_write(uint32 tblptr, uint8* Data, int length);
 
 /* global settings, command line arguments */
 
@@ -145,6 +145,49 @@ int parseCommandLine(int argc, const char** argv)
 	}
 	
 	return 1;
+}
+
+/* Send an array to the serail port , maybe should be moved to serail.c */
+int sendString(int fd, int length, uint8* dat)
+{
+	int res=0;
+	
+	res = write(fd, dat, length);
+	
+	if( res <= 0 ) {
+		puts("ERROR");
+		return -1;
+	}
+}
+
+//
+/* Bus Pirate BINMODE related functions */
+//
+
+//low lever send command, get reply function
+int writetopirate(uint8* val){
+	int res = -1;
+	uint8	buffer[2] = {0};
+	
+	sendString(dev_fd, 1, val);
+	res = readWithTimeout(dev_fd, buffer, 1, 1);
+	if( memcmp(buffer, "\x01", 1) ) {
+		puts("ERROR");
+		return -1;
+	} 
+	return 0;
+}
+
+//binmode: bulk write bytes to bus command
+int BulkByteWrite(int bwrite, uint8* val){
+	int i;
+	uint8 opcode=0x10;
+	opcode=opcode|(bwrite-1);
+
+	writetopirate(&opcode);	
+	for(i=0;i<bwrite;i++){
+		writetopirate(&val[i]);	
+	}
 }
 
 //
@@ -284,7 +327,11 @@ int readHEX(const char* file, uint8* bout, unsigned long max_length, uint8* page
 	return num_words;
 }
 
-int sendFirmware(int fd, uint8* data, uint8* pages_used)
+//
+// PIC 16/18/24 functions
+//
+
+int PIC18_sendFirmware(int fd, uint8* data, uint8* pages_used)
 {
 	uint32 u_addr;
 	
@@ -325,57 +372,13 @@ int sendFirmware(int fd, uint8* data, uint8* pages_used)
 				dumpHex(command,64);
 			}
 
-			writePIC(u_addr, command, 64);
+			PIC18_write(u_addr, command, 64);
 			
 			done += 64;//PIC_ROW_SIZE;
 		//}
 	}
 	
 	return done;
-}
-
-
-/* Send an array to the serail port , maybe should be moved to serail.c */
-int sendString(int fd, int length, uint8* dat)
-{
-	int res=0;
-	
-	res = write(fd, dat, length);
-	
-	if( res <= 0 ) {
-		puts("ERROR");
-		return -1;
-	}
-}
-
-//
-/* Bus Pirate BINMODE related functions */
-//
-
-//low lever send command, get reply function
-int writetopirate(uint8* val){
-	int res = -1;
-	uint8	buffer[2] = {0};
-	
-	sendString(dev_fd, 1, val);
-	res = readWithTimeout(dev_fd, buffer, 1, 1);
-	if( memcmp(buffer, "\x01", 1) ) {
-		puts("ERROR");
-		return -1;
-	} 
-	return 0;
-}
-
-//binmode: bulk write bytes to bus command
-int BulkByteWrite(int bwrite, uint8* val){
-	int i;
-	uint8 opcode=0x10;
-	opcode=opcode|(bwrite-1);
-
-	writetopirate(&opcode);	
-	for(i=0;i<bwrite;i++){
-		writetopirate(&val[i]);	
-	}
 }
 
 int PIC416Write(uint8 cmd, uint16 data){
@@ -427,17 +430,18 @@ uint16 PIC424Read(void){
 	return r;
 }
 
-int PIC424Write(uint32 data){
-	uint8 buffer[4]={0};
+int PIC424Write(uint32 data, uint8 prenop, uint8 postnop){
+	uint8 buffer[5]={0};
 	int res = -1;
 	
 	buffer[0]='\xA4';
 	buffer[1]=(uint8)(data);
 	buffer[2]=(data>>8);
 	buffer[3]=(data>>16);
+	buffer[4]=((prenop<<4)|(postnop&0x0F));
 
 	
-	sendString(dev_fd, 4, buffer);
+	sendString(dev_fd, 5, buffer);
 	res = readWithTimeout(dev_fd, buffer, 1, 1);
 	if( memcmp(buffer, "\x01", 1) ) {
 		puts("ERROR");
@@ -445,7 +449,7 @@ int PIC424Write(uint32 data){
 	} 
 	return 0;
 }
-#define PIC24NOP() 	PIC424Write(0x000000)
+#define PIC24NOP() 	PIC424Write(0x000000,0,0)
 
 void DataLow(){
 	writetopirate("\x0C");
@@ -477,7 +481,7 @@ void exitICSP(void){
 
 //enter ICSP on PICs with low voltage ICSP mode
 //pulls MCLR low, sends programming mode entry key, releases MCLR
-void enterLowVPPICSP(uint32 icspkey){
+void PIC18_enterLowVPPICSP(uint32 icspkey){
 	uint8	buffer[4];
 	
 	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
@@ -552,13 +556,13 @@ void PIC24_enterLowVPPICSP(uint32 icspkey){
 	//first 9bit SIX command, setup the PIC ICSP
 	writetopirate("\x34");//five extra clocks on first SIX command after ICSP mode
 	writetopirate("\x00");//all 0
-	PIC424Write(0x040200);
-	PIC424Write(0x040200);//SIX,0x040200,5, NOP
-	PIC24NOP();//SIX,0x000000,5, NOP
-	PIC24NOP();//SIX,0x000000,5, NOP
-	PIC24NOP();//SIX,0x000000,5, NOP
-	PIC424Write(0x040200);//SIX,0x040200,5, goto 0x200
-	PIC24NOP();//SIX,0x000000,5, NOP
+	PIC424Write(0x040200,0,0);
+	PIC424Write(0x040200,0,3);//SIX,0x040200,5, NOP
+	//PIC24NOP();//SIX,0x000000,5, NOP
+	//PIC24NOP();//SIX,0x000000,5, NOP
+	//PIC24NOP();//SIX,0x000000,5, NOP
+	PIC424Write(0x040200,0,1);//SIX,0x040200,5, goto 0x200
+	//PIC24NOP();//SIX,0x000000,5, NOP
 }
 
 //enable 13volts using high voltage programming adapter
@@ -568,7 +572,7 @@ void enterHighVPPICSP(void){}
 /* 18F2/4xJxx related functions, maybe other 18Fs too? */
 //
 
-void settblptr(uint32 tblptr)
+void PIC18_settblptr(uint32 tblptr)
 {
 	// set TBLPTR
 	PIC416Write(0x00,0x0E00 | ((tblptr>>16)&0xff));
@@ -579,11 +583,11 @@ void settblptr(uint32 tblptr)
 	PIC416Write(0x00,0x6EF6);
 }
 //should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
-uint16 readID(uint32 tblptr){
+uint16 PIC18_readID(uint32 tblptr){
 	uint16 PICid;
 	//0x3ffffe
 	//setup read from device ID bits
-	settblptr(tblptr);
+	PIC18_settblptr(tblptr);
 	
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	PICid=PIC416Read(0x09);	//lower 8 bits
@@ -594,23 +598,23 @@ uint16 readID(uint32 tblptr){
 void PIC24_read(uint32 addr, uint16* Data, int length){
 	int ctr, nopctr=0;
 	
-	PIC424Write(0x200000|((addr&0xffff0000)>>12));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
-	PIC424Write(0x880190);//SIX,0x880190,5, N/AMOV W0, TBLPAG
-	PIC424Write(0x200006|((addr&0x000ffff)<<4) );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC424Write(0x200000|((addr&0xffff0000)>>12), 0,0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
+	PIC424Write(0x880190,0,0);//SIX,0x880190,5, N/AMOV W0, TBLPAG
+	PIC424Write(0x200006|((addr&0x000ffff)<<4), 0,2 );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
+	//PIC24NOP();//SIX,0x000000,5, N/A
+	//PIC24NOP();//SIX,0x000000,5, N/A
 	
-	PIC424Write(0x207847);//SIX,0x200007,5, N/A  //MOV #VISI,W7
-	PIC24NOP();//SIX,0x000000,5, N/A
+	PIC424Write(0x207847,0,1);//SIX,0x200007,5, N/A  //MOV #VISI,W7
+	//PIC24NOP();//SIX,0x000000,5, N/A
 	
 	for(ctr=0; ctr<length; ctr++){
-		PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-		PIC24NOP();//SIX,0x000000,5, N/A
-		PIC24NOP();//SIX,0x000000,5, N/A
-		Data[ctr]=PIC424Read(); //REGOUT,0x000000,5, read VISI register
+		PIC424Write(0xBA0BB6,0,2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+		//PIC24NOP();//SIX,0x000000,5, N/A
+		//PIC24NOP();//SIX,0x000000,5, N/A
+		Data[ctr]=PIC424Read(); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",Data[ctr]); //REGOUT,0x000000,5, read VISI register
-		PIC24NOP();//SIX,0x000000,5, N/A
-		PIC24NOP();//SIX,0x000000,5, N/A
+		//PIC24NOP();//SIX,0x000000,5, N/A
+		//PIC24NOP();//SIX,0x000000,5, N/A
 		
 		//every so often we need to reset the address pointer or it will fall off the end
 		//also do it the last time
@@ -618,52 +622,19 @@ void PIC24_read(uint32 addr, uint16* Data, int length){
 		if((nopctr>10)||((ctr+1)==length)){
 			nopctr=0; //only do occasionally
 			PIC24NOP();//SIX,0x000000,5, N/A
-			PIC424Write(0x040200);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-			PIC24NOP();//SIX,0x000000,5, N/A
-			PIC24NOP();//SIX,0x000000,5, N/A		
+			PIC424Write(0x040200,0,2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+			//PIC24NOP();//SIX,0x000000,5, N/A
+			//PIC24NOP();//SIX,0x000000,5, N/A		
 		}
 	}
 }
 
-void PIC24_readID(uint32 idaddress){
-	//printf("%X \n",(0x200000|((idaddress&0xffff0000)>>12)));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
-	//printf("%X \n",(0x200006|((idaddress&0x000ffff)<<8) ));//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
-	
-	PIC424Write(0x200000|((idaddress&0xffff0000)>>12));//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
-	PIC424Write(0x880190);//SIX,0x880190,5, N/AMOV W0, TBLPAG
-	PIC424Write(0x200006|((idaddress&0x000ffff)<<4) );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
-	
-	PIC424Write(0x207847);//SIX,0x200007,5, N/A  //MOV #VISI,W7
-	PIC24NOP();//SIX,0x000000,5, N/A
-	
-	PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
-	printf("Read: %X \n",PIC424Read()); //REGOUT,0x000000,5, read VISI register
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
-	
-	PIC424Write(0xBA0BB6); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
-	printf("Read: %X \n",PIC424Read()); //REGOUT,0x000000,5, read VISI register
-	PIC24NOP(); //SIX_AFTER_REGOUT,0x000000,10, This is SIX after Regout
-	PIC24NOP(); //SIX,0x000000,5, N/A
-	
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC424Write(0x040200);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-	PIC24NOP();//SIX,0x000000,5, N/A
-	PIC24NOP();//SIX,0x000000,5, N/A
-}
-
 //should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
-void PIC18F_read(uint32 tblptr, uint8* Data, int length)
+void PIC18_read(uint32 tblptr, uint8* Data, int length)
 {
 	int ctr;
 	//setup read 
-	settblptr(tblptr);
+	PIC18_settblptr(tblptr);
 	//read device
 	for(ctr=0;ctr<length;ctr++)
 	{
@@ -674,20 +645,20 @@ void PIC18F_read(uint32 tblptr, uint8* Data, int length)
 //a few things need to be done once at the beginning of a sequence of write operations
 //this configures the PIC, and enables page writes
 //call it once, then call PIC18F_write() as needed
-void PIC18F_setupwrite(void){
+void PIC18_setupwrite(void){
 	PIC416Write(0x00,0x8EA6); //setup PIC
 	PIC416Write(0x00,0x9CA6); //setup PIC
 	PIC416Write(0x00,0x84A6); //enable page writes
 }
 //18F setup write location and write length bytes of data to PIC
-void writePIC(uint32 tblptr, uint8* Data, int length)
+void PIC18_write(uint32 tblptr, uint8* Data, int length)
 {
 	uint16 DataByte;//, buffer[2]={0x00,0x00};
 	int ctr;
 	uint8	buffer[4] = {0};
 
 	// set TBLPTR
-	settblptr(tblptr); 
+	PIC18_settblptr(tblptr); 
 
 	//PIC416Write(0x00,0x6AA6); //doesn't seem to be needed now
 	//PIC416Write(0x00,0x88A6);
@@ -710,33 +681,18 @@ void writePIC(uint32 tblptr, uint8* Data, int length)
 	PIC416Write(0x40,0x0000);
 }
 //erase 18F, sleep delay should be adjustable
-void erasePIC(uint16 key1, uint16 key2){
-	settblptr(0x3C0005); //set pinter to erase register
+void PIC18_erase(uint16 key1, uint16 key2){
+	PIC18_settblptr(0x3C0005); //set pinter to erase register
 	PIC416Write(0x0C,key1);//write special erase token
-	settblptr(0x3C0004); //set pointer to second erase register
+	PIC18_settblptr(0x3C0004); //set pointer to second erase register
 	PIC416Write(0x0C,key2);//write erase command
 	PIC416Write(0,0);
 	PIC416Write(0,0);
 	sleep(1);//Thread.Sleep(1000); (524ms worst case)
 }
 
-void PIC24F_erase(void){
-
-	//FORCEDSIX,0x040200,10, This is forced SIX Command usually sent after entering to ICSP Mode. It sends 0x000000 Data. It has a delay of 10msec
-	writetopirate("\x34");//five extra clocks on first SIX command after ICSP mode
-	writetopirate("\x00");//all 0
-	PIC424Write(0x040200);
-	
-	PIC424Write(0x040200);
-
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	
-	PIC424Write(0x040200);
-	PIC424Write(0x000000);
-	
+void PIC24_erase(void){
+/*	
 	//set NVMCON
 	PIC424Write(0x2404FA);
 	PIC424Write(0x883B0A);
@@ -764,6 +720,14 @@ void PIC24F_erase(void){
 	PIC424Write(0x000000);
 	PIC424Write(0x000000);
 	*/
+/*	
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	PIC424Write(0x040200);
+	PIC424Write(0x000000);
+	PIC424Write(0x000000);
+	*/
+
 }
 
 //
@@ -889,6 +853,11 @@ int main (int argc, const char** argv)
 		puts("ERROR");
 		goto Error;
 	} 
+	if(writetopirate("\x63")){ //high speed mode
+		puts("ERROR");
+		goto Error;
+	} 
+	
 	puts("(OK)");
 	
 	//setup power supply, AUX pin, pullups
@@ -912,11 +881,11 @@ int main (int argc, const char** argv)
 			
 			//enter ICSP
 			puts("Entering ICSP...");
-			enterLowVPPICSP(0x4D434850);//key should be part of device info
+			PIC18_enterLowVPPICSP(0x4D434850);//key should be part of device info
 			
 			//now we're in ICSP mode, can do programming stuff with the PIC
 			//read ID
-			PICid=readID(0x3ffffe); //give it the ID address
+			PICid=PIC18_readID(0x3ffffe); //give it the ID address
 
 			//determine device type
 			PICrev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
@@ -932,12 +901,51 @@ int main (int argc, const char** argv)
 			
 			//erase device
 			printf("Erasing the PIC (please wait)...");
-			erasePIC(0x0101,0x8080);
+			PIC18_erase(0x0101,0x8080);
 			puts("(OK)");
 			
 			//exit programming mode
 			puts("Exit ICSP...");
 			exitICSP();
+			
+			//write a HEX is there is one
+			if( !g_hello_only ) {
+
+				//enter ICSP mode
+				puts("Entering ICSP...");
+				PIC18_enterLowVPPICSP(0x4D434850); //key should be part of device info
+		  
+				//some initial programming setup stuff, enable page writes, etc
+				PIC18_setupwrite();
+			
+				//write the firmware to the PIC 
+				res = PIC18_sendFirmware(dev_fd, bin_buff, pages_used);
+				
+				//exit ICSP
+				puts("Exit ICSP...");
+				exitICSP();
+
+				puts("Read PIC test...");
+				
+				puts("Entering ICSP...");
+				PIC18_enterLowVPPICSP(0x4D434850); //key should be part of device info
+
+				//read the PIC
+				PIC18_read(0x000000, bin_buff, 0xff);
+				dumpHex(bin_buff,0xff); //dump to screen
+				
+				//exit ICSP
+				puts("Exit ICSP...");
+				exitICSP();
+						
+				if( res > 0 ) {
+					puts("\nFirmware updated successfully :)!");
+				} else {
+					puts("\nError updating firmware :(");
+					goto Error;
+				}
+				
+			}
 			break;
 		case PIC424:
 			printf("Set 4/24 programming mode...");
@@ -978,51 +986,51 @@ int main (int argc, const char** argv)
 			//exit programming mode
 			puts("Exit ICSP...");
 			exitICSP();
+			
+			//write a HEX is there is one
+			if( !g_hello_only ) {
+
+				//enter ICSP mode
+				puts("Entering ICSP...");
+				PIC24_enterLowVPPICSP(0x4D434851); //key should be part of device info
+		
+				//write the firmware to the PIC 
+				//res = sendFirmware(dev_fd, bin_buff, pages_used);
+				
+				//exit ICSP
+				puts("Exit ICSP...");
+				exitICSP();
+
+				puts("Read PIC test...");
+				
+				puts("Entering ICSP...");
+				PIC24_enterLowVPPICSP(0x4D434851); //key should be part of device info
+
+				//read the PIC
+				PIC24_read(0x00000000, buffer16, 0xA); //give it the ID address
+				dumpHex(buffer16,0xA); //dump to screen
+				
+				//exit ICSP
+				puts("Exit ICSP...");
+				exitICSP();
+						
+				if( res > 0 ) {
+					puts("\nFirmware updated successfully :)!");
+				} else {
+					puts("\nError updating firmware :(");
+					goto Error;
+				}
+				
+			}
+			
+			
+			
+			
 			break;
 		
 	}
 	
-/*
-	//write a HEX is there is one
-	if( !g_hello_only ) {
 
-		//enter ICSP mode
-		puts("Entering ICSP...");
-		enterLowVPPICSP(0x4D434850); //key should be part of device info
-  
-		//some initial programming setup stuff, enable page writes, etc
-		PIC18F_setupwrite();
-	
-		//write the firmware to the PIC 
-		res = sendFirmware(dev_fd, bin_buff, pages_used);
-		
-		//exit ICSP
-		puts("Exit ICSP...");
-		exitICSP();
-
-		puts("Read PIC test...");
-		
-		puts("Entering ICSP...");
-		enterLowVPPICSP(0x4D434850); //key should be part of device info
-
-		//read the PIC
-		PIC18F_read(0x000000, bin_buff, 0xff);
-		dumpHex(bin_buff,0xff); //dump to screen
-		
-		//exit ICSP
-		puts("Exit ICSP...");
-		exitICSP();
-				
-		if( res > 0 ) {
-			puts("\nFirmware updated successfully :)!");
-		} else {
-			puts("\nError updating firmware :(");
-			goto Error;
-		}
-		
-	}
-
-	*/
 Finished:
 	puts("Done!");
 	if( bin_buff ) { 
