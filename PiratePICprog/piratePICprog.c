@@ -558,11 +558,7 @@ void PIC24_enterLowVPPICSP(uint32 icspkey){
 	writetopirate("\x00");//all 0
 	PIC424Write(0x040200,0,0);
 	PIC424Write(0x040200,0,3);//SIX,0x040200,5, NOP
-	//PIC24NOP();//SIX,0x000000,5, NOP
-	//PIC24NOP();//SIX,0x000000,5, NOP
-	//PIC24NOP();//SIX,0x000000,5, NOP
 	PIC424Write(0x040200,0,1);//SIX,0x040200,5, goto 0x200
-	//PIC24NOP();//SIX,0x000000,5, NOP
 }
 
 //enable 13volts using high voltage programming adapter
@@ -601,30 +597,22 @@ void PIC24_read(uint32 addr, uint16* Data, int length){
 	PIC424Write(0x200000|((addr&0xffff0000)>>12), 0,0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
 	PIC424Write(0x880190,0,0);//SIX,0x880190,5, N/AMOV W0, TBLPAG
 	PIC424Write(0x200006|((addr&0x000ffff)<<4), 0,2 );//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
-	//PIC24NOP();//SIX,0x000000,5, N/A
-	//PIC24NOP();//SIX,0x000000,5, N/A
 	
 	PIC424Write(0x207847,0,1);//SIX,0x200007,5, N/A  //MOV #VISI,W7
 	//PIC24NOP();//SIX,0x000000,5, N/A
 	
 	for(ctr=0; ctr<length; ctr++){
 		PIC424Write(0xBA0BB6,0,2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-		//PIC24NOP();//SIX,0x000000,5, N/A
-		//PIC24NOP();//SIX,0x000000,5, N/A
 		Data[ctr]=PIC424Read(); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",Data[ctr]); //REGOUT,0x000000,5, read VISI register
-		//PIC24NOP();//SIX,0x000000,5, N/A
-		//PIC24NOP();//SIX,0x000000,5, N/A
-		
+	
 		//every so often we need to reset the address pointer or it will fall off the end
 		//also do it the last time
 		nopctr++;
 		if((nopctr>10)||((ctr+1)==length)){
 			nopctr=0; //only do occasionally
 			PIC24NOP();//SIX,0x000000,5, N/A
-			PIC424Write(0x040200,0,2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-			//PIC24NOP();//SIX,0x000000,5, N/A
-			//PIC24NOP();//SIX,0x000000,5, N/A		
+			PIC424Write(0x040200,0,2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
 		}
 	}
 }
@@ -692,42 +680,89 @@ void PIC18_erase(uint16 key1, uint16 key2){
 }
 
 void PIC24_erase(void){
-/*	
+	uint16 VISI;
+	
 	//set NVMCON
-	PIC424Write(0x2404FA);
-	PIC424Write(0x883B0A);
+	PIC424Write(0x2404FA,0,0); //MOV XXXX,W10 0x404F (differs by PIC)
+	PIC424Write(0x883B0A,0,0); //MOV W10,NVMCON
 
 	// Step 3: Set TBLPAG
-	PIC424Write(0x200000);
-	PIC424Write(0x880190);
-	PIC424Write(0x200000);
-	PIC424Write(0xBB0800);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
+	PIC424Write(0x200000,0,0); //MOV XXXX,W0 (0x0000)
+	PIC424Write(0x880190,0,1); //MOV W0,TABLPAG
+	PIC424Write(0xBB0800,0,2); //TBLWTL W0,[W0] (dummy write)
 
-	PIC424Write(0xA8E761);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	sleep(1);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
+	PIC424Write(0xA8E761,0,2); //BSET NVMCON,#WR
+	//sleep(1);
+	
+	//repeat until erase done, should reset counter every now and then too... 11000000 01001111
+	while(1){
+		PIC24NOP();
+		PIC424Write(0x803B02,0,2);//MOV NVMCON,W2
+		PIC424Write(0x883C22,0,2);//MOV W2,VISI	
 
-/*	PIC424Write(0xA9E761);
+		VISI=PIC424Read();//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
+		PIC24NOP();//SIX,0x000000,5, N/A
+		PIC424Write(0x040200,0,2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
 
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	*/
-/*	
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	PIC424Write(0x040200);
-	PIC424Write(0x000000);
-	PIC424Write(0x000000);
-	*/
+		if(!(VISI&0x8000)) break; //bit15 will clear when erase is done
+	}
 
+}
+
+//18F setup write location and write length bytes of data to PIC
+void PIC24_write(uint32 tblptr, uint16* Data, int length)
+{
+	uint16 DataByte;//, buffer[2]={0x00,0x00};
+	int ctr;
+	uint8	buffer[4] = {0};
+	uint16 VISI;
+
+	//set NVMCON
+	PIC424Write(0x24001A,0,0); //MOV XXXX,W10 0x4001 (differs by PIC)
+	PIC424Write(0x883B0A,0,0); //MOV W10,NVMCON
+	
+	//setup the table pointer
+	PIC424Write(0x200000,0,0); //MOV XXXX,W0 (0x0000)
+	PIC424Write(0x880190,0,1); //MOV W0,TABLPAG
+	PIC424Write(0x200007,0,0); //MOV XXXX,W7 (0x0000)
+	
+	for(ctr=0;ctr<16;ctr++)
+	{	
+		PIC424Write(0x200000,0,0); //MOV XXXX,W0 (0x0000)
+		PIC424Write(0x200001,0,0); //MOV XXXX,W1 (0x0000)
+		PIC424Write(0x200002,0,0); //MOV XXXX,W2(0x0000)
+		PIC424Write(0x200003,0,0); //MOV XXXX,W3 (0x0000)
+		PIC424Write(0x200004,0,0); //MOV XXXX,W4 (0x0000)
+		PIC424Write(0x200005,0,0); //MOV XXXX,W5 (0x0000)	
+
+		PIC424Write(0xEB0300,0,1);//CLR W6		
+		PIC424Write(0xBB0BB6,0,2);	//TBLWTL [W6++], [W7]
+		PIC424Write(0xBBDBB6,0,2);	//TBLWTH.B [W6++], [W7++]
+		PIC424Write(0xBBEBB6,0,2);	//TBLWTH.B [W6++], [++W7]
+		PIC424Write(0xBB1BB6,0,2); //TBLWTL [W6++], [W7++]	
+		PIC424Write(0xBB0BB6,0,2);	//TBLWTL [W6++], [W7]
+		PIC424Write(0xBBDBB6,0,2);	//TBLWTH.B [W6++], [W7++]
+		PIC424Write(0xBBEBB6,0,2);	//TBLWTH.B [W6++], [++W7]
+		PIC424Write(0xBB1BB6,0,2);	//TBLWTL [W6++], [W7++]
+	}
+	
+	//start the write cycle
+	PIC424Write(0xA8E761,0,2);	//BSET NVMCON, #WR
+		
+	//repeat until write done, should reset counter every now and then too... 11000000 01001111
+	while(1){
+		PIC24NOP();
+		PIC424Write(0x803B02,0,2);//MOV NVMCON,W2
+		PIC424Write(0x883C22,0,2);//MOV W2,VISI	
+
+		VISI=PIC424Read();//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
+		PIC24NOP();//SIX,0x000000,5, N/A
+		PIC424Write(0x040200,0,2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
+
+		if(!(VISI&0x8000)) break; //bit15 will clear when done
+	}
 }
 
 //
@@ -979,9 +1014,9 @@ int main (int argc, const char** argv)
 			printf ("PIC ID: %#X (%s) REV: %#X (%#d.%#d) \n", buffer16[0], PICname, buffer16[1], ((buffer16[1]>>6)&0x07),(buffer16[1]&0x07));
 			
 			//erase device
-			//printf("Erasing the PIC (please wait)...");
-			//PIC24F_erase();
-			//puts("(OK)");
+			printf("Erasing the PIC (please wait)...");
+			PIC24_erase();
+			puts("(OK)");
 			
 			//exit programming mode
 			puts("Exit ICSP...");
@@ -996,7 +1031,8 @@ int main (int argc, const char** argv)
 		
 				//write the firmware to the PIC 
 				//res = sendFirmware(dev_fd, bin_buff, pages_used);
-				
+				puts("Programming first page with 0x00...");
+				PIC24_write(0x0000, buffer16, 64); //currently all 3 variables are ignored
 				//exit ICSP
 				puts("Exit ICSP...");
 				exitICSP();
