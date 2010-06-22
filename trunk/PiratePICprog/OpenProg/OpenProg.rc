@@ -1,0 +1,413 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 16, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\OpenProg.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""l.ita\\afxres.rc""          // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\OpenProg.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 275, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Info about OpenProg"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    DEFPUSHBUTTON   "OK",IDOK,218,7,50,14,WS_GROUP
+    EDITTEXT        IDC_LICENSE,7,30,261,95,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | WS_VSCROLL
+END
+
+IDD_OPENPROG_DIALOG DIALOGEX 0, 0, 416, 201
+STYLE WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "OpenProg"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+END
+
+IDD_DATI DIALOG DISCARDABLE  0, 0, 401, 149
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Dati__"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_DATI,7,7,387,135,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | WS_VSCROLL
+END
+
+IDD_DISP DIALOG DISCARDABLE  0, 0, 361, 146
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Dispositivo__"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_DISPO,55,14,97,160,CBS_DROPDOWNLIST | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Dispositivo__",IDC_STATICdev,9,16,43,8
+    CONTROL         "Leggi area riservata__",IDC_RISERVATA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,50,86,10
+    CONTROL         "Da file__",IDC_OSC_LOAD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,20,125,44,10
+    CONTROL         "OSCCAL__",IDC_OSC_OSCCAL,"Button",BS_AUTORADIOBUTTON,20,
+                    103,52,10
+    CONTROL         "Backup OSCCAL__",IDC_OSC_BK,"Button",BS_AUTORADIOBUTTON,
+                    20,114,79,10
+    GROUPBOX        "Scrivi OSCCAL__",IDC_STATIC2,7,93,93,46
+    CONTROL         "Programma ID e BKosccal__",IDC_IDPROG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,63,107,10
+    CONTROL         "Leggi e programma EEPROM__",IDC_EEPROM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,37,117,10
+    CONTROL         "Programma CALIB1 e 2__",IDC_CALIB_LOAD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,76,97,10
+    EDITTEXT        IDC_LOCK,173,110,19,14,ES_AUTOHSCROLL
+    CONTROL         "_Lock",IDC_LOCK_P,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    198,112,78,10
+    GROUPBOX        "_Atmel",IDC_ATCONF,163,37,128,95
+    EDITTEXT        IDC_FUSE,173,50,19,14,ES_AUTOHSCROLL
+    CONTROL         "_Fuse low",IDC_FUSE_P,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,198,52,79,10
+    EDITTEXT        IDC_FUSEH,173,70,19,14,ES_AUTOHSCROLL
+    CONTROL         "_Fuse high",IDC_FUSEH_P,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,198,72,81,10
+    EDITTEXT        IDC_FUSEX,173,90,19,14,ES_AUTOHSCROLL
+    CONTROL         "_Extended Fuse",IDC_FUSEX_P,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,198,92,79,10
+    CONTROL         "_Abilita ICD",IDC_ICD_EN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,170,18,67,10
+    EDITTEXT        IDC_ICDADDR,247,16,28,14,ES_AUTOHSCROLL
+    LTEXT           "_indirizzo routine ICD",IDC_ICD_ADDR,277,19,67,8
+END
+
+IDD_OPZIONI DIALOG DISCARDABLE  0, 0, 335, 151
+STYLE WS_CHILD | WS_CAPTION
+CAPTION "Opzioni__"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_VID,27,7,40,14,ES_AUTOHSCROLL
+    LTEXT           "Vid",IDC_STATICvid,7,10,11,8
+    EDITTEXT        IDC_PID,96,7,40,14,ES_AUTOHSCROLL
+    LTEXT           "Pid",IDC_STATICpid,76,10,11,8
+    PUSHBUTTON      "Riconnetti__",IDC_CONNETTI,151,7,50,14
+    CONTROL         "Registra eventi su file__",IDC_REGISTRO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,26,32,91,10
+    RTEXT           "Max errori in scrittura__",IDC_STATICerr,25,54,76,13
+    EDITTEXT        IDC_ERRMAX,106,53,32,14,ES_AUTOHSCROLL
+    RTEXT           "Rit USB__",IDC_STATIC_USBD,20,86,82,12
+    EDITTEXT        IDC_USBDMIN,106,85,32,14,ES_AUTOHSCROLL
+    RTEXT           "Language__",IDC_STATIC_L,163,55,50,8
+    COMBOBOX        IDC_LANGUAGE,216,52,49,66,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Test hardware___",IDC_TESTHW,215,7,56,14
+    PUSHBUTTON      "__Scrivi Lang file",IDC_WLANGFILE,205,85,75,14
+END
+
+IDD_I2C_SPI DIALOG DISCARDABLE  0, 0, 397, 154
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "I2C/SPI"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "__Invia",IDC_SEND,340,28,50,14
+    PUSHBUTTON      "__Ricevi",IDC_REC,340,7,50,14
+    EDITTEXT        IDC_STRI,7,95,173,48,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL
+    GROUPBOX        "__Modalità",IDC_MODE,7,7,132,67
+    CONTROL         "I2C 8Bit ",IDC_I2C8B,"Button",BS_AUTORADIOBUTTON,21,25,
+                    43,10
+    CONTROL         "I2C 16Bit",IDC_I2C16B,"Button",BS_AUTORADIOBUTTON,21,42,
+                    45,10
+    EDITTEXT        IDC_NUMB,259,18,40,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_NB,"msctls_updown32",UDS_WRAP | 
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,299,18,11,14
+    EDITTEXT        IDC_STRU,201,95,189,48,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "__dati da scrivere",IDC_msgSTRI,8,85,57,8
+    LTEXT           "__Byte trasferiti",IDC_msgSTRU,202,85,97,8
+    LTEXT           "__Byte da leggere/scrivere",IDC_NBS,169,21,86,8
+    CONTROL         "SPI(00)",IDC_SPI00,"Button",BS_AUTORADIOBUTTON,86,19,39,
+                    10
+    CONTROL         "SPI(10)",IDC_SPI10,"Button",BS_AUTORADIOBUTTON,86,43,39,
+                    10
+    CONTROL         "SPI(01)",IDC_SPI01,"Button",BS_AUTORADIOBUTTON,86,31,39,
+                    10
+    CONTROL         "SPI(11)",IDC_SPI11,"Button",BS_AUTORADIOBUTTON,86,55,39,
+                    10
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,5,0,0
+ PRODUCTVERSION 0,5,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041004b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "OpenProg Applicazione MFC\0"
+            VALUE "FileVersion", "0, 5, 0, 0\0"
+            VALUE "InternalName", "OpenProg\0"
+            VALUE "LegalCopyright", "GPL\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "OpenProg.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "OpenProg Applicazione\0"
+            VALUE "ProductVersion", "0, 5, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x410, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+
+    IDD_OPENPROG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 409
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_DATI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 394
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 142
+    END
+
+    IDD_DISP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 354
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+
+    IDD_OPZIONI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 328
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_I2C_SPI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 390
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU1 MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Apri",                       ID_FILE_APRI
+        MENUITEM "&Salva",                      ID_FILE_SALVA
+        MENUITEM SEPARATOR
+        MENUITEM "&Esci",                       ID_FILE_ESCI
+    END
+    POPUP "&Opzioni"
+    BEGIN
+        POPUP "&Programmatore"
+        BEGIN
+            MENUITEM "Connetti",                    ID_OPZIONI_PROGRAMMATORE_CONNETTI
+
+            MENUITEM "lingua",                      ID_CAMBIA_LINGUA
+            MENUITEM "Test Hardware",               ID_TEST_HW
+            MENUITEM "Write Language File",         ID_WRITE_LANG_FILE
+        END
+    END
+    POPUP "&?"
+    BEGIN
+        MENUITEM "&Informazioni",               ID__INFORMAZIONI
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TOOLBAR1 TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_APRI
+    BUTTON      ID_FILE_SALVA
+    BUTTON      ID_LEGGI
+    BUTTON      ID_SCRIVI
+END
+
+IDR_TOOLBAR2 TOOLBAR DISCARDABLE  10, 10
+BEGIN
+    BUTTON      ID_I2CSPI_R
+    BUTTON      ID_I2CSPI_S
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_TOOLBAR1            BITMAP  DISCARDABLE     "res\\toolbar1.bmp"
+IDR_TOOLBAR2            BITMAP  DISCARDABLE     "res\\toolbar2.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "Infor&mazioni su OpenProg..."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_LEGGI                "Leggi"
+    ID_SALVA                "Salva"
+    ID_APRI                 "Apri"
+    ID_SCRIVI               "Scrivi"
+END
+
+#endif    // Italian (Italy) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE 16, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\OpenProg.rc2"  // non-Microsoft Visual C++ edited resources
+#include "l.ita\afxres.rc"          // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
