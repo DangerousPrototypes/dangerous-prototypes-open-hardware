@@ -1,0 +1,388 @@
+[ita2]
+S_noprog			Programmatore non rilevato\r\n
+S_prog				Programmatore rilevato\r\n
+S_nodev_r			Dispositivo non supportato in lettura\r\n
+S_nodev_w			Dispositivo non supportato in scrittura\r\n
+S_nodev				Dispositivo sconosciuto\r\n
+S_progver			Programmatore versione %d.%d.%d\r\n
+S_progid			ID: %d.%d.%d\r\n
+S_lowUsbV			Tensione USB troppo bassa (VUSB<4.5V)\r\n
+S_HiVPP				Attenzione: tensione regolatore troppo alta\r\n\r\n
+S_LowVPP			Attenzione: tensione regolatore troppo bassa\r\n\r\n
+S_reg				Regolatore avviato e funzionante dopo T=%d ms\r\n\r\n
+S_dev_det			Dispositivo rilevato: vid=0x%04X pid=0x%04X\r\nPercorso: %s\r\n
+S_file				File Hex8 (*.hex)|*.hex|Tutti i file (*.*)|*.*||
+S_file2				File Hex8 (*.hex)|*.hex|File binari (*.bin)|*.bin|Tutti i file (*.*)|*.*||
+S_noDLL				Impossibile aprire hid.dll
+S_openEEfile		Apri file EEPROM
+S_saveEEfile		Salva file EEPROM
+					//
+S_IhexShort			Linea Ihex8 troppo corta:\r\n%s\r\n
+S_IhexChecksum		Errore di checksum nella linea Ihex8:\r\n%s\r\n
+S_InvHandle			Handle invalido\r\n
+S_LogFile			Registro.txt
+					//
+S_StartRead			Inizio lettura...\r\n
+S_Read				Lettura ...
+S_CodeReading1		Lettura codice ...
+S_CodeReading		Lettura: %d%%, ind. %03X
+S_CodeReading2		Lettura: %d%%, ind. %05X
+S_ReadEnd			Lettura completata: %d word\r\n
+S_ReadID_CONFIG		Lettura ID e CONFIG
+S_Read_CONFIG_A		Lettura area CONFIG ...
+S_ReadEE			Lettura area EEPROM ...
+S_StartErase		Cancellazione ...
+S_Writing			Inizio scrittura...\r\n
+S_StartCodeProg		Scrittura codice ...
+S_CodeWriting		Scrittura: %d%%, ind. %03X
+S_CodeWriting2		Scrittura: %d%%, ind. %04X
+S_IDW				Scrittura ID ...
+S_ConfigW			Scrittura CONFIG ...
+S_ConfigAreaW		Scrittura area CONFIG ...
+S_EEAreaW			Scrittura area EEPROM ...
+S_CodeV				Verifica codice ...
+S_CodeV2			Verifica: %d%%, ind. %04X
+S_IDV				Verifica ID ...
+S_ConfigV			Verifica CONFIG ...
+S_EEV				Verifica EEPROM ...
+S_IntW				Scrittura interrotta\r\n
+S_TotErr			completata, %d errori totali\r\n
+S_ComplErr			completata, %d errori\r\n
+S_Compl				completata\r\n
+S_Ready				pronto
+S_End				\r\nFine (%.2f s)\r\n\r\n
+S_EndErr			\r\nFine (%.2f s) %d %s\r\n\r\n
+S_ProtErase			Il dispositivo è protetto, sovrascrivo la protezione.\r\n
+					//
+S_Inohex			Errore: '%.4s' non sembra moto esadecimale, vero?\n
+S_ReadErr			Errore in lettura: word richieste=%d, lette=%d\r\n
+S_ReadCodeErr		Errore in lettura area programma, richieste %d word, lette %d\r\n
+S_ReadCodeErr2		Errore in lettura area programma, richiesti %d byte, letti %d\r\n
+S_ReadEEErr			Errore in lettura area EEPROM, richiesti %d byte, letti %d\r\n
+S_ConfigErr			Errore in lettura area configurazione, richieste %d word, lette %d\r\n
+S_ReadConfigErr		Errore in lettura area configurazione, richiesti %d byte, letti %d\r\n
+S_ErrOsccal			Errore in lettura OSCCAL e BKOSCCAL
+S_CodeWError		Errore in scrittura all'indirizzo %3X: scritto %03X, letto %03X\r\n
+S_CodeWError2		Errore in scrittura all'indirizzo %3X: scritto %04X, letto %04X\r\n
+S_CodeWError3		Errore in scrittura all'indirizzo %4X: scritto %02X, letto %02X\r\n
+S_CodeWError4		Errore in scrittura area programma, richiesti %d byte, scritti %d\r\n
+S_ConfigWErr		Errore in scrittura config: scritto %03X, letto %03X\r\n
+S_ConfigWErr2		Errore in scrittura CONFIG
+S_ConfigWErr3		Errore in scrittura config: scritto %04X, letto %04X\r\n
+S_IDErr				Errore in scrittura ID%d: scritto %04X, letto %04X\r\n
+S_Calib1Err			Errore in scrittura Calib1: scritto %04X, letto %04X\r\n
+S_Calib2Err			Errore in scrittura Calib2: scritto %04X, letto %04X\r\n
+S_CodeVError		Errore in verifica, indirizzo %04X (%d), scritto %02X, letto %02X\r\n
+S_CodeVError2		Errore in verifica area programma, richiesti %d byte, letti %d\r\n
+S_ErrSing			errore
+S_ErrPlur			errori
+S_MaxErr			Superato il massimo numero di errori (%d), scrittura interrotta\r\n
+S_I2CInitErr		Errore di inizializzazione bus I2C\r\n
+S_I2CAckErr			Errore di acknowledge I2C\r\n
+S_ComErr			Errore di comunicazione\r\n
+S_InsErr			Istruzione sconosciuta\r\n
+S_SyncErr			Errore di sincronizzazione\r\n
+					//
+S_Log1				i=%d(0x%X), k=%d(0x%X)  NumberOfBytesRead=%d\n
+S_Log2				i=%d, k=%d, errori=%d, NumberOfBytesRead=%d\n\n
+S_Log3				i=%d, k2=%d NumberOfBytesRead=%d\n
+S_Log4				Area config. 	errori=%d   NumberOfBytesRead=%d\n
+S_Log5				dim=%d(0x%X), dimx=%d(0x%X), dimx/wbuf=%d \n\n
+S_Log6				i=%d(0x%X),  NumberOfBytesRead=%d\n\n
+S_Log7				i=%d(0x%X), k=%d(0x%X)\n
+S_Log8				i=%d(0x%X), k=%d(0x%X), errori=%d\n
+S_Log9				Area config. 	errori=%d\n
+					//
+S_comTimeout		Timeout comunicazione\r\n
+S_EraseTimeout		Timeout in cancellazione\r\n
+S_ConfigTimeout		Timeout in lettura config\r\n
+S_ConfigTimeout2	Timeout in lettura area config\r\n
+S_CodeTimeout		Timeout in lettura, indirizzo %02X (%d)\r\n
+S_CodeTimeout2		Timeout in lettura, indirizzo %04X (%d)\r\n
+S_OsccalTimeout		Timeout in lettura osccal\r\n
+S_EETimeout			Timeout in lettura EEPROM, indirizzo %02X (%d)\r\n
+S_ConfigWTimeout	Timeout in verifica config\r\n
+S_CodeWTimeout		Timeout in scrittura, indirizzo %02X (%d)\r\n
+S_ConfigWTimeout2	Timeout in scrittura area config\r\n
+S_EEWTimeout		Timeout in scrittura EEPROM, indirizzo %03X (%d)\r\n
+S_IDWTimeout		Timeout in scrittura ID\r\n
+S_ConfigNWTimeout	Timeout in scrittura CONFIG%d\r\n
+S_CodeVTimeout		Timeout in verifica, indirizzo %04X (%d)\r\n
+S_ConfigVTimeout	Timeout in verifica area config\r\n
+S_ProgModeTimeout	Timeout in entrata program mode\r\n
+S_ProgModeXTimeout	Timeout in uscita programmazione\r\n
+S_LogTimeout		Timeout\n
+					//
+S_CodeMem			\r\nmemoria CODICE:\r\n
+S_EEMem				\r\nmemoria EEPROM:\r\n
+S_IDMem				\r\nmemoria ID:\r\n
+S_ConfigMem			\r\nmemoria CONFIG:\r\n
+S_ConfigResMem		\r\nMemoria configurazione e riservata:\r\n
+S_CodeMem2			\r\nMemoria programma:\r\n
+					//
+S_LPOsc				LP oscillator\r\n
+S_XTOsc				XT oscillator\r\n
+S_IntOsc			Internal osc.\r\n
+S_RCOsc				RC oscillator\r\n
+S_WDTON				WDT ON\r\n
+S_WDTOFF			WDT OFF\r\n
+S_CPOFF				Code protection OFF\r\n
+S_CPON				Code protection ON\r\n
+S_MCLRON			Master clear ON\r\n
+S_MCLROFF			Master clear OFF\r\n
+S_ChipID			ID%d: 0x%03X   ID%d: 0x%03X\r\n
+S_ChipID2			ID%d: 0x%02X   ID%d: 0x%02X\r\n
+S_BKOsccal			Backup OSCCAL: 0x%03X\r\n
+S_Osccal			OSCCAL: 0x%03X\r\n
+S_DevID				DevID: 0x%04X\r\n
+S_DevID2			DevID: 0x%02X%02X\r\n
+S_ConfigWord		Configuration word: 0x%03X\r\n
+S_ConfigWord2		Configuration word: 0x%04X\r\n
+S_ConfigWordH		CONFIG%dH: 0x%02X\t
+S_ConfigWordL		CONFIG%dL: 0x%02X\r\n
+S_CalibWord1		Calibration word1: 0x%04X\r\n
+S_CalibWord2		Calibration word2: 0x%04X\r\n
+S_Protected			Dispositivo protetto
+					//
+S_CodeLim			Dimensione programma oltre i limiti\r\n
+S_EELim				Dimensione eeprom oltre i limiti\r\n
+S_ConfigLim			Dimensione area config oltre i limiti\r\n
+S_WbufLim			Dimensione buffer scrittura oltre i limiti\r\n
+S_MaxRetry			Max tentativi di scrittura: %d\r\n
+					//
+S_NoCode			Area dati vuota\r\n
+S_NoCode2			Niente da scrivere
+S_NoCalibW			Impossibile trovare i dati di calibrazione\r\n
+S_NoEEMem			Impossibile trovare i dati EEPROM\r\n
+S_NoConfigW			Impossibile leggere la config word\r\n
+S_NoConfigW2		Impossibile trovare la locazione CONFIG (0xFFF)\r\n
+S_NoConfigW3		Impossibile trovare la locazione CONFIG (0x2007)\r\nFine\r\n
+					//
+I_Data				Dati
+I_Opt				Opzioni
+I_Dev				Dispositivo
+I_ReadRes			Leggi area riservata
+I_ID_BKo_W			Programma ID e BKosccal
+I_EE				Leggi e programma EEPROM
+I_CalW				Programma Calib1 e 2
+I_OSCW				Scrivi OSCCal
+I_OSC				OSCCal
+I_BKOSC				Backup OSCCal
+I_OSCF				Da File
+I_CONN				Riconnetti
+I_LOG				Registra eventi su file
+I_LANG				Lingua
+I_MAXERR			Max errori in scrittura
+I_USBD				Ritardo minimo USB (ms)
+I_I2CDATAOUT		Dati da scrivere
+I_I2CDATATR			Dati trasferiti
+I_I2C_NB			Byte da scrivere/leggere
+I_I2CMode			Modalità
+I_I2CSend			Invia
+I_I2CReceive		Ricevi
+I_TestHW			Test hardware: rimuovere eventuali dispositivi dal programmatore
+I_TestHWB			Test hardware
+					//
+L_HELP				op [opzioni]\n	\n-BKosccal                   carica BKosccal da file	\n-calib                      carica calibration da file	\n-d, device <disp.>          dispositivo	\n-delay <ms>                 ritardo minimo [2]	\n-ee                         usa eeprom	\n-err <max>                  imposta massimo errori in scrittura	\n-h, help                    guida	\n-i, info                    informazioni programmatore	\n-i2c_r <N Ctr Ind>          leggi N byte dal bus I2C	\n-i2c_r2 <N Ctr Ind(2)>      leggi N byte dal bus I2C (indirizzi 16b)	\n-i2c_w <N Ctr Ind Dati>     scrivi N byte sul bus I2C	\n-i2c_w2 <N Ctr Ind(2) Dati> scrivi N byte sul bus I2C (indirizzi 16b)	\n-id                         usa ID	\n-l, log [file]              salva registro	\n-mode <mode>                SPI mode: 00,01,10,11	\n-osccal                     carica osccal da file invece che dal valore salvato prima della cancellazione	\n-p, path <percorso>         percorso programmatore [/dev/usb/hiddev0]	\n-pid <pid>                  pid programmatore [0x100]	\n-r, reserved                leggi area riservata	\n-rep <n>                    dimensione report [64]	\n-s, save <file>             salva su file Ihex	\n-se, saveEE <file>          salva EEPROM su file Ihex (solo ATxxxx)	\n-spi_r <N>                  leggi N byte dal bus SPI	\n-spi_w <N Dati>             scrivi N byte sul bus SPI	\n-support                    dispositivi supportati	\n-use_BKosccal               copia BKosccal su osccal	\n-v, version                 versione	\n-vid <vid>                  vid programmatore [0x4D8]	\n-w, write <file>            scrivi file Ihex	\n-we, writeEE <file>         scrivi EEPROM file Ihex (solo ATxxxx)	\n	\nes.  op -d 12F683 -s prova.hex\n
+L_OPTERR			Errore nelle opzioni\n
+L_INFO1				vid 0x%04hx pid 0x%04hx versione 0x%04hx
+L_INFO2				\nbus: %d devnum: %d ifnum: %d\n
+L_UNKNOWN			sconosciuto
+L_NAME				Il dispositivo su %s si chiama %s\n
+L_DEV_R				Dispositivi supportati in lettura:
+L_DEV_W				Dispositivi supportati in scrittura:
+
+
+[eng2]
+S_noprog			Programmer not detected\r\n
+S_prog				Programmer detected\r\n
+S_nodev_r			Device not supported for reading\r\n
+S_nodev_w			Device not supported for writing\r\n
+S_nodev				Unknown device\r\n
+S_progver			Programmer version %d.%d.%d\r\n
+S_progid			ID: %d.%d.%d\r\n
+S_lowUsbV			USB voltage too low (VUSB<4.5V)\r\n
+S_HiVPP				Warning: regulator voltage too high\r\n\r\n
+S_LowVPP			Warning: regulator voltage too low\r\n\r\n
+S_reg				Regulator up and running after T=%d ms\r\n\r\n
+S_dev_det			Device detected: vid=0x%04X pid=0x%04X\r\nPath: %s\r\n
+S_file				Hex8 files (*.hex)|*.hex|All files (*.*)|*.*||
+S_file2				Hex8 files (*.hex)|*.hex|Binary files (*.bin)|*.bin|All files (*.*)|*.*||
+S_noDLL				Error opening hid.dll
+S_openEEfile		Open EEPROM file
+S_saveEEfile		Save EEPROM file
+					//
+S_IhexShort			Intel hex8 line too short:\r\n%s\r\n
+S_IhexChecksum		Intel hex8 checksum error in line:\r\n%s\r\n
+S_InvHandle			Invalid handle\r\n
+S_LogFile			Log.txt
+	//
+S_StartRead			Reading ...\r\n
+S_Read				Reading ...
+S_CodeReading1		Reading code ...
+S_CodeReading		Reading: %d%%, add. %03X
+S_CodeReading2		Reading: %d%%, add. %05X
+S_ReadEnd			Reading completed: %d words\r\n
+S_ReadID_CONFIG		Reading ID and CONFIG
+S_Read_CONFIG_A		Reading CONFIG area ...
+S_ReadEE			Reading EEPROM ...
+S_StartErase		Erasing ...
+S_Writing			Writing ...\r\n
+S_StartCodeProg		Writing code ...
+S_CodeWriting		Writing: %d%%, add. %03X
+S_CodeWriting2		Writing: %d%%, add. %04X
+S_IDW				Writing ID ...
+S_ConfigW			Writing CONFIG ...
+S_ConfigAreaW		Writing CONFIG area ...
+S_EEAreaW			Writing EEPROM ...
+S_CodeV				Verifying code ...
+S_CodeV2			Verifying: %d%%, add. %04X
+S_IDV				Verifying ID ...
+S_ConfigV			Verifying CONFIG ...
+S_EEV				Verifying EEPROM ...
+S_IntW				Write interrupted\r\n
+S_TotErr			completed, %d total errors\r\n
+S_ComplErr			completed, %d errors\r\n
+S_Compl				completed\r\n
+S_Ready				ready
+S_End				\r\nEnd (%.2f s)\r\n\r\n
+S_EndErr			\r\nEnd (%.2f s) %d %s\r\n\r\n
+S_ProtErase			Device protected, overriding protection.\r\n
+	//
+S_Inohex			Error: '%.4s' doesn't look very hexadecimal, right?\n
+S_ReadErr			Read error: requested words=%d, read=%d\r\n
+S_ReadCodeErr		Error reading code area, requested %d words, read %d\r\n
+S_ReadCodeErr2		Error reading code area, requested %d bytes, read %d\r\n
+S_ReadEEErr			Error reading EEPROM area, requested %d bytes, read %d\r\n
+S_ConfigErr			Error reading configuration area, requested %d words, read %d\r\n
+S_ReadConfigErr		Error reading configuration area, requested %d bytes, read %d\r\n
+S_ErrOsccal			Error reading OSCCAL and BKOSCCAL
+S_CodeWError		Error writing address %3X: written %03X, read %03X\r\n
+S_CodeWError2		Error writing address %3X: written %04X, read %04X\r\n
+S_CodeWError3		Error writing address %4X: written %02X, read %02X\r\n
+S_CodeWError4		Error writing code area, requested %d bytes, written %d\r\n
+S_ConfigWErr		Error writing config area: written %03X, read %03X\r\n
+S_ConfigWErr2		Error writing CONFIG
+S_ConfigWErr3		Error writing config area: written %04X, read %04X\r\n
+S_IDErr				Error writing ID%d: written %04X, read %04X\r\n
+S_Calib1Err			Error writing Calib1: written %04X, read %04X\r\n
+S_Calib2Err			Error writing Calib2: written %04X, read %04X\r\n
+S_CodeVError		Error verifying address %04X (%d), written %02X, read %02X\r\n
+S_CodeVError2		Error verifying code area, requested %d bytes, read %d\r\n
+S_ErrSing			error
+S_ErrPlur			errors
+S_MaxErr			Exceeded maximum number of errors (%d), write interrupted\r\n
+S_I2CInitErr		Error initializing I2C bus\r\n
+S_I2CAckErr			I2C acknowledge error\r\n
+S_ComErr			Communication error\r\n
+S_InsErr			Unknown instruction\r\n
+S_SyncErr			Synchronization error\r\n
+	//
+S_Log1				i=%d(0x%X), k=%d(0x%X)  NumberOfBytesRead=%d\n
+S_Log2				i=%d, k=%d, errors=%d, NumberOfBytesRead=%d\n\n
+S_Log3				i=%d, k2=%d NumberOfBytesRead=%d\n
+S_Log4				Config area. 	errors=%d   NumberOfBytesRead=%d\n
+S_Log5				dim=%d(0x%X), dimx=%d(0x%X), dimx/wbuf=%d \n\n
+S_Log6				i=%d(0x%X),  NumberOfBytesRead=%d\n\n
+S_Log7				i=%d(0x%X), k=%d(0x%X)\n
+S_Log8				i=%d(0x%X), k=%d(0x%X), errors=%d\n
+S_Log9				Config area. 	errors=%d\n
+	//
+S_comTimeout		Communication timeout\r\n
+S_EraseTimeout		Timeout during erase\r\n
+S_ConfigTimeout		Timeout reading CONFIG\r\n
+S_ConfigTimeout2	Timeout reading config area\r\n
+S_CodeTimeout		Timeout reading address %02X (%d)\r\n
+S_CodeTimeout2		Timeout reading address %04X (%d)\r\n
+S_OsccalTimeout		Timeout reading osccal\r\n
+S_EETimeout			Timeout reading EEPROM, address %02X (%d)\r\n
+S_ConfigWTimeout	Timeout verifying config\r\n
+S_CodeWTimeout		Timeout writing address %02X (%d)\r\n
+S_ConfigWTimeout2	Timeout writing config area\r\n
+S_EEWTimeout		Timeout writing EEPROM, address %03X (%d)\r\n
+S_IDWTimeout		Timeout writing ID\r\n
+S_ConfigNWTimeout	Timeout writing CONFIG%d\r\n
+S_CodeVTimeout		Timeout verifying address %04X (%d)\r\n
+S_ConfigVTimeout	Timeout verifying config area\r\n
+S_ProgModeTimeout	Timeout entering program mode\r\n
+S_ProgModeXTimeout	Timeout exiting program mode\r\n
+S_LogTimeout		Timeout\n
+	//
+S_CodeMem			\r\nCode memory:\r\n
+S_EEMem				\r\nEEPROM memory:\r\n
+S_IDMem				\r\nID:\r\n
+S_ConfigMem			\r\nCONFIG:\r\n
+S_ConfigResMem		\r\nConfiguration and reserved memory:\r\n
+S_CodeMem2			\r\nCode memory:\r\n
+	//
+S_LPOsc				LP oscillator\r\n
+S_XTOsc				XT oscillator\r\n
+S_IntOsc			Internal osc.\r\n
+S_RCOsc				RC oscillator\r\n
+S_WDTON				WDT ON\r\n
+S_WDTOFF			WDT OFF\r\n
+S_CPOFF				Code protection OFF\r\n
+S_CPON				Code protection ON\r\n
+S_MCLRON			Master clear ON\r\n
+S_MCLROFF			Master clear OFF\r\n
+S_ChipID			ID%d: 0x%03X   ID%d: 0x%03X\r\n
+S_ChipID2			ID%d: 0x%02X   ID%d: 0x%02X\r\n
+S_BKOsccal			Backup OSCCAL: 0x%03X\r\n
+S_Osccal			OSCCAL: 0x%03X\r\n
+S_DevID				DevID: 0x%04X\r\n
+S_DevID2			DevID: 0x%02X%02X\r\n
+S_ConfigWord		Configuration word: 0x%03X\r\n
+S_ConfigWord2		Configuration word: 0x%04X\r\n
+S_ConfigWordH		CONFIG%dH: 0x%02X\t
+S_ConfigWordL		CONFIG%dL: 0x%02X\r\n
+S_CalibWord1		Calibration word1: 0x%04X\r\n
+S_CalibWord2		Calibration word2: 0x%04X\r\n
+S_Protected			protected device
+	//
+S_CodeLim			Code size exceeds limits\r\n
+S_EELim				Eeprom size exceeds limits\r\n
+S_ConfigLim			Config area size exceeds limits\r\n
+S_WbufLim			Write buffer size exceeds limits\r\n
+S_MaxRetry			Max retries in writing: %d\r\n
+	//
+S_NoCode			Data area is empty\r\n
+S_NoCode2			Nothing to write
+S_NoCalibW			Can't find calibration data\r\n
+S_NoEEMem			Can't find EEPROM data\r\n
+S_NoConfigW			Impossibile leggere la config word\r\n
+S_NoConfigW2		Can't find CONFIG location (0xFFF)\r\n
+S_NoConfigW3		Can't find CONFIG location (0x2007)\r\nEnd\r\n
+	//
+I_Data				Data
+I_Opt				Options
+I_Dev				Device
+I_ReadRes			Read reserved area
+I_ID_BKo_W			Write ID and BKosccal
+I_EE				Read and write EEPROM
+I_CalW				Write Calib1 e 2
+I_OSCW				Write OSCCal
+I_OSC				OSCCal
+I_BKOSC				Backup OSCCal
+I_OSCF				From File
+I_CONN				Reconnect
+I_LOG				Log activity
+I_LANG				Language
+I_MAXERR			Max errors in writing
+I_USBD				Min USB delay (ms)
+I_I2CDATAOUT		Data to send
+I_I2CDATATR			Data transferred
+I_I2C_NB			Bytes to read/write
+I_I2CMode			Mode
+I_I2CSend			Send
+I_I2CReceive		Receive
+I_TestHW			Hardware test: remove any device from programmer
+I_TestHWB			Hardware test
+	//
+L_HELP				op [options]\n	\n-BKosccal                   load BKosccal from file	\n-calib                      load calibration from file	\n-d, device <dev.>           device	\n-delay <ms>                 minimum delay [2]	\n-ee                         use eeprom	\n-err <max>                  max errors during writing	\n-h, help                    help	\n-i, info                    informations about programmer	\n-i2c_r <N Ctr Addr>         read N bytes from I2C bus	\n-i2c_r2 <N Ctr Addr(2)>     read N bytes from I2C bus (16b address)	\n-i2c_r <N Ctr Addr Data>    write N bytes to I2C bus	\n-i2c_r <N Ctr Addr(2) Data> write N bytes to I2C bus (16b address)	\n-id                         use ID	\n-l, log [file]              save log	\n-mode <mode>                SPI mode: 00,01,10,11	\n-osccal                     loads osccal from file instead of from value saved before erase	\n-p, path <percorso>         programmer path [/dev/usb/hiddev0]	\n-pid <pid>                  programmer pid [0x100]	\n-r, reserved                read reserved area	\n-rep <n>                    report size [64]	\n-s, save <file>             save Ihex file	\n-se, saveEE <file>          save EEPROM on Ihex file (ATxxxx only)	\n-spi_r <N>                  read N bytes from SPI bus	\n-spi_w <N Data>             write N bytes to SPI bus	\n-support                    supported devices	\n-use_BKosccal               copy BKosccal to osccal	\n-v, version                 version	\n-vid <vid>                  programmer vid [0x4D8]	\n-w, write <file>            write Ihex file	\n-we, writeEE <file>         write EEPROM on Ihex file (ATxxxx only)	\n	\nex.  op -d 12F683 -s test.hex\n
+L_OPTERR			Error in command-line options\n
+L_INFO1				vid 0x%04hx pid 0x%04hx version 0x%04hx
+L_INFO2				\nbus: %d devnum: %d ifnum: %d\n
+L_UNKNOWN			Unknown
+L_NAME				The device on %s says its name is %s\n
+L_DEV_R				Supported devices (reading):
+L_DEV_W				Supported devices (writing):

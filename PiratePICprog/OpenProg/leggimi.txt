@@ -1,0 +1,41 @@
+OpenProg: programma di controllo per open programmer, 
+programmatore USB per microcontrollori PIC, ATMEL, memorie I2C/SPI/MicroWire, dispositivi I2C e SPI.
+Sito web: http://openprog.altervista.org
+Questi sorgenti sono distribuiti gratuitamente sotto licenza GNU General Public License versione 2 
+
+Cambiamenti (per usare i dispositivi aggiunti è richiesto un programmatore con firmware corrispondente):
+
+V 0.7.5	giugno 2010:	corretto baco in scrittura config 18Fx (introdotto nella v.0.7.4),
+						aggiunta scrittura goto ICD per i 16Fx, 
+						correzioni varie
+
+V 0.7.4	maggio 2010:	aggiunti PIC24H, dsPIC30, dsPIC33, 18FxxKxx, 18FxxJxx,
+						eliminati parecchi costrutti MFC,
+						correzioni: verifica config word, algoritmo 24F e 18F, vari
+
+V 0.7.3	aprile 2010:	aggiunti 16F1xxx, un po' di pulizia del codice,
+						separato fileIO.cpp e reso simile alla versione da linea di comando
+
+V 0.7.2	marzo 2010:		aggiunte alcune memorie uW, corretti algoritmi 16F7xx e alcuni bachi
+
+V 0.7.1	febbraio 2010:	aggiunti alcuni micro PIC18 e Atmel
+
+V 0.7.0	gennaio 2010:	aggiunte memorie SPI e alcuni micro PIC24F
+
+V 0.6.2	ottobre 2009:	corretto algoritmo 16F628, 16F87/88 e 81X; supporto file binari con memorie EE
+
+V 0.6.1	settembre 2009:	corretti vari bachi, aggiunte memorie 93Cx6 e alcuni micro Atmel
+
+V 0.6.0	giugno 2009:	aggiunte memorie MicroWire 93Sx6
+
+V 0.5.3	marzo 2009: 	corretto baco sulle config word dei PIC18
+
+V 0.5.2	marzo 2009: 	aggiunti alcuni micro PIC e Atmel, corretti alcuni bachi
+
+V 0.5.1	gennaio  2009: 	aggiunti alcuni micro PIC, corretti alcuni bachi
+
+V 0.5.0	novembre 2008: 	aggiunti alcuni micro ATMEL (90S8515, 90S1200), supporto universale I2C/SPI
+
+V 0.4.0	agosto 2008: 	aggiunte memorie I2C 24XX.
+
+V 0.3.0	luglio 2008:	prima versione pubblica, supporta PIC 10,12,16,18.
