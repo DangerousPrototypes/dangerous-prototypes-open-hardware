@@ -7,7 +7,7 @@
  */
 #ifndef MYSERIAL_H_
 #define MYSERIAL_H_
-
+/*
 #ifdef WIN32
 	#include <windows.h>
 	#include <time.h>
@@ -42,14 +42,16 @@
 	#endif
 
 #endif
-
+*/
 
 #include <stdint.h>
 
 
-int readWithTimeout(int fd, uint8_t* out, int length, int timeout);
-int configurePort(int fd, unsigned long baudrate);
-int openPort(const char* dev, unsigned long flags);
+int serial_setspeed(int fd, speed_t speed);
+int serial_write(int fd, char *buf, int size);
+int serial_read(int fd, char *buf, int size);
+int serial_open(char *port);
+int serial_close(int fd);
 
 
 #endif

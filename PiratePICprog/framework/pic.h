@@ -32,5 +32,8 @@ int16_t PIC_GetFamilyIdx(uint16_t chip_idx);
 struct pic_chip_t *PIC_GetChip(uint16_t i);
 struct pic_family_t *PIC_GetFamily(uint16_t i);
 
+int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data);
+int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data);
+
 #endif
 
