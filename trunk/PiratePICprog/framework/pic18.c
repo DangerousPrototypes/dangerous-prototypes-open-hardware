@@ -66,13 +66,14 @@ static void PIC18_settblptr(struct picprog_t *p, uint32_t tblptr)
 }
 
 uint32_t PIC18_ReadID(struct picprog_t *p){
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint32_t PICid;
 
-	//0x3ffffe
 	//setup read from device ID bits
-	PIC18_settblptr(p, tblptr);
+	PIC18_settblptr(p, f->ID_addr);
 	
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	PICid = iface.PIC416Read(opts, 0x09);	//lower 8 bits
@@ -147,7 +148,8 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int le
 
 //erase 18F, sleep delay should be adjustable
 uint32_t PIC18_Erase(struct picprog_t *p) {
-	struct pic_family_t *f = PIC_GetFamily(p->chip_idx);
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct pic_family_t *f = PIC_GetFamily(pic->family);
 
 	PIC18_settblptr(p, 0x3C0005); //set pinter to erase register
 	iface.PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token

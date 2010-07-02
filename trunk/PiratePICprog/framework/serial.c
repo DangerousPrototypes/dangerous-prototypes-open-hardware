@@ -13,7 +13,7 @@
 #include <string.h>
 
 #include "serial.h"
-
+/*
 #ifdef WIN32
 	int write(int fd, const void* buf, int len)
 	{
@@ -106,7 +106,98 @@
 	}
 #else
 #endif
+*/
+int serial_setspeed(int fd, speed_t speed)
+{
+	struct termios t_opt;
 
+	/* set the serial port parameters */
+	fcntl(buspirate_fd, F_SETFL, 0);
+	tcgetattr(buspirate_fd, &t_opt);
+	cfsetispeed(&t_opt, speed);
+	cfsetospeed(&t_opt, speed);
+	t_opt.c_cflag |= (CLOCAL | CREAD);
+	t_opt.c_cflag &= ~PARENB;
+	t_opt.c_cflag &= ~CSTOPB;
+	t_opt.c_cflag &= ~CSIZE;
+	t_opt.c_cflag |= CS8;
+	t_opt.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);
+	t_opt.c_iflag &= ~(IXON | IXOFF | IXANY);
+	t_opt.c_oflag &= ~OPOST;
+	t_opt.c_cc[VMIN] = 0;
+	t_opt.c_cc[VTIME] = 10;
+	tcflush(buspirate_fd, TCIFLUSH);
+	tcsetattr(buspirate_fd, TCSANOW, &t_opt);
+
+	return 0;
+}
+
+int serial_write(int fd, char *buf, int size)
+{
+	int ret = 0;
+
+	ret = write(fd, buf, size);
+
+	fprintf(stderr, "size = %d ret = %d", size, ret);
+	buspirate_print_buffer(buf, size);
+
+	if (ret != size)
+		fprintf(stderr, "Error sending data");
+
+	return ret;
+}
+
+int serial_read(int fd, char *buf, int size)
+{
+	int len = 0;
+	int ret = 0;
+	int timeout = 0;
+
+	while (len < size) {
+		ret = read(fd, buf+len, size-len);
+		if (ret == -1)
+			return -1;
+
+		if (ret == 0) {
+			timeout++;
+
+			if (timeout >= 10)
+				break;
+
+			continue;
+		}
+
+		len += ret;
+	}
+
+	fprintf(stderr, "should have read = %d actual size = %d", size, len);
+	buspirate_print_buffer(buf, len);
+
+	if (len != size)
+		fprintf(stderr, "Error sending data");
+
+	return len;
+}
+
+int serial_open(char *port)
+{
+	int fd;
+	
+	fd = open(port, O_RDWR | O_NOCTTY);
+	if (fd == -1) {
+		fprintf(stderr, "Could not open serial port.");
+		return -1;
+	}
+
+	return fd;
+}
+
+int serial_close(int fd)
+{
+	close(fd);
+}
+
+/*
 int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
 {
 	fd_set fds;
@@ -212,4 +303,4 @@ int openPort(const char* dev, unsigned long flags)
 {
 	return open(dev, O_RDWR | O_NOCTTY | O_NDELAY | flags);
 }
-
+*/
