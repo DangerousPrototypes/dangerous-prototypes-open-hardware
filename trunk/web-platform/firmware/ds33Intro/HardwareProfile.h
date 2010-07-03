@@ -19,16 +19,16 @@
 #define IO4_TRIS		(TRISCbits.TRISC5)	// I/O 4
 #define IO4_I			(PORTCbits.RC5)
 #define IO4_O			(LATCbits.LATC5)
-#define IO5_TRIS		(TRISBbits.TRISB6)	// I/O 5
+#define IO5_TRIS		(TRISBbits.TRISB6)	//I/O 5
 #define IO5_I			(PORTBbits.RB6)
 #define IO5_O			(LATBbits.LATB6)
-#define IO6_TRIS		(TRISBbits.TRISB5)	// I/O 6
+#define IO6_TRIS		(TRISBbits.TRISB5)	//I/O 6
 #define IO6_I			(PORTBbits.RB5)
 #define IO6_O			(LATBbits.LATB5)
-#define IO7_TRIS		(TRISBbits.TRISB8)	// I/O 7
+#define IO7_TRIS		(TRISBbits.TRISB8)	//I/O 7
 #define IO7_I			(PORTBbits.RB8)
 #define IO7_O			(LATBbits.LATB8)
-#define IO8_TRIS		(TRISBbits.TRISB7)	// I/O 8
+#define IO8_TRIS		(TRISBbits.TRISB7)	//I/O 8
 #define IO8_I			(PORTBbits.RB7)
 #define IO8_O			(LATBbits.LATB7)
 
@@ -126,11 +126,11 @@
 #define U2TX_O		5
 #define U2RTS_O		6
 #define SDO1_O		7
-#define SCK1_O		8
-#define SS1_O		9
+#define SCK1OUT_O		8
+#define SS1OUT_O		9
 #define SDO2_O		10
-#define SCK2_O		11
-#define SS2_O		12
+#define SCK2OUT_O		11
+#define SS2OUT_O		12
 #define CSDO_O		13
 #define CSCK_O		14
 #define COFS_O		15
