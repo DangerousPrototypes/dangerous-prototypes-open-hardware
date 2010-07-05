@@ -181,6 +181,114 @@ void telnet_sddump( file_handle_t handle, char** argv, unsigned int argc )
 }
 
 
+void telnet_rm( file_handle_t handle, char** argv, unsigned int argc )
+{
+	if( argc != 2 )
+	{
+		file_puts("rm [filename]\r\n", telnet_handle);
+		return;	
+	}
+	u8_t* scratch = malloc(SECTOR_SIZE);
+	VOLINFO* volinfo = malloc( sizeof(VOLINFO) );
+
+	//get partition start sector
+	uint32_t startsector = DFS_GetPtnStart( 0, scratch, 0 , NULL, NULL, NULL );
+	if( startsector == DFS_ERRMISC )
+	{
+		file_puts("Error finding partition start\r\n", handle);
+		goto exit;
+	}
+	//get volume info
+	if( DFS_GetVolInfo(0,scratch,startsector,volinfo) ) 
+	{
+		file_puts("Error getting volume info\r\n", handle);
+		goto exit;
+	}
+	//unlink file
+	uint32_t result = DFS_UnlinkFile( volinfo, (u8_t*)argv[1], scratch );
+	
+	if( result != DFS_OK ) 
+	{
+		file_puts("Error unlinking file ", handle);
+		file_puts( argv[1], handle );
+		file_puts(". RC=", handle );
+		file_putchar( (char)result + '0', handle);
+		file_puts( CRLF, handle );
+	}
+exit:
+	free( volinfo );
+	free( scratch );
+}
+
+
+void telnet_touch( file_handle_t handle, char** argv, unsigned int argc )
+{
+	if( argc < 2 )
+	{
+		file_puts("touch [filename] [data to write] [...]\r\n", telnet_handle);
+		return;	
+	}
+	u8_t* scratch = malloc(SECTOR_SIZE);
+	VOLINFO* volinfo = malloc( sizeof(VOLINFO) );
+	FILEINFO* file = malloc( sizeof(FILEINFO) );
+
+	//get partition start sector
+	uint32_t startsector = DFS_GetPtnStart( 0, scratch, 0 , NULL, NULL, NULL );
+	if( startsector == DFS_ERRMISC )
+	{
+		file_puts("Error finding partition start\r\n", handle);
+		goto exit;
+	}
+	//get volume info
+	if( DFS_GetVolInfo(0,scratch,startsector,volinfo) ) 
+	{
+		file_puts("Error getting volume info\r\n", handle);
+		goto exit;
+	}
+	//open file
+	uint32_t result =   DFS_OpenFile( volinfo, (u8_t*)argv[1], DFS_WRITE, scratch, file );
+	
+	if(!( result == DFS_OK || result == DFS_EOF)) 
+	{
+		file_puts("Error opening file ", handle);
+		file_puts( argv[1], handle );
+		file_puts(". RC=", handle );
+		file_putchar( (char)result + '0', handle);
+		file_puts( CRLF, handle );
+		goto exit;
+	}
+	uint16_t i;
+	for( i = 2; i < argc; i++ )
+	{
+		uint32_t did_write;
+		uint16_t len = strlen(argv[i]);
+		DFS_WriteFile( file, scratch, argv[i], &did_write, len );
+		if( did_write != len )
+		{
+			file_puts("Error writing to file ", handle);
+			file_puts( argv[1], handle );
+			file_puts( CRLF, handle );
+			break;			
+		}
+		if( i < (argc-1) )
+		{
+			DFS_WriteFile( file, scratch, " ", &did_write, 1 );
+			if( did_write != 1 )
+			{
+				file_puts("Error writing to file ", handle);
+				file_puts( argv[1], handle );
+				file_puts( CRLF, handle );
+				break;			
+			}
+		}
+	} 
+exit:
+	free( file );
+	free( volinfo );
+	free( scratch );
+}
+
+
 
 void telnet_cat( file_handle_t handle, char** argv, unsigned int argc )
 {
@@ -343,7 +451,9 @@ const struct command const commands[]={
 	{"quit",&telnet_quit},
 	{"memdump",&telnet_memdump},
 	{"cat", &telnet_cat},
+	{"touch", &telnet_touch},
 	{"ls", &telnet_ls},
+	{"rm", &telnet_rm},
 	{"sddump", &telnet_sddump}
 };	
 #define CMDS_SIZE  ( sizeof(commands) / sizeof(struct command) )
