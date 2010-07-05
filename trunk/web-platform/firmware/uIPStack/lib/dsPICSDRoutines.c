@@ -1,6 +1,13 @@
 #include "dsPICSDRoutines.h"
 
-//some VERY basic caching strategy to stop the dosfs library repeated reading the same sector
+#define SD_GO_IDLE_STATE 0x00
+#define SD_SEND_OP_COND 0x01
+#define SD_SEND_INTF_COND 0x08
+#define SD_APP_CMD 55
+#define SD_ACMD_41 41
+
+
+//some VERY basic caching strategy to stop the dosfs library repeatedly reading the same sector
 static uint8_t* lastbuffer = 0;
 static uint32_t lastsector = 0;
 /*
@@ -27,7 +34,6 @@ uint8_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t 
 {
 	//caching!
 	if(lastbuffer == buffer && lastsector == sector ) return 0;
-
 
     uint8_t response;
     uint16_t i;
@@ -79,10 +85,14 @@ uint8_t DFS_ReadSector(uint8_t unit, uint8_t *buffer, uint32_t sector, uint32_t 
 */
 uint8_t DFS_WriteSector(uint8_t unit,uint8_t *buffer, uint32_t sector, uint32_t count)
 {
+	//invalidate the cache
+	lastbuffer = 0;
+	lastsector = 0;
+
 	uint8_t response;
     uint16_t i;
     uint32_t offset;
-    offset =  sector * 512;
+    offset =  sector << 9; // multiply by 512
     
   	SD_CS_EN();
     SD_PPSSetup();
@@ -140,13 +150,9 @@ void SD_SPI_Init()
 	SPICON1bits.SSEN = 0;
     SPICON1bits.CKE = 1;
     SPICON1bits.SMP = 0;
-    
-    // set clock freq to 100kHz<312.50kHz<400kHz
-    SPICON2 |= 1;
-    SPICON2 &= 0xffe1; 
+
   
     SPISTATbits.SPIEN = 1;
-    SD_CS_DIS();
 }
 
 /*
@@ -183,8 +189,7 @@ unsigned char SD_GET_Response()
 	//data will be 0xff until response
 	int i=0;
 	
-	char response;
-	
+	uint8_t response;
 	while(i<=64)
 	{
 		SD_SPI_Send(0xff);
@@ -201,8 +206,20 @@ initialize SD card
 */
 unsigned char initSD()
 {
+	
 	uint8_t i, response;
 	SD_SPI_Init();
+
+
+    //set clock freq to 100kHz<312.50kHz<400kHz
+	//SD Card spec says that card init needs to happen with a clock in this range
+	//Fcy = 40M
+	//Primary = 64:1, Secondary = 2:1 --> 312.50 kHz
+	//PPRE = 0b00, SPRE = 0b110
+	SPICON1bits.PPRE=0;
+	SPICON1bits.SPRE=6;
+
+
 	SD_CS_DIS();
 	volatile uint8_t dummy; 
 	//send 80 clock pulse
@@ -212,15 +229,42 @@ unsigned char initSD()
 		dummy = SD_SPIBUF;
 	}
 	SD_CS_EN();
-	SD_sendCMD(0x00,0,0x95); // send CMD0 command == reset and enter idle state
-	while ((response = SD_GET_Response())== 0x01)
+	SD_sendCMD(SD_GO_IDLE_STATE,0,0x95); // send CMD0 command == reset and enter idle state
+	SD_GET_Response();
+	SD_sendCMD(SD_APP_CMD,0,0x00); // next cmd is app specific
+	SD_GET_Response();
+	SD_sendCMD(SD_ACMD_41,0,0x00); // send "send interface condition"
+
+
+	i=255;
+	while ((response = SD_GET_Response())== 0x01 && i > 0)
 	{ 
 		SD_CS_DIS();
 		SD_SPI_Send(0xff);
 		dummy = SD_SPIBUF;    
 		SD_CS_EN();
-		SD_sendCMD(0x01,0,0x95); //send CMD1 == initialise card
+		SD_sendCMD(SD_APP_CMD,0,0x00); // next cmd is app specific
+		SD_GET_Response();
+		SD_sendCMD(SD_ACMD_41,0,0x00); // send "send interface condition"
+		i--;
 	}
 	SD_CS_DIS();
-	return 0;  
+
+	//SD Card spec says cards must work up to 25Mhz
+    //step clock freq up to max < 25MHz
+	//Fcy = 40M
+
+	//Primary = 4:1, Secondary = 1:1 --> 10 MHz
+	//PPRE = 0b10, SPRE = 0b111
+//	SPICON1bits.PPRE=2;
+//	SPICON1bits.SPRE=7;
+
+
+	//Primary = 1:1, Sec = 2:1 --> 20MHz
+	//PPRE = 0b11, SPRE = 0b110
+	SPICON1bits.PPRE=3;
+	SPICON1bits.SPRE=6;
+
+
+	return i == 0 ? 0 : 1;  
 }
