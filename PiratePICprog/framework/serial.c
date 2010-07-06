@@ -112,8 +112,8 @@ int serial_setspeed(int fd, speed_t speed)
 	struct termios t_opt;
 
 	/* set the serial port parameters */
-	fcntl(buspirate_fd, F_SETFL, 0);
-	tcgetattr(buspirate_fd, &t_opt);
+	fcntl(fd, F_SETFL, 0);
+	tcgetattr(fd, &t_opt);
 	cfsetispeed(&t_opt, speed);
 	cfsetospeed(&t_opt, speed);
 	t_opt.c_cflag |= (CLOCAL | CREAD);
@@ -126,8 +126,8 @@ int serial_setspeed(int fd, speed_t speed)
 	t_opt.c_oflag &= ~OPOST;
 	t_opt.c_cc[VMIN] = 0;
 	t_opt.c_cc[VTIME] = 10;
-	tcflush(buspirate_fd, TCIFLUSH);
-	tcsetattr(buspirate_fd, TCSANOW, &t_opt);
+	tcflush(fd, TCIFLUSH);
+	tcsetattr(fd, TCSANOW, &t_opt);
 
 	return 0;
 }
@@ -139,7 +139,7 @@ int serial_write(int fd, char *buf, int size)
 	ret = write(fd, buf, size);
 
 	fprintf(stderr, "size = %d ret = %d", size, ret);
-	buspirate_print_buffer(buf, size);
+	//buspirate_print_buffer(buf, size);
 
 	if (ret != size)
 		fprintf(stderr, "Error sending data");
@@ -171,7 +171,7 @@ int serial_read(int fd, char *buf, int size)
 	}
 
 	fprintf(stderr, "should have read = %d actual size = %d", size, len);
-	buspirate_print_buffer(buf, len);
+	//buspirate_print_buffer(buf, len);
 
 	if (len != size)
 		fprintf(stderr, "Error sending data");

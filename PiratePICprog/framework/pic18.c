@@ -1,9 +1,13 @@
 
+#include <unistd.h>
+
 #include "pic.h"
 #include "iface.h"
 #include "pic18.h"
 
-uint32_t PIC18_EnterICSP(struct picprog_t *p, icsp_t type) {
+uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
@@ -13,30 +17,30 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, icsp_t type) {
 	// Reconfigure the mode for LSB order
 	//pritf("Set mode for MCLR (MSB)...");
 
-	iface.SetBitOrder(opts, BIT_MSB);
+	iface->SetBitOrder(opts, BIT_MSB);
 
 	
-	iface.ClockLow(opts);
-	iface.DataLow(opts);
-	iface.MCLRLow(opts);
-	iface.MCLRHigh(opts);
-	iface.MCLRLow(opts);
+	iface->ClockLow(opts);
+	iface->DataLow(opts);
+	iface->MCLRLow(opts);
+	iface->MCLRHigh(opts);
+	iface->MCLRLow(opts);
 
 //send ICSP key 0x4D434850
-	buffer[0] = icspkey >> 24;
-	buffer[1] = icspkey >> 16;
-	buffer[2] = icspkey >> 8;
-	buffer[3] = icspkey;
+	buffer[0] = f->icsp_key >> 24;
+	buffer[1] = f->icsp_key >> 16;
+	buffer[2] = f->icsp_key >> 8;
+	buffer[3] = f->icsp_key;
 
-	iface.BulkByteWrite(opts, 4, buffer);
-	iface.DataLow(opts);
-	iface.MCLRHigh(opts);
+	iface->SendBytes(opts, 4, buffer);
+	iface->DataLow(opts);
+	iface->MCLRHigh(opts);
 
 	//all programming operations are LSB first, but the ICSP entry key is MSB first. 
 	// Reconfigure the mode for LSB order
 	//printf("Set mode for PIC programming (LSB)...");
 
-	iface.SetBitOrder(opts, BIT_LSB);
+	iface->SetBitOrder(opts, BIT_LSB);
 
 	//puts("(OK)");
 	return 0;
@@ -47,8 +51,8 @@ uint32_t PIC18_ExitICSP(struct picprog_t *p){
 	void *opts = p->iface_data;
 
 	//exit programming mode
-	iface.MCLRLow(opts);
-	iface.MCLRHigh(opts);
+	iface->MCLRLow(opts);
+	iface->MCLRHigh(opts);
 }
 
 static void PIC18_settblptr(struct picprog_t *p, uint32_t tblptr)
@@ -57,12 +61,12 @@ static void PIC18_settblptr(struct picprog_t *p, uint32_t tblptr)
 	void *opts = p->iface_data;
 
 	// set TBLPTR 
-	iface.PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 16) & 0xff));
-	iface.PIC416Write(opts, 0x00, 0x6EF8);
-	iface.PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 8) & 0xff));
-	iface.PIC416Write(opts, 0x00, 0x6EF7);
-	iface.PIC416Write(opts, 0x00, 0x0E00 | ((tblptr) & 0xff));
-	iface.PIC416Write(opts, 0x00, 0x6EF6);
+	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 16) & 0xff));
+	iface->PIC416Write(opts, 0x00, 0x6EF8);
+	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 8) & 0xff));
+	iface->PIC416Write(opts, 0x00, 0x6EF7);
+	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr) & 0xff));
+	iface->PIC416Write(opts, 0x00, 0x6EF6);
 }
 
 uint32_t PIC18_ReadID(struct picprog_t *p){
@@ -76,16 +80,16 @@ uint32_t PIC18_ReadID(struct picprog_t *p){
 	PIC18_settblptr(p, f->ID_addr);
 	
 	//read device ID, two bytes takes 2 read operations, each gets a byte
-	PICid = iface.PIC416Read(opts, 0x09);	//lower 8 bits
-	PICid |= iface.PIC416Read(opts, 0x09) << 8;	//upper 8 bits
+	PICid = iface->PIC416Read(opts, 0x09);	//lower 8 bits
+	PICid |= iface->PIC416Read(opts, 0x09) << 8;	//upper 8 bits
 	return PICid;
 }
 
-uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int length)
+uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
-	int ctr;
+	uint32_t ctr;
 
 	//setup read 
 	PIC18_settblptr(p, tblptr);
@@ -93,7 +97,7 @@ uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int len
 	for (ctr = 0; ctr < length; ctr++)
 	{
 		//printf("%X ", PIC416Read(0x09) );
-		Data[ctr] = iface.PIC416Read(opts, 0x09);
+		Data[ctr] = iface->PIC416Read(opts, 0x09);
 	}
 
 	return 0;
@@ -106,18 +110,18 @@ static void PIC18_setupwrite(struct picprog_t *p) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
-	iface.PIC416Write(opts, 0x00, 0x8EA6); //setup PIC
-	iface.PIC416Write(opts, 0x00, 0x9CA6); //setup PIC
-	iface.PIC416Write(opts, 0x00, 0x84A6); //enable page writes
+	iface->PIC416Write(opts, 0x00, 0x8EA6); //setup PIC
+	iface->PIC416Write(opts, 0x00, 0x9CA6); //setup PIC
+	iface->PIC416Write(opts, 0x00, 0x84A6); //enable page writes
 }
 
 //18F setup write location and write length bytes of data to PIC
-uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int length)
+uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint16_t DataByte;//, buffer[2]={0x00,0x00};
-	int ctr;
+	uint32_t ctr;
 	uint8_t	buffer[4] = {0};
 
 	// set TBLPTR
@@ -130,18 +134,18 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int le
 		DataByte = Data[ctr + 1];
 		DataByte = DataByte << 8;
 		DataByte |= Data[ctr];
-		iface.PIC416Write(opts, 0x0D, DataByte);
+		iface->PIC416Write(opts, 0x0D, DataByte);
 	}
 
 	DataByte = Data[length - 1];
 	DataByte = DataByte << 8;
 	DataByte |= Data[length - 2];
-	iface.PIC416Write(opts, 0x0F, DataByte);
+	iface->PIC416Write(opts, 0x0F, DataByte);
 
 	//delay the 4th clock bit of the 20bit command to allow programming....
 	//use upper bits of 4bit command to configure the delay
 	//18f24j50 needs 1.2ms, lower parts in same family need 3.2
-	iface.PIC416Write(opts, 0x40, 0x0000);
+	iface->PIC416Write(opts, 0x40, 0x0000);
 
 	return 0;
 }
@@ -150,13 +154,15 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, int le
 uint32_t PIC18_Erase(struct picprog_t *p) {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
+	struct iface_t *iface = p->iface;
+	void *opts = p->iface_data;
 
 	PIC18_settblptr(p, 0x3C0005); //set pinter to erase register
-	iface.PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
+	iface->PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
 	PIC18_settblptr(p, 0x3C0004); //set pointer to second erase register
-	iface.PIC416Write(opts, 0x0C, f->erase_key[1]);//write erase command
-	iface.PIC416Write(opts, 0, 0);
-	iface.PIC416Write(opts, 0, 0);
+	iface->PIC416Write(opts, 0x0C, f->erase_key[1]);//write erase command
+	iface->PIC416Write(opts, 0, 0);
+	iface->PIC416Write(opts, 0, 0);
 	usleep(1000 * f->erase_delay);
 
 	return 0;

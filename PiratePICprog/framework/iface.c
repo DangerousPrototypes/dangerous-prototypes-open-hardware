@@ -1,10 +1,12 @@
 
+#include <string.h>
+
 
 #include "buspirate.h"
 
 #include "iface.h"
 
-#define IFACE_CNT (sizeof(iface)/sizeof(iface_t))
+#define IFACE_CNT (sizeof(iface)/sizeof(struct iface_t))
 const struct iface_t iface[] = {
 	{
 		.name = "buspirate",
@@ -29,7 +31,7 @@ struct iface_t *Iface_GetByName(char *name) {
 
 	for (i = 0; i < IFACE_CNT; i++) {
 		if (strcmp(name, iface[i].name) == 0) {
-			return &iface[i];
+			return (struct iface_t *)&iface[i];
 		}
 	}
 }

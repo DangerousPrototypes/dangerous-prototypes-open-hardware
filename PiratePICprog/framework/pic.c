@@ -1,11 +1,18 @@
 
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
 
 #include "proto_pic.h"
 #include "pic.h"
 
+#include "common.h"
+
 enum {
 	FAMILY_18F2xJxx, // also 18F4xJxx
-}
+};
 
 #define CHIP_CNT (sizeof(pic_chip)/sizeof(struct pic_chip_t))
 #define FAMILY_CNT (sizeof(pic_family)/sizeof(struct pic_family_t))
@@ -30,8 +37,8 @@ const struct pic_family_t pic_family[] = {
 		.icsp_type = ICSP_LVPP, 
 		.icsp_key = 0x4d434850,
 		.erase_key = { 0x3f3f, 0x8f8f },
-		.write_delay = 1;
-		.erase_delay = 524;
+		.write_delay = 1,
+		.erase_delay = 524,
 	},
 
 };
@@ -40,7 +47,7 @@ int16_t PIC_GetChipIdx(char *name) {
 	int16_t i;
 
 	for (i = 0; i < CHIP_CNT; i++) {
-		if (strcmp(name, pic_chip[i]) == 0) {
+		if (strcmp(name, pic_chip[i].name) == 0) {
 			return i;
 		}
 	}
@@ -84,7 +91,7 @@ struct pic_chip_t *PIC_GetChip(uint16_t i) {
 	if (i > CHIP_CNT) 
 		return NULL;
 
-	return &pic_chip[i];
+	return (struct pic_chip_t *)&pic_chip[i];
 }
 
 struct pic_family_t *PIC_GetFamily(uint16_t i) {
@@ -92,7 +99,7 @@ struct pic_family_t *PIC_GetFamily(uint16_t i) {
 	if (i > FAMILY_CNT)
 		return NULL;
 	
-	return &pic_family[i];
+	return (struct pic_family_t *)&pic_family[i];
 }
 
 #define PIC_EMPTY  0xff
@@ -101,12 +108,13 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct proto_ops_t *proto = PROTO_GetOps(fam->proto);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 	uint8_t used = 0;
+	uint16_t i = 0;
 	
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -116,7 +124,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		// check used page
 		used = 0;
-		for (i = 0; i < fam->page_size) {
+		for (i = 0; i < fam->page_size; i++) {
 			if (fw_data[u_addr+i] != PIC_EMPTY) {
 				used = 1;
 				break;
@@ -126,7 +134,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 		// skip unused
 		if (used = 0 ) {
 			if (p->debug && u_addr < pic->flash) {
-				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", page, u_addr);
+				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", (unsigned long)page, (unsigned long)u_addr);
 			}
 			continue;
 		}
@@ -136,17 +144,17 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 			continue;
 		}
 		
-		printf("Writing page %ld, %04lx... \n", page, u_addr);
+		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
 		if (p->debug) {
-			dumpHex(fw_data[page * fam->page_size], fam->page_size);
+			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 		}
 
-		proto.Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
 		usleep(fam->write_delay * 1000);
 		
-		done += family->page_size;
+		done += fam->page_size;
 	}
 	
 	return done;
@@ -156,7 +164,7 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct proto_ops_t *proto = PROTO_GetOps(fam->proto);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
@@ -173,17 +181,17 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 			continue;
 		}
 		
-		printf("Reading page %ld, %04lx... \n", page, u_addr);
+		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
-		proto.Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
 		if (p->debug) {
-			dumpHex(fw_data[page * fam->page_size], fam->page_size);
+			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 		}
 
 		usleep(fam->write_delay * 1000);
 		
-		done += family->page_size;
+		done += fam->page_size;
 	}
 	
 	return done;
