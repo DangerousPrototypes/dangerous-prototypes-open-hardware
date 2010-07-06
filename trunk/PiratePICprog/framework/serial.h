@@ -45,6 +45,11 @@
 */
 
 #include <stdint.h>
+	#include <unistd.h>
+	#include <termios.h>
+	#include <sys/select.h>
+	#include <sys/types.h>
+	#include <sys/time.h>
 
 
 int serial_setspeed(int fd, speed_t speed);

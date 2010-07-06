@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include "common.h"
+#include "proto_pic.h"
+
 struct pic_chip_t {
 	const char *name;
 	uint16_t ID;
@@ -14,12 +17,12 @@ struct pic_chip_t {
 struct pic_family_t {
 	uint32_t family;
 
-	proto_t proto;
+	enum proto_t proto;
 	uint32_t ID_addr;
 	uint8_t word_size;
 	uint16_t page_size;
 
-	icsp_t icsp_type;
+	enum icsp_t icsp_type;
 	uint32_t icsp_key; 
 	uint16_t erase_key[4];
 

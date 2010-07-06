@@ -12,11 +12,11 @@ enum BP_picmode_t {
 
 struct BP_t {
 	int fd;
-	BP_picmode_t picmode;
+	enum BP_picmode_t picmode;
 };
 
 uint32_t BP_SetBitOrder(void *data, uint8_t lsb);
-uint32_t BP_BulkByteWrite(void *, int bwrite, uint8* val);
+uint32_t BP_BulkByteWrite(void *, uint8_t bwrite, uint8_t* val);
 uint32_t BP_BulkBitWrite(void *data, uint8_t bit_count, uint8_t val);
 uint32_t BP_DataLow(void *);
 uint32_t BP_DataHigh(void *);

@@ -82,7 +82,7 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 			sscanf(raw_line+9+2*i, "%2x", &tmp[0]);
 			chksum = tmp[0];
 			// TODO: check chksum
-			if (Data_Checksum(out_buf[addr+i], byte_count) != chksum) {
+			if (Data_Checksum(&out_buf[addr+i], byte_count) != chksum) {
 				printf("WARNING: HEX checksum error on line %d !! \n", line); 
 			}
 

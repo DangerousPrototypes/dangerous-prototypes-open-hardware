@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 
 #include "pic12.h"
 #include "pic16.h"
@@ -8,7 +9,7 @@
 
 #include "proto_pic.h"
 
-#define PROTO_OPS_CNT (sizeof(pic_proto_ops)/sizeof(pic_proto_ops_t))
+#define PROTO_OPS_CNT (sizeof(proto_ops)/sizeof(struct proto_ops_t))
 
 // need to be sure the order is the same as in the Enum in .h file
 struct proto_ops_t proto_ops[] = {
@@ -44,12 +45,13 @@ struct proto_ops_t proto_ops[] = {
 	}
 };
 
-struct proto_ops_t *PROTO_GetOps(proto_t protocol) {
+struct proto_ops_t *Proto_GetOps(enum proto_t protocol) {
 	if (protocol > PROTO_OPS_CNT)
 		return NULL;
 
-	if (pic_proto_ops[protocol].type == protocol)
-		return &pic_proto_ops[protocol];
+	if (proto_ops[protocol].type == protocol)
+		return &proto_ops[protocol];
 	
 	return NULL;
 }
+

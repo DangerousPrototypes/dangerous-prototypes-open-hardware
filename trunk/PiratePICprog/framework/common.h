@@ -3,9 +3,6 @@
 
 #include <stdint.h>
 
-#include "adapter.h"
-#include "pic.h"
-
 struct picprog_t {
 	struct iface_t *iface;
 	void *iface_data;
@@ -15,6 +12,9 @@ struct picprog_t {
 	uint8_t debug;
 };
 
+
+uint8_t hexdec(const char* pc);
+void dumpHex(uint8_t *buf, uint32_t len);
 
 #endif
 
