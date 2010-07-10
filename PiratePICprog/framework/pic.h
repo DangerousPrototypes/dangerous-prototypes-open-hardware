@@ -6,6 +6,8 @@
 #include "common.h"
 #include "proto_pic.h"
 
+#define PIC_EMPTY  0xff
+
 struct pic_chip_t {
 	const char *name;
 	uint16_t ID;
@@ -34,6 +36,7 @@ int16_t PIC_GetChipIdx(char *name);
 int16_t PIC_GetFamilyIdx(uint16_t chip_idx);
 struct pic_chip_t *PIC_GetChip(uint16_t i);
 struct pic_family_t *PIC_GetFamily(uint16_t i);
+struct proto_ops_t *PIC_GetProtoOps(uint16_t i);
 
 int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data);
 int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data);

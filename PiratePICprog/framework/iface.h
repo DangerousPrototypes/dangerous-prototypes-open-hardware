@@ -11,6 +11,7 @@ enum bitorder_t {
 struct iface_t {
 	char *name;
 
+	uint32_t (*Init)(void *, char *, char *);
 	uint32_t (*DataLow)(void *);
 	uint32_t (*DataHigh)(void *);
 
@@ -35,6 +36,8 @@ struct iface_t {
 
 };
 
+
+struct iface_t *Iface_GetByName(char *name);
 
 #endif
 

@@ -1,8 +1,5 @@
 Robot's TODO:
 
 - Makefile
-- nice commandline parser (getopt - mingw support?)
-- unified configuration for "iface"s
 - support for HVPP in PICxx_EnterICSP
-- serial for win32 api
 - test, test, test ....

@@ -10,6 +10,7 @@
 const struct iface_t iface[] = {
 	{
 		.name = "buspirate",
+		.Init = BP_Init,
 		.DataLow = BP_DataLow,
 		.DataHigh = BP_DataHigh,
 		.ClockLow = BP_ClockLow,
