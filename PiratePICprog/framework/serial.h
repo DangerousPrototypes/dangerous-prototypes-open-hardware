@@ -53,6 +53,7 @@
 #define B115200 115200
 #define B921600 921600
 
+typedef long speed_t;
 #else
 
 #include <unistd.h>

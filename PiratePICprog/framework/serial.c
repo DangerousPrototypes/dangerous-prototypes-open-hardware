@@ -116,7 +116,7 @@ int serial_setup(int fd, speed_t speed)
 
 	dcb.DCBlength = sizeof(dcb);
 
-	dcb.BaudRate = baudrate;
+	dcb.BaudRate = speed;
 	dcb.ByteSize = 8;
 	dcb.Parity = NOPARITY;
 	dcb.StopBits = ONESTOPBIT;
@@ -229,12 +229,12 @@ int serial_open(char *port)
 
 	HANDLE hCom = NULL;
 	
-	if( path[0] != '\\' ) {
+	if( port[0] != '\\' ) {
 		_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", port);
-		path = full_path;
+		port = full_path;
 	}
 
-	hCom = CreateFileA(path, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	hCom = CreateFileA(port, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
 		fd = -1;

@@ -21,3 +21,8 @@ void dumpHex(uint8_t *buf, uint32_t len)
 	printf("\n");
 }
 
+#ifdef WIN32
+int usleep(unsigned long x) {
+  Sleep(x + 999 / 1000);
+}
+#endif
