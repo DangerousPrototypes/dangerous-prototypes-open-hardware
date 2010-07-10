@@ -107,8 +107,37 @@
 #else
 #endif
 */
-int serial_setspeed(int fd, speed_t speed)
+int serial_setup(int fd, speed_t speed)
 {
+#ifdef WIN32
+	COMMTIMEOUTS timeouts;
+	DCB dcb = {0};
+	HANDLE hCom = (HANDLE)fd;
+
+	dcb.DCBlength = sizeof(dcb);
+
+	dcb.BaudRate = baudrate;
+	dcb.ByteSize = 8;
+	dcb.Parity = NOPARITY;
+	dcb.StopBits = ONESTOPBIT;
+
+	if( !SetCommState(hCom, &dcb) ){
+		return -1;
+	}
+
+
+	timeouts.ReadIntervalTimeout = 100; 
+	timeouts.ReadTotalTimeoutMultiplier = 10;
+	timeouts.ReadTotalTimeoutConstant = 100;
+	timeouts.WriteTotalTimeoutMultiplier = 10;
+	timeouts.WriteTotalTimeoutConstant = 100;
+
+	if (!SetCommTimeouts(hCom, &timeouts)) {
+		return -1;
+	}
+	
+	return 0;
+#else
 	struct termios t_opt;
 
 	/* set the serial port parameters */
@@ -128,22 +157,35 @@ int serial_setspeed(int fd, speed_t speed)
 	t_opt.c_cc[VTIME] = 10;
 	tcflush(fd, TCIFLUSH);
 	tcsetattr(fd, TCSANOW, &t_opt);
-
+#endif
 	return 0;
 }
 
 int serial_write(int fd, char *buf, int size)
 {
 	int ret = 0;
+#ifdef WIN32
+	HANDLE hCom = (HANDLE)fd;
+	int res = 0;
+	unsigned long bwritten = 0;
 
+
+	res = WriteFile(hCom, buf, size, &bwritten, NULL);
+
+	if( res == FALSE ) {
+		ret = -1;
+	} else {
+		ret = bwritten;
+	}
+#else
 	ret = write(fd, buf, size);
+#endif
 
 	fprintf(stderr, "size = %d ret = %d", size, ret);
 	//buspirate_print_buffer(buf, size);
 
 	if (ret != size)
 		fprintf(stderr, "Error sending data");
-
 	return ret;
 }
 
@@ -182,19 +224,43 @@ int serial_read(int fd, char *buf, int size)
 int serial_open(char *port)
 {
 	int fd;
+#ifdef WIN32
+	static char full_path[32] = {0};
+
+	HANDLE hCom = NULL;
 	
+	if( path[0] != '\\' ) {
+		_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", port);
+		path = full_path;
+	}
+
+	hCom = CreateFileA(path, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
+		fd = -1;
+	} else {
+		fd = (int)hCom;
+	}
+#else
 	fd = open(port, O_RDWR | O_NOCTTY);
 	if (fd == -1) {
 		fprintf(stderr, "Could not open serial port.");
 		return -1;
 	}
-
+#endif
 	return fd;
 }
 
 int serial_close(int fd)
 {
+#ifdef WIN32
+	HANDLE hCom = (HANDLE)fd;
+
+	CloseHandle(hCom);
+#else
 	close(fd);
+#endif
+	return 0;
 }
 
 /*
@@ -232,6 +298,7 @@ int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
 int configurePort(int fd, unsigned long baudrate)
 {
 #ifdef WIN32
+	COMMTIMEOUTS timeouts;
 	DCB dcb = {0};
 	HANDLE hCom = (HANDLE)fd;
 
@@ -246,6 +313,17 @@ int configurePort(int fd, unsigned long baudrate)
 		return -1;
 	}
 
+
+	timeouts.ReadIntervalTimeout = 100; 
+	timeouts.ReadTotalTimeoutMultiplier = 10;
+	timeouts.ReadTotalTimeoutConstant = 100;
+	timeouts.WriteTotalTimeoutMultiplier = 10;
+	timeouts.WriteTotalTimeoutConstant = 100;
+
+	if (!SetCommTimeouts(hCom, &timeouts)) {
+		return -1;
+	}
+	
 	return (int)hCom;
 #else
     speed_t baud = B921600;

@@ -85,7 +85,7 @@ uint32_t PIC18_ReadID(struct picprog_t *p){
 	return PICid;
 }
 
-uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32_t length)
+uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
@@ -97,7 +97,7 @@ uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32_
 	for (ctr = 0; ctr < length; ctr++)
 	{
 		//printf("%X ", PIC416Read(0x09) );
-		Data[ctr] = iface->PIC416Read(opts, 0x09);
+		((uint8_t*)Data)[ctr] = iface->PIC416Read(opts, 0x09);
 	}
 
 	return 0;
@@ -116,7 +116,7 @@ static void PIC18_setupwrite(struct picprog_t *p) {
 }
 
 //18F setup write location and write length bytes of data to PIC
-uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32_t length)
+uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
@@ -131,15 +131,15 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, uint8_t* Data, uint32
 	//PIC416Write(0x00,0x88A6);
 
 	for(ctr = 0; ctr < length - 2; ctr += 2) {
-		DataByte = Data[ctr + 1];
+		DataByte = ((uint8_t *)Data)[ctr + 1];
 		DataByte = DataByte << 8;
-		DataByte |= Data[ctr];
+		DataByte |= ((uint8_t *)Data)[ctr];
 		iface->PIC416Write(opts, 0x0D, DataByte);
 	}
 
-	DataByte = Data[length - 1];
+	DataByte = ((uint8_t *)Data)[length - 1];
 	DataByte = DataByte << 8;
-	DataByte |= Data[length - 2];
+	DataByte |= ((uint8_t *)Data)[length - 2];
 	iface->PIC416Write(opts, 0x0F, DataByte);
 
 	//delay the 4th clock bit of the 20bit command to allow programming....

@@ -102,7 +102,12 @@ struct pic_family_t *PIC_GetFamily(uint16_t i) {
 	return (struct pic_family_t *)&pic_family[i];
 }
 
-#define PIC_EMPTY  0xff
+struct proto_ops_t *PIC_GetProtoOps(uint16_t i) {
+	struct pic_chip_t *c = PIC_GetChip(i);
+	struct pic_family_t *f = PIC_GetFamily(c->family);
+
+	return Proto_GetOps(f->proto);
+}
 
 int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 {

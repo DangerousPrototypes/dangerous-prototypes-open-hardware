@@ -67,7 +67,7 @@ uint32_t PIC24_ReadID(struct picprog_t *p) {
 	return id;
 }
 
-uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, uint16_t* Data, uint32_t length) {
+uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint32_t ctr, nopctr=0;
@@ -81,7 +81,7 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, uint16_t* Data, uint32_t
 	
 	for(ctr = 0; ctr < length; ctr++){
 		iface->PIC424Write(opts, 0xBA0BB6, 0, 2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-		Data[ctr] = iface->PIC424Read(opts); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+		((uint16_t*)Data)[ctr] = iface->PIC424Read(opts); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",Data[ctr]); //REGOUT,0x000000,5, read VISI register
 	
 		//every so often we need to reset the address pointer or it will fall off the end
@@ -97,7 +97,7 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, uint16_t* Data, uint32_t
 }
 
 //18F setup write location and write length bytes of data to PIC
-uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, uint16_t* Data, uint32_t length) {
+uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint16_t DataByte;//, buffer[2]={0x00,0x00};

@@ -21,10 +21,10 @@ struct proto_ops_t {
 	enum proto_t type;
 	uint32_t (*EnterICSP)(struct picprog_t *, enum icsp_t);
 	uint32_t (*ExitICSP)(struct picprog_t *);
-	uint32_t (*ReadID)(struct picprog_t *, uint32_t addr);
+	uint32_t (*ReadID)(struct picprog_t *);
 	uint32_t (*Read)(struct picprog_t *, uint32_t addr, void *buf, uint32_t len);
 	uint32_t (*Write)(struct picprog_t *, uint32_t addr, void *buf, uint32_t len);
-	uint32_t (*Erase)(struct picprog_t *, void *key);
+	uint32_t (*Erase)(struct picprog_t *);
 };
 
 struct proto_ops_t *Proto_GetOps(enum proto_t protocol);

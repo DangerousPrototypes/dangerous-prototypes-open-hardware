@@ -74,31 +74,41 @@ static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
 	return 0;
 }
 
-uint32_t BP_Init(int fd) {
-	serial_setspeed(fd, B115200);
+uint32_t BP_Init(void *pBP, char *port, char *speed) {
+	int fd;
+
+	fd = serial_open(port);
+	if (fd < 0) {
+		fprintf(stderr, "BP: Error openning serial port\n");
+		return -1;
+	}
+
+	serial_setup(fd, B115200);
 	BP_EnableRaw2Wire(fd);
 
 	//setup output pin type (normal)
 	printf("BP: Setup mode...\n");
-	if(BP_WriteToPirate(fd, "\x8A")){
+	if (BP_WriteToPirate(fd, "\x8A")){
 		fprintf(stderr, "ERROR");
 		return -1;
 	} 
 
 	//high speed mode
-	if(BP_WriteToPirate(fd, "\x63")) {
+	if (BP_WriteToPirate(fd, "\x63")) {
 		fprintf(stderr, "ERROR");
 		return -1;
 	} 
 
 	//setup power supply, AUX pin, pullups
 	printf("Setup peripherals...\n");
-	if(BP_WriteToPirate(fd, "\x4F")){
+	if (BP_WriteToPirate(fd, "\x4F")){
 		puts("ERROR");
 		return -1;
 	} 
 	printf("(OK)");
 
+	((struct BP_t *)pBP)->fd = fd;
+	return 0;
 }
 
 uint32_t BP_SetBitOrder(void *pBP, uint8_t lsb) {

@@ -45,14 +45,25 @@
 */
 
 #include <stdint.h>
-	#include <unistd.h>
-	#include <termios.h>
-	#include <sys/select.h>
-	#include <sys/types.h>
-	#include <sys/time.h>
 
+#ifdef WIN32
+#include <windows.h>
+#include <time.h>
 
-int serial_setspeed(int fd, speed_t speed);
+#define B115200 115200
+#define B921600 921600
+
+#else
+
+#include <unistd.h>
+#include <termios.h>
+#include <sys/select.h>
+#include <sys/types.h>
+#include <sys/time.h>
+
+#endif
+
+int serial_setup(int fd, speed_t speed);
 int serial_write(int fd, char *buf, int size);
 int serial_read(int fd, char *buf, int size);
 int serial_open(char *port);

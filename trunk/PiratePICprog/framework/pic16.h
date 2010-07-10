@@ -9,8 +9,8 @@
 uint32_t PIC16_EnterICSP(struct picprog_t *, enum icsp_t);
 uint32_t PIC16_ExitICSP(struct picprog_t *);
 uint32_t PIC16_ReadID(struct picprog_t *);
-uint32_t PIC16_Read(struct picprog_t *, uint32_t, uint8_t *, uint32_t);
-uint32_t PIC16_Write(struct picprog_t *, uint32_t, uint8_t *, uint32_t);
+uint32_t PIC16_Read(struct picprog_t *, uint32_t, void *, uint32_t);
+uint32_t PIC16_Write(struct picprog_t *, uint32_t, void *, uint32_t);
 uint32_t PIC16_Erase(struct picprog_t *);
 
 

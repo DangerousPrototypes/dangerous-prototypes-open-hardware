@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -g -O0 -std=gnu99
 LDFLAGS =
 
-OBJS = data_file.o common.o
+OBJS = data_file.o common.o main.o
 OBJS += pic.o proto_pic.o pic12.o pic16.o pic18.o pic24.o
 OBJS += iface.o buspirate.o serial.o
 
