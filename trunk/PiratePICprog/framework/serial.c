@@ -181,7 +181,7 @@ int serial_write(int fd, char *buf, int size)
 	ret = write(fd, buf, size);
 #endif
 
-	fprintf(stderr, "size = %d ret = %d", size, ret);
+	fprintf(stderr, "size = %d ret = %d\n", size, ret);
 	//buspirate_print_buffer(buf, size);
 
 	if (ret != size)
@@ -194,11 +194,25 @@ int serial_read(int fd, char *buf, int size)
 	int len = 0;
 	int ret = 0;
 	int timeout = 0;
+#ifdef WIN32
+	HANDLE hCom = (HANDLE)fd;
+	unsigned long bread = 0;
 
+	ret = ReadFile(hCom, buf, size, &bread, NULL);
+
+	if( ret == FALSE || ret==-1 ) {
+		len= -1;
+	} else {
+		len=size;
+	}
+	
+#else
 	while (len < size) {
 		ret = read(fd, buf+len, size-len);
-		if (ret == -1)
+		if (ret == -1){
+			//printf("ret -1");
 			return -1;
+		}
 
 		if (ret == 0) {
 			timeout++;
@@ -211,8 +225,9 @@ int serial_read(int fd, char *buf, int size)
 
 		len += ret;
 	}
-
-	fprintf(stderr, "should have read = %d actual size = %d", size, len);
+#endif
+	//printf("should have read = %i actual size = %i \n", size, len);
+	fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
 	//buspirate_print_buffer(buf, len);
 
 	if (len != size)

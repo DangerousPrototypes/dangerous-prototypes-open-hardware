@@ -1,8 +1,8 @@
-
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
+#include <unistd.h>
+//#include "common.h"
 #include "serial.h"
 #include "buspirate.h"
 
@@ -24,43 +24,42 @@ static uint32_t BP_WriteToPirate(int fd, uint8_t* val) {
 static void BP_EnableRaw2Wire(int fd)
 {
 	int ret;
-	char tmp[21] = { [0 ... 20] = 0x00 };
+	char tmp[100] = { [0 ... 20] = 0x00 };
 	int done = 0;
 	int cmd_sent = 0;
-
-	printf("Entering binary mode");
-	serial_write(fd, tmp, 20);
-	usleep(10000);
+	int tries=0;
+	
+	printf("Entering binary mode\n");
 
 	/* reads 1 to n "BBIO1"s and one "OCD1" */
 	while (!done) {
-		ret = serial_read(fd, tmp, 4);
-		if (ret != 4) {
-			fprintf(stderr, "Buspirate did not respond correctly :(");
+		tmp[0]=0x00;
+		serial_write(fd, tmp, 1);
+		tries++;
+		usleep(10);
+		ret = serial_read(fd, tmp, 5);
+		if (ret != 5 && tries>20) {
+			fprintf(stderr, "Buspirate did not respond correctly :( %i \n", ret );
 			exit(-1);
-		}
-		if (strncmp(tmp, "BBIO", 4) == 0) {
-			ret = serial_read(fd, tmp, 1);
-			if (ret != 1) {
-				fprintf(stderr, "Buspirate did not respond well :( restart everything");
-				exit(-1);
-			}
-			if (tmp[0] != '1') {
-				fprintf(stderr, "Unsupported binary protocol ");
-				exit(-1);
-			}
-			if (cmd_sent == 0) {
-				cmd_sent = 1;
-				tmp[0] = '\x05';
-				ret = serial_write(fd, tmp, 1);
-			}
-		} else if (strncmp(tmp, "RAW1", 4) == 0) {
-			done = 1;
-		} else {
-			fprintf(stderr, "Buspirate did not respond correctly :((");
-			exit(-1);
+		}else if (strncmp(tmp, "BBIO1", 5) == 0) {
+			done=1;
 		}
 	}
+
+	done=0;
+	tmp[0] = '\x05';
+	serial_write(fd, tmp, 1);
+	tries++;
+	usleep(10);
+	ret = serial_read(fd, tmp, 4);
+
+	if ( (ret==4) && (strncmp(tmp, "RAW1", 4) == 0)) {
+
+	}else{
+		fprintf(stderr, "Buspirate did not respond correctly :( %i \n", ret );
+		exit(-1);
+	}
+
 }
 
 static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
@@ -105,7 +104,7 @@ uint32_t BP_Init(void *pBP, char *port, char *speed) {
 		puts("ERROR");
 		return -1;
 	} 
-	printf("(OK)");
+	printf("(OK) \n");
 
 	((struct BP_t *)pBP)->fd = fd;
 	return 0;
@@ -180,7 +179,7 @@ uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[4] = {0};
 	int res = -1;
-	
+
 	if (mode != BP_PIC416)
 		BP_SetPicMode(fd, BP_PIC416);
 
@@ -238,7 +237,7 @@ uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postno
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[5] = {0};
 	int res = -1;
-
+				printf("\n here!!! \n");
 	if (mode != BP_PIC424)
 		BP_SetPicMode(fd, BP_PIC424);
 

@@ -34,6 +34,7 @@ void print_usage(char* name) {
 		printf("-p PROG  - name of interface\n");
 		printf("-u PORT  - interface port\n");
 		printf("-s SPEED - interface speed\n");
+		printf("-c CHIP  - chip type\n");
 		printf("\n");
 		printf("-t TYPE - input/output file type HEX, BIN\n");
 		printf("-w FILE - file to be uploaded to PIC\n");
@@ -44,7 +45,7 @@ void print_usage(char* name) {
 		printf("-W  - writes data to Flash\n");
 		printf("-R  - reads data from Flash\n");
 		printf("-V  - verifies content of flash\n");
-
+		printf("-I  - get the chip ID\n");
 		printf("\n\n");
 }
 
@@ -72,7 +73,7 @@ int main(int argc, char** argv) {
 
 	printf("Pirate PIC Programer\n\n");
 
-	while ((opt = getopt(argc, argv, "rwevu:p:s:c:t:")) != -1) {
+	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
 		switch (opt) {
 			case 'R':
 				cmd |= CMD_READ;
@@ -87,29 +88,36 @@ int main(int argc, char** argv) {
 				cmd |= CMD_VERIFY;
 				break;
 			case 'w':
+				cmd |= CMD_WRITE;
 				if (param_write_file != NULL) {
 					printf("Multiple arguments !\n");
 					exit(-1);
 				}
 				param_write_file = strdup(optarg);
+				break;
 			case 'r':
+				cmd |= CMD_READ;
 				if (param_read_file != NULL) {
 					printf("Multiple arguments !\n");
 					exit(-1);
 				}
 				param_read_file = strdup(optarg);
+				//printf("%s\n", param_read_file);
+				break;
 			case 't':
 				if (param_type != NULL) {
 					printf("Multiple arguments !\n");
 					exit(-1);
 				}
 				param_type = strdup(optarg);
+				break;
 			case 'c':
 				if (param_chip != NULL) {
 					printf("Multiple arguments !\n");
 					exit(-1);
 				}
 				param_chip = strdup(optarg);
+				break;
 			case 'u':
 				if (param_port != NULL) {
 					printf("Multiple arguments !\n");
@@ -123,6 +131,7 @@ int main(int argc, char** argv) {
 					exit(-1);
 				}
 				param_prog = strdup(optarg);
+				//printf("interface: %s\n", param_prog);
 				break;
 			case 's':
 				if (param_speed != NULL) {
@@ -132,17 +141,18 @@ int main(int argc, char** argv) {
 				param_speed = strdup(optarg);
 				break;
 			default:
+				printf("Invalid argument %c", opt);
 				print_usage(argv[0]);
 				exit(-1);
 				break;
 		}
 	}
 
-	if (optind >= argc) {
+/*	if (optind >= argc) {
 		print_usage(argv[0]);
 		exit(-1);
 	}
-
+*/
 	picprog.iface = Iface_GetByName(param_prog);
 
 	if (picprog.iface == NULL) {
@@ -166,7 +176,7 @@ int main(int argc, char** argv) {
 
 	buf_read = (uint8_t*)malloc(picchip->flash);
 	buf_write = (uint8_t*)malloc(picchip->flash);
-
+		
 	if ((buf_read == NULL) || (buf_write == NULL)) {
 		printf("Error allocating %ld bytes of memory\n", (long)picchip->flash);
 		return -1;
@@ -177,6 +187,7 @@ int main(int argc, char** argv) {
 
 // prepare data file
 	if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
+
 		if (param_write_file == NULL) {
 			printf("No write file specified\n");
 			return -1;
