@@ -16,5 +16,9 @@ struct picprog_t {
 uint8_t hexdec(const char* pc);
 void dumpHex(uint8_t *buf, uint32_t len);
 
+#ifdef WIN32
+//	int usleep(unsigned long x);
+#endif
+
 #endif
 

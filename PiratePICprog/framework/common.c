@@ -3,6 +3,10 @@
 #include <stdio.h>
 
 #include "common.h"
+#include <unistd.h>
+#ifdef WIN32
+	#include <windows.h>
+#endif
 
 uint8_t hexdec(const char* pc)
 {
@@ -21,7 +25,7 @@ void dumpHex(uint8_t *buf, uint32_t len)
 	printf("\n");
 }
 
-#ifdef WIN32
+#ifdef XXWIN32
 int usleep(unsigned long x) {
   Sleep(x + 999 / 1000);
 }

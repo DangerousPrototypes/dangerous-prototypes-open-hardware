@@ -62,6 +62,7 @@ static void PIC18_settblptr(struct picprog_t *p, uint32_t tblptr)
 
 	// set TBLPTR 
 	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 16) & 0xff));
+	printf("\n here!!! \n");
 	iface->PIC416Write(opts, 0x00, 0x6EF8);
 	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 8) & 0xff));
 	iface->PIC416Write(opts, 0x00, 0x6EF7);
@@ -157,7 +158,9 @@ uint32_t PIC18_Erase(struct picprog_t *p) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
+	//error starts here
 	PIC18_settblptr(p, 0x3C0005); //set pinter to erase register
+					printf("\n here!!! \n");
 	iface->PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
 	PIC18_settblptr(p, 0x3C0004); //set pointer to second erase register
 	iface->PIC416Write(opts, 0x0C, f->erase_key[1]);//write erase command
