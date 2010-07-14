@@ -6,8 +6,6 @@
 #include "serial.h"
 #include "buspirate.h"
 
-static int fd;
-
 //low lever send command, get reply function
 static uint32_t BP_WriteToPirate(int fd, uint8_t* val) {
 	int res = -1;
@@ -76,7 +74,7 @@ static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
 }
 
 uint32_t BP_MCLRLow(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x04");
 }
 
@@ -113,12 +111,12 @@ uint32_t BP_Init(void *pBP, char *port, char *speed) {
 	}
 	printf("(OK) \n");
 
-	//((struct BP_t *)pBP)->fd = fd;
+	((struct BP_t *)pBP)->fd = fd;
 	return 0;
 }
 
 uint32_t BP_SetBitOrder(void *pBP, uint8_t lsb) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	if(BP_WriteToPirate(fd, (lsb==1)?"\x8A":"\x88")){
 		printf("Set bit order (%s)...ERROR", (lsb==1)?"LSB":"MSB");
 		return -1;
@@ -128,7 +126,7 @@ uint32_t BP_SetBitOrder(void *pBP, uint8_t lsb) {
 
 //binmode: bulk write bytes to bus command
 uint32_t BP_BulkByteWrite(void *pBP, uint8_t bwrite, uint8_t* val) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	int i;
 	uint8_t opcode = 0x10;
 	opcode |= (bwrite - 1);
@@ -142,7 +140,7 @@ uint32_t BP_BulkByteWrite(void *pBP, uint8_t bwrite, uint8_t* val) {
 }
 
 uint32_t BP_BulkBitWrite(void *pBP, uint8_t bit_count, uint8_t val) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	int i;
 	uint8_t opcode = 0x30;
 
@@ -154,32 +152,32 @@ uint32_t BP_BulkBitWrite(void *pBP, uint8_t bit_count, uint8_t val) {
 }
 
 uint32_t BP_DataLow(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x0C");
 }
 
 uint32_t BP_DataHigh(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x0D");
 }
 
 uint32_t BP_ClockLow(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x0A");
 }
 
 uint32_t BP_ClockHigh(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x0B");
 }
 
 uint32_t BP_MCLRHigh(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x05");
 }
 
 uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[4] = {0};
 	int res = -1;
@@ -203,7 +201,7 @@ uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 }
 
 uint32_t BP_PIC416Read(void *pBP, uint8_t cmd) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[2] = {0};
 	int res = -1;
@@ -221,7 +219,7 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd) {
 }
 
 uint32_t BP_PIC424Read(void *pBP) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[4] = {0};
 	int res = -1;
@@ -237,7 +235,7 @@ uint32_t BP_PIC424Read(void *pBP) {
 }
 
 uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postnop) {
-	//int fd = ((struct BP_t *)pBP)->fd;
+	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[5] = {0};
 	int res = -1;
