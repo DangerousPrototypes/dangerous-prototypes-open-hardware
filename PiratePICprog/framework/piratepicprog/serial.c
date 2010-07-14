@@ -59,7 +59,7 @@
 		static char full_path[32] = {0};
 
 		HANDLE hCom = NULL;
-		
+
 		if( path[0] != '\\' ) {
 			_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", path);
 			path = full_path;
@@ -101,7 +101,7 @@
 	unsigned int sleep(unsigned int sec)
 	{
 		Sleep(sec * 1000);
-		
+
 		return 0;
 	}
 #else
@@ -126,7 +126,7 @@ int serial_setup(int fd, speed_t speed)
 	}
 
 
-	timeouts.ReadIntervalTimeout = 100; 
+	timeouts.ReadIntervalTimeout = 100;
 	timeouts.ReadTotalTimeoutMultiplier = 10;
 	timeouts.ReadTotalTimeoutConstant = 100;
 	timeouts.WriteTotalTimeoutMultiplier = 10;
@@ -135,7 +135,7 @@ int serial_setup(int fd, speed_t speed)
 	if (!SetCommTimeouts(hCom, &timeouts)) {
 		return -1;
 	}
-	
+
 	return 0;
 #else
 	struct termios t_opt;
@@ -181,7 +181,7 @@ int serial_write(int fd, char *buf, int size)
 	ret = write(fd, buf, size);
 #endif
 
-	fprintf(stderr, "size = %d ret = %d\n", size, ret);
+	//fprintf(stderr, "size = %d ret = %d\n", size, ret);
 	//buspirate_print_buffer(buf, size);
 
 	if (ret != size)
@@ -205,7 +205,7 @@ int serial_read(int fd, char *buf, int size)
 	} else {
 		len=size;
 	}
-	
+
 #else
 	while (len < size) {
 		ret = read(fd, buf+len, size-len);
@@ -227,7 +227,7 @@ int serial_read(int fd, char *buf, int size)
 	}
 #endif
 	//printf("should have read = %i actual size = %i \n", size, len);
-	fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
+	//fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
 	//buspirate_print_buffer(buf, len);
 
 	if (len != size)
@@ -243,7 +243,7 @@ int serial_open(char *port)
 	static char full_path[32] = {0};
 
 	HANDLE hCom = NULL;
-	
+
 	if( port[0] != '\\' ) {
 		_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", port);
 		port = full_path;
@@ -285,14 +285,14 @@ int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
 	struct timeval tv = {timeout, 0};
 	int res = -1;
 	int got = 0;
-	
+
 	do {
-	
+
 		FD_ZERO(&fds);
 		FD_SET(fd, &fds);
-		
+
 		res = select(fd + 1, &fds, NULL, NULL, &tv);
-		
+
 		if( res > 0 ) {
 			res = read(fd, out, length);
 			if( res > 0 ) {
@@ -302,11 +302,11 @@ int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
 			} else {
 				break;
 			}
-		} else { 
+		} else {
 			return res;
 		}
 	} while( length > 0);
-	
+
 	return got;
 }
 
@@ -329,7 +329,7 @@ int configurePort(int fd, unsigned long baudrate)
 	}
 
 
-	timeouts.ReadIntervalTimeout = 100; 
+	timeouts.ReadIntervalTimeout = 100;
 	timeouts.ReadTotalTimeoutMultiplier = 10;
 	timeouts.ReadTotalTimeoutConstant = 100;
 	timeouts.WriteTotalTimeoutMultiplier = 10;
@@ -338,12 +338,12 @@ int configurePort(int fd, unsigned long baudrate)
 	if (!SetCommTimeouts(hCom, &timeouts)) {
 		return -1;
 	}
-	
+
 	return (int)hCom;
 #else
     speed_t baud = B921600;
 	struct termios g_new_tio;
-	
+
 	switch (baudrate) {
 		case 921600:
 			baud = B921600;
@@ -378,8 +378,8 @@ int configurePort(int fd, unsigned long baudrate)
 	if( tcsetattr(fd, TCSANOW, &g_new_tio) < 0 ) {
 		return -1;
 	}
-	
-	return ioctl( fd, IOSSIOSPEED, &baud ); 
+
+	return ioctl( fd, IOSSIOSPEED, &baud );
 #else
 	cfsetispeed (&g_new_tio, baudrate);
 	cfsetospeed (&g_new_tio, baudrate);

@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-
+#define DEBUG
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +18,7 @@
 #include "data_file.h"
 #include "iface.h"
 #include "common.h"
+#include "buspirate.h"
 
 int verbose = 0;
 
@@ -53,6 +54,7 @@ int main(int argc, char** argv) {
 	int opt;
 //	int	res = -1;
 //	uint32_t i;
+    uint16_t PICidver, PICrev, PICid;
 
 	uint32_t read_size;
 
@@ -74,12 +76,13 @@ int main(int argc, char** argv) {
 
 	printf("Pirate PIC Programer\n\n");
 
+#ifdef DEBUG
 	cmd |= CMD_ERASE;
 	param_chip=strdup("18F24J50");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
-
+#endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
 		switch (opt) {
@@ -171,14 +174,13 @@ int main(int argc, char** argv) {
 	printf("Initializing interface \n");
 
 	picprog.iface->Init(&picprog, param_port, param_speed);
-    picprog.iface->MCLRLow(&picprog);
 
 	picprog.chip_idx = PIC_GetChipIdx(param_chip);
 	if (picprog.chip_idx == -1) {
-		printf("Unknown chip '%s' !\n", param_chip);
+		printf("'%s' not in programming database :( \n", param_chip);
 		return -1;
 	}
-	printf("Found chip ! index = %d\n", picprog.chip_idx);
+	printf("Found '%s' in programming database :) index = %d\n", param_chip, picprog.chip_idx);
 
 	picops = PIC_GetProtoOps(picprog.chip_idx);
 	picchip = PIC_GetChip(picprog.chip_idx);
@@ -197,8 +199,23 @@ int main(int argc, char** argv) {
 	memset(buf_read, PIC_EMPTY, picchip->flash);
 	memset(buf_write, PIC_EMPTY, picchip->flash);
 
+
+//check chip
+    printf("Checking for %s attached to programmer... \n", param_chip);
+    PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
+//determine device type
+	//PICrev=(PICidver&(~0xFFE0)); //find PIC ID (lower 5 bits)
+	//PICid=(PICidver>>5); //isolate PIC device ID (upper 11 bits)
+	if(PICid!=picchip->ID)
+	{
+	    printf("Wrong device ID: %#X \n", PICidver);
+ 	    return -1;
+	}
+    printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);
+
+
 // prepare data file
-	if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
+if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 
 		if (param_write_file == NULL) {
 			printf("No write file specified\n");
@@ -245,7 +262,9 @@ int main(int argc, char** argv) {
 	}
 
 	if (cmd & CMD_ERASE) {
+        printf("Erasing chip... ");
 		picops->Erase(&picprog);
+		printf("OK :) \n");
 	}
 
 	if (cmd & CMD_WRITE) {

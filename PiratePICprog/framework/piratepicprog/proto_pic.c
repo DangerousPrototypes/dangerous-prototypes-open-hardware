@@ -51,7 +51,7 @@ struct proto_ops_t *Proto_GetOps(enum proto_t protocol) {
 
 	if (proto_ops[protocol].type == protocol)
 		return &proto_ops[protocol];
-	
+
 	return NULL;
 }
 
