@@ -2,9 +2,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
-//#include "common.h"
+#include "common.h"
 #include "serial.h"
 #include "buspirate.h"
+
+static struct BP_t pBP;
+
+uint8_t BP_reversebyte(uint8_t c);
 
 //low lever send command, get reply function
 static uint32_t BP_WriteToPirate(int fd, uint8_t* val) {
@@ -78,7 +82,7 @@ uint32_t BP_MCLRLow(void *pBP) {
 	return BP_WriteToPirate(fd, "\x04");
 }
 
-uint32_t BP_Init(void *pBP, char *port, char *speed) {
+uint32_t BP_Init(void *p, char *port, char *speed) {
 	int fd;
 
 	fd = serial_open(port);
@@ -92,7 +96,7 @@ uint32_t BP_Init(void *pBP, char *port, char *speed) {
 
 	//setup output pin type (normal)
 	printf("BP: Setup mode...\n");
-	if (BP_WriteToPirate(fd, "\x8A")){
+	if (BP_WriteToPirate(fd, "\x88")){
 		fprintf(stderr, "ERROR");
 		return -1;
 	}
@@ -110,8 +114,8 @@ uint32_t BP_Init(void *pBP, char *port, char *speed) {
 		return -1;
 	}
 	printf("(OK) \n");
-
-	((struct BP_t *)pBP)->fd = fd;
+    pBP.fd=fd;
+	((struct picprog_t *)p)->iface_data = &pBP;
 	return 0;
 }
 
@@ -175,7 +179,15 @@ uint32_t BP_MCLRHigh(void *pBP) {
 	int fd = ((struct BP_t *)pBP)->fd;
 	return BP_WriteToPirate(fd, "\x05");
 }
+uint8_t BP_reversebyte(uint8_t c){
+        uint8_t r, i;
 
+        for(i=0b1; i!=0; i=i<<1){
+            r=r<<1;
+            if(c&i)r|=0b1;
+        }
+        return r;
+}
 uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
@@ -187,8 +199,8 @@ uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 
 	buffer[0] = '\xA4';
 	buffer[1] = cmd;
-	buffer[2] = (uint8_t)(data);
-	buffer[3] = data >> 8;
+	buffer[2] = BP_reversebyte((uint8_t)(data));
+	buffer[3] = BP_reversebyte((uint8_t)(data >> 8));
 
 
 	serial_write(fd, buffer, 4);
@@ -215,7 +227,7 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd) {
 	serial_write(fd, buffer, 2);
 	res = serial_read(fd, buffer, 1);
 
-	return buffer[0];
+	return BP_reversebyte(buffer[0]);
 }
 
 uint32_t BP_PIC424Read(void *pBP) {

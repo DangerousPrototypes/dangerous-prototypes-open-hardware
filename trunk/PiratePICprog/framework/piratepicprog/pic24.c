@@ -59,14 +59,14 @@ uint32_t PIC24_ExitICSP(struct picprog_t *p) {
 	return 0;
 }
 
-uint32_t PIC24_ReadID(struct picprog_t *p) {
+uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
 //	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
-	uint32_t id;
+	uint32_t PICid;
 
-	PIC24_Read(opts, 0x00FF0000, (void*)&id, 2); //give it the ID addres
+	PIC24_Read(opts, 0x00FF0000, (void*)&PICid, 2); //give it the ID addres
 
-	return id;
+	return PICid;
 }
 
 uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length) {

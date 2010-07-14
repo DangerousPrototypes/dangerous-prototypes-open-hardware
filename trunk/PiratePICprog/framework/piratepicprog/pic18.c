@@ -11,14 +11,20 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
-	uint8_t buffer[4];
+	uint8_t buffer[4], i, j, r;
+
+	//for
+	if(type==ICSP_HVPP){
+		iface->MCLRLow(opts);
+		//iface->MCLRHVP(opts);
+        return 0;
+	}
 
 	//all programming operations are LSB first, but the ICSP entry key is MSB first.
 	// Reconfigure the mode for LSB order
 	//pritf("Set mode for MCLR (MSB)...");
 
-	iface->SetBitOrder(opts, BIT_MSB);
-
+	//iface->SetBitOrder(opts, BIT_MSB);
 
 	iface->ClockLow(opts);
 	iface->DataLow(opts);
@@ -32,6 +38,16 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	buffer[2] = f->icsp_key >> 8;
 	buffer[3] = f->icsp_key;
 
+  //reverse the bits in the PC so we save asking the PIC to do it...
+  /*
+    for(j=0; j<4; j++){
+        for(i=0b1; i!=0; i=i<<1){
+            r=r<<1;
+            if(buffer[j]&i)r|=0b1;
+        }
+        buffer[j]=r;
+    }
+*/
 	iface->SendBytes(opts, 4, buffer);
 	iface->DataLow(opts);
 	iface->MCLRHigh(opts);
@@ -40,7 +56,7 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	// Reconfigure the mode for LSB order
 	//printf("Set mode for PIC programming (LSB)...");
 
-	iface->SetBitOrder(opts, BIT_LSB);
+	//iface->SetBitOrder(opts, BIT_LSB);
 
 	//puts("(OK)");
 	return 0;
@@ -63,7 +79,6 @@ static void PIC18_settblptr(struct picprog_t *p, uint32_t tblptr)
 
 	// set TBLPTR
 	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 16) & 0xff));
-	printf("\n here!!! \n");
 	iface->PIC416Write(opts, 0x00, 0x6EF8);
 	iface->PIC416Write(opts, 0x00, 0x0E00 | ((tblptr >> 8) & 0xff));
 	iface->PIC416Write(opts, 0x00, 0x6EF7);
@@ -78,14 +93,9 @@ uint32_t PIC18_Erase(struct picprog_t *p) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
-    iface->MCLRLow(opts);
+    PIC18_EnterICSP(p, f->icsp_type);
 
-
-	iface->PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
-	iface->PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
-	//error starts here
 	PIC18_settblptr(p, 0x3C0005); //set pinter to erase register
-					printf("\n here!!! \n");
 	iface->PIC416Write(opts, 0x0C, f->erase_key[0]);//write special erase token
 	PIC18_settblptr(p, 0x3C0004); //set pointer to second erase register
 	iface->PIC416Write(opts, 0x0C, f->erase_key[1]);//write erase command
@@ -93,15 +103,19 @@ uint32_t PIC18_Erase(struct picprog_t *p) {
 	iface->PIC416Write(opts, 0, 0);
 	usleep(1000 * f->erase_delay);
 
+	PIC18_ExitICSP(p);
+
 	return 0;
 }
 
-uint32_t PIC18_ReadID(struct picprog_t *p){
+uint32_t PIC18_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev){
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint32_t PICid;
+
+    PIC18_EnterICSP(p, f->icsp_type);
 
 	//setup read from device ID bits
 	PIC18_settblptr(p, f->ID_addr);
@@ -109,6 +123,13 @@ uint32_t PIC18_ReadID(struct picprog_t *p){
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	PICid = iface->PIC416Read(opts, 0x09);	//lower 8 bits
 	PICid |= iface->PIC416Read(opts, 0x09) << 8;	//upper 8 bits
+
+    PIC18_ExitICSP(p);
+
+    //determine device type
+	*rev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)
+	*id=(PICid>>5); //isolate PIC device ID (upper 11 bits)
+
 	return PICid;
 }
 

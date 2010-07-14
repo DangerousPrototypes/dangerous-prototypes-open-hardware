@@ -19,8 +19,8 @@ enum {
 
 const struct pic_chip_t pic_chip[] = {
 	{
-		.name = "18F24J50", 
-		.ID = 0x4c,
+		.name = "18F24J50",
+		.ID = 0x260,
 		.flash = 16*1024,
 		.eeprom = 0,
 		.family = FAMILY_18F2xJxx,
@@ -31,10 +31,10 @@ const struct pic_family_t pic_family[] = {
 	{
 		.family = FAMILY_18F2xJxx,
 		.proto = PROTO_PIC18,
-		.ID_addr = 0x3fffe,
+		.ID_addr = 0x3ffffe,
 		.word_size = 2,
 		.page_size = 64,
-		.icsp_type = ICSP_LVPP, 
+		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4d434850,
 		.erase_key = { 0x3f3f, 0x8f8f },
 		.write_delay = 1,
@@ -88,7 +88,7 @@ int16_t PIC_GetFamilyIdx(uint16_t chip_idx) {
 
 struct pic_chip_t *PIC_GetChip(uint16_t i) {
 
-	if (i > CHIP_CNT) 
+	if (i > CHIP_CNT)
 		return NULL;
 
 	return (struct pic_chip_t *)&pic_chip[i];
@@ -98,7 +98,7 @@ struct pic_family_t *PIC_GetFamily(uint16_t i) {
 
 	if (i > FAMILY_CNT)
 		return NULL;
-	
+
 	return (struct pic_family_t *)&pic_family[i];
 }
 
@@ -120,7 +120,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t done  = 0;
 	uint8_t used = 0;
 	uint16_t i = 0;
-	
+
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
 		u_addr = page * fam->page_size;
@@ -143,12 +143,12 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 			}
 			continue;
 		}
-		
+
 		if (u_addr >= pic->flash) {
 			fprintf(stderr, "Address out of flash\n");
 			continue;
 		}
-		
+
 		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
 		if (p->debug) {
@@ -158,10 +158,10 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
 		usleep(fam->write_delay * 1000);
-		
+
 		done += fam->page_size;
 	}
-	
+
 	return done;
 }
 
@@ -174,7 +174,7 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0;
-	
+
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
 		u_addr = page * fam->page_size;
@@ -185,7 +185,7 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 			fprintf(stderr, "Address out of flash\n");
 			continue;
 		}
-		
+
 		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
 		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
@@ -195,10 +195,10 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 		}
 
 		usleep(fam->write_delay * 1000);
-		
+
 		done += fam->page_size;
 	}
-	
+
 	return done;
 }
 
