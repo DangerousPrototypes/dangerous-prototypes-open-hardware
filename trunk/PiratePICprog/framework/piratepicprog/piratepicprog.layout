@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="buspirate.c" open="1" top="0" tabpos="2">
+		<Cursor position="1665" topLine="48" />
+	</File>
+	<File name="buspirate.h" open="1" top="0" tabpos="7">
+		<Cursor position="778" topLine="0" />
+	</File>
+	<File name="common.h" open="1" top="0" tabpos="6">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="iface.h" open="1" top="0" tabpos="5">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="4">
+		<Cursor position="3586" topLine="158" />
+	</File>
+	<File name="pic.c" open="1" top="0" tabpos="1">
+		<Cursor position="399" topLine="0" />
+	</File>
+	<File name="pic18.c" open="1" top="1" tabpos="3">
+		<Cursor position="2111" topLine="59" />
+	</File>
+	<File name="serial.c" open="1" top="0" tabpos="8">
+		<Cursor position="476" topLine="120" />
+	</File>
+</CodeBlocks_layout_file>

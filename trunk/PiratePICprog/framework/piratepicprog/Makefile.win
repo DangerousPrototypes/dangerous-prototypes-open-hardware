@@ -1,0 +1,63 @@
+# Project: Project1
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = gcc.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o proto_pic.o serial.o $(RES)
+LINKOBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o proto_pic.o serial.o $(RES)
+LIBS =  -L"c:\Dev-Cpp\lib\"  
+INCS =  -I"include" 
+CXXINCS =  -I"include" 
+BIN  = Project1.exe
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS) -std=gnu99  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before Project1.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o "Project1.exe" $(LIBS)
+
+buspirate.o: buspirate.c
+	$(CPP) -c buspirate.c -o buspirate.o $(CXXFLAGS)
+
+common.o: common.c
+	$(CPP) -c common.c -o common.o $(CXXFLAGS)
+
+data_file.o: data_file.c
+	$(CPP) -c data_file.c -o data_file.o $(CXXFLAGS)
+
+iface.o: iface.c
+	$(CPP) -c iface.c -o iface.o $(CXXFLAGS)
+
+main.o: main.c
+	$(CPP) -c main.c -o main.o $(CXXFLAGS)
+
+pic.o: pic.c
+	$(CPP) -c pic.c -o pic.o $(CXXFLAGS)
+
+pic12.o: pic12.c
+	$(CPP) -c pic12.c -o pic12.o $(CXXFLAGS)
+
+pic16.o: pic16.c
+	$(CPP) -c pic16.c -o pic16.o $(CXXFLAGS)
+
+pic18.o: pic18.c
+	$(CPP) -c pic18.c -o pic18.o $(CXXFLAGS)
+
+pic24.o: pic24.c
+	$(CPP) -c pic24.c -o pic24.o $(CXXFLAGS)
+
+proto_pic.o: proto_pic.c
+	$(CPP) -c proto_pic.c -o proto_pic.o $(CXXFLAGS)
+
+serial.o: serial.c
+	$(CPP) -c serial.c -o serial.o $(CXXFLAGS)
