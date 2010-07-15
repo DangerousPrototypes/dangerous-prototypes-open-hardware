@@ -79,6 +79,7 @@ int main(int argc, char** argv) {
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
 	cmd|=CMD_WRITE;
+    cmd|=CMD_VERIFY;
 	param_chip=strdup("18F24J50");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
@@ -165,8 +166,8 @@ int main(int argc, char** argv) {
 /*	if (optind >= argc) {
 		print_usage(argv[0]);
 		exit(-1);
-	}
-*/
+	}*/
+
 	picprog.iface = Iface_GetByName(param_prog);
 
 	if (picprog.iface == NULL) {
@@ -274,9 +275,9 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 	}
 
 	if (cmd & CMD_VERIFY) {
-		if (cmd & CMD_READ == 0) { // read only when necessary
-			picops->Read(&picprog, 0x0000, buf_read, picchip->flash);
-		}
+		//if (cmd & CMD_READ == 0) { // read only when necessary
+			PIC_ReadFlash(&picprog, buf_read);
+		//}
 		if (memcmp(buf_read, buf_write, picchip->flash)) {
 			printf("Verify ERROR :( \n");
 		} else {

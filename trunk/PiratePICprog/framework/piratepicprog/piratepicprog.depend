@@ -57,7 +57,7 @@
 1279096896 e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\iface.h
 	<stdint.h>
 
-1279183070 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\main.c
+1279202585 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -78,7 +78,7 @@
 	<stdint.h>
 	"common.h"
 
-1279187785 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic.c
+1279189725 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic.c
 	<stdint.h>
 	<stdio.h>
 	<unistd.h>

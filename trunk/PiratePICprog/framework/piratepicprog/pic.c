@@ -181,6 +181,8 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 
+    proto->EnterICSP(p, fam->icsp_type);
+
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
 		u_addr = page * fam->page_size;
@@ -200,10 +202,12 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 		}
 
-		usleep(fam->write_delay * 1000);
+		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
 	}
+
+    proto->ExitICSP(p);
 
 	return done;
 }
