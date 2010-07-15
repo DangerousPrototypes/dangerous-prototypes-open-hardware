@@ -342,9 +342,9 @@ int PIC18_sendFirmware(int fd, uint8* data, uint8* pages_used)
 	uint8  command[256] = {0};
 	
 	
-	for( page=0; page<PIC_NUM_PAGES; page++)
+	//for( page=0; page<PIC_NUM_PAGES; page++)
 	//for( page=0; page<3; page++)
-	{
+	//{
 		
 		u_addr = page * ( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
 		//u_addr = page * ( 2 * 32 );
@@ -353,12 +353,12 @@ int PIC18_sendFirmware(int fd, uint8* data, uint8* pages_used)
 			if( g_verbose && u_addr < PIC_FLASHSIZE) {
 				fprintf(stdout, "Skipping page %ld [ %06lx ], not used\n", page, u_addr);
 			}
-			continue;
+			//continue;
 		}
 		
 		if( u_addr >= PIC_FLASHSIZE ) {
 			fprintf(stderr, "Address out of flash\n");
-			continue; //return -1;
+			//continue; //return -1;
 		}
 		
 		//write 64 bytes
@@ -376,10 +376,21 @@ int PIC18_sendFirmware(int fd, uint8* data, uint8* pages_used)
 			
 			done += 64;//PIC_ROW_SIZE;
 		//}
-	}
+	//}
 	
 	return done;
 }
+
+unsigned char BP_reversebyte(unsigned char c){
+        unsigned char r, i;
+
+        for(i=0x01 ; i!=0; i=i<<1){
+            r=r<<1;
+            if(c&i)r|=0x01;
+        }
+        return r;
+}
+
 
 int PIC416Write(uint8 cmd, uint16 data){
 	uint8 buffer[4]={0};
@@ -387,8 +398,8 @@ int PIC416Write(uint8 cmd, uint16 data){
 	
 	buffer[0]='\xA4';
 	buffer[1]=cmd;
-	buffer[2]=(uint8)(data);
-	buffer[3]=(data>>8);
+	buffer[2]=BP_reversebyte((uint8)(data));
+	buffer[3]=BP_reversebyte((data>>8));
 
 	
 	sendString(dev_fd, 4, buffer);
@@ -411,7 +422,7 @@ uint8 PIC416Read(uint8 cmd){
 
 	sendString(dev_fd, 2, buffer);
 	res = readWithTimeout(dev_fd, buffer, 1, 1);
-	PICread=buffer[0];
+	PICread=BP_reversebyte(buffer[0]);
 	
 	return PICread;
 }
@@ -617,6 +628,8 @@ void PIC24_read(uint32 addr, uint16* Data, int length){
 	}
 }
 
+
+
 //should probably be PIC18FreadID(uint32 DEVIDlocation), with the location of the ID as a passed variable
 void PIC18_read(uint32 tblptr, uint8* Data, int length)
 {
@@ -775,7 +788,7 @@ enum { PIC614=0,
 
 int main (int argc, const char** argv)
 {
-	int		res = -1, picMode=2;
+	int		res = -1, picMode=PIC416;
 	uint8	buffer[256] = {0};
 	uint8	pages_used[PIC_NUM_PAGES] = {0};
 	uint8*	bin_buff = NULL;
@@ -960,18 +973,18 @@ int main (int argc, const char** argv)
 				puts("Exit ICSP...");
 				exitICSP();
 
-				puts("Read PIC test...");
+				//puts("Read PIC test...");
 				
-				puts("Entering ICSP...");
-				PIC18_enterLowVPPICSP(0x4D434850); //key should be part of device info
+				//puts("Entering ICSP...");
+				//PIC18_enterLowVPPICSP(0x4D434850); //key should be part of device info
 
 				//read the PIC
-				PIC18_read(0x000000, bin_buff, 0xff);
-				dumpHex(bin_buff,0xff); //dump to screen
+				//PIC18_read(0x000000, bin_buff, 0xff);
+				//dumpHex(bin_buff,0xff); //dump to screen
 				
 				//exit ICSP
-				puts("Exit ICSP...");
-				exitICSP();
+				//puts("Exit ICSP...");
+				//exitICSP();
 						
 				if( res > 0 ) {
 					puts("\nFirmware updated successfully :)!");
@@ -1044,7 +1057,7 @@ int main (int argc, const char** argv)
 
 				//read the PIC
 				PIC24_read(0x00000000, buffer16, 0xA); //give it the ID address
-				dumpHex(buffer16,0xA); //dump to screen
+				//dumpHex(buffer16,0xA); //dump to screen
 				
 				//exit ICSP
 				puts("Exit ICSP...");
