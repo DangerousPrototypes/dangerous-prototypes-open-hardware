@@ -5,6 +5,8 @@
 #include "iface.h"
 #include "pic18.h"
 
+static uint8_t writesetup=0;
+
 uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
@@ -172,11 +174,18 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	uint32_t ctr;
 //	uint8_t	buffer[4] = {0};
 
+    if(writesetup==0){
+        PIC18_setupwrite(p);
+        writesetup=1;
+    }
+
 	// set TBLPTR
 	PIC18_settblptr(p, tblptr);
 
 	//PIC416Write(0x00,0x6AA6); //doesn't seem to be needed now
 	//PIC416Write(0x00,0x88A6);
+	iface->PIC416Write(opts, 0x00, 0x6AA6);
+	iface->PIC416Write(opts, 0x00, 0x88A6);
 
 	for(ctr = 0; ctr < length - 2; ctr += 2) {
 		DataByte = ((uint8_t *)Data)[ctr + 1];

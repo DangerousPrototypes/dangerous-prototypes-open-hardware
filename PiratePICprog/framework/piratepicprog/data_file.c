@@ -37,7 +37,7 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 	uint32_t addr_max=0;
 
 	fp = fopen(file, "r");
-	
+
 	if (fp == NULL) {
 		return 0;
 	}
@@ -49,7 +49,7 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 		uint8_t byte_count;
 		uint32_t addr;
 		uint8_t rec_type;
-		
+
 		if (raw_line[0] != ':') {
 			printf("File '%s' is note a hex file !\n", file);
 		}
@@ -83,7 +83,7 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 			chksum = tmp[0];
 			// TODO: check chksum
 			if (Data_Checksum(&out_buf[addr+i], byte_count) != chksum) {
-				printf("WARNING: HEX checksum error on line %d !! \n", line); 
+				//printf("WARNING: HEX checksum error on line %d !! \n", line);
 			}
 
 		} else if (rec_type = 0x04) {
@@ -138,7 +138,7 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
 	}
 	res += sprintf(raw_line+res, "\n");
 
-	// output to file	
+	// output to file
 	res = fwrite(raw_line, sizeof(char), res, fp);
 }
 
@@ -182,16 +182,16 @@ int HEX_WriteFile(const char *file, uint8_t *in_buf, uint32_t in_buf_size) {
 			uint8_t tmp[2];
 
 			base ++;
-			
+
 			tmp[0] = (base >> 8) & 0xff;
 			tmp[1] = (base & 0xff);
-			
+
 			HEX_WriteRec(fp, 0x04, 2, 0x0000, tmp);
-			
+
 			addr -= 0x10000;
 		}
 	}
-	
+
 	// end record
 	HEX_WriteRec(fp, 0x01, 0x00, 0x0000, NULL);
 
@@ -218,7 +218,7 @@ uint32_t BIN_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 	fseek(fp, 0, SEEK_END);
 	fsize = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
-	
+
 	if (fsize > out_buf_size) {
 		printf("file won't fit into buffer :(\n");
 		return 0;

@@ -7,7 +7,7 @@
 #include "buspirate.h"
 
 static struct BP_t pBP;
-
+static
 uint8_t BP_reversebyte(uint8_t c);
 
 //low lever send command, get reply function
@@ -64,17 +64,6 @@ static void BP_EnableRaw2Wire(int fd)
 		exit(-1);
 	}
 
-}
-
-static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
-	uint8_t m = mode;
-	serial_write(fd, "\xA0", 1);
-
-	if(BP_WriteToPirate(fd, &m)){
-		puts("ERROR");
-		return -1;
-	}
-	return 0;
 }
 
 uint32_t BP_MCLRLow(void *pBP) {
@@ -182,11 +171,22 @@ uint32_t BP_MCLRHigh(void *pBP) {
 uint8_t BP_reversebyte(uint8_t c){
         uint8_t r, i;
 
-        for(i=0b1; i!=0; i=i<<1){
+        for(i=0x1; i!=0; i=i<<1){
             r=r<<1;
-            if(c&i)r|=0b1;
+            if(c&i)r|=0x1;
         }
         return r;
+}
+
+static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
+	uint8_t m = mode;
+	serial_write(fd, "\xA0", 1);
+
+	if(BP_WriteToPirate(fd, &m)){
+		puts("ERROR");
+		return -1;
+	}
+	return 0;
 }
 uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	int fd = ((struct BP_t *)pBP)->fd;
@@ -194,8 +194,11 @@ uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	uint8_t buffer[4] = {0};
 	int res = -1;
 
-	if (mode != BP_PIC416)
-		BP_SetPicMode(fd, BP_PIC416);
+	if (mode != BP_PIC416){
+        BP_SetPicMode(fd, BP_PIC416);
+		((struct BP_t*)pBP)->picmode = BP_PIC416;
+	}
+
 
 	buffer[0] = '\xA4';
 	buffer[1] = cmd;
@@ -218,8 +221,10 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd) {
 	uint8_t buffer[2] = {0};
 	int res = -1;
 
-	if (mode != BP_PIC416)
-		BP_SetPicMode(fd, BP_PIC416);
+	if (mode != BP_PIC416){
+        BP_SetPicMode(fd, BP_PIC416);
+		((struct BP_t*)pBP)->picmode = BP_PIC416;
+	}
 
 	buffer[0] = '\xA5';
 	buffer[1] = cmd;
@@ -236,8 +241,10 @@ uint32_t BP_PIC424Read(void *pBP) {
 	uint8_t buffer[4] = {0};
 	int res = -1;
 
-	if (mode != BP_PIC424)
-		BP_SetPicMode(fd, BP_PIC424);
+	if (mode != BP_PIC424){
+        BP_SetPicMode(fd, BP_PIC424);
+		((struct BP_t*)pBP)->picmode = BP_PIC424;
+	}
 
 	serial_write(fd, "\xA5", 1);
 	res = serial_read(fd, buffer, 2);
@@ -251,9 +258,11 @@ uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postno
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[5] = {0};
 	int res = -1;
-				printf("\n here!!! \n");
-	if (mode != BP_PIC424)
-		BP_SetPicMode(fd, BP_PIC424);
+
+	if (mode != BP_PIC424){
+        BP_SetPicMode(fd, BP_PIC424);
+		((struct BP_t*)pBP)->picmode = BP_PIC424;
+	}
 
 	buffer[0] = '\xA4';
 	buffer[1] = (uint8_t)(data);
