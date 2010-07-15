@@ -78,10 +78,13 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
+	cmd|=CMD_WRITE;
 	param_chip=strdup("18F24J50");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
+	param_write_file=strdup("test.hex");
+	param_type=strdup("HEX");
 #endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
@@ -204,8 +207,6 @@ int main(int argc, char** argv) {
     printf("Checking for %s attached to programmer... \n", param_chip);
     PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
 //determine device type
-	//PICrev=(PICidver&(~0xFFE0)); //find PIC ID (lower 5 bits)
-	//PICid=(PICidver>>5); //isolate PIC device ID (upper 11 bits)
 	if(PICid!=picchip->ID)
 	{
 	    printf("Wrong device ID: %#X \n", PICidver);
@@ -268,7 +269,8 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 	}
 
 	if (cmd & CMD_WRITE) {
-		picops->Write(&picprog, 0x0000, buf_write, picchip->flash);
+		//picops->Write(&picprog, 0x0000, buf_write, picchip->flash);
+		PIC_WriteFlash(&picprog, buf_write);
 	}
 
 	if (cmd & CMD_VERIFY) {

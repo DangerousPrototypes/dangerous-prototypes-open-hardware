@@ -7,7 +7,7 @@
 
 #include "proto_pic.h"
 #include "pic.h"
-
+#include "iface.h"
 #include "common.h"
 
 enum {
@@ -114,12 +114,15 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+    struct iface_t *iface = p->iface;
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0;
-	uint8_t used = 0;
+	uint8_t used = 0, t;
 	uint16_t i = 0;
+
+    proto->EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -130,6 +133,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 		// check used page
 		used = 0;
 		for (i = 0; i < fam->page_size; i++) {
+		    t=fw_data[u_addr+i];
 			if (fw_data[u_addr+i] != PIC_EMPTY) {
 				used = 1;
 				break;
@@ -137,8 +141,8 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 		}
 
 		// skip unused
-		if (used = 0 ) {
-			if (p->debug && u_addr < pic->flash) {
+		if (used == 0 ) {
+			if (u_addr < pic->flash) {
 				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", (unsigned long)page, (unsigned long)u_addr);
 			}
 			continue;
@@ -157,10 +161,12 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
-		usleep(fam->write_delay * 1000);
+		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
 	}
+
+    proto->ExitICSP(p);
 
 	return done;
 }

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1279119331 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\buspirate.c
+1279186963 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\buspirate.c
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
@@ -41,7 +41,7 @@
 	<stdint.h>
 	"iface.h"
 
-1278919507 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\data_file.c
+1279186124 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\data_file.c
 	<stdio.h>
 	<stdlib.h>
 	"data_file.h"
@@ -57,7 +57,7 @@
 1279096896 e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\iface.h
 	<stdint.h>
 
-1279124606 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\main.c
+1279183070 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -78,13 +78,14 @@
 	<stdint.h>
 	"common.h"
 
-1279121558 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic.c
+1279187785 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic.c
 	<stdint.h>
 	<stdio.h>
 	<unistd.h>
 	<string.h>
 	"proto_pic.h"
 	"pic.h"
+	"iface.h"
 	"common.h"
 
 1279124758 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic12.c
@@ -103,7 +104,7 @@
 	"proto_pic.h"
 	"common.h"
 
-1279124360 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic18.c
+1279186284 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic18.c
 	<unistd.h>
 	"pic.h"
 	"iface.h"
@@ -114,7 +115,7 @@
 	"proto_pic.h"
 	"common.h"
 
-1279097106 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic24.c
+1279124782 source:e:\work\dp-svn\trunk\piratepicprog\framework\piratepicprog\pic24.c
 	"pic.h"
 	"iface.h"
 	"pic24.h"
