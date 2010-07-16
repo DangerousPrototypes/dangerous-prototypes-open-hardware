@@ -95,6 +95,9 @@ struct _irtoy{
 #define T2_RC5halfbitperiod() PR2=221; T2CON=PRE_x4+POST_x6 //setup to hit in the middle of next bit period
 #define T2_RC5bitperiod() PR2=221; T2CON=PRE_x4+POST_x12 //full bit values from now on
 
+//50us Timer2 settings for irS
+#define T2_irS50uS() PR2=201; T2CON=POST_x3 //setup to hit in the middle of next bit period
+
 //we don't use these, disable
 #define self_power          1
 #define USB_BUS_SENSE       1
