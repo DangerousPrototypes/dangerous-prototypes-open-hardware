@@ -61,6 +61,12 @@ void irssetup(void){
 	irIO.TXsamples=0;
 	irIO.TX=0;
 
+
+
+	//uisng timer2 as a 50us timer
+	//T2_irS50uS();
+
+
 	//setup timer 0
 	T0CON=0;
 	//configure prescaler
@@ -73,10 +79,14 @@ void irssetup(void){
 	//010 = 1:8 Prescale value
 	//001 = 1:4 Prescale value
 	//000 = 1:2 Prescale value
-	//T0CONbits.T08BIT=0; //16bit mode
+	T0CON=0b111;
+	//T0CONbits.T08BIT=1; //16bit mode
 	//internal clock
 	//low to high
-	T0CONbits.PSA=1; //1=not assigned
+	T0CONbits.PSA=0; //1=not assigned
+
+	//timer 1 as USB packet send timeout
+	T1CON=0;
 
 	IRRX_IE = 1;  //IR RX interrupt on
 	IRRX_IF = 0;  //IR RX interrupt on
@@ -214,6 +224,14 @@ void irsInterruptHandlerHigh (void){
 			TM0IE=1;
 			TM0IF=0;
 			TM0ON=1;//enable the timer
+			
+			TMR1H=0;
+			TMR1L=0;
+			T1IF=0;		//clear the interrupt flag
+			T1IE=1; 	//able interrupts...
+			T1ON=1;		//timer on
+
+
 		}else{//timer running, save value and reset
 			//the goal is to reset the timer as quickly as possible
 			//later we can fine tune the start value to compensate for the lost cycles
@@ -225,9 +243,15 @@ void irsInterruptHandlerHigh (void){
 			TM0IF=0;
 			TM0ON=1;//enable the timer
 
-			irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
-			irIO.RXsamples++;
+			//reset timer1, USB packet send timeout
+			T1ON=0;		//timer on
+			TMR1H=0;
+			TMR1L=0;
+			T1ON=1;		//timer on
+
 			irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
+			irIO.RXsamples++;
+			irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
 			irIO.RXsamples++;
 		}
 		//clear portb interrupt		
@@ -239,8 +263,16 @@ void irsInterruptHandlerHigh (void){
 		//there is not more signal
 		//it would be more robust to check the pin state for 0
 		//need to examine the limits of typical protocols closer
+		T1ON=0;		//timer off
+
 		TM0ON=0; //timer off
 		TM0IF=0;
+/*
+			TMR0H=0;//first set the high byte
+			TMR0L=0;//set low byte copies high byte too
+			TM0IF=0;
+			TM0ON=1;//enable the timer
+*/
 
 		//maybe we need to send a long pause to the PC at the end...
 		irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
@@ -254,6 +286,9 @@ void irsInterruptHandlerHigh (void){
 		IRRX_IF=0;
 
 		LED_LAT &=(~LED_PIN); //LED off
+	}else if(T1IE==1 && T1IF==1){ //is this timer 0 interrupt?
+		irIO.flushflag=1;	
+		T1IF=0;		//clear the interrupt flag
 	}  
 }
 
