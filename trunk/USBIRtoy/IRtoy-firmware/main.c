@@ -37,6 +37,7 @@
 //IR Toy functions
 #include "SUMP.h" 		//sump functions
 #include "IRIO.h" 		//IRIO functions
+#include "IRs.h" 		//IRs functions
 #include "RCdecoder.h" 	//RC5 decoder
 
 //our USB input buffer functions
@@ -56,6 +57,7 @@ static enum _mode {
 	IR_DECODER=0, //IRMAN IR RC decoder
 	IR_SUMP, //SUMP logic analyzer
 	IR_IO, //IR input output mode
+	IR_S, //IR Sampling mode
 	//IR_RECORDER //record IR signal to EEPROM, playback
 } mode=IR_DECODER; //mode variable tracks the IR Toy mode
 
@@ -78,9 +80,12 @@ void main(void){
 	//
 	//	Never ending loop services each task in small increments
 	//
+ 	USBDeviceInit();		//initialize USB (usb_device.c)
 	while(1){
 
         USBDeviceTasks(); ////service USB tasks	
+	    //CDCTxService(); //service the CDC stack
+		//continue;
 		//DETACHED_STATE 
 		//ATTACHED_STATE 
 		//POWERED_STATE 
@@ -121,6 +126,12 @@ void main(void){
 					mode=IR_DECODER; //exit if done dumping
 				}
 				break;
+			case IR_S:
+				if(irsservice()!=0){//IRIO exit
+					SetupRC5();
+					mode=IR_DECODER; //exit if done dumping
+				}
+				break;
 			//case IR_RECORDER: 				//save IR wave to EEPROM for playback
 			//case IR_DECODER:
 			default:
@@ -147,6 +158,13 @@ void main(void){
 						SetupRC5();
 						mode=IR_DECODER;
 						IRmanString(); //send OK for IRman mode
+						break;
+					case 'S':		//IRIO RXTX mode
+					case 's':
+						T2IE=0; 	//disable any Timer 2 interrupt
+						IRRX_IE=0; 	//enable RX interrupts for data ACQ
+						mode=IR_S;
+						irssetup();
 						break;
 					case 'X':		//IRIO RXTX mode
 					case 'x':
@@ -344,6 +362,9 @@ void InterruptHandlerHigh(void){
 		case IR_IO: 
 			_asm goto irIOInterruptHandlerHigh _endasm //see IRIO.c
 			break;
+		case IR_S:
+			_asm goto irsInterruptHandlerHigh _endasm //see IRIO.c
+			break;			
 		case IR_SUMP:
 			_asm goto SUMPInterruptHandlerHigh _endasm //see SUMP.c
 			break;
