@@ -27,7 +27,8 @@ class IrDraw:
         detailed_x_offset=32
         detailed_y_offset=20
         
-        NUM_COLUMN_DETAILED_WAVEFORM=10
+        #NUM_COLUMN_DETAILED_WAVEFORM=10
+        NUM_COLUMN_DETAILED_WAVEFORM=12
         #y_AddToHorizontalLine=40
         
         dc.SetFont(wx.Font(9, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, \
@@ -37,14 +38,23 @@ class IrDraw:
         self.GenWaveListWaveForm(dc, wx.Pen('blue', 1),\
             self.GetNBitListPoints(self.__NUMBITSOVERVIEW,self.GetDataBytesList(),broad_x,broad_y,broad_x_offset,broad_y_offset))
             
-            
+        #Draw Horizontal Line
+        horizontal_line_x_offset=50
+        horizontal_line_y_offset=15
+        horizontal_line_x_length=1000
+        dc.SetPen(wx.Pen('white',2))
+        dc.DrawLine(0,broad_y+horizontal_line_y_offset, \
+            broad_x+horizontal_line_x_offset+horizontal_line_x_length,broad_y+horizontal_line_y_offset)
+        
+        
         #Detailed WaveForm
         self.DrawMultipleDetailedWaveForms(dc,wx.Pen('black',1),  \
             self.GetDataBytesList(),NUM_COLUMN_DETAILED_WAVEFORM, \
             detailed_x,detailed_y,detailed_x_offset,detailed_y_offset)
             
         #draw Vertical Lines
-        y_AddToVertLine=450
+        #y_AddToVertLine=450
+        y_AddToVertLine=600
         dc.SetPen(wx.Pen('GREY',1,wx.DOT))
         ctr=0
         while(ctr<(self.__NUMBITSDETAILED+1)):
