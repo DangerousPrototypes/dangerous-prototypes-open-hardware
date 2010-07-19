@@ -7,10 +7,16 @@
 *
 */
 //
-//	IR IO
+//	IR sampler
 //
-//#ifdef IR_IO
-//#define RXtest
+// This new mode counts the duration of each IR pulse/space
+// the signal is returned as 16bit timer counts that each represent 21.3us
+// the values are returned Pulse-h P-l Blank-h B-l P-h P-l etc.
+// the last value will be 0xff 0xff, representing 1.7seconds of blank
+
+
+//This is a hacked copy of the IRIO source
+// it still contains a lot of variables and cruft that's not needed
 
 #include "HardwareProfile.h"
 
@@ -48,7 +54,7 @@ void irssetup(void){
   	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 		irToy.usbOut[0]='S';//answer OK
 		irToy.usbOut[1]='0';
-		irToy.usbOut[2]='0';
+		irToy.usbOut[2]='1';
 		putUSBUSART(irToy.usbOut,3);
 	}
 
@@ -60,12 +66,6 @@ void irssetup(void){
 	irIO.RXsamples=0;
 	irIO.TXsamples=0;
 	irIO.TX=0;
-
-
-
-	//uisng timer2 as a 50us timer
-	//T2_irS50uS();
-
 
 	//setup timer 0
 	T0CON=0;
@@ -112,13 +112,6 @@ unsigned char irsservice(void){
 		unsigned char parCnt;
 	} irIOcommand;
 
-	//TO DO:
-	//variable names, centralize variables
-	//playback last recording
-	//PWM, timer setup
-	//0xxxxxxx - command
-	//00000000 - reset, return to RC5 (same as SUMP) LED output/off, CPP1CON=0; T2ON=0; T1ON=0; T1IE=0;
-	//1xxxxxxx - data
 	if(irIO.TXsamples==0){
 		irIO.TXsamples=getsUSBUSART(irToy.s,64);
 		c=0;
@@ -205,32 +198,32 @@ unsigned char irsservice(void){
 	return 0;//CONTINUE
 }
 
-//the first falling edge starts a timer
-//the next interrupt copies the timer value to a buffer and resets the timer
-//if the timer interrupts, then timeout and end.
+//the first falling edge starts timer0
+//the next pin interrupt copies the timer0 value to a buffer and resets timer0
+//if timer0 interrupts, then timeout and end.
 //high priority interrupt routine
 #pragma interrupt irsInterruptHandlerHigh
 void irsInterruptHandlerHigh (void){
 	unsigned char h,l;
 
 	if(IRRX_IE==1 && IRRX_IF == 1){ //if RB Port Change Interrupt	
-	
-		if( ((IRRX_PORT & IRRX_PIN)==0)){};//only if 0, must read PORTB to clear RBIF
 		l=IRRX_PORT;
 		if(TM0ON==0){ //timer not running, setup and start
-			LED_LAT |= LED_PIN;//LED ON
-			TMR0H=0;//first set the high byte
-			TMR0L=0;//set low byte copies high byte too
-			TM0IE=1;
-			TM0IF=0;
-			TM0ON=1;//enable the timer
-			
-			TMR1H=0;
-			TMR1L=0;
-			T1IF=0;		//clear the interrupt flag
-			T1IE=1; 	//able interrupts...
-			T1ON=1;		//timer on
 
+			if( ((l & IRRX_PIN)==0)){;//only if 0, must read PORTB to clear RBIF
+				LED_LAT |= LED_PIN;//LED ON
+				TMR0H=0;//first set the high byte
+				TMR0L=0;//set low byte copies high byte too
+				TM0IE=1;
+				TM0IF=0;
+				TM0ON=1;//enable the timer
+				
+				TMR1H=0;
+				TMR1L=0;
+				T1IF=0;		//clear the interrupt flag
+				T1IE=1; 	//able interrupts...
+				T1ON=1;		//timer on
+			}
 
 		}else{//timer running, save value and reset
 			//the goal is to reset the timer as quickly as possible
@@ -263,30 +256,32 @@ void irsInterruptHandlerHigh (void){
 		//there is not more signal
 		//it would be more robust to check the pin state for 0
 		//need to examine the limits of typical protocols closer
-		T1ON=0;		//timer off
 
-		TM0ON=0; //timer off
+		T1ON=0;		//t1 is the usb packet timeout, disable it
+
+		TM0ON=0; //timer0 off
 		TM0IF=0;
-/*
-			TMR0H=0;//first set the high byte
-			TMR0L=0;//set low byte copies high byte too
-			TM0IF=0;
-			TM0ON=1;//enable the timer
-*/
 
-		//maybe we need to send a long pause to the PC at the end...
+		//packet terminator, 1.7S with no signal
 		irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
 		irIO.RXsamples++;
 		irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
 		irIO.RXsamples++;
+		//set the flush flag to send the packet from the main loop
 		irIO.flushflag=1;
 
-		//reset the interrupt, just in case
+		//reset the pin interrupt, just in case
 		IRRX_IE=1;
 		IRRX_IF=0;
 
 		LED_LAT &=(~LED_PIN); //LED off
-	}else if(T1IE==1 && T1IF==1){ //is this timer 0 interrupt?
+	}else if(T1IE==1 && T1IF==1){ //is this timer 1 interrupt?
+		//this is another timer
+		//it tells the main loop to send any pending USB bytes
+		// after a few MS
+		//the idea is that the 1.7s delay for the terminaor byte is really long
+		//we want to send the accumulated data sooner than that, or response will appear sluggish
+		//time1 (adjust as needed) sets teh flush flag and sends any pending data on it's way
 		irIO.flushflag=1;	
 		T1IF=0;		//clear the interrupt flag
 	}  
