@@ -190,10 +190,21 @@ void main(void){
 							}else{
 								LED_LAT |=LED_PIN; //LED on
 								irToy.usbOut[0]='V';//answer OK
-								irToy.usbOut[1]='1';
-								irToy.usbOut[2]='0';
-								irToy.usbOut[3]='3';
+								irToy.usbOut[1]=HARDWARE_VERSION;
+								irToy.usbOut[2]=FIRMWARE_VERSION_H;
+								irToy.usbOut[3]=FIRMWARE_VERSION_L;
 							}
+							putUSBUSART(irToy.usbOut,4);
+						}
+		
+						break;
+					case 'V':
+					case 'v'://self test
+					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+							irToy.usbOut[0]='V';//answer OK
+							irToy.usbOut[1]=HARDWARE_VERSION;
+							irToy.usbOut[2]=FIRMWARE_VERSION_H;
+							irToy.usbOut[3]=FIRMWARE_VERSION_L;
 							putUSBUSART(irToy.usbOut,4);
 						}
 		

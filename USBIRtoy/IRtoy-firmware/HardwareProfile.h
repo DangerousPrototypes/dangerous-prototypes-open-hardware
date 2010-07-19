@@ -6,6 +6,11 @@
 *	http://dangerousprototypes.com
 *
 */
+#define HARDWARE_VERSION '1'
+#define FIRMWARE_VERSION_H '0'
+#define FIRMWARE_VERSION_L '4'
+
+
 #define SAMPLE_ARRAY_SIZE 0x0080 //0x0010
 #define SAMPLE_SIZE 0x0400 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
 struct _irtoy{
