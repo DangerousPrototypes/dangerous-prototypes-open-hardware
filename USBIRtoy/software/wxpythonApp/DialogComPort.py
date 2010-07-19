@@ -55,8 +55,8 @@ class DialogComPort(wx.Dialog):
         #COM Number
         self.choiceComPort.Clear()
         ComList=[]
-        for x in range(0,100):
-            ComList.append(str(x))
+        for x in range(1,100):
+            ComList.append('COM' + str(x))
         self.choiceComPort.SetItems(ComList)
         self.choiceComPort.Select(0)
         
