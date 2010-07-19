@@ -88,6 +88,7 @@ class Frame1(wx.Frame):
             self.Close()
         
     def __WaitForData(self):
+        self.__myComIR.GetSerialPort().write(chr(0x58))
         #if(self.__myComIR.GetSerialPort().inWaiting()==(40*8)):
         dat=list(self.__myComIR.GetData(500))
         if (len(dat)> (40*8)):
