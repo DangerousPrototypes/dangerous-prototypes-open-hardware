@@ -11,9 +11,15 @@ class IrDraw:
         self.__myFrame.Bind(wx.EVT_PAINT, self.OnPaint)
         self.__DataToDraw=[0]*(8*LIST_SIZE)
         
+    def SetDataBytesList(self,DataBytesList):
+        self.__DataByteLst=DataBytesList
+        self.__myFrame.Refresh()
+    
+        
     def GetDataBytesList(self):
         #return [0xAA]*(self.__NUMBITSOVERVIEW/8)
-        return range(0,5000)
+        return self.__DataByteLst
+        #return range(0,5000)
             
     def OnPaint(self, event):
         dc = wx.PaintDC(self.__myFrame)

@@ -5,6 +5,7 @@ import wx.lib.analogclock
 import IrDraw
 import DialogComPort
 import ComIRDevice
+import threading
 
 STR_TITLE='IR Decoder 00.08.0 Powered by wxPython'
 
@@ -52,6 +53,8 @@ class Frame1(wx.Frame):
         
         self.SetLabel(STR_TITLE)
         self.MyIrDraw=IrDraw.IrDraw(self.pnlWaveForm)
+        #self.MyIrDraw.SetDataBytesList(range(1,10000))
+        self.MyIrDraw.SetDataBytesList([0]*1000)
         #self.MyIrDraw=IrDraw.IrDraw(self.scrollWindowsWaveForm)
         self.WindowStyle
         self.Centre()
@@ -60,19 +63,37 @@ class Frame1(wx.Frame):
         self.Show(True)
         #self.scrollWindowsWaveForm.SetVirtualSize(wx.Size(1000, 1000))
         #self.scrollWindowsWaveForm.SetScrollbars(20,20,1000,1000)
-    
+        
         d=DialogComPort.DialogComPort(self)
         d.ShowModal()
         if(d.ReturnCode==0):
             self.__sb.SetStatusText("COM: %s BaudRate:%sbps" % (d.ComNum,d.Baud))   
-            self.__myComIR=ComIRDevice.ComIRDevice(int(d.ComNum),int(d.Baud))
+            self.__myComIR=ComIRDevice.ComIRDevice(d.ComNum,int(d.Baud))
             d.Destroy()
-            #ser = serial.Serial()
+            #self.MyIrDraw.SetDataBytesList(self.__myComIR.GetData(40*8))
+            #threading.Thread(target=self.__WaitForData())
+            dlg = wx.MessageDialog(self, 'After pressing ok, this software will wait for bytes of data for 5 sec', 'IR Remote', wx.OK|wx.ICON_INFORMATION)
+            dlg.ShowModal()
+            dlg.Destroy()
+            if(self.__WaitForData()==False):
+                dlg = wx.MessageDialog(self, 'No or Less than 500 data bytes received. Exiting...', 'IR Remote', wx.OK|wx.ICON_INFORMATION)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.Close()
             
+            #self.__myComIR.GetData(40*8)
+            
+            #ser = serial.Serial()
         else:
             self.Close()
         
-        
+    def __WaitForData(self):
+        #if(self.__myComIR.GetSerialPort().inWaiting()==(40*8)):
+        dat=list(self.__myComIR.GetData(500))
+        if (len(dat)> (40*8)):
+            self.MyIrDraw.SetDataBytesList(dat)
+            return True
+        return False
         
         
         
