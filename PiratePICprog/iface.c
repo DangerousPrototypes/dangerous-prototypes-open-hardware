@@ -23,7 +23,8 @@ const struct iface_t iface[] = {
 		.PIC416Read = BP_PIC416Read,
 		.PIC416Write = BP_PIC416Write,
 		.PIC424Read = BP_PIC424Read,
-		.PIC424Write = BP_PIC424Write
+		.PIC424Write = BP_PIC424Write,
+        .flush=BP_Flush
 	}
 };
 

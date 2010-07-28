@@ -155,9 +155,9 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
-		if (p->debug) {
-			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-		}
+//		if (p->debug) {
+//			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+//		}
 
 		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
@@ -198,10 +198,10 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
-		if (p->debug) {
+/*		if (p->debug) {
 			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 		}
-
+*/
 		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;

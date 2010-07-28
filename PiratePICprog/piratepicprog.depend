@@ -140,3 +140,144 @@
 	<string.h>
 	"serial.h"
 
+1280332755 source:e:\work\dp-svn\trunk\piratepicprog\buspirate.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<unistd.h>
+	"common.h"
+	"serial.h"
+	"buspirate.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\common.h
+	<stdint.h>
+	"iface.h"
+
+1280331146 e:\work\dp-svn\trunk\piratepicprog\iface.h
+	<stdint.h>
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1280330866 e:\work\dp-svn\trunk\piratepicprog\buspirate.h
+	<stdint.h>
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\common.c
+	<stdint.h>
+	<stdio.h>
+	"common.h"
+	<unistd.h>
+	<windows.h>
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\data_file.h
+	<stdint.h>
+
+1280324156 source:e:\work\dp-svn\trunk\piratepicprog\iface.c
+	<string.h>
+	"buspirate.h"
+	"iface.h"
+
+1280334367 source:e:\work\dp-svn\trunk\piratepicprog\pic.c
+	<stdint.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	"proto_pic.h"
+	"pic.h"
+	"iface.h"
+	"common.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\proto_pic.h
+	<stdint.h>
+	"common.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\pic.h
+	<stdint.h>
+	"common.h"
+	"proto_pic.h"
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\pic12.c
+	"pic12.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\pic12.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\pic16.c
+	"pic16.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\pic16.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1280334596 source:e:\work\dp-svn\trunk\piratepicprog\pic18.c
+	<unistd.h>
+	"pic.h"
+	"iface.h"
+	"pic18.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\pic18.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\pic24.c
+	"pic.h"
+	"iface.h"
+	"pic24.h"
+
+1279207529 e:\work\dp-svn\trunk\piratepicprog\pic24.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\proto_pic.c
+	<stdio.h>
+	"pic12.h"
+	"pic16.h"
+	"pic18.h"
+	"pic24.h"
+	"proto_pic.h"
+
+1279207529 source:e:\work\dp-svn\trunk\piratepicprog\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1280334670 source:e:\work\dp-svn\trunk\piratepicprog\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	"pic.h"
+	"proto_pic.h"
+	"data_file.h"
+	"iface.h"
+	"common.h"
+	"buspirate.h"
+

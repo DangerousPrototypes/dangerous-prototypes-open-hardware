@@ -13,7 +13,7 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
-	uint8_t buffer[4], i, j, r;
+	uint8_t buffer[4];
 
 	//for
 	if(type==ICSP_HVPP){
@@ -26,7 +26,7 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	// Reconfigure the mode for LSB order
 	//pritf("Set mode for MCLR (MSB)...");
 
-	//iface->SetBitOrder(opts, BIT_MSB);
+	//iface->SetBitOrder(opts, BIT_LSB);
 
 	iface->ClockLow(opts);
 	iface->DataLow(opts);
@@ -103,6 +103,7 @@ uint32_t PIC18_Erase(struct picprog_t *p) {
 	iface->PIC416Write(opts, 0x0C, f->erase_key[1]);//write erase command
 	iface->PIC416Write(opts, 0, 0);
 	iface->PIC416Write(opts, 0, 0);
+	iface->flush(opts);
 	usleep(1000 * f->erase_delay);
 
 	PIC18_ExitICSP(p);
@@ -116,16 +117,18 @@ uint32_t PIC18_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev){
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 	uint32_t PICid;
+	unsigned char buffer[2];
 
     PIC18_EnterICSP(p, f->icsp_type);
 
 	//setup read from device ID bits
 	PIC18_settblptr(p, f->ID_addr);
-
+	iface->flush(opts);
 	//read device ID, two bytes takes 2 read operations, each gets a byte
-	PICid = iface->PIC416Read(opts, 0x09);	//lower 8 bits
-	PICid |= iface->PIC416Read(opts, 0x09) << 8;	//upper 8 bits
+	iface->PIC416Read(opts, 0x09, buffer, 2 );	//lower 8 bits
 
+    PICid=buffer[0];
+    PICid|=(buffer[1]<<8);
     PIC18_ExitICSP(p);
 
     //determine device type
@@ -143,12 +146,15 @@ uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t l
 
 	//setup read
 	PIC18_settblptr(p, tblptr);
+    iface->flush(opts);
 	//read device
-	for (ctr = 0; ctr < length; ctr++)
-	{
-		//printf("%X ", PIC416Read(0x09) );
-		((uint8_t*)Data)[ctr] = iface->PIC416Read(opts, 0x09);
-	}
+	iface->PIC416Read(opts, 0x09, Data, length);
+
+//	for (ctr = 0; ctr < length; ctr++)
+//	{
+//		//printf("%X ", PIC416Read(0x09) );
+//		((uint8_t*)Data)[ctr] = iface->PIC416Read(opts, 0x09);
+//	}
 
 	return 0;
 }
@@ -203,6 +209,8 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	//use upper bits of 4bit command to configure the delay
 	//18f24j50 needs 1.2ms, lower parts in same family need 3.2
 	iface->PIC416Write(opts, 0x40, 0x0000);
+
+    iface->flush(opts);
 
 	return 0;
 }
