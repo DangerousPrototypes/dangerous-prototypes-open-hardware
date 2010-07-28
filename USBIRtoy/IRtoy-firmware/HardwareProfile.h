@@ -8,7 +8,7 @@
 */
 #define HARDWARE_VERSION '1'
 #define FIRMWARE_VERSION_H '0'
-#define FIRMWARE_VERSION_L '4'
+#define FIRMWARE_VERSION_L '5'
 
 
 #define SAMPLE_ARRAY_SIZE 0x0080 //0x0010
