@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-#define DEBUG
+//#define DEBUG
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,9 +51,10 @@ void print_usage(char* name) {
 }
 
 int main(int argc, char** argv) {
+
 	int opt;
 //	int	res = -1;
-//	uint32_t i;
+	uint32_t i;
     uint16_t PICidver, PICrev, PICid;
 
 	uint32_t read_size;
@@ -162,12 +163,14 @@ int main(int argc, char** argv) {
 				break;
 		}
 	}
-
-/*	if (optind >= argc) {
+/*
+	if (opt == -1) {
+	    printf("ERROR: Invalid argument(s).\n\n");
+	    printf("Help Menu\n");
 		print_usage(argv[0]);
 		exit(-1);
-	}*/
-
+	}
+*/
 	picprog.iface = Iface_GetByName(param_prog);
 
 	if (picprog.iface == NULL) {
@@ -283,6 +286,14 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 		} else {
 			printf("Verify OK :) !\n");
 		}
+
+        for(i=0; i<picchip->flash; i++){
+            if(buf_read[i]!=buf_write[i]){
+                printf("Verify ERROR %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
+            }/*else{
+                printf("Verify OK %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
+            }*/
+        }
 	}
 
 	free(buf_write);
