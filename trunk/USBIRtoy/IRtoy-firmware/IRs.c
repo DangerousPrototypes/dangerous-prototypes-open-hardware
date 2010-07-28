@@ -128,6 +128,9 @@ unsigned char irsservice(void){
 					switch(irToy.s[c]){
 						case IRIO_RESET: //reset, return to RC5 (same as SUMP) 
 							CCP1CON=0; 
+							TM0ON=0;
+							TM0IE=0;
+							T0CON=0;
 							T2ON=0; 
 							T1ON=0; 
 							T1IE=0;
