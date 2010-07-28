@@ -28,6 +28,7 @@
 
 extern struct _irtoy irToy;
 
+static unsigned char h,l;
 
 static struct{
 	unsigned char T1offsetH;
@@ -181,16 +182,18 @@ unsigned char irsservice(void){
 
 	//service the inbound samples here
 	//keep in 64 byte buffer then send to USB for max sample rate
-/*	if(irIO.rxflag==1){ //a RX byte is in the buffer
-		if(irIO.RXsamples<64){ //if we have room in the USB send buffer
-			irToy.usbOut[irIO.RXsamples]=irIO.rxbuf; //add to USB send buffer
+	if(irIO.rxflag==1){ //a RX byte is in the buffer
+		if(irIO.RXsamples<=62){ //if we have room in the USB send buffer
+			irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
+			irIO.RXsamples++;
+			irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
 			irIO.RXsamples++;
 			irIO.rxflag=0;				//reset the flag
 		}else{//underrun error, no more room!
 			LED_TRIS |= LED_PIN; //error, LED off by making it input 
 		}
 	}
-*/
+
 	//if the buffer is full, send it to USB
 	if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
 		putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
@@ -207,7 +210,7 @@ unsigned char irsservice(void){
 //high priority interrupt routine
 #pragma interrupt irsInterruptHandlerHigh
 void irsInterruptHandlerHigh (void){
-	unsigned char h,l;
+
 
 	if(IRRX_IE==1 && IRRX_IF == 1){ //if RB Port Change Interrupt	
 		l=IRRX_PORT;
@@ -245,12 +248,8 @@ void irsInterruptHandlerHigh (void){
 			TMR1L=0;
 			T1ON=1;		//timer on
 			
-			if(irIO.RXsamples<=(62)){//check for buffer overflow
-				irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
-				irIO.RXsamples++;
-				irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
-				irIO.RXsamples++;
-			}
+			irIO.rxflag=1;
+			
 		}
 		//clear portb interrupt		
     	IRRX_IF=0;    //Reset the RB Port Change Interrupt Flag bit  
@@ -268,14 +267,11 @@ void irsInterruptHandlerHigh (void){
 		TM0IF=0;
 
 		//packet terminator, 1.7S with no signal
-		if(irIO.RXsamples<=(62)){//check for buffer overflow
-			irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
-			irIO.RXsamples++;
-			irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
-			irIO.RXsamples++;
-			//set the flush flag to send the packet from the main loop
-			irIO.flushflag=1;
-		}
+		h=0xff; //add to USB send buffer
+		l=0xff; //add to USB send buffer
+		irIO.rxflag=1;
+		//set the flush flag to send the packet from the main loop
+		irIO.flushflag=1;
 
 		//reset the pin interrupt, just in case
 		IRRX_IE=1;
