@@ -45,6 +45,7 @@ static struct{
 	unsigned char rxflag:1;
 	unsigned char txflag:1;
 	unsigned char flushflag:1;
+	unsigned char overflow:1;
 } irIO;
 
 //static unsigned char USBbuf[2];
@@ -67,6 +68,7 @@ void irssetup(void){
 	irIO.RXsamples=0;
 	irIO.TXsamples=0;
 	irIO.TX=0;
+	irIO.overflow=0;
 
 	//setup timer 0
 	T0CON=0;
@@ -179,27 +181,59 @@ unsigned char irsservice(void){
 		}//switch 
 	}
 
+	if(irIO.overflow==0){
+		//service the inbound samples here
+		//keep in 64 byte buffer then send to USB for max sample rate
+		if(irIO.rxflag==1){ //a RX byte is in the buffer
+			if(irIO.RXsamples<=62){ //if we have room in the USB send buffer
+				irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
+				irIO.RXsamples++;
+				irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
+				irIO.RXsamples++;
+				irIO.rxflag=0;				//reset the flag
+			//removed this check. we might hit this several times while before the send can clear
+			//that can be perfectly fine, as long as it happens before we need to move the next samples in
+			//the new overflow check in interrupt routine will also catch this error
+			//}else{//underrun error, no more room!
+			//	irIO.overflow=1;
+			//	LED_TRIS |= LED_PIN; //error, LED off by making it input 
+			}
+		}
 
-	//service the inbound samples here
-	//keep in 64 byte buffer then send to USB for max sample rate
-	if(irIO.rxflag==1){ //a RX byte is in the buffer
-		if(irIO.RXsamples<=62){ //if we have room in the USB send buffer
-			irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
-			irIO.RXsamples++;
-			irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
-			irIO.RXsamples++;
-			irIO.rxflag=0;				//reset the flag
-		}else{//underrun error, no more room!
-			LED_TRIS |= LED_PIN; //error, LED off by making it input 
+		//if the buffer is full, send it to USB
+		if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
+			putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
+			irIO.RXsamples=0;
+			irIO.flushflag=0;
+		}
+	}else{//overflow error
+		//on overflow we loop until we can send 6 0xff then reset everything
+		if(mUSBUSARTIsTxTrfReady()){
+			irToy.usbOut[0]=0xff; //add to USB send buffer
+			irToy.usbOut[1]=0xff; //add to USB send buffer
+			irToy.usbOut[2]=0xff; //add to USB send buffer
+			irToy.usbOut[3]=0xff; //add to USB send buffer
+			irToy.usbOut[4]=0xff; //add to USB send buffer
+			irToy.usbOut[5]=0xff; //add to USB send buffer
+			irIO.RXsamples=6;
+			putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
+
+			T1ON=0;		//t1 is the usb packet timeout, disable it
+			TM0ON=0; //timer0 off
+			TM0IF=0;
+			//reset the pin interrupt, just in case
+			IRRX_IE=1;
+			IRRX_IF=0;
+
+			irIO.RXsamples=0;
+			irIO.flushflag=0;
+			irIO.overflow=0;
+
+			LED_LAT &=(~LED_PIN); //LED off
 		}
 	}
 
-	//if the buffer is full, send it to USB
-	if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
-		putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
-		irIO.RXsamples=0;
-		irIO.flushflag=0;
-	}
+
 	
 	return 0;//CONTINUE
 }
@@ -248,7 +282,11 @@ void irsInterruptHandlerHigh (void){
 			TMR1L=0;
 			T1ON=1;		//timer on
 			
-			irIO.rxflag=1;
+			if(irIO.rxflag==0){//check if data is pending
+				irIO.rxflag=1;
+			}else{//error, overflow
+				irIO.overflow=1;
+			}
 			
 		}
 		//clear portb interrupt		
@@ -266,12 +304,16 @@ void irsInterruptHandlerHigh (void){
 		TM0ON=0; //timer0 off
 		TM0IF=0;
 
-		//packet terminator, 1.7S with no signal
-		h=0xff; //add to USB send buffer
-		l=0xff; //add to USB send buffer
-		irIO.rxflag=1;
-		//set the flush flag to send the packet from the main loop
-		irIO.flushflag=1;
+		if(irIO.rxflag==0){//check if data is pending
+			//packet terminator, 1.7S with no signal
+			h=0xff; //add to USB send buffer
+			l=0xff; //add to USB send buffer
+			irIO.rxflag=1;
+			//set the flush flag to send the packet from the main loop
+			irIO.flushflag=1;
+		}else{//error, overflow
+			irIO.overflow=1;
+		}
 
 		//reset the pin interrupt, just in case
 		IRRX_IE=1;
