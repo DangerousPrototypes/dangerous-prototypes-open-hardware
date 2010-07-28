@@ -244,11 +244,13 @@ void irsInterruptHandlerHigh (void){
 			TMR1H=0;
 			TMR1L=0;
 			T1ON=1;		//timer on
-
-			irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
-			irIO.RXsamples++;
-			irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
-			irIO.RXsamples++;
+			
+			if(irIO.RXsamples<=(62)){//check for buffer overflow
+				irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
+				irIO.RXsamples++;
+				irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
+				irIO.RXsamples++;
+			}
 		}
 		//clear portb interrupt		
     	IRRX_IF=0;    //Reset the RB Port Change Interrupt Flag bit  
@@ -266,12 +268,14 @@ void irsInterruptHandlerHigh (void){
 		TM0IF=0;
 
 		//packet terminator, 1.7S with no signal
-		irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
-		irIO.RXsamples++;
-		irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
-		irIO.RXsamples++;
-		//set the flush flag to send the packet from the main loop
-		irIO.flushflag=1;
+		if(irIO.RXsamples<=(62)){//check for buffer overflow
+			irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
+			irIO.RXsamples++;
+			irToy.usbOut[irIO.RXsamples]=0xff; //add to USB send buffer
+			irIO.RXsamples++;
+			//set the flush flag to send the packet from the main loop
+			irIO.flushflag=1;
+		}
 
 		//reset the pin interrupt, just in case
 		IRRX_IE=1;
