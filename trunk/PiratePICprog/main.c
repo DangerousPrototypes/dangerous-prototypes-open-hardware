@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-//#define DEBUG
+#define DEBUG
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -79,14 +79,14 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
-	cmd|=CMD_WRITE;
-    cmd|=CMD_VERIFY;
-	param_chip=strdup("18F24J50");
+	//cmd|=CMD_WRITE;
+    //cmd|=CMD_VERIFY;
+	param_chip=strdup("24FJ64GA002");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
-	param_write_file=strdup("test.hex");
-	param_type=strdup("HEX");
+	//param_write_file=strdup("test.hex");
+	//param_type=strdup("HEX");
 #endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {

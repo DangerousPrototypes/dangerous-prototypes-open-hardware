@@ -145,7 +145,8 @@ uint32_t BP_BulkBitWrite(void *pBP, uint8_t bit_count, uint8_t val) {
 	opcode |= (bit_count - 1);
 
 	BP_WriteToPirate(fd, &opcode);
-	serial_write(fd, &val, 1);
+	//serial_write(fd, &val, 1);
+	BP_WriteToPirate(fd, &val);
 	return 0;
 }
 
@@ -218,6 +219,8 @@ uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	bpbuf[bpbufcnt] = BP_reversebyte((uint8_t)(data >> 8));
 	bpbufcnt++;
 
+	bpbuf[1]=((bpbufcnt-2)/3);
+
 	if(bpbufcnt>(3*100)){
         return BP_Flush(pBP);
 	}
@@ -240,7 +243,6 @@ void BPdr(char *Data, uint32_t length){
         Data[i]=BP_reversebyte((uint8_t)(Data[i]));
 	}
 
-
 }
 
 uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length) {
@@ -248,7 +250,6 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length) {
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
 	uint8_t buffer[3] = {0};
 	int res = -1;
-
 
 	if (mode != BP_PIC416){
         BP_SetPicMode(fd, BP_PIC416);
@@ -285,8 +286,7 @@ uint32_t BP_PIC424Read(void *pBP) {
 	serial_write(fd, "\xA5", 1);
 	res = serial_read(fd, buffer, 2);
 
-	//read device ID, two bytes takes 2 read operations, each gets a byte
-	return buffer[0] | buffer[1] << 8;	//upper 8 bits
+	return BP_reversebyte(buffer[0]) | BP_reversebyte(buffer[1]) << 8;	//upper 8 bits
 }
 
 uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postnop) {
@@ -300,19 +300,34 @@ uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postno
 		((struct BP_t*)pBP)->picmode = BP_PIC424;
 	}
 
-	buffer[0] = '\xA4';
-	buffer[1] = (uint8_t)(data);
-	buffer[2] = data >> 8;
-	buffer[3] = data >> 16;
-	buffer[4] = ((prenop << 4) | (postnop & 0x0F));
+//	buffer[0] = '\xA4';
+//	buffer[1] = (uint8_t)(data);
+//	buffer[2] = data >> 8;
+//	buffer[3] = data >> 16;
+//	buffer[4] = ((prenop << 4) | (postnop & 0x0F));
 
+	bpbuf[0] = '\xA4';
+	bpbuf[bpbufcnt] = BP_reversebyte((uint8_t)(data));
+	bpbufcnt++;
+	bpbuf[bpbufcnt] = BP_reversebyte((uint8_t)(data >> 8));
+	bpbufcnt++;
+    bpbuf[bpbufcnt] = BP_reversebyte((uint8_t)(data >> 16));
+	bpbufcnt++;
+    bpbuf[bpbufcnt] = ((prenop << 4) | (postnop & 0x0F));
+	bpbufcnt++;
 
-	serial_write(fd, buffer, 5);
-	res = serial_read(fd, buffer, 1);
-	if (buffer[0] != '\x01') {
-		puts("ERROR");
-		return -1;
+	bpbuf[1]=((bpbufcnt-2)/4);
+
+	if(bpbufcnt>(4*100)){
+        return BP_Flush(pBP);
 	}
+
+//	serial_write(fd, buffer, 5);
+//	res = serial_read(fd, buffer, 1);
+//	if (buffer[0] != '\x01') {
+//		puts("ERROR");
+//		return -1;
+//	}
 	return 0;
 }
 
@@ -321,11 +336,10 @@ uint32_t BP_Flush(void *pBP) {
 	uint8_t buffer[1] = {0};
 	int res = -1;
 
-    bpbuf[1]=((bpbufcnt-2)/3);
 	serial_write(fd, bpbuf, bpbufcnt);
 	res = serial_read(fd, buffer, 1);
 	if (buffer[0] != '\x01') {
-		puts("ERROR");
+		printf("ERROR: %#X",buffer[0]);
 		return -1;
 	}
 	bpbufcnt=2;//reset counter to data area
