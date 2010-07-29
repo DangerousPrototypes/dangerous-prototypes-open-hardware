@@ -79,14 +79,14 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
-	//cmd|=CMD_WRITE;
-    //cmd|=CMD_VERIFY;
+	cmd|=CMD_WRITE;
+    cmd|=CMD_VERIFY;
 	param_chip=strdup("24FJ64GA002");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
-	//param_write_file=strdup("test.hex");
-	//param_type=strdup("HEX");
+	param_write_file=strdup("test.hex");
+	param_type=strdup("HEX");
 #endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
@@ -246,8 +246,8 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 
 // execute commands
 	if (cmd & CMD_READ) {
-		picops->Read(&picprog, 0x0000, buf_read, picchip->flash);
-
+		//picops->Read(&picprog, 0x0000, buf_read, picchip->flash);
+        PIC_ReadFlash(&picprog, buf_read);
 		if (param_read_file == NULL) {
 			printf("No read file specified\n");
 			return -1;

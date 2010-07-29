@@ -93,7 +93,6 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t len
 	iface->PIC424Write(opts, 0x200006 | ((addr & 0x000ffff) << 4), 0, 2);//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
 	iface->PIC424Write(opts, 0x207847, 0, 1);//SIX,0x200007,5, N/A  //MOV #VISI,W7
 	//PIC24NOP();//SIX,0x000000,5, N/A
-    iface->flush(opts);
 
 	for(ctr = 0; ctr < length; ctr++){
 		iface->PIC424Write(opts, 0xBA0BB6, 0, 2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
@@ -109,9 +108,10 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t len
 			nopctr = 0; //only do occasionally
 			PIC24NOP();//SIX,0x000000,5, N/A
 			iface->PIC424Write(opts, 0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
-            iface->flush(opts);
+            //iface->flush(opts);
 		}
 	}
+	iface->flush(opts);
 	return 0;
 }
 
@@ -120,27 +120,34 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 //	uint16_t DataByte;//, buffer[2]={0x00,0x00};
-	uint32_t ctr;
+	uint32_t ctr, tem, tem1;
 //	uint8_t	buffer[4] = {0};
 	uint16_t VISI;
+
 
 	//set NVMCON
 	iface->PIC424Write(opts, 0x24001A, 0, 0); //MOV XXXX,W10 0x4001 (differs by PIC)
 	iface->PIC424Write(opts, 0x883B0A, 0, 0); //MOV W10,NVMCON
+    tblptr=tblptr/3;
+    //setup the table pointer
+	iface->PIC424Write(opts, 0x200000 | ((tblptr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
+	iface->PIC424Write(opts, 0x880190, 0, 1);//SIX,0x880190,5, N/AMOV W0, TBLPAG
+	iface->PIC424Write(opts, 0x200007 | ((tblptr & 0x000ffff) << 4), 0, 2);//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
 
-	//setup the table pointer
-	iface->PIC424Write(opts, 0x200000, 0, 0); //MOV XXXX,W0 (0x0000)
-	iface->PIC424Write(opts, 0x880190, 0, 1); //MOV W0,TABLPAG
-	iface->PIC424Write(opts, 0x200007, 0, 0); //MOV XXXX,W7 (0x0000)
-
-	for(ctr = 0; ctr < 16; ctr++)
+	for(ctr = 0; ctr < (length/12); ctr++) //really this is fixed at 16
 	{
-		iface->PIC424Write(opts, 0x200000, 0, 0); //MOV XXXX,W0 (0x0000)
-		iface->PIC424Write(opts, 0x200001, 0, 0); //MOV XXXX,W1 (0x0000)
-		iface->PIC424Write(opts, 0x200002, 0, 0); //MOV XXXX,W2(0x0000)
-		iface->PIC424Write(opts, 0x200003, 0, 0); //MOV XXXX,W3 (0x0000)
-		iface->PIC424Write(opts, 0x200004, 0, 0); //MOV XXXX,W4 (0x0000)
-		iface->PIC424Write(opts, 0x200005, 0, 0); //MOV XXXX,W5 (0x0000)
+		//iface->PIC424Write(opts, 0x200000 | ((((uint16_t *)Data)[ctr])<< 4), 0, 0); //MOV XXXX,W0 (0x0000) X10
+		iface->PIC424Write(opts, 0x200000 | ((((uint8_t *)Data)[(ctr*16)+1])<< 12)|((((uint8_t *)Data)[(ctr*16)])<< 4), 0, 0);
+	//	iface->PIC424Write(opts, 0x200001 | ((((uint16_t *)Data)[ctr+1])<< 4), 0, 0); //MOV XXXX,W1 (0x0000) 2XX/3XX
+        iface->PIC424Write(opts, 0x200001 | ((((uint8_t *)Data)[(ctr*16)+6])<< 12)|((((uint8_t *)Data)[(ctr*16)+2])<< 4), 0, 0);
+	//	iface->PIC424Write(opts, 0x200002 | ((((uint16_t *)Data)[ctr+2])<< 4), 0, 0); //MOV XXXX,W2(0x0000) X54
+        iface->PIC424Write(opts, 0x200002 | ((((uint8_t *)Data)[(ctr*16)+5])<< 12)|((((uint8_t *)Data)[(ctr*16)+4])<< 4), 0, 0);
+	//	iface->PIC424Write(opts, 0x200003 | ((((uint16_t *)Data)[ctr+3])<< 4), 0, 0); //MOV XXXX,W3 (0x0000)
+	    iface->PIC424Write(opts, 0x200003 | ((((uint8_t *)Data)[(ctr*16)+9])<< 12)|((((uint8_t *)Data)[(ctr*16)+8])<< 4), 0, 0);
+	//	iface->PIC424Write(opts, 0x200004 | ((((uint16_t *)Data)[ctr+4])<< 4), 0, 0); //MOV XXXX,W4 (0x0000)
+	    iface->PIC424Write(opts, 0x200004 | ((((uint8_t *)Data)[(ctr*16)+10])<< 12)|((((uint8_t *)Data)[(ctr*16)+14])<< 4), 0, 0);
+	//	iface->PIC424Write(opts, 0x200005 | ((((uint16_t *)Data)[ctr+5])<< 4), 0, 0); //MOV XXXX,W5 (0x0000)
+	    iface->PIC424Write(opts, 0x200005 | ((((uint8_t *)Data)[(ctr*16)+13])<< 12)|((((uint8_t *)Data)[(ctr*16)+12])<< 4), 0, 0);
 
 		iface->PIC424Write(opts, 0xEB0300, 0, 1);//CLR W6
 		iface->PIC424Write(opts, 0xBB0BB6, 0, 2);	//TBLWTL [W6++], [W7]
