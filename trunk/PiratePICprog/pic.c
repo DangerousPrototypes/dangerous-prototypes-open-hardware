@@ -53,8 +53,8 @@ const struct pic_family_t pic_family[] = {
 		.family = FAMILY_24FJxxGAxxx,
 		.proto = PROTO_PIC24,
 		.ID_addr = 0x00FF0000,
-		.word_size = 3,
-		.page_size = 192,
+		.word_size = 2,
+		.page_size = 256,
 		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4D434851,
 		.erase_key = { 0x3f3f, 0x8f8f },
@@ -187,7 +187,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 //			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 //		}
 
-		proto->Write(p, u_addr, &fw_data[page * [(fam->page_size/3)*4], fam->page_size); //&fw_data[page * fam->page_size]
+		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
 
 		//usleep(fam->write_delay * 1000);
 

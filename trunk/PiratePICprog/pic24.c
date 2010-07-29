@@ -128,13 +128,13 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	//set NVMCON
 	iface->PIC424Write(opts, 0x24001A, 0, 0); //MOV XXXX,W10 0x4001 (differs by PIC)
 	iface->PIC424Write(opts, 0x883B0A, 0, 0); //MOV W10,NVMCON
-    tblptr=tblptr/3;
+    tblptr=tblptr/4;
     //setup the table pointer
 	iface->PIC424Write(opts, 0x200000 | ((tblptr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
 	iface->PIC424Write(opts, 0x880190, 0, 1);//SIX,0x880190,5, N/AMOV W0, TBLPAG
 	iface->PIC424Write(opts, 0x200007 | ((tblptr & 0x000ffff) << 4), 0, 2);//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
 
-	for(ctr = 0; ctr < (length/12); ctr++) //really this is fixed at 16
+	for(ctr = 0; ctr < 16; ctr++) //really this is fixed at 16
 	{
 		//iface->PIC424Write(opts, 0x200000 | ((((uint16_t *)Data)[ctr])<< 4), 0, 0); //MOV XXXX,W0 (0x0000) X10
 		iface->PIC424Write(opts, 0x200000 | ((((uint8_t *)Data)[(ctr*16)+1])<< 12)|((((uint8_t *)Data)[(ctr*16)])<< 4), 0, 0);
