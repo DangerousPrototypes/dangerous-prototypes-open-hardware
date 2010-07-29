@@ -12,6 +12,7 @@
 
 enum {
 	FAMILY_18F2xJxx, // also 18F4xJxx
+	FAMILY_24FJxxGAxxx,
 };
 
 #define CHIP_CNT (sizeof(pic_chip)/sizeof(struct pic_chip_t))
@@ -25,6 +26,14 @@ const struct pic_chip_t pic_chip[] = {
 		.eeprom = 0,
 		.family = FAMILY_18F2xJxx,
 	},
+    {
+		.name = "24FJ64GA002",
+		.ID = 0x447,
+		.flash = 250*192,
+		.eeprom = 0,
+		.family = FAMILY_24FJxxGAxxx,
+	},
+
 };
 
 const struct pic_family_t pic_family[] = {
@@ -32,12 +41,24 @@ const struct pic_family_t pic_family[] = {
 		.family = FAMILY_18F2xJxx,
 		.proto = PROTO_PIC18,
 		.ID_addr = 0x3ffffe,
-		.word_size = 2,
-		.page_size = 64,
+		.word_size = 2, //bytes
+		.page_size = 64, //bytes (32 words)
 		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4d434850,
 		.erase_key = { 0x3f3f, 0x8f8f },
 		.write_delay = 1,
+		.erase_delay = 524,
+	},
+    {
+		.family = FAMILY_24FJxxGAxxx,
+		.proto = PROTO_PIC24,
+		.ID_addr = 0x00FF0000,
+		.word_size = 3,
+		.page_size = 192,
+		.icsp_type = ICSP_LVPP,
+		.icsp_key = 0x4D434851,
+		.erase_key = { 0x3f3f, 0x8f8f },
+		.write_delay = 1, //polled in 24FJ
 		.erase_delay = 524,
 	},
 
