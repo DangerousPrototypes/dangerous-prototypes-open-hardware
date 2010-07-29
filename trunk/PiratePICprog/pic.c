@@ -29,7 +29,7 @@ const struct pic_chip_t pic_chip[] = {
     {
 		.name = "24FJ64GA002",
 		.ID = 0x447,
-		.flash = 250*192,
+		.flash = 344*256,
 		.eeprom = 0,
 		.family = FAMILY_24FJxxGAxxx,
 	},
@@ -141,7 +141,14 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 	uint8_t used = 0, t;
-	uint16_t i = 0;
+	uint16_t i = 0, ctr;
+
+		uint8_t tData[256];
+
+	for(ctr=0; ctr<(256); ctr++){
+        tData[ctr]=ctr;
+
+	}
 
     proto->EnterICSP(p, fam->icsp_type);
 
@@ -180,7 +187,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 //			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 //		}
 
-		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+		proto->Write(p, u_addr, &fw_data[page * [(fam->page_size/3)*4], fam->page_size); //&fw_data[page * fam->page_size]
 
 		//usleep(fam->write_delay * 1000);
 
@@ -219,10 +226,10 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
-/*		if (p->debug) {
+//		if (p->debug) {
 			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-		}
-*/
+//		}
+
 		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
