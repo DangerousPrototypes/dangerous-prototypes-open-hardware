@@ -128,7 +128,7 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	//set NVMCON
 	iface->PIC424Write(opts, 0x24001A, 0, 0); //MOV XXXX,W10 0x4001 (differs by PIC)
 	iface->PIC424Write(opts, 0x883B0A, 0, 0); //MOV W10,NVMCON
-    tblptr=tblptr/4;
+    tblptr=tblptr/2;
     //setup the table pointer
 	iface->PIC424Write(opts, 0x200000 | ((tblptr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
 	iface->PIC424Write(opts, 0x880190, 0, 1);//SIX,0x880190,5, N/AMOV W0, TBLPAG
@@ -145,7 +145,7 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	//	iface->PIC424Write(opts, 0x200003 | ((((uint16_t *)Data)[ctr+3])<< 4), 0, 0); //MOV XXXX,W3 (0x0000)
 	    iface->PIC424Write(opts, 0x200003 | ((((uint8_t *)Data)[(ctr*16)+9])<< 12)|((((uint8_t *)Data)[(ctr*16)+8])<< 4), 0, 0);
 	//	iface->PIC424Write(opts, 0x200004 | ((((uint16_t *)Data)[ctr+4])<< 4), 0, 0); //MOV XXXX,W4 (0x0000)
-	    iface->PIC424Write(opts, 0x200004 | ((((uint8_t *)Data)[(ctr*16)+10])<< 12)|((((uint8_t *)Data)[(ctr*16)+14])<< 4), 0, 0);
+	    iface->PIC424Write(opts, 0x200004 | ((((uint8_t *)Data)[(ctr*16)+14])<< 12)|((((uint8_t *)Data)[(ctr*16)+10])<< 4), 0, 0);
 	//	iface->PIC424Write(opts, 0x200005 | ((((uint16_t *)Data)[ctr+5])<< 4), 0, 0); //MOV XXXX,W5 (0x0000)
 	    iface->PIC424Write(opts, 0x200005 | ((((uint8_t *)Data)[(ctr*16)+13])<< 12)|((((uint8_t *)Data)[(ctr*16)+12])<< 4), 0, 0);
 

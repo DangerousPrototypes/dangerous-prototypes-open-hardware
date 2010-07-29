@@ -143,13 +143,6 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint8_t used = 0, t;
 	uint16_t i = 0, ctr;
 
-		uint8_t tData[256];
-
-	for(ctr=0; ctr<(256); ctr++){
-        tData[ctr]=ctr;
-
-	}
-
     proto->EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
@@ -160,12 +153,25 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		// check used page
 		used = 0;
+		t=0;
 		for (i = 0; i < fam->page_size; i++) {
-		    t=fw_data[u_addr+i];
-			if (fw_data[u_addr+i] != PIC_EMPTY) {
-				used = 1;
-				break;
-			}
+		    if(fam->proto==PROTO_PIC24){
+                if(t==3){
+                    t=0;
+                }else{
+                    t++; //t=fw_data[u_addr+i];
+                    if (fw_data[u_addr+i] != PIC_EMPTY) {
+                        used = 1;
+                        break;
+                    }
+                }
+		    }else{
+                //t=fw_data[u_addr+i];
+                if (fw_data[u_addr+i] != PIC_EMPTY) {
+                    used = 1;
+                    break;
+                }
+		    }
 		}
 
 		// skip unused
