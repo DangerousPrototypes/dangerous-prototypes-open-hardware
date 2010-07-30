@@ -1,4 +1,8 @@
-
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include "common.h"
 #include "pic.h"
 #include "iface.h"
 #include "pic24.h"
@@ -72,7 +76,7 @@ uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
 
     PIC24_EnterICSP(p, f->icsp_type);
 
-	PIC24_Read(p, 0x00FF0000, (void*)&PICid, 2); //give it the ID addres
+	PIC24_Read(p, 0x00FF0000, (void*)&PICid, 4); //give it the ID addres
 
     PIC24_ExitICSP(p);
 
@@ -91,27 +95,26 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t len
 	iface->PIC424Write(opts, 0x200000 | ((addr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
 	iface->PIC424Write(opts, 0x880190, 0, 0);//SIX,0x880190,5, N/AMOV W0, TBLPAG
 	iface->PIC424Write(opts, 0x200006 | ((addr & 0x000ffff) << 4), 0, 2);//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
-	iface->PIC424Write(opts, 0x207847, 0, 1);//SIX,0x200007,5, N/A  //MOV #VISI,W7
-	//PIC24NOP();//SIX,0x000000,5, N/A
-
-	for(ctr = 0; ctr < length; ctr++){
-		iface->PIC424Write(opts, 0xBA0BB6, 0, 2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
-        iface->flush(opts);
-
-		((uint16_t*)Data)[ctr] = iface->PIC424Read(opts); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+	iface->PIC424Write(opts, 0x207847, 0, 1);//SIX,0x200007,5, N/A  //MOV #VISI,W7 //PIC24NOP();//SIX,0x000000,5, N/A
+    iface->flush(opts);
+	//for(ctr = 0; ctr < length; ctr++){
+		//iface->PIC424Write(opts, 0xBA0BB6, 0, 2); //SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++]
+        //iface->flush(opts);
+        iface->PIC424Read(opts, 0xBA0BB6, Data, length);
+		//((uint16_t*)Data)[ctr] = iface->PIC424Read(opts);//, 0xBA0BB6, 0, 2); //REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",Data[ctr]); //REGOUT,0x000000,5, read VISI register
 
 		//every so often we need to reset the address pointer or it will fall off the end
 		//also do it the last time
-		nopctr++;
-		if((nopctr > 10) || ((ctr + 1) == length)){
-			nopctr = 0; //only do occasionally
+		//nopctr++;
+		//if((nopctr > 10) || ((ctr + 1) == length)){
+		//	nopctr = 0; //only do occasionally
 			PIC24NOP();//SIX,0x000000,5, N/A
 			iface->PIC424Write(opts, 0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
-            //iface->flush(opts);
-		}
-	}
-	iface->flush(opts);
+            iface->flush(opts);
+		//}
+	//}
+	//iface->flush(opts);
 	return 0;
 }
 
@@ -165,20 +168,20 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
     iface->flush(opts);
 
 	//repeat until write done, should reset counter every now and then too... 11000000 01001111
-	while(1) {
-		PIC24NOP();
-		iface->PIC424Write(opts, 0x803B02, 0, 2);//MOV NVMCON,W2
-		iface->PIC424Write(opts, 0x883C22, 0, 2);//MOV W2,VISI
-        iface->flush(opts);
+	//while(1) {
+		//PIC24NOP();
+		//iface->PIC424Write(opts, 0x803B02, 0, 2);//MOV NVMCON,W2
+		//iface->PIC424Write(opts, 0x883C22, 0, 2);//MOV W2,VISI
+        //iface->flush(opts);
 
-		VISI = iface->PIC424Read(opts);//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+		//VISI = iface->PIC424Read(opts,0xBA0BB6, Data, 1);//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
 		PIC24NOP();//SIX,0x000000,5, N/A
 		iface->PIC424Write(opts, 0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
         iface->flush(opts);
-
-		if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
-	}
+        usleep(3000);
+		//if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
+	//}
 	return 0;
 }
 
@@ -204,20 +207,21 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
 	//sleep(1);
 
 	//repeat until erase done, should reset counter every now and then too... 11000000 01001111
-	while(1){
-		PIC24NOP();
-		iface->PIC424Write(opts, 0x803B02, 0, 2);//MOV NVMCON,W2
-		iface->PIC424Write(opts, 0x883C22, 0, 2);//MOV W2,VISI
-        iface->flush(opts);
+	//while(1){
+		//PIC24NOP();
+		//iface->PIC424Write(opts, 0x803B02, 0, 2);//MOV NVMCON,W2
+		//iface->PIC424Write(opts, 0x883C22, 0, 2);//MOV W2,VISI
+        //iface->flush(opts);
 
-		VISI = iface->PIC424Read(opts);//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
+		//VISI = iface->PIC424Read(opts);//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
 		PIC24NOP();//SIX,0x000000,5, N/A
 		iface->PIC424Write(opts, 0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
         iface->flush(opts);
 
-		if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
-	}
+		//if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
+        usleep(1000 * f->erase_delay);
+	//}
 
     PIC24_ExitICSP(p);
 

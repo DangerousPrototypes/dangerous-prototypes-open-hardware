@@ -257,8 +257,8 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length) {
 	}
 
 	buffer[0] = '\xA5';
-	buffer[1] = cmd;
-	buffer[2]=length;
+	buffer[1] = length;
+	buffer[2] = cmd;
 
 	serial_write(fd, buffer, 3);
 	res = serial_read(fd, Data, length);
@@ -272,10 +272,10 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length) {
 
 
 
-uint32_t BP_PIC424Read(void *pBP) {
+uint32_t BP_PIC424Read(void *pBP, uint32_t cmd, void *Data, uint32_t length) {
 	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
-	uint8_t buffer[4] = {0};
+	uint8_t buffer[5] = {0};
 	int res = -1;
 
 	if (mode != BP_PIC424){
@@ -283,10 +283,20 @@ uint32_t BP_PIC424Read(void *pBP) {
 		((struct BP_t*)pBP)->picmode = BP_PIC424;
 	}
 
-	serial_write(fd, "\xA5", 1);
-	res = serial_read(fd, buffer, 2);
 
-	return BP_reversebyte(buffer[0]) | BP_reversebyte(buffer[1]) << 8;	//upper 8 bits
+	buffer[0]='\xA5';
+	buffer[1]=length/2;
+	buffer[2]= BP_reversebyte((uint8_t)(cmd));
+	buffer[3]= BP_reversebyte((uint8_t)(cmd >> 8));
+    buffer[4]= BP_reversebyte((uint8_t)(cmd >> 16));
+    serial_write(fd, buffer, 5);
+    res = serial_read(fd, Data, length);
+	//res = serial_read(fd, buffer, 2);
+
+    //swap bit order
+    BPdr(Data, length);
+
+	return 0; //BP_reversebyte(buffer[0]) | BP_reversebyte(buffer[1]) << 8;	//upper 8 bits
 }
 
 uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postnop) {

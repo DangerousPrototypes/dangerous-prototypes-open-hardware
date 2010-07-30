@@ -31,7 +31,7 @@ struct iface_t {
 	uint32_t (*PIC416Read)(void *, uint8_t, void *, uint32_t);
 	uint32_t (*PIC416Write)(void *, uint8_t, uint16_t);
 
-	uint32_t (*PIC424Read)(void *);
+	uint32_t (*PIC424Read)(void *, uint32_t, void *, uint32_t);
 	uint32_t (*PIC424Write)(void *, uint32_t, uint8_t, uint8_t);
 
 	uint32_t (*flush)(void *pBP);
