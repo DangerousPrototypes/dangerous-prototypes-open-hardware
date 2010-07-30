@@ -73,6 +73,16 @@ uint32_t BP_MCLRLow(void *pBP) {
 	return BP_WriteToPirate(fd, "\x04");
 }
 
+uint32_t BP_VPPHigh(void *pBP) {
+	int fd = ((struct BP_t *)pBP)->fd;
+	return BP_WriteToPirate(fd, "\x4B");
+}
+
+uint32_t BP_VPPLow(void *pBP) {
+	int fd = ((struct BP_t *)pBP)->fd;
+	return BP_WriteToPirate(fd, "\x49");
+}
+
 uint32_t BP_Init(void *p, char *port, char *speed) {
 	int fd;
 

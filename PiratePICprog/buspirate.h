@@ -30,6 +30,8 @@ uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length);
 uint32_t BP_PIC424Read(void *, uint32_t cmd, void *Data, uint32_t length);
 uint32_t BP_PIC424Write(void *, uint32_t , uint8_t, uint8_t);
 uint32_t BP_Flush(void *pBP);
+uint32_t BP_VPPHigh(void *pBP);
+uint32_t BP_VPPLow(void *pBP);
 
 #endif
 

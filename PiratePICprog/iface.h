@@ -36,6 +36,9 @@ struct iface_t {
 
 	uint32_t (*flush)(void *pBP);
 
+	uint32_t (*VPPHigh)(void *pBP);
+	uint32_t (*VPPLow)(void *pBP);
+
 };
 
 

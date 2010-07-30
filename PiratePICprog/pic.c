@@ -13,12 +13,20 @@
 enum {
 	FAMILY_18F2xJxx, // also 18F4xJxx
 	FAMILY_24FJxxGAxxx,
+	FAMILY_18Fx5xx,
 };
 
 #define CHIP_CNT (sizeof(pic_chip)/sizeof(struct pic_chip_t))
 #define FAMILY_CNT (sizeof(pic_family)/sizeof(struct pic_family_t))
 
 const struct pic_chip_t pic_chip[] = {
+    {
+		.name = "18F2550",
+		.ID = 0x92,
+		.flash = 0x8000,
+		.eeprom = 256,
+		.family = FAMILY_18Fx5xx,
+	},
 	{
 		.name = "18F24J50",
 		.ID = 0x260,
@@ -59,6 +67,18 @@ const struct pic_family_t pic_family[] = {
 		.icsp_key = 0x4D434851,
 		.erase_key = { 0x3f3f, 0x8f8f },
 		.write_delay = 1, //polled in 24FJ
+		.erase_delay = 524,
+	},
+    {
+		.family = FAMILY_18Fx5xx,
+		.proto = PROTO_PIC18,
+		.ID_addr = 0x3ffffe,
+		.word_size = 2, //bytes
+		.page_size = 32, //bytes (32 words)
+		.icsp_type = ICSP_HVPP,
+		.icsp_key = 0x00000000,
+		.erase_key = { 0x3f3f, 0x8f8f },
+		.write_delay = 1,
 		.erase_delay = 524,
 	},
 
@@ -200,7 +220,7 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 		done += fam->page_size;
 	}
 
-    proto->ExitICSP(p);
+    proto->ExitICSP(p, fam->icsp_type);
 
 	return done;
 }
@@ -241,7 +261,7 @@ int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 		done += fam->page_size;
 	}
 
-    proto->ExitICSP(p);
+    proto->ExitICSP(p, fam->icsp_type);
 
 	return done;
 }
