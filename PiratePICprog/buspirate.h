@@ -27,7 +27,7 @@ uint32_t BP_MCLRLow(void *);
 uint32_t BP_MCLRHigh(void *);
 uint32_t BP_PIC416Write(void *, uint8_t cmd, uint16_t data);
 uint32_t BP_PIC416Read(void *pBP, uint8_t cmd, void *Data, uint32_t length);
-uint32_t BP_PIC424Read(void *);
+uint32_t BP_PIC424Read(void *, uint32_t cmd, void *Data, uint32_t length);
 uint32_t BP_PIC424Write(void *, uint32_t , uint8_t, uint8_t);
 uint32_t BP_Flush(void *pBP);
 

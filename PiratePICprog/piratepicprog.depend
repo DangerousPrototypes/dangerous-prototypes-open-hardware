@@ -140,7 +140,7 @@
 	<string.h>
 	"serial.h"
 
-1280396539 source:e:\work\dp-svn\trunk\piratepicprog\buspirate.c
+1280476870 source:e:\work\dp-svn\trunk\piratepicprog\buspirate.c
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
@@ -153,7 +153,7 @@
 	<stdint.h>
 	"iface.h"
 
-1280331146 e:\work\dp-svn\trunk\piratepicprog\iface.h
+1280420947 e:\work\dp-svn\trunk\piratepicprog\iface.h
 	<stdint.h>
 
 1279207529 e:\work\dp-svn\trunk\piratepicprog\serial.h
@@ -175,7 +175,7 @@
 	<sys/types.h>
 	<sys/time.h>
 
-1280330866 e:\work\dp-svn\trunk\piratepicprog\buspirate.h
+1280420963 e:\work\dp-svn\trunk\piratepicprog\buspirate.h
 	<stdint.h>
 
 1279207529 source:e:\work\dp-svn\trunk\piratepicprog\common.c
@@ -198,7 +198,7 @@
 	"buspirate.h"
 	"iface.h"
 
-1280410944 source:e:\work\dp-svn\trunk\piratepicprog\pic.c
+1280417147 source:e:\work\dp-svn\trunk\piratepicprog\pic.c
 	<stdint.h>
 	<stdio.h>
 	<unistd.h>
@@ -244,7 +244,12 @@
 	"proto_pic.h"
 	"common.h"
 
-1280410533 source:e:\work\dp-svn\trunk\piratepicprog\pic24.c
+1280477405 source:e:\work\dp-svn\trunk\piratepicprog\pic24.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<unistd.h>
+	"common.h"
 	"pic.h"
 	"iface.h"
 	"pic24.h"
