@@ -15,10 +15,19 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 
 	uint8_t buffer[4];
 
+	iface->ClockLow(opts);
+	iface->DataLow(opts);
+	//AUX low...
+
 	//for
 	if(type==ICSP_HVPP){
-		iface->MCLRLow(opts);
-		//iface->MCLRHVP(opts);
+	    //a transistor is connected so this is opposite
+        iface->MCLRHigh(opts);//makes 0
+	    iface->MCLRLow(opts); //lets go high
+        iface->MCLRHigh(opts); //makes 0
+
+        iface->VPPHigh(opts); //AUX high to apply 13V (CS=1)
+        iface->MCLRLow(opts); //MCLR low to bring MCLR to 13volts
         return 0;
 	}
 
@@ -27,9 +36,6 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	//pritf("Set mode for MCLR (MSB)...");
 
 	//iface->SetBitOrder(opts, BIT_LSB);
-
-	iface->ClockLow(opts);
-	iface->DataLow(opts);
 	iface->MCLRLow(opts);
 	iface->MCLRHigh(opts);
 	iface->MCLRLow(opts);
@@ -64,11 +70,20 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	return 0;
 }
 
-uint32_t PIC18_ExitICSP(struct picprog_t *p){
+uint32_t PIC18_ExitICSP(struct picprog_t *p, enum icsp_t type){
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
 	//exit programming mode
+
+	if(type==ICSP_HVPP){
+	    //a transistor is connected so this is opposite
+        iface->VPPLow(opts); //Turn off AUX, remove 13V (CS=1)
+        //iface->MCLRHigh(opts);//makes 0
+	    iface->MCLRLow(opts); //lets go high
+        return 0;
+	}
+
 	iface->MCLRLow(opts);
 	iface->MCLRHigh(opts);
 	return 0;
@@ -106,7 +121,7 @@ uint32_t PIC18_Erase(struct picprog_t *p) {
 	iface->flush(opts);
 	usleep(1000 * f->erase_delay);
 
-	PIC18_ExitICSP(p);
+	PIC18_ExitICSP(p, f->icsp_type);
 
 	return 0;
 }
@@ -127,9 +142,10 @@ uint32_t PIC18_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev){
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	iface->PIC416Read(opts, 0x09, buffer, 2 );	//lower 8 bits
 
+    PIC18_ExitICSP(p, f->icsp_type);
+
     PICid=buffer[0];
     PICid|=(buffer[1]<<8);
-    PIC18_ExitICSP(p);
 
     //determine device type
 	*rev=(PICid&(~0xFFE0)); //find PIC ID (lower 5 bits)

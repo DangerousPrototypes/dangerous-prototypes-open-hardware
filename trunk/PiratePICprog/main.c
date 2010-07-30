@@ -79,9 +79,9 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
-	cmd|=CMD_WRITE;
-    cmd|=CMD_VERIFY;
-	param_chip=strdup("24FJ64GA002");
+	//cmd|=CMD_WRITE;
+    //cmd|=CMD_VERIFY;
+	param_chip=strdup("18F2550");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
@@ -213,7 +213,7 @@ int main(int argc, char** argv) {
 //determine device type
 	if(PICid!=picchip->ID)
 	{
-	    printf("Wrong device ID: %#X \n", PICidver);
+	    printf("Wrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
  	    return -1;
 	}
     printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);

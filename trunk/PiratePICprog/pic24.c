@@ -57,7 +57,7 @@ uint32_t PIC24_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	return 0;
 }
 
-uint32_t PIC24_ExitICSP(struct picprog_t *p) {
+uint32_t PIC24_ExitICSP(struct picprog_t *p, enum icsp_t type) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
@@ -78,7 +78,7 @@ uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
 
 	PIC24_Read(p, 0x00FF0000, (void*)&PICid, 4); //give it the ID addres
 
-    PIC24_ExitICSP(p);
+    PIC24_ExitICSP(p, f->icsp_type);
 
     //determine device type
 	*rev=(uint16_t)(PICid>>16); //find PIC ID (lower 16 bits)
@@ -223,7 +223,7 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
         usleep(1000 * f->erase_delay);
 	//}
 
-    PIC24_ExitICSP(p);
+    PIC24_ExitICSP(p, f->icsp_type);
 
 	return 0;
 }
