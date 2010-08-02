@@ -11,12 +11,14 @@ static
 uint8_t BP_reversebyte(uint8_t c);
 static char bpbuf[4096];
 static int bpbufcnt;
-
+extern disable_comport;
 //low lever send command, get reply function
 static uint32_t BP_WriteToPirate(int fd, uint8_t* val) {
 	int res = -1;
 	uint8_t ret = 0;
 
+    if (disable_comport== 1)
+         return 0;
 	serial_write(fd, val, 1);
 	res = serial_read(fd, &ret, 1);
 
@@ -36,12 +38,20 @@ static void BP_EnableRaw2Wire(int fd)
 	int tries=0;
 
 	printf("Entering binary mode\n");
-
+    if (disable_comport==1) return;        //added to disable comport
 	/* reads 1 to n "BBIO1"s and one "OCD1" */
+
+	if (fd==-1)   //added because the fd has already returned null
+	{
+	    printf("Port does not exist!");
+	    return;
+
+	}
 	while (!done) {
 		tmp[0]=0x00;
 		serial_write(fd, tmp, 1);
 		tries++;
+	//	printf("tries: %i Ret %i\n",tries,ret);
 		usleep(10);
 		ret = serial_read(fd, tmp, 5);
 		if (ret != 5 && tries>20) {
@@ -49,6 +59,10 @@ static void BP_EnableRaw2Wire(int fd)
 			exit(-1);
 		}else if (strncmp(tmp, "BBIO1", 5) == 0) {
 			done=1;
+		}
+		if (tries>25){
+		printf("Buspirate:Too many tries in serial read! -exiting \n - chip not detected, or not readable/writable\n");
+		exit(-1);
 		}
 	}
 
@@ -85,12 +99,17 @@ uint32_t BP_VPPLow(void *pBP) {
 
 uint32_t BP_Init(void *p, char *port, char *speed) {
 	int fd;
-
+    printf("%s\n",speed);
 	fd = serial_open(port);
+	if (disable_comport !=1)
+	{
+
 	if (fd < 0) {
 		fprintf(stderr, "BP: Error openning serial port\n");
+		exit(-1);
 		return -1;
 	}
+
 
 	serial_setup(fd, B115200);
 	BP_EnableRaw2Wire(fd);
@@ -113,6 +132,12 @@ uint32_t BP_Init(void *p, char *port, char *speed) {
 	if (BP_WriteToPirate(fd, "\x4F")){
 		puts("ERROR");
 		return -1;
+	}
+}
+	else
+	{
+	    printf("bypassing port\n");
+
 	}
 	printf("(OK) \n");
     pBP.fd=fd;

@@ -140,7 +140,7 @@
 	<string.h>
 	"serial.h"
 
-1280500482 source:e:\work\dp-svn\trunk\piratepicprog\buspirate.c
+1280612138 source:e:\work\dp-svn\trunk\piratepicprog\buspirate.c
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
@@ -149,14 +149,14 @@
 	"serial.h"
 	"buspirate.h"
 
-1279207529 e:\work\dp-svn\trunk\piratepicprog\common.h
+1279207530 e:\work\dp-svn\trunk\piratepicprog\common.h
 	<stdint.h>
 	"iface.h"
 
-1280500420 e:\work\dp-svn\trunk\piratepicprog\iface.h
+1280590632 e:\work\dp-svn\trunk\piratepicprog\iface.h
 	<stdint.h>
 
-1279207529 e:\work\dp-svn\trunk\piratepicprog\serial.h
+1279207530 e:\work\dp-svn\trunk\piratepicprog\serial.h
 	<windows.h>
 	<time.h>
 	<unistd.h>
@@ -175,30 +175,30 @@
 	<sys/types.h>
 	<sys/time.h>
 
-1280500383 e:\work\dp-svn\trunk\piratepicprog\buspirate.h
+1280500384 e:\work\dp-svn\trunk\piratepicprog\buspirate.h
 	<stdint.h>
 
-1279207529 source:e:\work\dp-svn\trunk\piratepicprog\common.c
+1279207530 source:e:\work\dp-svn\trunk\piratepicprog\common.c
 	<stdint.h>
 	<stdio.h>
 	"common.h"
 	<unistd.h>
 	<windows.h>
 
-1279207529 source:e:\work\dp-svn\trunk\piratepicprog\data_file.c
+1279207530 source:e:\work\dp-svn\trunk\piratepicprog\data_file.c
 	<stdio.h>
 	<stdlib.h>
 	"data_file.h"
 
-1279207529 e:\work\dp-svn\trunk\piratepicprog\data_file.h
+1279207530 e:\work\dp-svn\trunk\piratepicprog\data_file.h
 	<stdint.h>
 
-1280500461 source:e:\work\dp-svn\trunk\piratepicprog\iface.c
+1280590632 source:e:\work\dp-svn\trunk\piratepicprog\iface.c
 	<string.h>
 	"buspirate.h"
 	"iface.h"
 
-1280502416 source:e:\work\dp-svn\trunk\piratepicprog\pic.c
+1280502418 source:e:\work\dp-svn\trunk\piratepicprog\pic.c
 	<stdint.h>
 	<stdio.h>
 	<unistd.h>
@@ -208,43 +208,43 @@
 	"iface.h"
 	"common.h"
 
-1280501053 e:\work\dp-svn\trunk\piratepicprog\proto_pic.h
+1280501054 e:\work\dp-svn\trunk\piratepicprog\proto_pic.h
 	<stdint.h>
 	"common.h"
 
-1279207529 e:\work\dp-svn\trunk\piratepicprog\pic.h
+1279207530 e:\work\dp-svn\trunk\piratepicprog\pic.h
 	<stdint.h>
 	"common.h"
 	"proto_pic.h"
 
-1280501053 source:e:\work\dp-svn\trunk\piratepicprog\pic12.c
+1280501054 source:e:\work\dp-svn\trunk\piratepicprog\pic12.c
 	"pic12.h"
 
-1280501021 e:\work\dp-svn\trunk\piratepicprog\pic12.h
+1280501022 e:\work\dp-svn\trunk\piratepicprog\pic12.h
 	<stdint.h>
 	"proto_pic.h"
 	"common.h"
 
-1280501053 source:e:\work\dp-svn\trunk\piratepicprog\pic16.c
+1280501054 source:e:\work\dp-svn\trunk\piratepicprog\pic16.c
 	"pic16.h"
 
-1280501053 e:\work\dp-svn\trunk\piratepicprog\pic16.h
+1280501054 e:\work\dp-svn\trunk\piratepicprog\pic16.h
 	<stdint.h>
 	"proto_pic.h"
 	"common.h"
 
-1280501123 source:e:\work\dp-svn\trunk\piratepicprog\pic18.c
+1280501124 source:e:\work\dp-svn\trunk\piratepicprog\pic18.c
 	<unistd.h>
 	"pic.h"
 	"iface.h"
 	"pic18.h"
 
-1280501053 e:\work\dp-svn\trunk\piratepicprog\pic18.h
+1280501054 e:\work\dp-svn\trunk\piratepicprog\pic18.h
 	<stdint.h>
 	"proto_pic.h"
 	"common.h"
 
-1280501139 source:e:\work\dp-svn\trunk\piratepicprog\pic24.c
+1280501140 source:e:\work\dp-svn\trunk\piratepicprog\pic24.c
 	<stdlib.h>
 	<string.h>
 	<stdio.h>
@@ -254,12 +254,12 @@
 	"iface.h"
 	"pic24.h"
 
-1280501053 e:\work\dp-svn\trunk\piratepicprog\pic24.h
+1280501054 e:\work\dp-svn\trunk\piratepicprog\pic24.h
 	<stdint.h>
 	"proto_pic.h"
 	"common.h"
 
-1279207529 source:e:\work\dp-svn\trunk\piratepicprog\proto_pic.c
+1279207530 source:e:\work\dp-svn\trunk\piratepicprog\proto_pic.c
 	<stdio.h>
 	"pic12.h"
 	"pic16.h"
@@ -267,14 +267,160 @@
 	"pic24.h"
 	"proto_pic.h"
 
-1279207529 source:e:\work\dp-svn\trunk\piratepicprog\serial.c
+1280592474 source:e:\work\dp-svn\trunk\piratepicprog\serial.c
 	<stdio.h>
 	<stdlib.h>
 	<fcntl.h>
 	<string.h>
 	"serial.h"
 
-1280503015 source:e:\work\dp-svn\trunk\piratepicprog\main.c
+1280612702 source:e:\work\dp-svn\trunk\piratepicprog\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	"pic.h"
+	"proto_pic.h"
+	"data_file.h"
+	"iface.h"
+	"common.h"
+	"buspirate.h"
+
+1280590539 source:c:\pirates\piratepicprog\buspirate.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<unistd.h>
+	"common.h"
+	"serial.h"
+	"buspirate.h"
+
+1279185930 c:\pirates\piratepicprog\common.h
+	<stdint.h>
+	"iface.h"
+
+1280569033 c:\pirates\piratepicprog\iface.h
+	<stdint.h>
+
+1279185930 c:\pirates\piratepicprog\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1280478784 c:\pirates\piratepicprog\buspirate.h
+	<stdint.h>
+
+1279185930 source:c:\pirates\piratepicprog\common.c
+	<stdint.h>
+	<stdio.h>
+	"common.h"
+	<unistd.h>
+	<windows.h>
+
+1279185930 source:c:\pirates\piratepicprog\data_file.c
+	<stdio.h>
+	<stdlib.h>
+	"data_file.h"
+
+1279185930 c:\pirates\piratepicprog\data_file.h
+	<stdint.h>
+
+1280569033 source:c:\pirates\piratepicprog\iface.c
+	<string.h>
+	"buspirate.h"
+	"iface.h"
+
+1280480818 source:c:\pirates\piratepicprog\pic.c
+	<stdint.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	"proto_pic.h"
+	"pic.h"
+	"iface.h"
+	"common.h"
+
+1280479454 c:\pirates\piratepicprog\proto_pic.h
+	<stdint.h>
+	"common.h"
+
+1279185930 c:\pirates\piratepicprog\pic.h
+	<stdint.h>
+	"common.h"
+	"proto_pic.h"
+
+1280479454 source:c:\pirates\piratepicprog\pic12.c
+	"pic12.h"
+
+1280479422 c:\pirates\piratepicprog\pic12.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1280479454 source:c:\pirates\piratepicprog\pic16.c
+	"pic16.h"
+
+1280479454 c:\pirates\piratepicprog\pic16.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1280479524 source:c:\pirates\piratepicprog\pic18.c
+	<unistd.h>
+	"pic.h"
+	"iface.h"
+	"pic18.h"
+
+1280479454 c:\pirates\piratepicprog\pic18.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1280479540 source:c:\pirates\piratepicprog\pic24.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<unistd.h>
+	"common.h"
+	"pic.h"
+	"iface.h"
+	"pic24.h"
+
+1280479454 c:\pirates\piratepicprog\pic24.h
+	<stdint.h>
+	"proto_pic.h"
+	"common.h"
+
+1279185930 source:c:\pirates\piratepicprog\proto_pic.c
+	<stdio.h>
+	"pic12.h"
+	"pic16.h"
+	"pic18.h"
+	"pic24.h"
+	"proto_pic.h"
+
+1280570874 source:c:\pirates\piratepicprog\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1280590376 source:c:\pirates\piratepicprog\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
