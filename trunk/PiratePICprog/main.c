@@ -7,7 +7,8 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-#define DEBUG
+//#define DEBUG
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +22,7 @@
 #include "buspirate.h"
 
 int verbose = 0;
-
+int disable_comport = 0;   //1 to say yes, disable comport, any value to enable port default is 0 meaning port is enable.
 enum {
 	CMD_READ = 1,
 	CMD_WRITE = 2,
@@ -31,7 +32,12 @@ enum {
 
 
 void print_usage(char* name) {
-		printf("parameters:\n");
+        printf("Pirate Pic Programmer\n");
+        printf("USAGE: \n");
+        printf(" %s -p PROG -u PORT -s SPEED -c CHIP -t TYPE -w | -r FILE  -E | -W | -R | -V \n" ,name);
+
+        printf(" %s -h \n\n" ,name);
+
 		printf("-p PROG  - name of interface\n");
 		printf("-u PORT  - interface port\n");
 		printf("-s SPEED - interface speed\n");
@@ -47,7 +53,12 @@ void print_usage(char* name) {
 		printf("-R  - reads data from Flash\n");
 		printf("-V  - verifies content of flash\n");
 		printf("-I  - get the chip ID\n");
+		printf("-h  - this help usage\n");
 		printf("\n\n");
+		printf("Example usage: %s -p buspirate -u COM12 -s 115200 -c 18F2550 -t HEX  -r test.hex  -E\n",name);
+        printf("               %s -p buspirate -u COM12 -s 115200 -c 18F2550 -i\n",name);
+        printf("               %s -h\n",name);
+
 }
 
 int main(int argc, char** argv) {
@@ -75,7 +86,7 @@ int main(int argc, char** argv) {
 	struct pic_family_t *picfamily;
 
 
-	printf("Pirate PIC Programer\n\n");
+	printf("(Bus) Pirate PIC Programer v0.1 \n\n");
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
@@ -88,8 +99,16 @@ int main(int argc, char** argv) {
 	param_write_file=strdup("test.hex");
 	param_type=strdup("HEX");
 #endif
+// added routine to trap no arguments
+	if (argc <= 1)  {
+	    printf("ERROR: Invalid argument(s).\n\n");
+	    printf("Help Menu\n");
+		print_usage(argv[0]);
+		exit(-1);
+	}
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
+       // printf("%c  \n",opt);
 		switch (opt) {
 			case 'R':
 				cmd |= CMD_READ;
@@ -110,6 +129,7 @@ int main(int argc, char** argv) {
 					exit(-1);
 				}
 				param_write_file = strdup(optarg);
+			//	printf("param_write_file: %s \n",param_write_file);
 				break;
 			case 'r':
 				cmd |= CMD_READ;
@@ -118,7 +138,7 @@ int main(int argc, char** argv) {
 					exit(-1);
 				}
 				param_read_file = strdup(optarg);
-				//printf("%s\n", param_read_file);
+			//	printf("param_read_file: %s\n", param_read_file);
 				break;
 			case 't':
 				if (param_type != NULL) {
@@ -156,6 +176,7 @@ int main(int argc, char** argv) {
 				}
 				param_speed = strdup(optarg);
 				break;
+
 			default:
 				printf("Invalid argument %c", opt);
 				print_usage(argv[0]);
@@ -163,7 +184,7 @@ int main(int argc, char** argv) {
 				break;
 		}
 	}
-/*
+/*   routine not needed.. error should be catch  before not after, moved to top
 	if (opt == -1) {
 	    printf("ERROR: Invalid argument(s).\n\n");
 	    printf("Help Menu\n");
@@ -171,6 +192,15 @@ int main(int argc, char** argv) {
 		exit(-1);
 	}
 */
+ //   printf("param prog %s\n",param_prog);
+
+	// catch content of param_prog, should not be null
+	if (param_prog==NULL)
+	{
+	    printf("Name of Interface is required: eg.  -p buspirate\n");
+	    exit(-1);
+
+	}
 	picprog.iface = Iface_GetByName(param_prog);
 
 	if (picprog.iface == NULL) {
@@ -180,7 +210,21 @@ int main(int argc, char** argv) {
 
 	printf("Initializing interface \n");
 
-	picprog.iface->Init(&picprog, param_port, param_speed);
+
+    if (param_speed !=NULL && param_port !=NULL)     //added to check if port is null to avoid crash
+    {
+       picprog.iface->Init(&picprog, param_port, param_speed);
+    }
+    else {
+        printf("ERROR: Port name or port speed not specified \n");
+        printf("parameter -u and  -s must be specified: e.g -u com12 -s 115200\n");
+        exit(-1);
+    }
+    if (param_chip==NULL)
+    {
+        printf("Chip type not specified: e.g -c 18F2550\n");
+        exit(-1);
+    }
 
 	picprog.chip_idx = PIC_GetChipIdx(param_chip);
 	if (picprog.chip_idx == -1) {

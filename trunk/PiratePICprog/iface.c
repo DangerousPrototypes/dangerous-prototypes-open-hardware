@@ -27,12 +27,13 @@ const struct iface_t iface[] = {
         .flush=BP_Flush,
         .VPPHigh = BP_VPPHigh,
         .VPPLow = BP_VPPLow,
+
 	}
 };
 
 struct iface_t *Iface_GetByName(char *name) {
 	int i;
-
+    printf("%s\n", name);
 	for (i = 0; i < IFACE_CNT; i++) {
  		if (strcmp(name, iface[i].name) == 0) {
 			return (struct iface_t *)&iface[i];
