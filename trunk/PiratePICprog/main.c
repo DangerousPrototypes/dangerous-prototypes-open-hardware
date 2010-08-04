@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-#define DEBUG
+//#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,7 +56,7 @@ void print_usage(char* name) {
 		printf("-h  - this help usage\n");
 		printf("\n\n");
 		printf("Example usage: %s -p buspirate -u COM12 -s 115200 -c 18F2550 -t HEX  -r test.hex  -E\n",name);
-        printf("               %s -p buspirate -u COM12 -s 115200 -c 18F2550 -i\n",name);
+        printf("               %s -p buspirate -u COM12 -s 115200 -c 18F2550 -V\n",name);
         printf("               %s -h\n",name);
 
 }
@@ -108,7 +108,7 @@ int main(int argc, char** argv) {
 	}
 	#endif
 
-	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
+	while ((opt = getopt(argc, argv, "ERWVr:w:evu:xp:s:c:t:")) != -1) {
        // printf("%c  \n",opt);
 		switch (opt) {
 			case 'R':
@@ -176,6 +176,11 @@ int main(int argc, char** argv) {
 					exit(-1);
 				}
 				param_speed = strdup(optarg);
+				break;
+			case 'x':      //disable comport
+				disable_comport = 1;   //cheat so that I do not disturb the struct
+				param_speed=strdup("115200"); //dummy
+				param_port=strdup("COM12");    //dummy
 				break;
 
 			default:
@@ -256,9 +261,15 @@ int main(int argc, char** argv) {
     printf("Checking for %s attached to programmer... \n", param_chip);
     PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
 //determine device type
+//if comport is disable make PICid=picchip->ID
+if (disable_comport != 0)
+{
+    PICid=picchip->ID;
+}
+
 	if(PICid!=picchip->ID)
 	{
-	    printf("Wrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
+	    printf("\nWrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
  	    return -1;
 	}
     printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);
