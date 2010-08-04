@@ -227,7 +227,7 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
 
 	return 0;
 }
-int PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
+uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
@@ -295,7 +295,7 @@ int PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	return done;
 }
 
-int PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
+uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);

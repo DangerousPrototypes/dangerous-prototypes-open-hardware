@@ -14,8 +14,8 @@ uint32_t PIC16_Erase(struct picprog_t *);
 
 //added as per video instruction  dated Aug 3, 2010
 // modified pic16.c as well
-int PIC16_WriteFlash(struct picprog_t *, uint8_t *);
-int PIC16_ReadFlash(struct picprog_t *, uint8_t *);
+uint32_t PIC16_WriteFlash(struct picprog_t *, uint8_t *);
+uint32_t PIC16_ReadFlash(struct picprog_t *, uint8_t *);
 
 #endif
 

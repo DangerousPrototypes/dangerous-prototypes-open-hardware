@@ -231,12 +231,10 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	return 0;
 }
 
-int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data){
+uint32_t PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data){
 
-	//struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	//struct pic_family_t *f = PIC_GetFamily(pic->family);
-    struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct pic_family_t *fam = PIC_GetFamily(pic->family);
 
 	//struct iface_t *iface = p->iface;
 	//void *opts = p->iface_data;
@@ -300,11 +298,12 @@ int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data){
 	return done;
 }
 
-int PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
+uint32_t PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 {
-	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	//struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+	struct pic_family_t *fam = PIC_GetFamily(pic->family);
+
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
 
 	uint32_t u_addr;
 	uint32_t page  = 0;

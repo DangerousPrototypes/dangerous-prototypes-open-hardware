@@ -26,11 +26,11 @@ uint32_t PIC16_Erase(struct picprog_t *p) {
 	return 1;
 }
 
-int PIC16_WriteFlash(struct picprog_t *p, uint8_t *fw_data) {
+uint32_t PIC16_WriteFlash(struct picprog_t *p, uint8_t *fw_data) {
 return 1;
 }
 
-int PIC16_ReadFlash(struct picprog_t *p, uint8_t *fw_data) {
+uint32_t PIC16_ReadFlash(struct picprog_t *p, uint8_t *fw_data) {
     return 1;
     }
 
