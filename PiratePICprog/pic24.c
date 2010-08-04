@@ -90,7 +90,7 @@ uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
 uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
-	uint32_t ctr, nopctr=0;
+//	uint32_t ctr, nopctr=0;
 
 	iface->PIC424Write(opts, 0x200000 | ((addr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
 	iface->PIC424Write(opts, 0x880190, 0, 0);//SIX,0x880190,5, N/AMOV W0, TBLPAG
@@ -123,9 +123,9 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 //	uint16_t DataByte;//, buffer[2]={0x00,0x00};
-	uint32_t ctr, tem, tem1;
+	uint32_t ctr;//, tem, tem1;
 //	uint8_t	buffer[4] = {0};
-	uint16_t VISI;
+	//uint16_t VISI;
 
 
 	//set NVMCON
@@ -190,7 +190,7 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
-	uint16_t VISI;
+	//uint16_t VISI;
 
 	PIC24_EnterICSP(p, f->icsp_type);
 
@@ -226,5 +226,113 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
     PIC24_ExitICSP(p, f->icsp_type);
 
 	return 0;
+}
+int PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
+{
+	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+  //  struct iface_t *iface = p->iface;
+
+	uint32_t u_addr;
+	uint32_t page  = 0;
+	uint32_t done  = 0;
+	uint8_t used = 0, t;
+	uint16_t i = 0;//, ctr;
+
+    proto->EnterICSP(p, fam->icsp_type);
+
+	for (page = 0; page < pic->flash / fam->page_size; page++)
+	{
+		u_addr = page * fam->page_size;
+		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
+		//u_addr = page * ( 2 * 32 );
+
+		// check used page
+		used = 0;
+		t=0;
+		for (i = 0; i < fam->page_size; i++) {
+                t++;
+                if(t==4){
+                    t=0;
+                    continue;
+                }
+
+                if (fw_data[u_addr+i] != PIC_EMPTY) {
+                    used = 1;
+                    break;
+                }
+		}
+
+		// skip unused
+		if (used == 0 ) {
+			if (u_addr < pic->flash) {
+				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", (unsigned long)page, (unsigned long)u_addr);
+			}
+			continue;
+		}
+
+		if (u_addr >= pic->flash) {
+			fprintf(stderr, "Address out of flash\n");
+			continue;
+		}
+
+		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
+
+//		if (p->debug) {
+//			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+//		}
+
+		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
+
+		//usleep(fam->write_delay * 1000);
+
+		done += fam->page_size;
+	}
+
+    proto->ExitICSP(p, fam->icsp_type);
+
+	return done;
+}
+
+int PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
+{
+	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+
+	uint32_t u_addr;
+	uint32_t page  = 0;
+	uint32_t done  = 0;
+
+    proto->EnterICSP(p, fam->icsp_type);
+
+	for (page = 0; page < pic->flash / fam->page_size; page++)
+	{
+		u_addr = page * fam->page_size;
+		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
+		//u_addr = page * ( 2 * 32 );
+
+		if (u_addr >= pic->flash) {
+			fprintf(stderr, "Address out of flash\n");
+			continue;
+		}
+
+		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
+
+		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+
+//		if (p->debug) {
+			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+//		}
+
+		//usleep(fam->write_delay * 1000);
+
+		done += fam->page_size;
+	}
+
+    proto->ExitICSP(p, fam->icsp_type);
+
+	return done;
 }
 

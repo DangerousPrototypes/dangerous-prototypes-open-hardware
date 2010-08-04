@@ -24,6 +24,8 @@ struct proto_ops_t proto_ops[] = {
 		.Read = PIC16_Read,
 		.Write = PIC16_Write,
 		.Erase = PIC16_Erase,
+		.WriteFlash = PIC16_WriteFlash,
+		.ReadFlash = PIC16_ReadFlash,
 	},
 	{
 		.type = PROTO_PIC18,
@@ -33,6 +35,8 @@ struct proto_ops_t proto_ops[] = {
 		.Read = PIC18_Read,
 		.Write = PIC18_Write,
 		.Erase = PIC18_Erase,
+		.WriteFlash = PIC18_WriteFlash,
+		.ReadFlash = PIC18_ReadFlash,
 	},
 	{
 		.type = PROTO_PIC24,
@@ -42,6 +46,8 @@ struct proto_ops_t proto_ops[] = {
 		.Read = PIC24_Read,
 		.Write = PIC24_Write,
 		.Erase = PIC24_Erase,
+		.WriteFlash = PIC24_WriteFlash,
+		.ReadFlash = PIC24_ReadFlash,
 	}
 };
 

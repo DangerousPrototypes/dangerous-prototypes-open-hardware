@@ -25,6 +25,8 @@ struct proto_ops_t {
 	uint32_t (*Read)(struct picprog_t *, uint32_t addr, void *buf, uint32_t len);
 	uint32_t (*Write)(struct picprog_t *, uint32_t addr, void *buf, uint32_t len);
 	uint32_t (*Erase)(struct picprog_t *);
+	int (*WriteFlash)(struct picprog_t *, uint8_t *);
+    int (*ReadFlash) (struct picprog_t *, uint8_t *);
 };
 
 struct proto_ops_t *Proto_GetOps(enum proto_t protocol);

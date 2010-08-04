@@ -13,7 +13,7 @@
 #include <string.h>
 
 #include "serial.h"
-extern disable_comport;
+extern int disable_comport;
 /*
 #ifdef WIN32
 	int write(int fd, const void* buf, int len)
@@ -199,7 +199,9 @@ int serial_read(int fd, char *buf, int size)
 {
 	int len = 0;
 	int ret = 0;
+#ifndef WIN32
 	int timeout = 0;
+#endif
 #ifdef WIN32
 	HANDLE hCom = (HANDLE)fd;
 	unsigned long bread = 0;

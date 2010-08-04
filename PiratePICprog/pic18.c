@@ -1,6 +1,6 @@
 
 #include <unistd.h>
-
+#include <stdio.h>
 #include "pic.h"
 #include "iface.h"
 #include "pic18.h"
@@ -158,7 +158,7 @@ uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t l
 {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
-	uint32_t ctr;
+	//uint32_t ctr;
 
 	//setup read
 	PIC18_settblptr(p, tblptr);
@@ -231,5 +231,109 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	return 0;
 }
 
+int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
+{
+	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+    //struct iface_t *iface = p->iface;
+
+	uint32_t u_addr;
+	uint32_t page  = 0;
+	uint32_t done  = 0;
+	uint8_t used = 0;
+	uint16_t i = 0;//, ctr;
+
+    proto->EnterICSP(p, fam->icsp_type);
+
+	for (page = 0; page < pic->flash / fam->page_size; page++)
+	{
+		u_addr = page * fam->page_size;
+		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
+		//u_addr = page * ( 2 * 32 );
+
+		// check used page
+		used = 0;
+		for (i = 0; i < fam->page_size; i++) {
+
+           //t=fw_data[u_addr+i];
+            if (fw_data[u_addr+i] != PIC_EMPTY) {
+                used = 1;
+                break;
+            }
+
+		}
+
+		// skip unused
+		if (used == 0 ) {
+			if (u_addr < pic->flash) {
+				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", (unsigned long)page, (unsigned long)u_addr);
+			}
+			continue;
+		}
+
+		if (u_addr >= pic->flash) {
+			fprintf(stderr, "Address out of flash\n");
+			continue;
+		}
+
+		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
+
+//		if (p->debug) {
+//			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+//		}
+
+		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
+
+		//usleep(fam->write_delay * 1000);
+
+		done += fam->page_size;
+	}
+
+    proto->ExitICSP(p, fam->icsp_type);
+
+	return done;
+}
+
+int PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
+{
+	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+
+	uint32_t u_addr;
+	uint32_t page  = 0;
+	uint32_t done  = 0;
+
+    proto->EnterICSP(p, fam->icsp_type);
+
+	for (page = 0; page < pic->flash / fam->page_size; page++)
+	{
+		u_addr = page * fam->page_size;
+		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
+		//u_addr = page * ( 2 * 32 );
+
+		if (u_addr >= pic->flash) {
+			fprintf(stderr, "Address out of flash\n");
+			continue;
+		}
+
+		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
+
+		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+
+//		if (p->debug) {
+			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+//		}
+
+		//usleep(fam->write_delay * 1000);
+
+		done += fam->page_size;
+	}
+
+    proto->ExitICSP(p, fam->icsp_type);
+
+	return done;
+}
 
 

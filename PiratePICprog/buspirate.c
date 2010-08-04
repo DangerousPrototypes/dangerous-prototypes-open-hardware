@@ -11,7 +11,7 @@ static
 uint8_t BP_reversebyte(uint8_t c);
 static char bpbuf[4096];
 static int bpbufcnt;
-extern disable_comport;
+extern int disable_comport;
 //low lever send command, get reply function
 static uint32_t BP_WriteToPirate(int fd, uint8_t* val) {
 	int res = -1;
@@ -34,7 +34,7 @@ static void BP_EnableRaw2Wire(int fd)
 	int ret;
 	char tmp[100] = { [0 ... 20] = 0x00 };
 	int done = 0;
-	int cmd_sent = 0;
+	//int cmd_sent = 0;
 	int tries=0;
 
 	printf("Entering binary mode\n");
@@ -101,12 +101,12 @@ uint32_t BP_Init(void *p, char *port, char *speed) {
 	int fd;
     printf("%s\n",speed);
 	fd = serial_open(port);
+
 	if (disable_comport !=1)
 	{
 
 	if (fd < 0) {
 		fprintf(stderr, "BP: Error openning serial port\n");
-		exit(-1);
 		return -1;
 	}
 
@@ -174,7 +174,6 @@ uint32_t BP_BulkByteWrite(void *pBP, uint8_t bwrite, uint8_t* val) {
 
 uint32_t BP_BulkBitWrite(void *pBP, uint8_t bit_count, uint8_t val) {
 	int fd = ((struct BP_t *)pBP)->fd;
-	int i;
 	uint8_t opcode = 0x30;
 
 	opcode |= (bit_count - 1);
@@ -232,8 +231,8 @@ static int BP_SetPicMode(int fd, enum BP_picmode_t mode) {
 uint32_t BP_PIC416Write(void *pBP, uint8_t cmd, uint16_t data) {
 	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
-	uint8_t buffer[4] = {0};
-	int res = -1;
+	//uint8_t buffer[4] = {0};
+	//int res = -1;
 
 	if (mode != BP_PIC416){
         BP_SetPicMode(fd, BP_PIC416);
@@ -337,8 +336,8 @@ uint32_t BP_PIC424Read(void *pBP, uint32_t cmd, void *Data, uint32_t length) {
 uint32_t BP_PIC424Write(void *pBP, uint32_t data, uint8_t prenop, uint8_t postnop) {
 	int fd = ((struct BP_t *)pBP)->fd;
 	enum BP_picmode_t mode = ((struct BP_t*)pBP)->picmode;
-	uint8_t buffer[5] = {0};
-	int res = -1;
+	//uint8_t buffer[5] = {0};
+	//int res = -1;
 
 	if (mode != BP_PIC424){
         BP_SetPicMode(fd, BP_PIC424);

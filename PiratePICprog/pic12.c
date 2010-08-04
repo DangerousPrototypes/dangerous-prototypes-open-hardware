@@ -26,3 +26,13 @@ uint32_t PIC12_Erase(struct picprog_t *p) {
 	return 1;
 }
 
+//added as per video instruction  dated Aug 3, 2010
+// modified pic12.h as well
+
+int PIC12_WriteFlash(struct picprog_t *p, uint8_t *fw_data) {
+return 1;
+}
+
+int PIC12_ReadFlash(struct picprog_t *p, uint8_t *fw_data) {
+    return 1;
+}

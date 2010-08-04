@@ -10,7 +10,7 @@
 #include "iface.h"
 #include "common.h"
 
-enum { //family struct below must be in same order....
+enum {
 	FAMILY_18F2xJxx, // also 18F4xJxx
 	FAMILY_24FJxxGAxxx,
 	FAMILY_18Fx5xx,
@@ -155,13 +155,13 @@ int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
-    struct iface_t *iface = p->iface;
+    //struct iface_t *iface = p->iface;
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 	uint8_t used = 0, t;
-	uint16_t i = 0, ctr;
+	uint16_t i = 0;//, ctr;
 
     proto->EnterICSP(p, fam->icsp_type);
 

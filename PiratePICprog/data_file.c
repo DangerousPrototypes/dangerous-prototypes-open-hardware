@@ -86,11 +86,11 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 				//printf("WARNING: HEX checksum error on line %d !! \n", line);
 			}
 
-		} else if (rec_type = 0x04) {
+		} else if (rec_type == 0x04) {
 			// base addr
 			sscanf(raw_line+9, "%4x", &base_addr);
 			base_addr <<= 16;
-		} else if (rec_type = 0x01) {
+		} else if (rec_type == 0x01) {
 			// end record
 			break;
 		} else {
@@ -115,7 +115,7 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
 	uint8_t i=0;
 	uint8_t j;
 
-	uint8_t checksum = 0;
+	//uint8_t checksum = 0;
 
 	// fill header
 	bin_line[0] = byte_count;
@@ -149,7 +149,7 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
  * size - size of buffer
  */
 int HEX_WriteFile(const char *file, uint8_t *in_buf, uint32_t in_buf_size) {
-	int res;
+	//int res;
 	uint32_t written = 0;
 	uint16_t base = 0x0000;
 	uint32_t addr = 0x0000;
