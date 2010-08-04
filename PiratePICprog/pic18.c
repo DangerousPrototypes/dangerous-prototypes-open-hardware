@@ -231,12 +231,16 @@ uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	return 0;
 }
 
-int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
-{
-	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
+int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data){
+
+	//struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	//struct pic_family_t *f = PIC_GetFamily(pic->family);
+    struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
-    //struct iface_t *iface = p->iface;
+
+	//struct iface_t *iface = p->iface;
+	//void *opts = p->iface_data;
+	//unsigned char buffer[2];
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
@@ -244,7 +248,8 @@ int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint8_t used = 0;
 	uint16_t i = 0;//, ctr;
 
-    proto->EnterICSP(p, fam->icsp_type);
+    //proto->EnterICSP(p, fam->icsp_type);
+    PIC18_EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -283,14 +288,14 @@ int PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 //			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 //		}
 
-		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
+		PIC18_Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
 
 		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
 	}
-
-    proto->ExitICSP(p, fam->icsp_type);
+    PIC18_ExitICSP(p, fam->icsp_type);
+    //proto->ExitICSP(p, fam->icsp_type);
 
 	return done;
 }
@@ -299,13 +304,14 @@ int PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_family_t *fam = PIC_GetFamily(p->chip_idx);
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+	//struct proto_ops_t *proto = Proto_GetOps(fam->proto);
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 
-    proto->EnterICSP(p, fam->icsp_type);
+    //proto->EnterICSP(p, fam->icsp_type);
+    PIC18_EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -320,18 +326,18 @@ int PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
-		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+		PIC18_Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
-//		if (p->debug) {
+		if (p->debug) {
 			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-//		}
+		}
 
 		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
 	}
-
-    proto->ExitICSP(p, fam->icsp_type);
+    PIC18_ExitICSP(p, fam->icsp_type);
+    //proto->ExitICSP(p, fam->icsp_type);
 
 	return done;
 }

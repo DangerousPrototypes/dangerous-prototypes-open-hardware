@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-//#define DEBUG
+#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,14 +89,14 @@ int main(int argc, char** argv) {
 	printf("(Bus) Pirate PIC Programer v0.1 \n\n");
 
 #ifdef DEBUG
-	cmd |= CMD_ERASE;
-	cmd|=CMD_WRITE;
+	//cmd |= CMD_ERASE;
+	//cmd|=CMD_WRITE;
     cmd|=CMD_VERIFY;
 	param_chip=strdup("18F24J50");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
-	param_write_file=strdup("test.hex");
+	param_write_file=strdup("test-18Fj.hex");
 	param_type=strdup("HEX");
 #else
 // added routine to trap no arguments
@@ -303,7 +303,7 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 // execute commands
 	if (cmd & CMD_READ) {
 		//picops->Read(&picprog, 0x0000, buf_read, picchip->flash);
-        PIC_ReadFlash(&picprog, buf_read);
+        picops->ReadFlash(&picprog, buf_read);
 		if (param_read_file == NULL) {
 			printf("No read file specified\n");
 			return -1;
@@ -330,12 +330,12 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 
 	if (cmd & CMD_WRITE) {
 		//picops->Write(&picprog, 0x0000, buf_write, picchip->flash);
-		PIC_WriteFlash(&picprog, buf_write);
+		picops->WriteFlash(&picprog, buf_write);
 	}
 
 	if (cmd & CMD_VERIFY) {
 		//if (cmd & CMD_READ == 0) { // read only when necessary
-			PIC_ReadFlash(&picprog, buf_read);
+			picops->ReadFlash(&picprog, buf_read);
 		//}
 		if (memcmp(buf_read, buf_write, picchip->flash)) {
 			printf("Verify ERROR :( \n");
