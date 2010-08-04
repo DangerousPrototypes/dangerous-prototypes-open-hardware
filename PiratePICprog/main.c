@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-//#define DEBUG
+#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -90,15 +90,15 @@ int main(int argc, char** argv) {
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
-	//cmd|=CMD_WRITE;
-    //cmd|=CMD_VERIFY;
-	param_chip=strdup("18F2550");
+	cmd|=CMD_WRITE;
+    cmd|=CMD_VERIFY;
+	param_chip=strdup("18F24J50");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
 	param_write_file=strdup("test.hex");
 	param_type=strdup("HEX");
-#endif
+#else
 // added routine to trap no arguments
 	if (argc <= 1)  {
 	    printf("ERROR: Invalid argument(s).\n\n");
@@ -106,6 +106,7 @@ int main(int argc, char** argv) {
 		print_usage(argv[0]);
 		exit(-1);
 	}
+	#endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:p:s:c:t:")) != -1) {
        // printf("%c  \n",opt);

@@ -10,7 +10,7 @@
 #include "iface.h"
 #include "common.h"
 
-enum {
+enum { //family struct below must be in same order....
 	FAMILY_18F2xJxx, // also 18F4xJxx
 	FAMILY_24FJxxGAxxx,
 	FAMILY_18Fx5xx,
