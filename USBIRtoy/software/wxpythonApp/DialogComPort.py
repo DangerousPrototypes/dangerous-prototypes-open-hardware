@@ -5,22 +5,21 @@ import wx
 def create(parent):
     return DialogComPort(parent)
 
-[wxID_DIALOGCOMPORT, wxID_DIALOGCOMPORTBTNOK, wxID_DIALOGCOMPORTCHOICEBAUD, 
- wxID_DIALOGCOMPORTCHOICECOMPORT, wxID_DIALOGCOMPORTPANEL1, 
- wxID_DIALOGCOMPORTSTATICTEXT1, wxID_DIALOGCOMPORTSTATICTEXT2, 
-] = [wx.NewId() for _init_ctrls in range(7)]
+[wxID_DIALOGCOMPORT, wxID_DIALOGCOMPORTBTNOK, wxID_DIALOGCOMPORTCHOICECOMPORT, 
+ wxID_DIALOGCOMPORTPANEL1, wxID_DIALOGCOMPORTSTATICTEXT1, 
+] = [wx.NewId() for _init_ctrls in range(5)]
 
 class DialogComPort(wx.Dialog):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Dialog.__init__(self, id=wxID_DIALOGCOMPORT, name='DialogComPort',
-              parent=prnt, pos=wx.Point(691, 250), size=wx.Size(248, 158),
+              parent=prnt, pos=wx.Point(691, 250), size=wx.Size(248, 126),
               style=wx.STATIC_BORDER | wx.DEFAULT_DIALOG_STYLE,
               title='Com Port Setting')
-        self.SetClientSize(wx.Size(240, 124))
+        self.SetClientSize(wx.Size(240, 92))
 
         self.panel1 = wx.Panel(id=wxID_DIALOGCOMPORTPANEL1, name='panel1',
-              parent=self, pos=wx.Point(8, 8), size=wx.Size(224, 104),
+              parent=self, pos=wx.Point(8, 8), size=wx.Size(224, 72),
               style=wx.TAB_TRAVERSAL)
         self.panel1.SetBackgroundColour(wx.Colour(192, 192, 192))
 
@@ -33,16 +32,8 @@ class DialogComPort(wx.Dialog):
               label='COM Number:', name='staticText1', parent=self.panel1,
               pos=wx.Point(8, 16), size=wx.Size(68, 13), style=0)
 
-        self.choiceBaud = wx.Choice(choices=[], id=wxID_DIALOGCOMPORTCHOICEBAUD,
-              name='choiceBaud', parent=self.panel1, pos=wx.Point(88, 43),
-              size=wx.Size(130, 21), style=0)
-
-        self.staticText2 = wx.StaticText(id=wxID_DIALOGCOMPORTSTATICTEXT2,
-              label='Baud Rate:', name='staticText2', parent=self.panel1,
-              pos=wx.Point(20, 47), size=wx.Size(55, 13), style=0)
-
         self.btnOk = wx.Button(id=wxID_DIALOGCOMPORTBTNOK, label='Ok',
-              name='btnOk', parent=self.panel1, pos=wx.Point(89, 70),
+              name='btnOk', parent=self.panel1, pos=wx.Point(89, 38),
               size=wx.Size(127, 23), style=0)
         self.btnOk.Bind(wx.EVT_BUTTON, self.OnBtnOkButton,
               id=wxID_DIALOGCOMPORTBTNOK)
@@ -61,14 +52,14 @@ class DialogComPort(wx.Dialog):
         self.choiceComPort.Select(0)
         
         #COM BaudRate
-        self.choiceBaud.Clear()
-        BaudRateList=['9600','19200','115200']
-        self.choiceBaud.SetItems(BaudRateList)
-        self.choiceBaud.Select(0)
+##        self.choiceBaud.Clear()
+##        BaudRateList=['9600','19200','115200']
+##        self.choiceBaud.SetItems(BaudRateList)
+##        self.choiceBaud.Select(0)
 
 
     def OnBtnOkButton(self, event):
-        self.Baud=self.choiceBaud.GetString(self.choiceBaud.GetSelection())
+        #self.Baud=self.choiceBaud.GetString(self.choiceBaud.GetSelection())
         self.ComNum=self.choiceComPort.GetString(self.choiceComPort.GetSelection())
         #self.SetReturnCode(0)
         self.EndModal(0)
