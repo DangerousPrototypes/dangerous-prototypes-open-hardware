@@ -34,7 +34,7 @@
 
 	#ifdef MACOSX
 		#include <IOKit/serial/ioss.h>
-		#include <sys/ioctl.h> 
+		#include <sys/ioctl.h>
 
 		#define B1500000 1500000
 		#define B1000000 1000000

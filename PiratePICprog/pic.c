@@ -23,7 +23,7 @@ const struct pic_chip_t pic_chip[] = {
     {
 		.name = "18F2550",
 		.ID = 0x92,
-		.flash = 0x8000,
+		.flash = 0x160000,
 		.eeprom = 256,
 		.family = FAMILY_18Fx5xx,
 	},

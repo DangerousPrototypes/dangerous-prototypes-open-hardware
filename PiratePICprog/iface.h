@@ -22,8 +22,8 @@ struct iface_t {
 	uint32_t (*MCLRHigh)(void *);
 
 	uint32_t (*SetBitOrder)(void *, uint8_t);
-	uint32_t (*SendBytes)(void *, uint8_t, uint8_t *);
-	uint32_t (*SendBits)(void *, uint8_t, uint8_t);
+	uint32_t (*SendBytes)(void *, uint8_t, char *);
+	uint32_t (*SendBits)(void *, uint8_t, char);
 
 	uint32_t (*PIC614Read)(void *, uint8_t);
 	uint32_t (*PIC614Write)(void *, uint8_t, uint16_t);
