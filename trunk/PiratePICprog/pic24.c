@@ -240,7 +240,7 @@ uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint8_t used = 0, t;
 	uint16_t i = 0;//, ctr;
 
-    proto->EnterICSP(p, fam->icsp_type);
+    PIC24_EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -283,14 +283,14 @@ uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 //			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
 //		}
 
-		proto->Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
+		PIC24_Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
 
 		//usleep(fam->write_delay * 1000);
 
 		done += fam->page_size;
 	}
 
-    proto->ExitICSP(p, fam->icsp_type);
+    PIC24_ExitICSP(p, fam->icsp_type);
 
 	return done;
 }
@@ -305,7 +305,7 @@ uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t page  = 0;
 	uint32_t done  = 0;
 
-    proto->EnterICSP(p, fam->icsp_type);
+    PIC24_EnterICSP(p, fam->icsp_type);
 
 	for (page = 0; page < pic->flash / fam->page_size; page++)
 	{
@@ -320,7 +320,7 @@ uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
 
-		proto->Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
+		PIC24_Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
 //		if (p->debug) {
 			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
@@ -331,7 +331,7 @@ uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 		done += fam->page_size;
 	}
 
-    proto->ExitICSP(p, fam->icsp_type);
+   PIC24_ExitICSP(p, fam->icsp_type);
 
 	return done;
 }
