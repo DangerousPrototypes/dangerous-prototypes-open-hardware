@@ -1,4 +1,5 @@
 import wx
+import string
 
 class IrDraw:
     
@@ -6,14 +7,28 @@ class IrDraw:
     __NUMBITSOVERVIEW=512*2
     #__NUMBITSDETAILED=32
     __NUMBITSDETAILED=16*6
+    __InitGraphics=False
+    
+    
+    def GetBitMapSize(self):
+        BMP_SZ_FILENAME='bitmap.cfg'
+        f=open(BMP_SZ_FILENAME)
+        cfg=f.readlines()
+        self.BmpSz_X=int(string.strip(cfg[0]))
+        self.BmpSz_Y=int(string.strip(cfg[1]))
+        f.close()
+        
     
     def __init__(self,MyFrame):
+        self.GetBitMapSize()
         LIST_SIZE=40
         self.SetScalingFactor(7)
         self.__myFrame=MyFrame
         #self.__myFrame.Bind(wx.EVT_PAINT, self.OnPaint)
         self.__DataToDraw=[0]*(8*LIST_SIZE)
         #self.__DataByteLst=['\xAA']*5000
+        
+       
         
     def SetDataBytesList(self,DataBytesList):
         self.__DataByteLst=DataBytesList
@@ -33,13 +48,24 @@ class IrDraw:
     def GetScalingFactor(self):
         return float(self.__scalefac)
     
+    
+    
+    
     def GenDrawing(self):
     #def OnPaint(self, event):
         #dc = wx.BufferedPaintDC(self.__myFrame)
         #dc = wx.PaintDC(self.__myFrame)
         #dc = wx.PaintDC(self.__myFrame)
-        draw_bmp = wx.EmptyBitmap(10000, 500)
-        dc=wx.MemoryDC(draw_bmp)
+        if(self.__InitGraphics==1):
+            self.draw_bmp.Destroy()
+            
+            
+        #self.draw_bmp = wx.EmptyBitmap(10000, 500)
+        self.draw_bmp = wx.EmptyBitmap(self.BmpSz_X, self.BmpSz_Y)
+        dc=wx.MemoryDC(self.draw_bmp)
+        
+        #dc=wx.ClientDC(self.__myFrame)
+        
         
         #dc=wx.ClientDC(self.__myFrame)
         
@@ -71,8 +97,18 @@ class IrDraw:
             #self.GetNBitListPoints(self.__NUMBITSOVERVIEW,self.GetDataBytesList(),broad_x,broad_y,broad_x_offset,broad_y_offset))
             self.GetNBitListPointsScalingMode(self.GetDataBytesList(),broad_x,broad_y,broad_y_offset,self.GetScalingFactor()))
         
+        if(self.__InitGraphics==1):
+            self.show_bmp.Destroy()
+        
         self.show_bmp = wx.StaticBitmap(self.__myFrame)
-        self.show_bmp.SetBitmap(draw_bmp)
+        self.show_bmp.SetBitmap(self.draw_bmp)
+        
+        if(self.__InitGraphics==0):
+            self.__InitGraphics=1        
+        
+        #self.show_bmp.Destroy()
+        #dc.Destroy()
+        
         #circles_image = self.show_bmp.GetBitmap()
         #circles_image.SaveFile("c:\\mycircles.png", wx.BITMAP_TYPE_PNG)
         

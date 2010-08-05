@@ -15,8 +15,8 @@ def create(parent):
     return Frame1(parent)
 
 [wxID_FRAME1, wxID_FRAME1BTNSTARTRECORD, wxID_FRAME1BTNSTOPRECORD, 
- wxID_FRAME1INTCTRLSCALE, wxID_FRAME1INTCTRLSTOPVAL, wxID_FRAME1PANEL1, 
- wxID_FRAME1SCRLWNDWAVEFORM, wxID_FRAME1STATICTEXT1, wxID_FRAME1STATICTEXT2, 
+ wxID_FRAME1PANEL1, wxID_FRAME1SCRLWNDWAVEFORM, wxID_FRAME1SPNSCALEFACTOR, 
+ wxID_FRAME1SPNTIMEOUT, wxID_FRAME1STATICTEXT1, wxID_FRAME1STATICTEXT2, 
  wxID_FRAME1TXTIRDATA, 
 ] = [wx.NewId() for _init_ctrls in range(10)]
 
@@ -24,9 +24,9 @@ class Frame1(wx.Frame):
     def _init_ctrls(self, prnt):
         # generated method, don't edit
         wx.Frame.__init__(self, id=wxID_FRAME1, name='', parent=prnt,
-              pos=wx.Point(373, 174), size=wx.Size(1080, 392),
+              pos=wx.Point(320, 345), size=wx.Size(1080, 361),
               style=wx.DEFAULT_FRAME_STYLE, title='Frame1')
-        self.SetClientSize(wx.Size(1072, 358))
+        self.SetClientSize(wx.Size(1072, 327))
         self.SetHelpText('')
         self.SetToolTipString('Frame1')
         self.SetWindowVariant(wx.WINDOW_VARIANT_SMALL)
@@ -37,7 +37,7 @@ class Frame1(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self.OnFrame1Close)
 
         self.panel1 = wx.Panel(id=wxID_FRAME1PANEL1, name='panel1', parent=self,
-              pos=wx.Point(0, 0), size=wx.Size(1072, 358),
+              pos=wx.Point(0, 0), size=wx.Size(1072, 327),
               style=wx.TAB_TRAVERSAL)
 
         self.txtIRData = wx.TextCtrl(id=wxID_FRAME1TXTIRDATA, name='txtIRData',
@@ -61,32 +61,36 @@ class Frame1(wx.Frame):
 
         self.scrlwndWaveForm = wx.ScrolledWindow(id=wxID_FRAME1SCRLWNDWAVEFORM,
               name='scrlwndWaveForm', parent=self.panel1, pos=wx.Point(24, 144),
-              size=wx.Size(1032, 168), style=wx.HSCROLL | wx.VSCROLL)
+              size=wx.Size(1032, 136), style=wx.HSCROLL | wx.VSCROLL)
         self.scrlwndWaveForm.SetLabel('scrolledWindow1')
         self.scrlwndWaveForm.SetBackgroundColour(wx.Colour(0, 0, 0))
         self.scrlwndWaveForm.SetTargetWindow(self.scrlwndWaveForm)
         self.scrlwndWaveForm.SetThemeEnabled(True)
-
-        self.intctrlStopVal = wx.lib.intctrl.IntCtrl(allow_long=False,
-              allow_none=False, default_color=wx.BLACK,
-              id=wxID_FRAME1INTCTRLSTOPVAL, limited=False, max=None, min=None,
-              name='intctrlStopVal', oob_color=wx.RED, parent=self.panel1,
-              pos=wx.Point(136, 24), size=wx.Size(100, 24), style=0, value=0)
 
         self.staticText1 = wx.StaticText(id=wxID_FRAME1STATICTEXT1,
               label='Max Timeout (1 to 65535)', name='staticText1',
               parent=self.panel1, pos=wx.Point(112, 8), size=wx.Size(149, 16),
               style=0)
 
-        self.intctrlScale = wx.lib.intctrl.IntCtrl(allow_long=False,
-              allow_none=False, default_color=wx.BLACK,
-              id=wxID_FRAME1INTCTRLSCALE, limited=False, max=None, min=None,
-              name='intctrlScale', oob_color=wx.RED, parent=self.panel1,
-              pos=wx.Point(136, 72), size=wx.Size(100, 24), style=0, value=0)
-
         self.staticText2 = wx.StaticText(id=wxID_FRAME1STATICTEXT2,
               label='Scaling Factor', name='staticText2', parent=self.panel1,
               pos=wx.Point(144, 56), size=wx.Size(81, 16), style=0)
+
+        self.spnScaleFactor = wx.SpinCtrl(id=wxID_FRAME1SPNSCALEFACTOR,
+              initial=1, max=100, min=1, name='spnScaleFactor',
+              parent=self.panel1, pos=wx.Point(128, 72), size=wx.Size(118, 24),
+              style=wx.SP_ARROW_KEYS)
+        self.spnScaleFactor.Bind(wx.EVT_SPIN, self.OnSpnScaleFactorSpin,
+              id=wxID_FRAME1SPNSCALEFACTOR)
+        self.spnScaleFactor.Bind(wx.EVT_TEXT_ENTER,
+              self.OnSpnScaleFactorTextEnter, id=wxID_FRAME1SPNSCALEFACTOR)
+        self.spnScaleFactor.Bind(wx.EVT_SPINCTRL, self.OnSpnScaleFactorSpinctrl,
+              id=wxID_FRAME1SPNSCALEFACTOR)
+
+        self.spnTimeOut = wx.SpinCtrl(id=wxID_FRAME1SPNTIMEOUT, initial=65534,
+              max=65534, min=1, name='spnTimeOut', parent=self.panel1,
+              pos=wx.Point(128, 24), size=wx.Size(118, 24),
+              style=wx.SP_ARROW_KEYS)
 
     def __init__(self, parent):
         self._init_ctrls(parent)
@@ -96,15 +100,6 @@ class Frame1(wx.Frame):
         self.__sb.SetStatusText('Welcome To IR Decoder!')   
         
         self.GenerateMenu()
-        
-        self.intctrlScale.SetValue(5)
-        self.intctrlScale.SetMax(100)
-        self.intctrlScale.SetMin(1)
-        
-        
-        self.intctrlStopVal.SetValue(0xFFFF)
-        self.intctrlStopVal.SetMax(65535)
-        self.intctrlStopVal.SetMin(1)
         
         self.SetLabel(STR_TITLE)
         
@@ -119,9 +114,7 @@ class Frame1(wx.Frame):
         self.scrlwndWaveForm.SetVirtualSize((20000, 500))
         self.scrlwndWaveForm.SetScrollRate(1, 1)
         
-        
-
-        
+       
         self.Centre()
         self.SetMaxSize(self.GetSize())
         self.SetMinSize(self.GetSize())
@@ -135,11 +128,20 @@ class Frame1(wx.Frame):
         d=DialogComPort.DialogComPort(self)
         d.ShowModal()
         if(d.ReturnCode==0):
-            self.__myComIR=ComIRDevice.ComIRDevice(d.ComNum,int(d.Baud))
+            #self.__myComIR=ComIRDevice.ComIRDevice(d.ComNum,int(d.Baud))
+            self.__myComIR=ComIRDevice.ComIRDevice(d.ComNum,115200) # baud rate doesn't matter
             #self.__myComIR=ComIRDevice.ComIRDevice('COM17',int(d.Baud))
             self.__myComIR.ResetMode()
             #self.__sb.SetStatusText("USB IR Toy: %s at %s BaudRate: %s bps" % (self.__myComIR.GetVersion(),d.ComNum,d.Baud))   
-            self.__sb.SetStatusText("USB IR Toy: %s at %s " % (self.__myComIR.GetVersion(),d.ComNum))   
+            strusbirToyVersion=self.__myComIR.GetVersion()
+            if(len(strusbirToyVersion)<3):
+                dlg = wx.MessageDialog(self, 'IR Toy not detected!', 'IR Remote', wx.OK|wx.ICON_INFORMATION)
+                dlg.ShowModal()
+                dlg.Destroy()
+                self.Close()
+                self.Destroy()
+            
+            self.__sb.SetStatusText("USB IR Toy: %s at %s " % (strusbirToyVersion,d.ComNum))   
             self.__myComIR.ResetMode()
             d.Destroy()
             self.Refresh()
@@ -226,7 +228,7 @@ class Frame1(wx.Frame):
             #self.__myComIR.GetSerialPort().write('s') # sampling mode
             self.__serrecord=SerialRecorder()
             self.__serrecord.SetCOMIrDevice(self.__myComIR)
-            self.__serrecord.Set2ByteLimit(self.intctrlStopVal.GetValue())
+            self.__serrecord.Set2ByteLimit(self.spnTimeOut.GetValue())
             self.__serrecord.SetTxtBox(self.txtIRData)
             self.__serrecord.start()
         else:
@@ -240,7 +242,7 @@ class Frame1(wx.Frame):
         self.txtIRData.SetValue(str(self.__serrecord.GetDataList()))
         if(len(self.__serrecord.GetDataList())>0):
             self.MyIrDraw.SetDataBytesList(self.__serrecord.GetDataList())
-            self.MyIrDraw.SetScalingFactor(self.intctrlScale.GetValue())
+            self.MyIrDraw.SetScalingFactor(self.spnScaleFactor.GetValue())
             self.MyIrDraw.GenDrawing()
             #self.Refresh()
             #self.MyIrDraw.SetDataBytesList([ord('\x00')]*5000)
@@ -253,6 +255,17 @@ class Frame1(wx.Frame):
         self.__myComIR.GetSerialPort().close()
         self.Close()
         self.Destroy()
+
+    def OnSpnScaleFactorSpin(self, event):
+        event.Skip()
+
+    def OnSpnScaleFactorTextEnter(self, event):
+        #self.StopRecording()
+        event.Skip()
+
+    def OnSpnScaleFactorSpinctrl(self, event):
+        self.StopRecording()
+        event.Skip()
 
 
 class SerialRecorder(threading.Thread):
