@@ -13,7 +13,7 @@ uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	struct iface_t *iface = p->iface;
 	void *opts = p->iface_data;
 
-	uint8_t buffer[4];
+	char buffer[4];
 
 	iface->ClockLow(opts);
 	iface->DataLow(opts);
@@ -303,7 +303,7 @@ uint32_t PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *fam = PIC_GetFamily(pic->family);
 
-	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
+//	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
 
 	uint32_t u_addr;
 	uint32_t page  = 0;
@@ -327,11 +327,9 @@ uint32_t PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 
 		PIC18_Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
 
-		if (p->debug) {
-			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-		}
-
-		//usleep(fam->write_delay * 1000);
+		//if (p->debug) {
+		//	dumpHex(&fw_data[page * fam->page_size], fam->page_size);
+		//}
 
 		done += fam->page_size;
 	}

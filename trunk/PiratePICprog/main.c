@@ -7,7 +7,7 @@
  * http://the-bus-pirate.googlecode.com/svn/trunk/bootloader-v4/pirate-loader/source/pirate-loader.c
  *
  */
-#define DEBUG
+//#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,14 +89,16 @@ int main(int argc, char** argv) {
 	printf("(Bus) Pirate PIC Programer v0.1 \n\n");
 
 #ifdef DEBUG
-	//cmd |= CMD_ERASE;
-	//cmd|=CMD_WRITE;
+	cmd |= CMD_ERASE;
+	cmd|=CMD_WRITE;
     cmd|=CMD_VERIFY;
-	param_chip=strdup("18F24J50");
+    //cmd|=CMD_READ;
+	param_chip=strdup("18F2550");
 	param_port=strdup("COM12");
 	param_prog=strdup("buspirate");
 	param_speed=strdup("115200");
-	param_write_file=strdup("test-18Fj.hex");
+    param_read_file=strdup("dump-18F2550.hex");
+	param_write_file=strdup("test-18F2550.hex");
 	param_type=strdup("HEX");
 #else
 // added routine to trap no arguments
@@ -219,7 +221,10 @@ int main(int argc, char** argv) {
 
     if (param_speed !=NULL && param_port !=NULL)     //added to check if port is null to avoid crash
     {
-       picprog.iface->Init(&picprog, param_port, param_speed);
+       if(picprog.iface->Init(&picprog, param_port, param_speed)){
+            printf("ERROR: interface not responding \n");
+            exit(-1);
+       }
     }
     else {
         printf("ERROR: Port name or port speed not specified \n");

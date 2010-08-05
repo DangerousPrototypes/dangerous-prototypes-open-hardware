@@ -17,8 +17,8 @@ struct BP_t {
 
 uint32_t BP_Init(void *, char *port, char *speed);
 uint32_t BP_SetBitOrder(void *, uint8_t);
-uint32_t BP_BulkByteWrite(void *, uint8_t, uint8_t *);
-uint32_t BP_BulkBitWrite(void *, uint8_t, uint8_t);
+uint32_t BP_BulkByteWrite(void *, uint8_t, char *);
+uint32_t BP_BulkBitWrite(void *, uint8_t, char);
 uint32_t BP_DataLow(void *);
 uint32_t BP_DataHigh(void *);
 uint32_t BP_ClockLow(void *);
