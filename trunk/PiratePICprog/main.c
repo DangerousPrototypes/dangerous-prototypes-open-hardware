@@ -32,7 +32,7 @@ enum {
 
 
 void print_usage(char* name) {
-        printf("Pirate Pic Programmer\n");
+        printf("Pirate Pic Programmer v0.2\n");
         printf("USAGE: \n");
         printf(" %s -p PROG -u PORT -s SPEED -c CHIP -t TYPE -w | -r FILE  -E | -W | -R | -V \n" ,name);
 
@@ -86,7 +86,7 @@ int main(int argc, char** argv) {
 	struct pic_family_t *picfamily;
 
 
-	printf("(Bus) Pirate PIC Programer v0.1 \n\n");
+	printf("(Bus) Pirate PIC Programer v0.2 \n\n");
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
