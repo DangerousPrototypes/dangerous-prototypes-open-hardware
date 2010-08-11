@@ -12,6 +12,8 @@
 // RC5 address byte (0)
 // RC5 command byte (1) *bit 6 is RC5x bit
 // Bytes 2-5 are 0 padding
+//	
+// Note that the official spec inverses the RC5x bit, but we do not do that...
 //
 //#ifdef RC_DECODER
 #include "HardwareProfile.h"
@@ -22,9 +24,9 @@
 #include "./USB/usb_device.h" 
 #include "./USB/usb_function_cdc.h"
 
-extern struct _irtoy irToy;
+extern struct _irtoy irToy; //access to the USB buffer, etc
 
-static enum _RC5STATE{
+static enum _RC5STATE{ //struct of variable to decode RC5
 	IDLE=0,
 	HALF_PERIOD,
 	BIT_PERIOD_0,
@@ -32,12 +34,13 @@ static enum _RC5STATE{
 	SEND,
 }decoderState=IDLE;
 
-static struct _RC5decoder{
+static struct _RC5decoder{ //bits to trach the manchester encoding bit periods
 	unsigned char bp0;//manchester period 0
 	unsigned char bp1;//manchester period 1
 	unsigned char bcnt;//bit count
 }RC5;
 
+//disable timers, setup IR activity interrupt
 void SetupRC5(void){
 	decoderState=IDLE;
 	CCP1CON=0; //disable any PWM
@@ -49,6 +52,7 @@ void SetupRC5(void){
 
 }
 
+//IRman protocol: respond to IR with OK...
 void IRmanString(void){
 	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 		irToy.usbOut[0]='O';//answer OK
@@ -57,32 +61,47 @@ void IRmanString(void){
 	}
 }
 
+//IR signals are first captured in the interrupt loop below
+//when the capture is complete, the bits are decoded into bytes and sent to USB from this function
 void ProcessIR(void){   
 	static unsigned char i;
-	//static unsigned char rc5x, toggle, addr, cmd;
 
 	if((decoderState==SEND) && (USBUSARTIsTxTrfReady())){
 	
-		//process IR data (decode RC5)
-		//rc5x=irToy.s[0]; //0 second start bit, use below
-		//toggle=irToy.s[1]; //1 toggle bit, discard
+		//process IR data (decode RC5) in irToy.s[]
+		//byte# | description
+		//0 second start bit, use as bit 6 in command byte for RC5x protocol support
+		//1 toggle bit, discard
+		//2-6 5bit address
+		//7-12 6bit command
 
-		irToy.usbOut[0]=0; //addr=0; //address is first byte of 6 byte packet
-		for(i=2;i<7;i++){ //loop through and assemble 8 address bits into byte
-			irToy.usbOut[0]<<=1;
-			irToy.usbOut[0]|=irToy.s[i];					
+		//final USB packet is:
+		//byte 1 bits 7-5 (don't care)
+		//byte 1 bits 4-0 (5 address bits)
+		//byte 2 bit 7 (don't care)
+		//byte 2 bit 6 (RC5x/start bit 2, not inversed)
+		//byte 2 bits 5-0 (RC5 5 bit command)
+		//byte 3-6 (unused)
+
+		//first byte of USB data is the RC5 address (lower 5 bits of first byte)
+		//loop through irToy.s[] and shift the 5bit address into the USB output buffer
+		//5 address bits, 5-0, MSB first
+		irToy.usbOut[0]=0; 					//clear USB buffer byte to 0
+		for(i=2;i<7;i++){ 					//loop through and assemble 5 address bits into a byte, bit 4 to bit 0, MSB first
+			irToy.usbOut[0]<<=1; 			//shift last bit up
+			irToy.usbOut[0]|=irToy.s[i]; 	//set bit 0 to value of irToy.s[i]					
 		}
 
-		irToy.usbOut[1]=irToy.s[0]; //command is second byte
-											  // optional rc5x bit is bit 6
-		for(i=7;i<13;i++){ //assemble 6 command bits into byte
-			irToy.usbOut[1]<<=1;
-			irToy.usbOut[1]|=irToy.s[i];
+		//second byte of USB data is the RC5 command (lower 6 or 7 bits of second byte)
+		//for RC5x, the second start bit is used as the MSB of the command (bit 6)
+		irToy.usbOut[1]=irToy.s[0]; 		//start with the value of the RC5x bit (bit 6), 
+		//irToy.usbOut[1]=(~irToy.s[0]);		//technically this should be inversed, but that would ruin compatibility for exisitng remote profiles
+		//loop through irToy.s[] and shift the 'normal' 6 command bits, bit 5 to bit 0, into the USB output buffer
+		//6 command bits, 5-0, MSB first
+		for(i=7;i<13;i++){ 					//loop through and assemble 6 command bits into a byte, bit 5 to bit 0, MSB first
+			irToy.usbOut[1]<<=1; 			//shift last bit up
+			irToy.usbOut[1]|=irToy.s[i]; 	//set bit 0 to value of irToy.s[i]	
 		}
-
-
-		//irToy.usbOut[0]=addr;
-		//irToy.usbOut[1]=cmd;	
 
 		irToy.usbOut[2]=0x00;//four extra bytes for 6 byte IRMAN format
 		irToy.usbOut[3]=0x00;
