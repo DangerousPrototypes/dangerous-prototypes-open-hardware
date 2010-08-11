@@ -80,7 +80,7 @@ void ProcessIR(void){
 		//byte 1 bits 4-0 (5 address bits)
 		//byte 2 bit 7 (don't care)
 		//byte 2 bit 6 (RC5x/start bit 2, not inversed)
-		//byte 2 bits 5-0 (RC5 5 bit command)
+		//byte 2 bits 5-0 (RC5 6 bit command)
 		//byte 3-6 (unused)
 
 		//first byte of USB data is the RC5 address (lower 5 bits of first byte)
