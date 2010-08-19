@@ -18,6 +18,7 @@
 #include "usb_config.h"
 #include "USB\usb_device.h"
 #include "USB\usb.h"
+#include "LCD_driver.h"
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
 #pragma udata
@@ -159,195 +160,6 @@ void main(void){
 							//for now, it's rough and ready
 		}
 
-		switch(sm.state){//switch between the upgrade mode states
-			case COMMAND:
-				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
-				sm.cmdbuf[sm.cmdcnt]=inbuf;//grab and hold for later 
-				sm.cmdcnt++;
-				if(sm.cmdcnt>3){//got all four command bytes
-					sm.cmdcnt=0;
-					switch(sm.cmdbuf[0]){
-						case 0x00:
-							sm.state=VERSION;
-							break;
-						case 0x01: //CMD_ID:	//read out ID and send back 0x01 00 00 00
-							sm.state=ID;
-							break;
-						case 0x02: //CMD_WRITE: //packet of 0x84+ A3 A2 A1 + data page (264)+CRC
-							sm.state=WRITE;
-							sm.repeat=265;
-							sm.crc=0;
-							//setup for write
-							PIN_FLASH_CS=0; //CS low
-							spi(0x84);//write page buffer 1 command
-							spi(0);//send buffer address
-							spi(0);
-							spi(0);
-							break;		
-						case 0x03://CMD_READ packet of 0x03 A3 A2 A1 
-							sm.state=READ;
-							sm.repeat=264;
-							//setup for write
-							PIN_FLASH_CS=0; //CS low
-							spi(0x03);//read array command
-							spi(sm.cmdbuf[1]);//send read address
-							spi(sm.cmdbuf[2]);
-							spi(sm.cmdbuf[3]);	
-							//spi(0x00);//one don't care bytes	
-							break;
-						case 0x04://CMD_ERASE chip
-							sm.state=ERASE;
-							PIN_FLASH_CS=0; //CS low
-							spi(0xc7);//erase code, takes up to 12 seconds!
-							spi(0x94);//erase code, takes up to 12 seconds!
-							spi(0x80);//erase code, takes up to 12 seconds!
-							spi(0x9a);//erase code, takes up to 12 seconds!
-							PIN_FLASH_CS=1; //CS high
-							break;
-						case 0x05://CMD_STATUS
-							sm.state=STATUS;
-							break;
-						case '$': //jump to bootloader
-							BootloaderJump();
-							break;
-						case 0xff://return to normal mode
-							//sm.state=COMMAND;
-							//sm.cmdcnt=0;
-							//PIN_LED=0;
-							//mode==SUMP;
-							teardownROMSPI();
-							_asm RESET _endasm;
-							break;
-						default:
-							sm.state=ERROR;//return 0xff or 0x00		
-					}
-				}
-				break;
-			case VERSION:
-				if(mUSBUSARTIsTxTrfReady()){
-					buf[0]='H';
-					buf[1]=HW_VER;
-					buf[2]='F';
-					buf[3]=FW_VER_H;
-					buf[4]=FW_VER_L;
-					buf[5]='B';
-					//read 0x7fe for the bootloader version string
-					TBLPTRU=0;
-					TBLPTRH=0x7;
-					TBLPTRL=0xfe;
-					_asm TBLRDPOSTINC _endasm; //read into TABLAT and increment
-					buf[6]=TABLAT;
-					//_asm TBLRDPOSTINC _endasm; //read into TABLAT and increment
-					//buf[6]=TABLAT;
-					putUSBUSART(buf,7);
-					sm.state=COMMAND;
-				}
-				break;
-			case ID:
-				if(mUSBUSARTIsTxTrfReady()){
-					PIN_FLASH_CS=0; //CS low
-					spi(0x9f);//get ID command
-					buf[0]=spi(0xff);
-					buf[1]=spi(0xff);
-					buf[2]=spi(0xff);
-					buf[3]=spi(0xff);
-					PIN_FLASH_CS=1;
-					putUSBUSART(buf,4);
-					sm.state=COMMAND;
-				}
-				break;
-
-			case ERASE:
-				PIN_FLASH_CS=0;
-				spi(0xd7);//read status command
-				i=spi(0xff);
-				if((i & 0b10000000)!=0 ){
-					sm.state=SUCCESS; //send success
-				}
-				PIN_FLASH_CS=1;	
-				break;
-
-			case WRITE:
-				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
-				if(sm.repeat>1){
-					spi(inbuf);
-					sm.crc+=inbuf;//add to CRC
-					sm.repeat--;
-				}else{
-					PIN_FLASH_CS=1;//disable CS
-					sm.crc^=0xff;//calculate CRC
-					sm.crc++;
-					if(sm.crc==inbuf){//check CRC
-						//slight delay
-						PIN_FLASH_CS=0;
-						spi(0x83);//save buffer to memory command
-						spi(sm.cmdbuf[1]);//send write page address
-						spi(sm.cmdbuf[2]);
-						spi(sm.cmdbuf[3]);	
-						PIN_FLASH_CS=1;//disable CS
-				
-						PIN_FLASH_CS=0;
-						spi(0xd7);//read status command
-						while(1){//wait for status to go ready
-							i=spi(0xff);
-							if((i & 0b10000000)!=0 ) break; 
-						}
-						PIN_FLASH_CS=1;
-						sm.state=SUCCESS;
-					}else{
-						sm.state=ERROR;	
-					}
-				}
-				break;
-
-			case READ: //read more bytes
-				if(mUSBUSARTIsTxTrfReady()){
-	
-
-					if(sm.repeat<64) 
-						j=sm.repeat; //if less left then adjust
-					else
-						j=64;//read 64 bytes
-
-					sm.repeat-=j; //remove from total bytes to read
-	
-					for(i=0; i<j; i++) buf[i]=spi(0xff); //read j bytes
-	
-					putUSBUSART(buf,j); //send the bytes over USB
-					
-					if(sm.repeat==0){//end of read bytes,
-						PIN_FLASH_CS=1; //disable the chip
-						sm.state=COMMAND;  //wait for next instruction packet
-					}
-				}
-				break;
-			case STATUS:
-				if(mUSBUSARTIsTxTrfReady()){
-					PIN_FLASH_CS=0;
-					spi(0xd7);//read status command
-					buf[0]=spi(0xff);
-					PIN_FLASH_CS=1;	
-	
-					putUSBUSART(buf,1); //send the bytes over USB
-					sm.state=COMMAND;  //wait for next instruction packet
-				}
-				break;
-			case SUCCESS:
-				if(mUSBUSARTIsTxTrfReady()){
-					buf[0]=0x01;
-					putUSBUSART(buf,1); //send the bytes over USB
-					sm.state=COMMAND;  //wait for next instruction packet
-				}
-				break;
-			case ERROR:
-				if(mUSBUSARTIsTxTrfReady()){
-					buf[0]=0x00;
-					putUSBUSART(buf,1); //send the bytes over USB
-					sm.state=COMMAND;  //wait for next instruction packet
-				}
-				break;
-		}//switch
-
     	CDCTxService();
 
     }//end while
@@ -364,17 +176,11 @@ static void init(void){
 	//make sure everything is input (should be on startup, but just in case)
 	TRISA=0xff;
 	TRISB=0xff;
-	TRISC=0b11111011; //LED out
-	PIN_LED=0;
-
-	//start by holding the FPGA in reset
-	PROG_B_LOW();
+	TRISC=0b11111111; //LED out
 
 	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
 	OSCTUNEbits.PLLEN = 1;  //enable PLL
 	while(cnt--); //wait for lock
-
-
 }
 
 unsigned char spi(unsigned char c){
@@ -382,81 +188,6 @@ unsigned char spi(unsigned char c){
 	while(SSP2STATbits.BF==0);
 	c=SSP2BUF;
 	return c;
-}
-
-//setup the SPI connection to the FPGA
-//does not yet account for protocol, etc
-//no teardown needed because only exit is on hardware reset
-
-//setup the SPI connection to the FPGA (slave version)
-void setupFPGASPIslave(void){
-	//setup SPI to FPGA
-	//SS AUX2 RB1/RP4
-	//MOSI AUX1 RB2/RP5
-	//MISO CS RB3/RP6
-	//SCLK AUX0 RB4/RP7
-
-	//CS input (slave)
-	TRIS_FLASH_CS=1; //CS input
-	RPINR23=4; //slave select input on RP4
-
-	//set MISO output pin (slave)
-	TRIS_FPGA_MISO=0;
-	PIN_FPGA_MISO=0;
-	RPOR6=9; //PPS output
-
-	//set MISO input pin (slave)
-	TRIS_FPGA_MOSI=1;
-	PIN_FPGA_MOSI=0;
-	RPINR21=6;//PPS input
-	
-	//set SCK input pin (slave)
-	TRIS_FLASH_SCK=1;
-	PIN_FLASH_SCK=0;
-	RPINR22=7;//PPS input
-
-	//settings need to be checked for slave!!!
-	SSP2CON1=0b00100010; //SSPEN/ FOSC/64
-	SSP2STAT=0b01000000; //cke=1
-}
-
-void setupFPGASPImaster(void){
-	//setup SPI to FPGA
-	//SS AUX2 RB1/RP4
-	//MISO AUX1 RB2/RP5
-	//MOSI CS RB3/RP6
-	//SCLK AUX0 RB4/RP7
-
-	//CS disabled
-	PIN_FLASH_CS=1; //CS high
-	TRIS_FLASH_CS=0; //CS output
-
-	//set MISO input pin (master)
-	//TRIS_FPGA_MISO=1; //direction input
-	RPINR21=5;          // Set SDI2 (MISO) to RP5
-
-	//set MOSI output pin (master)
-	TRIS_FPGA_MOSI=0;
-	PIN_FPGA_MOSI=0;
-	RPOR6=9; //PPS output
-
-	//set SCK output pin (master)
-	TRIS_FPGA_SCK=0;
-	PIN_FPGA_SCK=0;
-	RPOR7=10; //PPS output
-
-	//CS disabled
-	PIN_FPGA_CS=1; //CS high
-	TRIS_FPGA_CS=0; //CS output
-
-	//set DATAREADY input pin (master)
-	TRIS_FPGA_DATAREADY=1; //direction input
-
-	//settings for master mode
-	//SSP2CON1=0b00100010; //SSPEN/ FOSC/64
-	SSP2CON1=0b00100001; //SSPEN/ FOSC/16
-	//SSP2CON1=0b00100000; //SSPEN/ FOSC/4
-	SSP2STAT=0b01000000; //cke=1
 }
 
 void setupROMSPI(void){

@@ -21,6 +21,21 @@
 //						initialization code.
 //********************************************************************
 #include "LCD_driver.h"
+#include "HardwareProfile.h"
+//******************************************************
+//
+//			General Function Definitions
+//
+//******************************************************
+#define LCD_SCK		LAT_SCK	
+#define LCD_DIO		LAT_MOSI	 
+#define LCD_RES 	LAT_RESET
+#define LCD_CS		LAT_CS
+
+#define LCD_SCK_DIR		TRIS_SCK			
+#define LCD_DIO_DIR		TRIS_MOSI			 
+#define LCD_RES_DIR 	TRIS_RESET
+#define LCD_CS_DIR		TRIS_CS	
 
 //Usage: LCD_command(DISPON);
 //Inputs: char data - The command character to be sent to the LCD
