@@ -17,21 +17,6 @@
 //			General Function Definitions
 //
 //******************************************************
-#define LCD_SCK		LATBbits.LATB3		
-#define LCD_DIO		LATBbits.LATB2		 
-#define LCD_RES 	LATAbits.LATA2	
-#define LCD_CS		LATAbits.LATA3	
-
-#define LCD_SCK_DIR		TRISBbits.TRISB3		
-#define LCD_DIO_DIR		TRISBbits.TRISB2		 
-#define LCD_RES_DIR 	TRISAbits.TRISA2	
-#define LCD_CS_DIR		TRISAbits.TRISA3	
-
-//******************************************************
-//
-//			General Function Definitions
-//
-//******************************************************
 void LCD_init(void);
 void LCD_command(unsigned char data);
 void LCD_data(unsigned char data);
