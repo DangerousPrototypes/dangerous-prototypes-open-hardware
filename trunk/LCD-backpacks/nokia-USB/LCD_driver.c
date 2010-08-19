@@ -20,6 +20,7 @@
 //			for pointing us in the right direction on the
 //						initialization code.
 //********************************************************************
+#include "Compiler.h"
 #include "LCD_driver.h"
 #include "HardwareProfile.h"
 //******************************************************

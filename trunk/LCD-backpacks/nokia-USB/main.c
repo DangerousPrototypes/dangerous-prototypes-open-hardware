@@ -66,19 +66,20 @@ void setupFPGASPIslave(void);
 
 #pragma code
 void main(void){   
-#define SUMP 0
-#define UPGRADE 1
-	unsigned char i,j,inbuf, mode=SUMP,selftest;
+	unsigned char clr[]={0b11100000,0b00011100,0b00000011, 0b11111100, 0b11100011, 0b00011111};
+	int i,j;
+	int m;
+	long k;
+
 	unsigned long timer;
 	#define longDelay(x) timer=x; while(timer--)
 
     init();			//setup the crystal, pins, hold the FPGA in reset
 	usbbufflush();	//setup the USB byte buffer
 	
-	PIN_LED=1;		//LED on in update mode
-	setupROMSPI();	//setup SPI to program ROM
-	sm.state=COMMAND;	//start up looking for a command
-	sm.cmdcnt=0;
+	//setupROMSPI();	//setup SPI to program ROM
+	//sm.state=COMMAND;	//start up looking for a command
+	//sm.cmdcnt=0;
 
 	LCD_init(); //init the LCD
 
@@ -94,7 +95,7 @@ void main(void){
 		}
 	
 	}
-
+/*
     USBDeviceInit();//setup usb
 
     while(1){
@@ -103,66 +104,18 @@ void main(void){
     	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 		usbbufservice();//load any USB data into byte buffer
 
-		if(mode==SUMP){
-		
-			//give preference to bulk transfers from the FPGA to the USB for best speed
-			if((PIN_FPGA_DATAREADY==1)){//test for bytes to send from FPGA to USB
-				if((uartincnt<USB_OUT_BUF)){//test for free buffer space
-					//get SPI to buf
-					PIN_FPGA_CS=0;
-					PIN_LED=1;
-	#define FILL_BUFFER
-	#ifdef FILL_BUFFER
-					//continue to fill the USB output buffer while 
-					// there's free space and the data pin is high
-					while( (PIN_FPGA_DATAREADY==1) && (uartincnt<USB_OUT_BUF) ){
-	#endif
-						//FPGA buffer is NOT bidirectional! This does not work (yet)
-						//if we have data waiting to go, send it with this read
-						//if(usbbufgetbyte(&inbuf)==0){
-						//	inbuf=0x7f; //send no command to FPGA
-						//}
-
-						buf[uartincnt] = spi(0x7f); //spi(inbuf);
-						++uartincnt;
-						Nop(); //if the FPGA needs time to raise/lower the read flag, need to see a logic capture to be sure
-						Nop();
-	#ifdef FILL_BUFFER
-					}
-	#endif
-					PIN_LED=0;
-					PIN_FPGA_CS=1;
-				}//end buffer check
-
-			}else{
-				//test for bytes to send from USB to the FPGA
-				if(usbbufgetbyte(&inbuf)==1){	//if(SSP2STATbits.BF==0)
-					PIN_FPGA_CS=0;
-					PIN_LED=1;
-					SSP2BUF=inbuf; //put inbuf in SPI
-					while(SSP2STATbits.BF==0);
-					PIN_LED=0; 
-					PIN_FPGA_CS=1;
-				}
-			}
-		
 			//send data from the FPGA receive buffer to USB
 			if((mUSBUSARTIsTxTrfReady()) && (uartincnt > 0)){
-				PIN_LED=1;
 				putUSBUSART(&buf[0], uartincnt);
-				uartincnt = 0;
-				PIN_LED=0;
 			}
 
-    		CDCTxService(); //service the USB stack
-			continue; 		//skip the upgrade below
-							//this will eventually be improved
-							//for now, it's rough and ready
 		}
 
     	CDCTxService();
 
     }//end while
+
+*/
 }//end main
 
 static void init(void){
@@ -189,7 +142,7 @@ unsigned char spi(unsigned char c){
 	c=SSP2BUF;
 	return c;
 }
-
+/*
 void setupROMSPI(void){
 	//setup SPI for ROM
 	//!!!leave unconfigured (input) except when PROG_B is held low!!!
@@ -241,7 +194,7 @@ void teardownROMSPI(void){
 
 	TRIS_PROG_B=1; //input, release PROG_B
 }
-
+*/
 void usbbufservice(void){
 	if(ubuf.cnt==0){//if the buffer is empty, get more data
 		ubuf.cnt = getsUSBUSART(ubuf.inbuf,64);
@@ -308,7 +261,7 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     }      
     return TRUE; 
 }
-
+/*
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -351,3 +304,4 @@ void Low_ISR (void){
      _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
 
+*/

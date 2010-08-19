@@ -3,7 +3,7 @@
 //				Controller Definition
 //
 //******************************************************
-#include <p24fxxxx.h>
+//#include <p24fxxxx.h>
 #define	PHILLIPS
 #define	EPSON
 //NOTE: If you know which driver you are using, you can
