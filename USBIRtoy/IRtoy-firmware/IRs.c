@@ -107,6 +107,7 @@ unsigned char irsservice(void){
 		I_IDLE = 0,
 		I_PARAMETERS,
 		I_PROCESS,
+		I_DATA,
 	} irIOstate = I_IDLE;
 
 	static struct _smCommand {
@@ -126,7 +127,7 @@ unsigned char irsservice(void){
 					#define IRIO_RESET 0x00
 					#define IRIO_SETUP_SAMPLETIMER 0x01
 					#define IRIO_SETUP_PWM 0x02
-					#define IRIO_RAW 0x03
+					#define IRIO_TRANSMIT 0x03
 					#define IRIO_REPLAY 0x04			
 					switch(irToy.s[c]){
 						case IRIO_RESET: //reset, return to RC5 (same as SUMP) 
@@ -148,6 +149,14 @@ unsigned char irsservice(void){
 							irIOcommand.command[0]=irToy.s[c];
 							irIOcommand.parameters=2;
 							irIOstate=I_PARAMETERS;
+							break;
+						case IRIO_TRANSMIT: //start transmitting
+							//setup for transmit mode:
+								//disable timer 0, 1, 2, etc
+								//setup the PWM pin, frequency etc.
+								//setup timer 0
+							//transmit flag =0 reset the transmit flag
+							irIOstate = I_DATA_H; //change to transmit data processing state 
 							break;
 						default:
 							break;
@@ -177,6 +186,20 @@ unsigned char irsservice(void){
 				}
 				irIOstate=I_IDLE;//return to idle state
 				break;	
+			case I_DATA_H://hang out here and process data
+				if(flag==0){//if there is a free spot in the interrupt buffer
+				tmr0h_buf=0xff-irToy.s[c];//put the first byte in the buffer
+				irIOstate = I_DATA_L; //advance and get the next byte on the next pass
+				}
+				break;
+			case I_DATA_L:
+				tmr0l_buf=0xff-irToy.s[c];//put the second byte in the buffer
+				flag=1;//reset the interrupt buffer full flag		
+				//enable interrupt if this is the first time
+				irIOstate = I_DATA_H; //advance and get the next byte on the next pass
+
+				if() irIOstate=I_IDLE;//later: check here for 0xff 0xff and return to IDLE state
+				break;
 
 		}//switch 
 	}
@@ -303,23 +326,46 @@ void irsInterruptHandlerHigh (void){
 
 		TM0ON=0; //timer0 off
 		TM0IF=0;
+		if(transmit mode){//timer0 interrupt means the IR transmit period is over
 
-		if(irIO.rxflag==0){//check if data is pending
-			//packet terminator, 1.7S with no signal
-			h=0xff; //add to USB send buffer
-			l=0xff; //add to USB send buffer
-			irIO.rxflag=1;
-			//set the flush flag to send the packet from the main loop
-			irIO.flushflag=1;
-		}else{//error, overflow
-			irIO.overflow=1;
+			if(IRs_TransmitInversion==IRS_TRANSMIT_HI)
+				{
+				// TODO: Transmit Hi
+				//enable the PWM
+				IRs_TransmitInversion=IRS_TRANSMIT_LO;
+				}
+			else if(IRs_TransmitInversion==IRS_TRANSMIT_LO)
+				{
+				// TODO: Transmit Lo
+				//disable the PWM, output ground
+				IRs_TransmitInversion=IRS_TRANSMIT_HI;
+				}
+				//setup timer
+			TMR0H=tmr0h_buf;//first set the high byte
+			TMR0L=tmr0l_buf;//set low byte copies high byte too
+			TM0IF=0;
+			TM0ON=1;//enable the timer
+			//clear the buffer full flag
+
+		}else{//receive mode
+
+			if(irIO.rxflag==0){//check if data is pending
+				//packet terminator, 1.7S with no signal
+				h=0xff; //add to USB send buffer
+				l=0xff; //add to USB send buffer
+				irIO.rxflag=1;
+				//set the flush flag to send the packet from the main loop
+				irIO.flushflag=1;
+			}else{//error, overflow
+				irIO.overflow=1;
+			}
+	
+			//reset the pin interrupt, just in case
+			IRRX_IE=1;
+			IRRX_IF=0;
+	
+			LED_LAT &=(~LED_PIN); //LED off
 		}
-
-		//reset the pin interrupt, just in case
-		IRRX_IE=1;
-		IRRX_IF=0;
-
-		LED_LAT &=(~LED_PIN); //LED off
 	}else if(T1IE==1 && T1IF==1){ //is this timer 1 interrupt?
 		//this is another timer
 		//it tells the main loop to send any pending USB bytes
