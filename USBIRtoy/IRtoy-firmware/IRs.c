@@ -26,9 +26,12 @@
 #include "./USB/usb_device.h" 
 #include "./USB/usb_function_cdc.h"
 
+#define IRS_TRANSMIT_HI	0
+#define IRS_TRANSMIT_LO	1
+
 extern struct _irtoy irToy;
 
-static unsigned char h,l;
+static unsigned char h,l,tmr0h_buf, tmr0l_buf;
 
 static struct{
 	unsigned char T1offsetH;
@@ -46,6 +49,7 @@ static struct{
 	unsigned char txflag:1;
 	unsigned char flushflag:1;
 	unsigned char overflow:1;
+	unsigned char TXInvert:1;
 } irIO;
 
 //static unsigned char USBbuf[2];
@@ -107,7 +111,8 @@ unsigned char irsservice(void){
 		I_IDLE = 0,
 		I_PARAMETERS,
 		I_PROCESS,
-		I_DATA,
+		I_DATA_L,
+		I_DATA_H
 	} irIOstate = I_IDLE;
 
 	static struct _smCommand {
@@ -153,9 +158,15 @@ unsigned char irsservice(void){
 						case IRIO_TRANSMIT: //start transmitting
 							//setup for transmit mode:
 								//disable timer 0, 1, 2, etc
+							T2IE=0; 
+							//T1ON=0; 
+							T1IE=0;
+							IRRX_IE = 0;
+
 								//setup the PWM pin, frequency etc.
 								//setup timer 0
-							//transmit flag =0 reset the transmit flag
+							irIO.TXInvert=IRS_TRANSMIT_HI;
+							irIO.txflag=0;//transmit flag =0 reset the transmit flag
 							irIOstate = I_DATA_H; //change to transmit data processing state 
 							break;
 						default:
@@ -187,18 +198,31 @@ unsigned char irsservice(void){
 				irIOstate=I_IDLE;//return to idle state
 				break;	
 			case I_DATA_H://hang out here and process data
-				if(flag==0){//if there is a free spot in the interrupt buffer
-				tmr0h_buf=0xff-irToy.s[c];//put the first byte in the buffer
-				irIOstate = I_DATA_L; //advance and get the next byte on the next pass
+				if(irIO.txflag==0){//if there is a free spot in the interrupt buffer
+					tmr0h_buf=0xff-irToy.s[c];//put the first byte in the buffer
+					irIOstate = I_DATA_L; //advance and get the next byte on the next pass
+					irIO.TXsamples--;
+					c++;
 				}
 				break;
 			case I_DATA_L:
 				tmr0l_buf=0xff-irToy.s[c];//put the second byte in the buffer
-				flag=1;//reset the interrupt buffer full flag		
-				//enable interrupt if this is the first time
+				irIO.txflag=1;//reset the interrupt buffer full flag		
+				if(irIO.TX==0){//enable interrupt if this is the first time
+					TMR0H=tmr0h_buf;//first set the high byte
+					TMR0L=tmr0l_buf;//set low byte copies high byte too
+					TM0IF=0;
+					TM0IE=1;
+					TM0ON=1;//enable the timer
+					irIO.txflag=0; //buffer ready for new byte
+					irIO.TX=1;
+				}
+				
 				irIOstate = I_DATA_H; //advance and get the next byte on the next pass
+				irIO.TXsamples--;
+				c++;
 
-				if() irIOstate=I_IDLE;//later: check here for 0xff 0xff and return to IDLE state
+				//if() irIOstate=I_IDLE;//later: check here for 0xff 0xff and return to IDLE state
 				break;
 
 		}//switch 
@@ -326,26 +350,29 @@ void irsInterruptHandlerHigh (void){
 
 		TM0ON=0; //timer0 off
 		TM0IF=0;
-		if(transmit mode){//timer0 interrupt means the IR transmit period is over
-
-			if(IRs_TransmitInversion==IRS_TRANSMIT_HI)
+		if(irIO.TX==1){//timer0 interrupt means the IR transmit period is over
+			//!!!!if txflag is 0 then raise error flag!!!!!!!
+if(irIO.txflag==0)while(1);
+			TM0IE=0;
+			if(irIO.TXInvert==IRS_TRANSMIT_HI)
 				{
 				// TODO: Transmit Hi
 				//enable the PWM
-				IRs_TransmitInversion=IRS_TRANSMIT_LO;
+				irIO.TXInvert=IRS_TRANSMIT_LO;
 				}
-			else if(IRs_TransmitInversion==IRS_TRANSMIT_LO)
+			else
 				{
 				// TODO: Transmit Lo
 				//disable the PWM, output ground
-				IRs_TransmitInversion=IRS_TRANSMIT_HI;
+				irIO.TXInvert=IRS_TRANSMIT_HI;
 				}
 				//setup timer
 			TMR0H=tmr0h_buf;//first set the high byte
 			TMR0L=tmr0l_buf;//set low byte copies high byte too
 			TM0IF=0;
+			TM0IE=1;
 			TM0ON=1;//enable the timer
-			//clear the buffer full flag
+			irIO.txflag=0; //buffer ready for new byte
 
 		}else{//receive mode
 
