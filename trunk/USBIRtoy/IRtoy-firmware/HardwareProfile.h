@@ -17,6 +17,7 @@ struct _irtoy{
 	unsigned char s[SAMPLE_ARRAY_SIZE];
 	unsigned char usbIn[30];
 	unsigned char usbOut[64];
+	unsigned char HardwareVersion;
 };
 
 //hardware platform?
@@ -62,6 +63,40 @@ struct _irtoy{
 	#define	IRTX_LAT  LATC
 	#define IRTX_TRIS TRISC
 	#define IRTX_PIN  0b100
+
+	//
+	//V2 extra hardware
+	//
+	//raw receiver
+	//CCP pin (12/RC1)
+	#define IRFREQ_CAP_LAT	LATC
+	#define IRFREQ_CAP_TRIS TRISC
+	#define IRFREQ_CAP_PORT PORTC
+	#define IRFREQ_CAP_PIN 	0b10
+	#define IRFREQ_CAP		PORTCbits.RC1
+	#define IRFREQ_CAP_SETUP() PIE2bits.CCP2IE=0; T3CON=0; CCP2CON=0b00000101 //capture every rising edge (0100 = falling edge) //select timer1 for CPP2 in T3CON	
+	#define IRFREQ_CAP_IE	PIE2bits.CCP2IE
+	#define IRFREQ_CAP_IF	PIR2bits.CCP2IF		
+	#define IRFREQ_CAP_L	CCPR2L
+	#define IRFREQ_CAP_H	CCPR2H	
+	#define IRFREQ_CCPxCON	CCP2CON	
+
+	//Interrupt pin (22/RB1)
+	#define IRFREQ_INT_LAT 	LATB
+	#define IRFREQ_INT_TRIS TRISB
+	#define IRFREQ_INT_PORT PORTB
+	#define IRFREQ_INT_PIN 	0b10
+	#define IRFREQ_INT 		PORTBbits.RB1
+
+	//T1/3 external clock (11/RC0)
+	#define IRFREQ_EC_LAT	LATC
+	#define IRFREQ_EC_TRIS	TRISC
+	#define IRFREQ_EC_PORT	PORTC
+	#define IRFREQ_EC_PIN	0b1
+	#define IRFREQ_EC		PORTCbits.RC0
+	
+	//all connected IR FREQ pin to input
+	#define IRFREQ_PIN_SETUP() IRFREQ_CAP_TRIS|=IRFREQ_CAP_PIN; IRFREQ_INT_TRIS|=IRFREQ_INT_PIN; IRFREQ_EC_TRIS|=IRFREQ_EC_PIN
 #endif
 
 // RX C7 (18)

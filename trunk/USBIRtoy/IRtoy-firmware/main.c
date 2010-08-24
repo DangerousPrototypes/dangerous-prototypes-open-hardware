@@ -77,10 +77,18 @@ void main(void){
 	usbbufflush();	//flush USB input buffer system
 	SetupRC5(); 	//start in RC decoder mode
 
+#if 0 //startup in a mode to help with development debugging
+	T2IE=0; 	//disable any Timer 2 interrupt
+	IRRX_IE=0; 	//enable RX interrupts for data ACQ
+	mode=IR_S;
+	irssetup();
+#endif
+
 	//
 	//	Never ending loop services each task in small increments
 	//
  	USBDeviceInit();		//initialize USB (usb_device.c)
+
 	while(1){
 
         USBDeviceTasks(); ////service USB tasks	
@@ -190,7 +198,7 @@ void main(void){
 							}else{
 								LED_LAT |=LED_PIN; //LED on
 								irToy.usbOut[0]='V';//answer OK
-								irToy.usbOut[1]=HARDWARE_VERSION;
+								irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
 								irToy.usbOut[2]=FIRMWARE_VERSION_H;
 								irToy.usbOut[3]=FIRMWARE_VERSION_L;
 							}
@@ -202,7 +210,7 @@ void main(void){
 					case 'v'://self test
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 							irToy.usbOut[0]='V';//answer OK
-							irToy.usbOut[1]=HARDWARE_VERSION;
+							irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
 							irToy.usbOut[2]=FIRMWARE_VERSION_H;
 							irToy.usbOut[3]=FIRMWARE_VERSION_L;
 							putUSBUSART(irToy.usbOut,4);
@@ -222,7 +230,7 @@ void main(void){
 
 unsigned char SelfTest(void){
 	unsigned char err=0x30; //error flag starts with ASCII 0
-	volatile static unsigned int cnt;
+	unsigned int cnt;
 
 	IRRX_TRIS |=IRRX_PIN; //ir to input
 	IRTX_LAT  &=(~IRTX_PIN);//TX LED off
@@ -232,6 +240,24 @@ unsigned char SelfTest(void){
 	cnt=10000;
 	while(cnt--);
 	if(!(IRRX_PORT & IRRX_PIN)) err|=0b1; //test IR RX pullup, should be high
+
+	if(irToy.HardwareVersion==2){
+		if(IRFREQ_CAP==0) err|=0b100; //test IR Frequency detector pullup, should be high
+
+		//turn IR LED solid on to test frequency detector
+		IRTX_TRIS &=(~IRTX_PIN); //output
+		IRTX_LAT|=IRTX_PIN; //LED on
+		
+		//give a little delay
+		cnt=1000;
+		while(cnt--);
+		
+		//test IR Frequency detector, should now be off
+		if(IRFREQ_CAP==1) err|=0b100; 
+		
+		//LED back off
+		IRTX_LAT&=(~IRTX_PIN); 
+	}
 
 	//setup for IR TX
 	/*
@@ -260,7 +286,7 @@ unsigned char SelfTest(void){
 	while(cnt--);
 
 	if(IRRX_PORT & IRRX_PIN) err|=0b10;//IR LED should activate RX
-	
+
 	return err;
 }
 
@@ -271,6 +297,8 @@ unsigned char SelfTest(void){
 //
 //
 void SetupBoard(void){
+	unsigned char i;
+
 	//disable some defaults
     ADCON1 |= 0b1111;   	//all pins digital
 	CVRCON=0b00000000;
@@ -307,6 +335,16 @@ void SetupBoard(void){
 	#else
 		TRISB|=0b100; 	//make RB2 input so it doesn't interfere!
 	#endif
+
+	//test IR_FREQ pin to see if this is v1 or v2
+	IRFREQ_PIN_SETUP();
+	irToy.HardwareVersion=2;
+	for(i=0; i<20; i++){
+		if(IRFREQ_CAP==0){
+			irToy.HardwareVersion=1;	
+			break;
+		}
+	}
 
    	INTCONbits.GIEL = 1;//enable peripheral interrupts
    	INTCONbits.GIEH = 1;//enable interrupts
