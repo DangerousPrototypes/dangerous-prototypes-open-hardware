@@ -34,22 +34,16 @@ extern struct _irtoy irToy;
 static unsigned char h,l,tmr0h_buf, tmr0l_buf;
 
 static struct{
-	unsigned char T1offsetH;
-	unsigned char T1offsetL;
 	unsigned char RXsamples;
 	unsigned char TXsamples;
 	unsigned char timeout;
-	unsigned char btrack; //bit tracker
-	unsigned char btrackreset; //reset value for bit tracker
-	unsigned char work;
-	unsigned char rxbuf;
-	unsigned char txbuf;
 	unsigned char TX:1;
 	unsigned char rxflag:1;
 	unsigned char txflag:1;
 	unsigned char flushflag:1;
 	unsigned char overflow:1;
 	unsigned char TXInvert:1;
+	unsigned char TXend:1;
 } irIO;
 
 //static unsigned char USBbuf[2];
@@ -63,6 +57,29 @@ void irssetup(void){
 		irToy.usbOut[2]='1';
 		putUSBUSART(irToy.usbOut,3);
 	}
+
+	//setup for IR TX
+	/*
+	 * PWM registers configuration
+	 * Fosc = 48000000 Hz
+	 * Fpwm = 36144.58 Hz (Requested : 36000 Hz)
+	 * Duty Cycle = 50 %
+	 * Resolution is 10 bits
+	 * Prescaler is 4
+	 * Ensure that your PWM pin is configured as digital output
+	 * see more details on http://www.micro-examples.com/
+	 * this source code is provided 'as is',
+	 * use it at your own risks
+	 * http://www.micro-examples.com/public/microex-navig/doc/097-pwm-calculator
+	 */
+	IRTX_TRIS&=(~IRTX_PIN);//digital output
+	IRTX_LAT&=(~IRTX_PIN); //low (hold PWM transistor base off)
+	T2IF=0;//clear the interrupt flag
+	T2IE=0; //disable interrupts
+	PR2 = 0b01010010 ; //82
+	T2CON = 0b00000101 ;
+	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
+	CCP1CON = 0b00010000 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
 
 	//setup for IR RX
 	irIO.rxflag=0;
@@ -158,11 +175,11 @@ unsigned char irsservice(void){
 						case IRIO_TRANSMIT: //start transmitting
 							//setup for transmit mode:
 								//disable timer 0, 1, 2, etc
-							T2IE=0; 
-							//T1ON=0; 
+							TM0IE=0; 
 							T1IE=0;
 							IRRX_IE = 0;
-
+							irIO.TXend=0;
+							irIO.TX=0;
 								//setup the PWM pin, frequency etc.
 								//setup timer 0
 							irIO.TXInvert=IRS_TRANSMIT_HI;
@@ -207,7 +224,14 @@ unsigned char irsservice(void){
 				break;
 			case I_DATA_L:
 				tmr0l_buf=0xff-irToy.s[c];//put the second byte in the buffer
+
+				//check here for 0xff 0xff and return to IDLE state
+				if(tmr0h_buf==0 && tmr0l_buf==0){
+					irIO.TXend=1;					
+				}	
+
 				irIO.txflag=1;//reset the interrupt buffer full flag		
+
 				if(irIO.TX==0){//enable interrupt if this is the first time
 					TMR0H=tmr0h_buf;//first set the high byte
 					TMR0L=tmr0l_buf;//set low byte copies high byte too
@@ -216,13 +240,18 @@ unsigned char irsservice(void){
 					TM0ON=1;//enable the timer
 					irIO.txflag=0; //buffer ready for new byte
 					irIO.TX=1;
+					LED_LAT |= LED_PIN;//LED ON
 				}
-				
-				irIOstate = I_DATA_H; //advance and get the next byte on the next pass
-				irIO.TXsamples--;
-				c++;
 
-				//if() irIOstate=I_IDLE;//later: check here for 0xff 0xff and return to IDLE state
+				if(irIO.TXend==0){
+					irIOstate = I_DATA_H; //advance and get the next byte on the next pass
+				}else{
+					irIOstate=I_IDLE;//return to idle state, data done
+				}	
+
+				irIO.TXsamples--;
+				c++;			
+
 				break;
 
 		}//switch 
@@ -347,26 +376,35 @@ void irsInterruptHandlerHigh (void){
 		//need to examine the limits of typical protocols closer
 
 		T1ON=0;		//t1 is the usb packet timeout, disable it
-
 		TM0ON=0; //timer0 off
-		TM0IF=0;
+		TM0IF=0; //clear interrupt flag
+
 		if(irIO.TX==1){//timer0 interrupt means the IR transmit period is over
-			//!!!!if txflag is 0 then raise error flag!!!!!!!
-if(irIO.txflag==0)while(1);
 			TM0IE=0;
-			if(irIO.TXInvert==IRS_TRANSMIT_HI)
-				{
-				// TODO: Transmit Hi
-				//enable the PWM
-				irIO.TXInvert=IRS_TRANSMIT_LO;
-				}
-			else
-				{
-				// TODO: Transmit Lo
+
+			//!!!!if txflag is 0 then raise error flag!!!!!!!
+			if(irIO.txflag==0 || irIO.TXend==1){
 				//disable the PWM, output ground
+				CCP1CON &=(~0b1100); 
+				LEDoff();
+				irIO.TX=0;
+				//reset receive interrupt
+				IRRX_IF=0;
+				IRRX_IE=1;
+				return;
+			}
+
+			if(irIO.TXInvert==IRS_TRANSMIT_HI){
+				//enable the PWM
+				TMR2=0;
+				CCP1CON |=0b1100; 
+				irIO.TXInvert=IRS_TRANSMIT_LO;
+			}else{
+				//disable the PWM, output ground
+				CCP1CON &=(~0b1100); 
 				irIO.TXInvert=IRS_TRANSMIT_HI;
-				}
-				//setup timer
+			}
+			//setup timer
 			TMR0H=tmr0h_buf;//first set the high byte
 			TMR0L=tmr0l_buf;//set low byte copies high byte too
 			TM0IF=0;
