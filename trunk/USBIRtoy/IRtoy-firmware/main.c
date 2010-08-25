@@ -26,28 +26,14 @@
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
 
-//USB stack
-#include "./USB/usb.h"
-#include "./USB/usb_function_cdc.h"
-#include "GenericTypeDefs.h"
-#include "Compiler.h"
-#include "usb_config.h" //download these files from Microchip
-#include ".\USB\usb_device.h" 
-
-//IR Toy functions
-#include "SUMP.h" 		//sump functions
-#include "IRIO.h" 		//IRIO functions
-#include "IRs.h" 		//IRs functions
-#include "RCdecoder.h" 	//RC5 decoder
-
-//our USB input buffer functions
-#include "USBbuf.h"
-
-//hardware definitions
-#include "HardwareProfile.h"
 
 //includes config fuses
-#include "config.h" 
+#include "config.h"
+
+//USB stack
+#include "globals.h"
+
+
 
 //
 //	This variable tracks the current IR Toy mode

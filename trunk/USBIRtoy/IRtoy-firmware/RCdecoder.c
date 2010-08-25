@@ -16,13 +16,8 @@
 // Note that the official spec inverses the RC5x bit, but we do not do that...
 //
 //#ifdef RC_DECODER
-#include "HardwareProfile.h"
 
-//USB stack
-#include "usb_config.h" //download these files from Microchip
-#include "./USB/usb.h"
-#include "./USB/usb_device.h" 
-#include "./USB/usb_function_cdc.h"
+#include "globals.h"
 
 extern struct _irtoy irToy; //access to the USB buffer, etc
 
