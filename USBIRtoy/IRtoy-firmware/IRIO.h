@@ -6,7 +6,11 @@
 *	http://dangerousprototypes.com
 *
 */
+#ifndef IRIO_H
+#define IRIO_H
+
 unsigned char irIOservice(void);
 void irIOsetup(void);
 void irIOInterruptHandlerHigh(void);
 
+#endif

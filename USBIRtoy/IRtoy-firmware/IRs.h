@@ -6,7 +6,12 @@
 *	http://dangerousprototypes.com
 *
 */
+
+#ifndef IRS_H
+#define IRS_H
+
 unsigned char irsservice(void);
 void irssetup(void);
 void irsInterruptHandlerHigh(void);
 
+#endif

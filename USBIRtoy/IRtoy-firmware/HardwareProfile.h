@@ -6,6 +6,10 @@
 *	http://dangerousprototypes.com
 *
 */
+
+#ifndef HARDWARE_PROFILE_H
+#define HARDWARE_PROFILE_H
+
 #define HARDWARE_VERSION '1'
 #define FIRMWARE_VERSION_H '0'
 #define FIRMWARE_VERSION_L '6'
@@ -102,10 +106,10 @@ struct _irtoy{
 // RX C7 (18)
 // TX C6 (17)
 
-#define LEDoff() LED_LAT&=(~LED_PIN)
-#define LEDon() LED_LAT|=LED_PIN
-#define LEDout() LED_TRIS&=(~LED_PIN)
-#define LEDin() LED_TRIS|=LED_PIN
+#define LedOff() LED_LAT&=(~LED_PIN)
+#define LedOn() LED_LAT|=LED_PIN
+#define LedOut() LED_TRIS&=(~LED_PIN)
+#define LedIn() LED_TRIS|=LED_PIN
 
 #define TM0IF INTCONbits.T0IF
 #define TM0IE INTCONbits.T0IE
@@ -162,3 +166,5 @@ struct _irtoy{
 #define POST_x14 0b1101000
 #define POST_x15 0b1110000
 #define POST_x16 0b1111000
+
+#endif

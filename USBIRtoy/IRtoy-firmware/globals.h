@@ -24,7 +24,7 @@ typedef unsigned int u16;
 //USB stack
 #include "./USB/usb.h"
 #include "./USB/usb_function_cdc.h"
-#include ".\USB\usb_device.h"
+#include "./USB/usb_device.h"
 #endif
 
 //IR Toy functions
@@ -36,5 +36,11 @@ typedef unsigned int u16;
 //our USB input buffer functions
 #include "USBbuf.h"
 
+#include "main.h"
+
+// From Microchip Library
+// For portability purpose: adjusts itself accdg to the target processor
+#include <capture.h>
+#include <timers.h>
 
 #endif

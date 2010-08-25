@@ -7,6 +7,13 @@
 *
 */
 // What pins do what
+
+#ifndef MAIN_H
+#define MAIN_H
+
+
+#if 0
+
 #define LED PB2
 #define IRLED PB0
 #define REGIONSWITCH PB1
@@ -45,9 +52,18 @@ struct IrCode {
   uint8_t const rom codes[];
 };
 
+
+
 void xmitCodeElement(uint16_t ontime, uint16_t offtime, uint8_t PWM_code );
 void flashslowLEDx( uint8_t num_blinks );
 void quickflashLEDx( uint8_t x );
 void tvbgone_sleep( void );
 void delay_ten_us(uint16_t us);
 void quickflashLED( void );
+#endif
+
+// extern declarations
+extern struct _irtoy irToy; //access to the USB buffer, etc
+
+
+#endif

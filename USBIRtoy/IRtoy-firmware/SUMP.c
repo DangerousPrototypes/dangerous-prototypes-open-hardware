@@ -13,7 +13,7 @@
 
 #include "globals.h"
 
-extern struct _irtoy irToy;
+//extern struct _irtoy irToy;
 
 //commandset
 //http://www.sump.org/projects/analyzer/protocol/
