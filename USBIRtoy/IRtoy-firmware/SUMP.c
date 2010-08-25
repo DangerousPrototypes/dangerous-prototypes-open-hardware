@@ -11,14 +11,7 @@
 //
 //#ifdef SUMP_LA
 
-#include "HardwareProfile.h"
-
-//USB stack
-#include "GenericTypeDefs.h"
-#include "usb_config.h" //download these files from Microchip
-#include "./USB/usb.h"
-#include "./USB/usb_device.h" 
-#include "./USB/usb_function_cdc.h"
+#include "globals.h"
 
 extern struct _irtoy irToy;
 

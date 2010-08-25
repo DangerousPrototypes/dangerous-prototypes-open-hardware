@@ -18,13 +18,7 @@
 //This is a hacked copy of the IRIO source
 // it still contains a lot of variables and cruft that's not needed
 
-#include "HardwareProfile.h"
-
-//USB stack
-#include "usb_config.h" //download these files from Microchip
-#include "./USB/usb.h"
-#include "./USB/usb_device.h" 
-#include "./USB/usb_function_cdc.h"
+#include "globals.h"
 
 #define IRS_TRANSMIT_HI	0
 #define IRS_TRANSMIT_LO	1

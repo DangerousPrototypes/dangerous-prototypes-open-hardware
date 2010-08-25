@@ -11,11 +11,7 @@ Functions to consolidate all USB read access into a single management system
 The Microchip code doesn't seem to like byte reads
 */
 
-//USB stack
-#include "usb_config.h" //download these files from Microchip
-#include "./USB/usb.h"
-#include "./USB/usb_device.h" 
-#include "./USB/usb_function_cdc.h"
+#include "globals.h"
 
 static struct _irtoyusbbuffer{
 	unsigned char inBuf[30];
