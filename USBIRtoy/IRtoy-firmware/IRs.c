@@ -17,8 +17,18 @@
 
 //This is a hacked copy of the IRIO source
 // it still contains a lot of variables and cruft that's not needed
+//to do:
+//sampling frequency adjust
+//timeout adjust
+//LED on/off 
 
-#include "globals.h"
+#include "HardwareProfile.h"
+
+//USB stack
+#include "usb_config.h" //download these files from Microchip
+#include "./USB/usb.h"
+#include "./USB/usb_device.h" 
+#include "./USB/usb_function_cdc.h"
 
 #define IRS_TRANSMIT_HI	0
 #define IRS_TRANSMIT_LO	1
