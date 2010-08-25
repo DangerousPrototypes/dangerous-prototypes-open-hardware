@@ -284,6 +284,7 @@ unsigned char SelfTest(void){
 //
 void SetupBoard(void){
 	unsigned char i;
+	unsigned int cnt;
 
 	//disable some defaults
     ADCON1 |= 0b1111;   	//all pins digital
@@ -325,7 +326,11 @@ void SetupBoard(void){
 	//test IR_FREQ pin to see if this is v1 or v2
 	IRFREQ_PIN_SETUP();
 	irToy.HardwareVersion=2;
-	for(i=0; i<20; i++){
+
+	cnt=1000;
+	while(cnt--);
+
+	for(i=0; i<100; i++){
 		if(IRFREQ_CAP==0){
 			irToy.HardwareVersion=1;	
 			break;

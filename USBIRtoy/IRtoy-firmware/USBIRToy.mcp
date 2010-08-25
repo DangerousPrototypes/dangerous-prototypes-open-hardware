@@ -51,6 +51,7 @@ file_023=.
 file_024=.
 file_025=.
 file_026=.
+file_027=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -79,6 +80,7 @@ file_023=no
 file_024=no
 file_025=no
 file_026=no
+file_027=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -107,6 +109,7 @@ file_023=no
 file_024=no
 file_025=no
 file_026=no
+file_027=no
 [FILE_INFO]
 file_000=..\Microchip\Usb\usb_device.c
 file_001=..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
@@ -134,7 +137,8 @@ file_022=RCdecoder.h
 file_023=USBbuf.h
 file_024=config.h
 file_025=IRs.h
-file_026=rm18f2550 - HID Bootload.lkr
+file_026=globals.h
+file_027=rm18f2550 - HID Bootload.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=
