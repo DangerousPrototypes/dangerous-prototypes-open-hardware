@@ -6,7 +6,12 @@
 *	http://dangerousprototypes.com
 *
 */
+#ifndef RCDECODER_H
+#define RCDECODER_H
+
 void ProcessIR(void);
 void IRdecoderInterruptHandlerHigh (void);
 void SetupRC5(void);
 void IRmanString(void);
+
+#endif

@@ -14,7 +14,7 @@
 
 #include "globals.h"
 
-extern struct _irtoy irToy;
+//extern struct _irtoy irToy;
 
 
 static struct{
@@ -164,8 +164,8 @@ unsigned char irIOservice(void){
 							IRRX_IE = 0;
 							IRTX_TRIS|=IRTX_PIN;//digital INPUT (no PWM until active)
 							IRTX_LAT&=(~IRTX_PIN);//direction 0
-							LEDoff();
-							LEDout();
+							LedOff();
+							LedOut();
 							return 1; //need to flag exit!
 							break;
 						case IRIO_SETUP_SAMPLETIMER: //setup the values for the 10khz default sampleing timer

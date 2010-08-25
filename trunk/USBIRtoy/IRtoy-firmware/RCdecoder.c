@@ -19,7 +19,7 @@
 
 #include "globals.h"
 
-extern struct _irtoy irToy; //access to the USB buffer, etc
+//extern struct _irtoy irToy; //access to the USB buffer, etc
 
 static enum _RC5STATE{ //struct of variable to decode RC5
 	IDLE=0,

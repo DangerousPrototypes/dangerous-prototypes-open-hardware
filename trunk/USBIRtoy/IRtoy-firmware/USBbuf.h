@@ -6,6 +6,12 @@
 *	http://dangerousprototypes.com
 *
 */
+#ifndef USBBUF_H
+#define USBBUF_H
+
 void usbbufservice(void);
 unsigned char usbbufgetbyte(unsigned char *c);
 void usbbufflush(void);
+
+
+#endif

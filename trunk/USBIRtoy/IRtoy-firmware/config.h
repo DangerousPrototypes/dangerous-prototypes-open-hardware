@@ -6,6 +6,9 @@
 *	http://dangerousprototypes.com
 *
 */
+
+#ifndef CONFIG_H
+#define CONFIG_H
         #pragma config PLLDIV   = 5         
         #pragma config CPUDIV   = OSC1_PLL2   
         #pragma config USBDIV   = 2         
@@ -44,3 +47,5 @@
 //      #pragma config EBTR2    = OFF
 //      #pragma config EBTR3    = OFF
         #pragma config EBTRB    = OFF
+#endif
+

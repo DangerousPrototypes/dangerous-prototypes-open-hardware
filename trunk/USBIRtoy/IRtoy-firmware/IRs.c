@@ -24,21 +24,17 @@
 //timeout adjust
 //LED on/off 
 
-#include "HardwareProfile.h"
+#include "globals.h"
 
-//USB stack
-#include "usb_config.h" //download these files from Microchip
-#include "./USB/usb.h"
-#include "./USB/usb_device.h" 
-#include "./USB/usb_function_cdc.h"
 
-extern struct _irtoy irToy;
+//extern struct _irtoy irToy;
 
-static unsigned char h,l, rawh, rawl;
-static unsigned char modFreq[8];
-static unsigned char modFreqCnt;
+static volatile unsigned char h,l;//, rawh, rawl;
+static volatile unsigned char modFreq[8];
+//static unsigned char modFreqCnt; // positioned inside ISR
 
-static struct{
+
+static volatile struct{
 	unsigned char T1offsetH;
 	unsigned char T1offsetL;
 	unsigned char RXsamples;
@@ -104,13 +100,58 @@ void irssetup(void){
 }
 
 
+#if 0
+static void DisableAllTimers(void)
+{
+CloseTimer0();
+CloseTimer1();
+CloseTimer2();
+}
+#endif
+
+
+
+typedef enum
+	{ //in out data state machine
+	I_IDLE = 0,
+	I_PARAMETERS,
+	I_PROCESS
+	}_smio;
+
+typedef struct
+	{
+	unsigned char command[5];
+	unsigned char parameters;
+	unsigned char parCnt;
+	}_smCommand;
+
+
+enum IRIOSTATES
+	{
+	IRIO_RESET=0x00,
+	IRIO_SETUP_SAMPLETIMER=0x01,
+	IRIO_SETUP_PWM=0x02,
+	IRIO_RAW=0x03,
+	IRIO_FREQ=0x04
+	};
+
+
+#define SetupTimer0()  TM0IF=0;TM0IE=1;TM0ON=1;//enable the timer
+#define SetTimer0Registers(lo,hi) TMR0H=(hi);TMR0L=(lo);
+
 //
 // irIO periodic service routine
 // moves bytes in and out
 //
 unsigned char irsservice(void){
-	static unsigned char c;
+	static unsigned char ctrTxBuf;
 
+	//static unsigned char ctrTxBuf;
+
+	static _smio irIOstate = I_IDLE;
+	static _smCommand irIOcommand;
+
+#if 0
 	static enum _smio { //in out data state machine
 		I_IDLE = 0,
 		I_PARAMETERS,
@@ -122,21 +163,24 @@ unsigned char irsservice(void){
 		unsigned char parameters;
 		unsigned char parCnt;
 	} irIOcommand;
+#endif
 
 	if(irIO.TXsamples==0){
 		irIO.TXsamples=getsUSBUSART(irToy.s,64);
-		c=0;
+		ctrTxBuf=0;
 	}
 
 	if(irIO.TXsamples>0){
 		switch (irIOstate){
 			case I_IDLE:
+#if 0
 					#define IRIO_RESET 0x00
 					#define IRIO_SETUP_SAMPLETIMER 0x01
 					#define IRIO_SETUP_PWM 0x02
 					#define IRIO_RAW 0x03
-					#define IRIO_FREQ 0x04			
-					switch(irToy.s[c]){
+					#define IRIO_FREQ 0x04
+#endif
+					switch(irToy.s[ctrTxBuf]){
 						case IRIO_RESET: //reset, return to RC5 (same as SUMP) 
 							CCP1CON=0; 
 							TM0ON=0;
@@ -150,12 +194,12 @@ unsigned char irsservice(void){
 							IRRX_IE = 0;
 							IRTX_TRIS|=IRTX_PIN;//digital INPUT (no PWM until active)
 							IRTX_LAT&=(~IRTX_PIN);//direction 0
-							LEDoff();
-							LEDout();
+							LedOff();
+							LedOut();
 							return 1; //need to flag exit!
 							break;
 						case IRIO_SETUP_PWM: //setup PWM frequency
-							irIOcommand.command[0]=irToy.s[c];
+							irIOcommand.command[0]=irToy.s[ctrTxBuf];
 							irIOcommand.parameters=2;
 							irIOstate=I_PARAMETERS;
 							break;
@@ -170,12 +214,12 @@ unsigned char irsservice(void){
 							break;
 					}
 					irIO.TXsamples--;
-					c++;
+					ctrTxBuf++;
 				break;
 			case I_PARAMETERS://get optional parameters
-				irIOcommand.command[irIOcommand.parCnt]=irToy.s[c];//store each parameter
+				irIOcommand.command[irIOcommand.parCnt]=irToy.s[ctrTxBuf];//store each parameter
 				irIO.TXsamples--;
-				c++;
+				ctrTxBuf++;
 				irIOcommand.parCnt++;
 				if(irIOcommand.parCnt<irIOcommand.parameters) break; //if not all parameters, quit
 			case I_PROCESS:	//process long commands
@@ -245,13 +289,10 @@ unsigned char irsservice(void){
 			irIO.RXsamples=0;
 			irIO.flushflag=0;
 			irIO.overflow=0;
-
-			LED_LAT &=(~LED_PIN); //LED off
+			LedOff();
+			//LED_LAT &=(~LED_PIN); //LED off
 		}
 	}
-
-
-	
 	return 0;//CONTINUE
 }
 
@@ -262,13 +303,16 @@ unsigned char irsservice(void){
 #pragma interrupt irsInterruptHandlerHigh
 void irsInterruptHandlerHigh (void){
 
+	static unsigned char modFreqCnt;
+
 	if(IRRX_IE==1 && IRRX_IF == 1){ //if RB Port Change Interrupt	
 		l=IRRX_PORT;
 		if(TM0ON==0){ //timer not running, setup and start
 
 			if( ((l & IRRX_PIN)==0)){;//only if 0, must read PORTB to clear RBIF
 				//setup timer 0, a 21.3333us/tick timer that counts the length of the decoded IR signal
-				LED_LAT |= LED_PIN;//LED ON
+				//LED_LAT |= LED_PIN;//LED ON
+				LedOn();
 				TMR0H=0;//first set the high byte
 				TMR0L=0;//set low byte copies high byte too
 				TM0IE=1;
