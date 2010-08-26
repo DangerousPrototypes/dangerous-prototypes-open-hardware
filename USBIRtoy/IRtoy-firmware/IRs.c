@@ -29,12 +29,13 @@
 
 //extern struct _irtoy irToy;
 
-static volatile unsigned char h,l;//, rawh, rawl;
+static volatile unsigned char h,l;
 static volatile unsigned char modFreq[8];
 //static unsigned char modFreqCnt; // positioned inside ISR
 
 
-static volatile struct{
+static volatile struct
+	{
 	unsigned char T1offsetH;
 	unsigned char T1offsetL;
 	unsigned char RXsamples;
@@ -50,11 +51,11 @@ static volatile struct{
 	unsigned char txflag:1;
 	unsigned char flushflag:1;
 	unsigned char overflow:1;
-} irIO;
+	}irIO;
 
-//static unsigned char USBbuf[2];
 
-void irssetup(void){
+
+void irsSetup(void){
 
 	//send version string
   	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
@@ -100,16 +101,6 @@ void irssetup(void){
 }
 
 
-#if 0
-static void DisableAllTimers(void)
-{
-CloseTimer0();
-CloseTimer1();
-CloseTimer2();
-}
-#endif
-
-
 
 typedef enum
 	{ //in out data state machine
@@ -136,14 +127,14 @@ enum IRIOSTATES
 	};
 
 
-#define SetupTimer0()  TM0IF=0;TM0IE=1;TM0ON=1;//enable the timer
-#define SetTimer0Registers(lo,hi) TMR0H=(hi);TMR0L=(lo);
+//#define SetupTimer0()  TM0IF=0;TM0IE=1;TM0ON=1;//enable the timer
+//#define SetTimer0Registers(lo,hi) TMR0H=(hi);TMR0L=(lo);
 
 //
 // irIO periodic service routine
 // moves bytes in and out
 //
-unsigned char irsservice(void){
+unsigned char irsService(void){
 	static unsigned char ctrTxBuf;
 
 	//static unsigned char ctrTxBuf;
@@ -151,35 +142,15 @@ unsigned char irsservice(void){
 	static _smio irIOstate = I_IDLE;
 	static _smCommand irIOcommand;
 
-#if 0
-	static enum _smio { //in out data state machine
-		I_IDLE = 0,
-		I_PARAMETERS,
-		I_PROCESS,
-	} irIOstate = I_IDLE;
-
-	static struct _smCommand {
-		unsigned char command[5];
-		unsigned char parameters;
-		unsigned char parCnt;
-	} irIOcommand;
-#endif
-
-	if(irIO.TXsamples==0){
+	if(irIO.TXsamples==0)
+		{
 		irIO.TXsamples=getsUSBUSART(irToy.s,64);
 		ctrTxBuf=0;
-	}
+		}
 
 	if(irIO.TXsamples>0){
 		switch (irIOstate){
 			case I_IDLE:
-#if 0
-					#define IRIO_RESET 0x00
-					#define IRIO_SETUP_SAMPLETIMER 0x01
-					#define IRIO_SETUP_PWM 0x02
-					#define IRIO_RAW 0x03
-					#define IRIO_FREQ 0x04
-#endif
 					switch(irToy.s[ctrTxBuf]){
 						case IRIO_RESET: //reset, return to RC5 (same as SUMP) 
 							CCP1CON=0; 
@@ -221,9 +192,11 @@ unsigned char irsservice(void){
 				irIO.TXsamples--;
 				ctrTxBuf++;
 				irIOcommand.parCnt++;
-				if(irIOcommand.parCnt<irIOcommand.parameters) break; //if not all parameters, quit
+				if(irIOcommand.parCnt<irIOcommand.parameters)
+					break; //if not all parameters, quit
 			case I_PROCESS:	//process long commands
-				switch(irIOcommand.command[0]){
+				switch(irIOcommand.command[0])
+					{
 					case IRIO_SETUP_PWM: //setup user defined PWM frequency
 						T2CON = 0;
 						PR2 = irIOcommand.command[1];//user period
@@ -235,7 +208,7 @@ unsigned char irsservice(void){
 
 						T2CON = 0b00000101; //enable timer again, 4x prescaler				
 						break;
-				}
+					}
 				irIOstate=I_IDLE;//return to idle state
 				break;	
 
@@ -303,133 +276,152 @@ unsigned char irsservice(void){
 #pragma interrupt irsInterruptHandlerHigh
 void irsInterruptHandlerHigh (void){
 
-	static unsigned char modFreqCnt;
+static unsigned char modFreqCnt;
 
-	if(IRRX_IE==1 && IRRX_IF == 1){ //if RB Port Change Interrupt	
-		l=IRRX_PORT;
-		if(TM0ON==0){ //timer not running, setup and start
+if(IRRX_IE==1 && IRRX_IF == 1)
+	{ //if RB Port Change Interrupt
+	l=IRRX_PORT;
+	if(TM0ON==0)
+		{ //timer not running, setup and start
 
-			if( ((l & IRRX_PIN)==0)){;//only if 0, must read PORTB to clear RBIF
-				//setup timer 0, a 21.3333us/tick timer that counts the length of the decoded IR signal
-				//LED_LAT |= LED_PIN;//LED ON
-				LedOn();
-				TMR0H=0;//first set the high byte
-				TMR0L=0;//set low byte copies high byte too
-				TM0IE=1;
-				TM0IF=0;
-				TM0ON=1;//enable the timer
-				
-				//setup timer 1, a 8.333ns/tick timer
-				//flushed ISB buffer
-				//counts raw IR wave frequency				
-				TMR1H=0;
-				TMR1L=0;
-				T1IF=0;		//clear the interrupt flag
-				T1IE=1; 	//able interrupts...
-				T1ON=1;		//timer on
-				
-				//setup the period capture module to measure the raw IR waveform period
-				if(irToy.HardwareVersion>1){
-					//capture module measures raw IR frequency
-					IRFREQ_PIN_SETUP();
-					IRFREQ_CAP_SETUP();		
-					IRFREQ_CAP_IF=0;
-					IRFREQ_CAP_IE=1;
-
-					//frequency detector is also connected to TMR3 external clock
-					//here we setup the 16bit counter to count the total number of clocks in the signal
-					T3CON=0b00000110;
-					TMR3H=0;
-					TMR3L=1; //first tick is rising edge after next falling edge
-					T3CON|=0b1; //turn it on
-					modFreqCnt=0;//used to ignore the first measurement and get the more accurate second measurement
-				}
-				
-			}
-
-		}else{//timer running, save value and reset
-			//the goal is to reset the timer as quickly as possible
-			//later we can fine tune the start value to compensate for the lost cycles
-			TM0ON=0;//disable the timer
-			l=TMR0L;//read low byte, puts high byte in H
-			h=TMR0H; //read high byte
+		if( ((l & IRRX_PIN)==0))
+			{//only if 0, must read PORTB to clear RBIF
+			//setup timer 0, a 21.3333us/tick timer that counts the length of the decoded IR signal
+			//LED_LAT |= LED_PIN;//LED ON
+			LedOn();
 			TMR0H=0;//first set the high byte
 			TMR0L=0;//set low byte copies high byte too
+			TM0IE=1;
 			TM0IF=0;
 			TM0ON=1;//enable the timer
 
-			//reset timer1, USB packet send timeout
-			T1ON=0;		//timer on
+			//setup timer 1, a 8.333ns/tick timer
+			//flushed ISB buffer
+			//counts raw IR wave frequency
 			TMR1H=0;
 			TMR1L=0;
+			T1IF=0;		//clear the interrupt flag
+			T1IE=1; 	//able interrupts...
 			T1ON=1;		//timer on
 			
-			if(irIO.rxflag==0){//check if data is pending
-				irIO.rxflag=1;
-			}else{//error, overflow
-				irIO.overflow=1;
+			//setup the period capture module to measure the raw IR waveform period
+			if(irToy.HardwareVersion>1)
+				{
+				//capture module measures raw IR frequency
+				IRFREQ_PIN_SETUP();
+				IRFREQ_CAP_SETUP();
+				IRFREQ_CAP_IF=0;
+				IRFREQ_CAP_IE=1;
+
+				//frequency detector is also connected to TMR3 external clock
+				//here we setup the 16bit counter to count the total number of clocks in the signal
+				T3CON=0b00000110;
+				TMR3H=0;
+				TMR3L=1; //first tick is rising edge after next falling edge
+				T3CON|=0b1; //turn it on
+				modFreqCnt=0;//used to ignore the first measurement and get the more accurate second measurement
+				}
 			}
-			
 		}
-		//clear portb interrupt		
-    	IRRX_IF=0;    //Reset the RB Port Change Interrupt Flag bit  
-
-	}else if(IRFREQ_CAP_IF==1 && IRFREQ_CAP_IE==1){//capture of raw IR frequency
-		if (modFreqCnt<6){
-			//we capture on rising edge, 
-			//this will return 3 samples
-			//subtract 2nd from 1st, 3rd from 2nd to get actual time
-			modFreq[modFreqCnt]=IRFREQ_CAP_H;
-			modFreqCnt++;
-			modFreq[modFreqCnt]=IRFREQ_CAP_L;
-			modFreqCnt++;
-
-			IRFREQ_CAP_IF=0;
-
-			if(modFreqCnt==6){
-				IRFREQ_CAP_IE=0;
-				IRFREQ_CCPxCON=0;
-			}
-
-		}
-	}else if(TM0IE==1 && TM0IF==1){ //is this timer 0 interrupt?
-		//the idea is that if we got here
-		//it has been so long without a pin change that 
-		//there is not more signal
-		//it would be more robust to check the pin state for 0
-		//need to examine the limits of typical protocols closer
-
-		T1ON=0;		//t1 is the usb packet timeout, disable it
-		T3CON&=(~0b1); //turn it off
-
-		TM0ON=0; //timer0 off
+	else
+		{
+		//timer running, save value and reset
+		//the goal is to reset the timer as quickly as possible
+		//later we can fine tune the start value to compensate for the lost cycles
+		TM0ON=0;//disable the timer
+		l=TMR0L;//read low byte, puts high byte in H
+		h=TMR0H; //read high byte
+		TMR0H=0;//first set the high byte
+		TMR0L=0;//set low byte copies high byte too
 		TM0IF=0;
+		TM0ON=1;//enable the timer
 
-		if(irIO.rxflag==0){//check if data is pending
-			//packet terminator, 1.7S with no signal
-			h=0xff; //add to USB send buffer
-			l=0xff; //add to USB send buffer
+		//reset timer1, USB packet send timeout
+		T1ON=0;		//timer on
+		TMR1H=0;
+		TMR1L=0;
+		T1ON=1;		//timer on
+
+		if(irIO.rxflag==0)
+			{//check if data is pending
 			irIO.rxflag=1;
-			//set the flush flag to send the packet from the main loop
-			irIO.flushflag=1;
-		}else{//error, overflow
+			}
+		else
+			{//error, overflow
 			irIO.overflow=1;
+			}
+		}
+	//clear portb interrupt
+	IRRX_IF=0;    //Reset the RB Port Change Interrupt Flag bit
+	}
+
+else if(IRFREQ_CAP_IF==1 && IRFREQ_CAP_IE==1)
+	{//capture of raw IR frequency
+	if (modFreqCnt<6)
+		{
+		//we capture on rising edge,
+		//this will return 3 samples
+		//subtract 2nd from 1st, 3rd from 2nd to get actual time
+		modFreq[modFreqCnt]=IRFREQ_CAP_H;
+		modFreqCnt++;
+		modFreq[modFreqCnt]=IRFREQ_CAP_L;
+		modFreqCnt++;
+
+		IRFREQ_CAP_IF=0;
+
+		if(modFreqCnt==6)
+			{
+			IRFREQ_CAP_IE=0;
+			IRFREQ_CCPxCON=0;
+			}
+		}
+	}
+else if(TM0IE==1 && TM0IF==1)
+	{
+	//is this timer 0 interrupt?
+	//the idea is that if we got here
+	//it has been so long without a pin change that
+	//there is not more signal
+	//it would be more robust to check the pin state for 0
+	//need to examine the limits of typical protocols closer
+
+	T1ON=0;		//t1 is the usb packet timeout, disable it
+	T3CON&=(~0b1); //turn it off
+
+	TM0ON=0; //timer0 off
+	TM0IF=0;
+
+	if(irIO.rxflag==0)
+		{//check if data is pending
+		//packet terminator, 1.7S with no signal
+		h=0xff; //add to USB send buffer
+		l=0xff; //add to USB send buffer
+		irIO.rxflag=1;
+		//set the flush flag to send the packet from the main loop
+		irIO.flushflag=1;
+		}
+	else
+		{//error, overflow
+		irIO.overflow=1;
 		}
 
-		//reset the pin interrupt, just in case
-		IRRX_IE=1;
-		IRRX_IF=0;
+	//reset the pin interrupt, just in case
+	IRRX_IE=1;
+	IRRX_IF=0;
 
-		LED_LAT &=(~LED_PIN); //LED off
-	}else if(T1IE==1 && T1IF==1){ //is this timer 1 interrupt?
-		//this is another timer
-		//it tells the main loop to send any pending USB bytes
-		// after a few MS
-		//the idea is that the 1.7s delay for the terminaor byte is really long
-		//we want to send the accumulated data sooner than that, or response will appear sluggish
-		//time1 (adjust as needed) sets teh flush flag and sends any pending data on it's way
-		irIO.flushflag=1;	
-		T1IF=0;		//clear the interrupt flag
+	LedOff();
+	//LED_LAT &=(~LED_PIN); //LED off
+	}
+else if(T1IE==1 && T1IF==1)
+	{ //is this timer 1 interrupt?
+	//this is another timer
+	//it tells the main loop to send any pending USB bytes
+	// after a few MS
+	//the idea is that the 1.7s delay for the terminaor byte is really long
+	//we want to send the accumulated data sooner than that, or response will appear sluggish
+	//time1 (adjust as needed) sets teh flush flag and sends any pending data on it's way
+	irIO.flushflag=1;
+	T1IF=0;		//clear the interrupt flag
 	}  
 }
 

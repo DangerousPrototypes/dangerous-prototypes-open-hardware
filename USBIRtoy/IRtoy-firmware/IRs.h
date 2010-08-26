@@ -10,8 +10,8 @@
 #ifndef IRS_H
 #define IRS_H
 
-unsigned char irsservice(void);
-void irssetup(void);
+unsigned char irsService(void);
+void irsSetup(void);
 void irsInterruptHandlerHigh(void);
 
 #endif
