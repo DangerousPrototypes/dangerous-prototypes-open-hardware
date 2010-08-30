@@ -53,6 +53,7 @@ void SetupBoard(void);
 void InterruptHandlerHigh();
 void InterruptHandlerLow();
 unsigned char SelfTest(void);
+void version(void);
 
 #pragma code
 void main(void){   		
@@ -172,21 +173,17 @@ void main(void){
 						IRRX_IE=0; 				//disable RX interrupts
 						T2IE=0; 				//disable any Timer 2 interrupt
 
-						inByte=SelfTest(); //do it twice
+						inByte=SelfTest(); //run the self-test
 
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 							if(inByte>0x30){
 								LED_LAT &=(~LED_PIN); //LED off
 								irToy.usbOut[0]='F';//answer fail
 								irToy.usbOut[1]='A';
-								irToy.usbOut[2]='I';
-								irToy.usbOut[3]=inByte;
+								irToy.usbOut[2]=((inByte&0b111000)>>3); //frequency detector error code
+								irToy.usbOut[3]=(inByte&0b111);			//receiver error code
 							}else{
-								LED_LAT |=LED_PIN; //LED on
-								irToy.usbOut[0]='V';//answer OK
-								irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
-								irToy.usbOut[2]=FIRMWARE_VERSION_H;
-								irToy.usbOut[3]=FIRMWARE_VERSION_L;
+								version();
 							}
 							putUSBUSART(irToy.usbOut,4);
 						}
@@ -195,11 +192,7 @@ void main(void){
 					case 'V':
 					case 'v'://self test
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
-							irToy.usbOut[0]='V';//answer OK
-							irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
-							irToy.usbOut[2]=FIRMWARE_VERSION_H;
-							irToy.usbOut[3]=FIRMWARE_VERSION_L;
-							putUSBUSART(irToy.usbOut,4);
+							version();
 						}
 		
 						break;
@@ -218,6 +211,11 @@ unsigned char SelfTest(void){
 	unsigned char err=0x30; //error flag starts with ASCII 0
 	unsigned int cnt;
 
+	#define ERROR_RXPULLUP 		0b1
+	#define ERROR_RXACT 		0b10
+	#define ERROR_FREQPULLUP	0b100
+	#define ERROR_FREQACT		0b1000
+
 	IRRX_TRIS |=IRRX_PIN; //ir to input
 	IRTX_LAT  &=(~IRTX_PIN);//TX LED off
 	IRTX_TRIS &=(~IRTX_PIN);						
@@ -225,10 +223,10 @@ unsigned char SelfTest(void){
 	T2CON=0;
 	cnt=10000;
 	while(cnt--);
-	if(!(IRRX_PORT & IRRX_PIN)) err|=0b1; //test IR RX pullup, should be high
+	if(!(IRRX_PORT & IRRX_PIN)) err|=ERROR_RXPULLUP; //test IR RX pullup, should be high
 
 	if(irToy.HardwareVersion==2){
-		if(IRFREQ_CAP==0) err|=0b100; //test IR Frequency detector pullup, should be high
+		if(IRFREQ_CAP==0) err|=ERROR_FREQPULLUP; //test IR Frequency detector pullup, should be high
 
 		//turn IR LED solid on to test frequency detector
 		IRTX_TRIS &=(~IRTX_PIN); //output
@@ -239,7 +237,7 @@ unsigned char SelfTest(void){
 		while(cnt--);
 		
 		//test IR Frequency detector, should now be off
-		if(IRFREQ_CAP==1) err|=0b100; 
+		if(IRFREQ_CAP==1) err|=ERROR_FREQACT; 
 		
 		//LED back off
 		IRTX_LAT&=(~IRTX_PIN); 
@@ -271,7 +269,7 @@ unsigned char SelfTest(void){
 	cnt=40000;
 	while(cnt--);
 
-	if(IRRX_PORT & IRRX_PIN) err|=0b10;//IR LED should activate RX
+	if(IRRX_PORT & IRRX_PIN) err|=ERROR_RXACT;//IR LED should activate RX
 
 	return err;
 }
@@ -339,6 +337,20 @@ void SetupBoard(void){
 
    	INTCONbits.GIEL = 1;//enable peripheral interrupts
    	INTCONbits.GIEH = 1;//enable interrupts
+}
+
+//
+//
+// Give the version number
+//
+//
+
+void version(void){
+	irToy.usbOut[0]='V';//answer OK
+	irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
+	irToy.usbOut[2]=FIRMWARE_VERSION_H;
+	irToy.usbOut[3]=FIRMWARE_VERSION_L;
+	putUSBUSART(irToy.usbOut,4);
 }
 
 //

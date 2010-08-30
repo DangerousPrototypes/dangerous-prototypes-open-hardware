@@ -24,13 +24,12 @@
 
 #include "globals.h"
 
-
 #define IRS_TRANSMIT_HI	0
 #define IRS_TRANSMIT_LO	1
 
 extern struct _irtoy irToy;
 
-static unsigned char h,l,tmr0h_buf, tmr0l_buf;
+static unsigned char h,l,tmr0_buf[2];
 
 static struct{
 	unsigned char RXsamples;
@@ -43,9 +42,8 @@ static struct{
 	unsigned char overflow:1;
 	unsigned char TXInvert:1;
 	unsigned char TXend:1;
+	unsigned char bigendian:1;
 } irS;
-
-//static unsigned char USBbuf[2];
 
 void irssetup(void){
 
@@ -89,6 +87,7 @@ void irssetup(void){
 	irS.TXsamples=0;
 	irS.TX=0;
 	irS.overflow=0;
+	irS.bigendian=0;
 
 	//setup timer 0
 	T0CON=0;
@@ -143,7 +142,7 @@ typedef struct _smCommand {
 //
 unsigned char irsservice(void){
 	static unsigned char TxBuffCtr;
-
+	static unsigned int tmr16;
 	static _smio irIOstate = I_IDLE;
 
 	static _smCommand irIOcommand;
@@ -221,25 +220,49 @@ unsigned char irsservice(void){
 				break;	
 			case I_DATA_H://hang out here and process data
 				if(irS.txflag==0){//if there is a free spot in the interrupt buffer
-					tmr0h_buf=0xff-irToy.s[TxBuffCtr];//put the first byte in the buffer
+					tmr0_buf[0]=irToy.s[TxBuffCtr];//put the first byte in the buffer
 					irIOstate = I_DATA_L; //advance and get the next byte on the next pass
 					irS.TXsamples--;
 					TxBuffCtr++;
 				}
 				break;
 			case I_DATA_L:
-				tmr0l_buf=0xff-irToy.s[TxBuffCtr];//put the second byte in the buffer
+				if(irS.bigendian==1){ //switch byte order for bigendian mode
+					tmr0_buf[1]=tmr0_buf[0];
+					tmr0_buf[0]=irToy.s[TxBuffCtr];//put the second byte in the buffer
+				}else{
+					tmr0_buf[1]=irToy.s[TxBuffCtr];//put the second byte in the buffer
+				}
 
 				//check here for 0xff 0xff and return to IDLE state
-				if(tmr0h_buf==0 && tmr0l_buf==0){
-					irS.TXend=1;					
+				if((tmr0_buf[0]==0xff) && (tmr0_buf[1]==0xff)){
+					//irIO.TXInvert=IRS_TRANSMIT_LO;
+					//irIO.TXend=1;	
+					tmr0_buf[0]=0;				
+					tmr0_buf[1]=20;
+					irIOstate=I_IDLE;//return to idle state, data done
+				}else{
+					irIOstate = I_DATA_H; //advance and get the next byte on the next pass
 				}	
+
+				//prepare the values for the timer
+				//subtract from 0x10000 (or 0x0000)
+				//this would be a lot nicer with a little pointer magic
+				//but for now we dance (test)
+				tmr16=tmr0_buf[0];
+				tmr16<<=8;
+				tmr16|=tmr0_buf[1];
+
+				tmr16=0x0000-tmr16;
+
+				tmr0_buf[1]=(tmr16 & 0xff);
+				tmr0_buf[0]=((tmr16>>8)&0xff);		
 
 				irS.txflag=1;//reset the interrupt buffer full flag		
 
 				if(irS.TX==0){//enable interrupt if this is the first time
-					TMR0H=tmr0h_buf;//first set the high byte
-					TMR0L=tmr0l_buf;//set low byte copies high byte too
+					TMR0H=tmr0_buf[0];//first set the high byte
+					TMR0L=tmr0_buf[1];//set low byte copies high byte too
 					TM0IF=0;
 					TM0IE=1;
 					TM0ON=1;//enable the timer
@@ -255,12 +278,6 @@ unsigned char irsservice(void){
 					LedOn();
 				}
 
-				if(irS.TXend==0){
-					irIOstate = I_DATA_H; //advance and get the next byte on the next pass
-				}else{
-					irIOstate=I_IDLE;//return to idle state, data done
-				}	
-
 				irS.TXsamples--;
 				TxBuffCtr++;			
 
@@ -274,9 +291,15 @@ unsigned char irsservice(void){
 		//keep in 64 byte buffer then send to USB for max sample rate
 		if(irS.rxflag==1){ //a RX byte is in the buffer
 			if(irS.RXsamples<=62){ //if we have room in the USB send buffer
-				irToy.usbOut[irS.RXsamples]=h; //add to USB send buffer
-				irS.RXsamples++;
-				irToy.usbOut[irS.RXsamples]=l; //add to USB send buffer
+				if(irS.bigendian==1){
+					irToy.usbOut[irS.RXsamples]=l; //add to USB send buffer
+					irS.RXsamples++;
+					irToy.usbOut[irS.RXsamples]=h; //add to USB send buffer
+				}else{
+					irToy.usbOut[irS.RXsamples]=h; //add to USB send buffer
+					irS.RXsamples++;
+					irToy.usbOut[irS.RXsamples]=l; //add to USB send buffer
+				}
 				irS.RXsamples++;
 				irS.rxflag=0;				//reset the flag
 			//removed this check. we might hit this several times while before the send can clear
@@ -323,9 +346,6 @@ unsigned char irsservice(void){
 	}
 	return 0;//CONTINUE
 }
-
-
-
 
 
 //the first falling edge starts timer0
@@ -419,8 +439,8 @@ void irsInterruptHandlerHigh (void){
 				irS.TXInvert=IRS_TRANSMIT_HI;
 			}
 			//setup timer
-			TMR0H=tmr0h_buf;//first set the high byte
-			TMR0L=tmr0l_buf;//set low byte copies high byte too
+			TMR0H=tmr0_buf[0];//first set the high byte
+			TMR0L=tmr0_buf[1];//set low byte copies high byte too
 			TM0IF=0;
 			TM0IE=1;
 			TM0ON=1;//enable the timer
@@ -442,8 +462,7 @@ void irsInterruptHandlerHigh (void){
 			//reset the pin interrupt, just in case
 			IRRX_IE=1;
 			IRRX_IF=0;
-	
-			//LED_LAT &=(~LED_PIN); //LED off
+
 			LedOff();
 		}
 	}else if(T1IE==1 && T1IF==1){ //is this timer 1 interrupt?
