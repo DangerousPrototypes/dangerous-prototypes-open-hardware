@@ -122,7 +122,7 @@ void main(void){
 				}
 				break;
 			case IR_S:
-				if(irsservice()!=0){//IRIO exit
+				if(irsService()!=0){//IRIO exit
 					SetupRC5();
 					mode=IR_DECODER; //exit if done dumping
 				}
@@ -180,8 +180,8 @@ void main(void){
 								LED_LAT &=(~LED_PIN); //LED off
 								irToy.usbOut[0]='F';//answer fail
 								irToy.usbOut[1]='A';
-								irToy.usbOut[2]=((inByte&0b111000)>>3); //frequency detector error code
-								irToy.usbOut[3]=(inByte&0b111);			//receiver error code
+								irToy.usbOut[2]=((inByte&0b1100)>>2)+0x30; //frequency detector error code
+								irToy.usbOut[3]=(inByte&0b11)+0x30;			//receiver error code
 							}else{
 								version();
 							}
@@ -207,6 +207,7 @@ void main(void){
     }//end while
 }//end main
 
+//exits with IR LED on for visual inspection with a camera 
 unsigned char SelfTest(void){
 	unsigned char err=0x30; //error flag starts with ASCII 0
 	unsigned int cnt;
@@ -264,7 +265,7 @@ unsigned char SelfTest(void){
 	PR2 = 0b01010010 ; //82
 	T2CON = 0b00000101 ;
 	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
-	CCP1CON = 0b00011100 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
+	CCP1CON = 0b00011100 ; //we leave this on for visual inspection (5-4 two LSB of duty, 3-0 set PWM)
 
 	cnt=40000;
 	while(cnt--);
@@ -290,6 +291,39 @@ void SetupBoard(void){
 
     USBDeviceInit();		//initialize USB (usb_device.c)
 
+	//
+	// VERSION DETECT
+	//
+	//test IR_FREQ pin to see if this is v1 or v2
+	//CAP and EC to ground (C0 C1)
+	IRFREQ_CAP_LAT&=(~IRFREQ_CAP_PIN);//ground
+	IRFREQ_EC_LAT&=(~IRFREQ_EC_PIN);//ground
+	IRFREQ_CAP_TRIS&=(~IRFREQ_CAP_PIN);//output
+	IRFREQ_EC_TRIS&=(~IRFREQ_EC_PIN);//output
+
+	PORTB=0; //all ground
+	TRISB=0b11101011;		//RB2 and RB4 to output/ground to prevent dualing pullups
+	IRRX_PULLUP=0;//enable(0) RB pullups
+
+	cnt=10;
+	while(cnt--);
+
+	//on v1 the pullups just hold RB1 high (INT==1)
+	//on v2 RB1 and C0/C1 are connected INT will be 0
+	if(IRFREQ_INT==1){
+		irToy.HardwareVersion=1;
+	}else{
+		irToy.HardwareVersion=2;
+	}
+
+	//cleanup
+	IRRX_PULLUP=1;//disable(1) RB pullups
+	TRISB=0xff;	//all inputs
+	IRFREQ_PIN_SETUP(); //all inputs
+
+	//
+	// SETUP
+	//
 	//setup IR LED for IR TX
 	IRTX_TRIS&=(~IRTX_PIN);	//digital OUTPUT (must ground transistor)
 	IRTX_LAT&=(~IRTX_PIN); 	//output to ground
@@ -321,20 +355,6 @@ void SetupBoard(void){
 		TRISB|=0b100; 	//make RB2 input so it doesn't interfere!
 	#endif
 
-	//test IR_FREQ pin to see if this is v1 or v2
-	IRFREQ_PIN_SETUP();
-	irToy.HardwareVersion=2;
-
-	cnt=1000;
-	while(cnt--);
-
-	for(i=0; i<100; i++){
-		if(IRFREQ_CAP==0){
-			irToy.HardwareVersion=1;	
-			break;
-		}
-	}
-
    	INTCONbits.GIEL = 1;//enable peripheral interrupts
    	INTCONbits.GIEH = 1;//enable interrupts
 }
@@ -344,7 +364,6 @@ void SetupBoard(void){
 // Give the version number
 //
 //
-
 void version(void){
 	irToy.usbOut[0]='V';//answer OK
 	irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
