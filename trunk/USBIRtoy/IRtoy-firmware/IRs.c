@@ -43,7 +43,7 @@ static struct{
 	unsigned char overflow:1;
 	unsigned char TXInvert:1;
 	unsigned char TXend:1;
-} irIO;
+} irS;
 
 //static unsigned char USBbuf[2];
 
@@ -81,14 +81,14 @@ void irssetup(void){
 	CCP1CON = 0b00010000 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
 
 	//setup for IR RX
-	irIO.rxflag=0;
-	irIO.txflag=0;
-	irIO.flushflag=0;
-	irIO.timeout=0;
-	irIO.RXsamples=0;
-	irIO.TXsamples=0;
-	irIO.TX=0;
-	irIO.overflow=0;
+	irS.rxflag=0;
+	irS.txflag=0;
+	irS.flushflag=0;
+	irS.timeout=0;
+	irS.RXsamples=0;
+	irS.TXsamples=0;
+	irS.TX=0;
+	irS.overflow=0;
 
 	//setup timer 0
 	T0CON=0;
@@ -148,12 +148,12 @@ unsigned char irsservice(void){
 
 	static _smCommand irIOcommand;
 
-	if(irIO.TXsamples==0){
-		irIO.TXsamples=getsUSBUSART(irToy.s,64);
+	if(irS.TXsamples==0){
+		irS.TXsamples=getsUSBUSART(irToy.s,64);
 		TxBuffCtr=0;
 	}
 
-	if(irIO.TXsamples>0){
+	if(irS.TXsamples>0){
 		switch (irIOstate){
 			case I_IDLE:
 
@@ -184,22 +184,22 @@ unsigned char irsservice(void){
 							TM0IE=0; 
 							T1IE=0;
 							IRRX_IE = 0;
-							irIO.TXend=0;
-							irIO.TX=0;
+							irS.TXend=0;
+							irS.TX=0;
 								//setup the PWM pin, frequency etc.
 								//setup timer 0
-							irIO.txflag=0;//transmit flag =0 reset the transmit flag
+							irS.txflag=0;//transmit flag =0 reset the transmit flag
 							irIOstate = I_DATA_H; //change to transmit data processing state 
 							break;
 						default:
 							break;
 					}
-					irIO.TXsamples--;
+					irS.TXsamples--;
 					TxBuffCtr++;
 				break;
 			case I_PARAMETERS://get optional parameters
 				irIOcommand.command[irIOcommand.parCnt]=irToy.s[TxBuffCtr];//store each parameter
-				irIO.TXsamples--;
+				irS.TXsamples--;
 				TxBuffCtr++;
 				irIOcommand.parCnt++;
 				if(irIOcommand.parCnt<irIOcommand.parameters) break; //if not all parameters, quit
@@ -220,10 +220,10 @@ unsigned char irsservice(void){
 				irIOstate=I_IDLE;//return to idle state
 				break;	
 			case I_DATA_H://hang out here and process data
-				if(irIO.txflag==0){//if there is a free spot in the interrupt buffer
+				if(irS.txflag==0){//if there is a free spot in the interrupt buffer
 					tmr0h_buf=0xff-irToy.s[TxBuffCtr];//put the first byte in the buffer
 					irIOstate = I_DATA_L; //advance and get the next byte on the next pass
-					irIO.TXsamples--;
+					irS.TXsamples--;
 					TxBuffCtr++;
 				}
 				break;
@@ -232,12 +232,12 @@ unsigned char irsservice(void){
 
 				//check here for 0xff 0xff and return to IDLE state
 				if(tmr0h_buf==0 && tmr0l_buf==0){
-					irIO.TXend=1;					
+					irS.TXend=1;					
 				}	
 
-				irIO.txflag=1;//reset the interrupt buffer full flag		
+				irS.txflag=1;//reset the interrupt buffer full flag		
 
-				if(irIO.TX==0){//enable interrupt if this is the first time
+				if(irS.TX==0){//enable interrupt if this is the first time
 					TMR0H=tmr0h_buf;//first set the high byte
 					TMR0L=tmr0l_buf;//set low byte copies high byte too
 					TM0IF=0;
@@ -247,21 +247,21 @@ unsigned char irsservice(void){
 					//enable the PWM
 					TMR2=0;
 					CCP1CON |=0b1100; 
-					irIO.TXInvert=IRS_TRANSMIT_LO;
+					irS.TXInvert=IRS_TRANSMIT_LO;
 
-					irIO.txflag=0; //buffer ready for new byte
-					irIO.TX=1;
+					irS.txflag=0; //buffer ready for new byte
+					irS.TX=1;
 					//LED_LAT |= LED_PIN;//LED ON
 					LedOn();
 				}
 
-				if(irIO.TXend==0){
+				if(irS.TXend==0){
 					irIOstate = I_DATA_H; //advance and get the next byte on the next pass
 				}else{
 					irIOstate=I_IDLE;//return to idle state, data done
 				}	
 
-				irIO.TXsamples--;
+				irS.TXsamples--;
 				TxBuffCtr++;			
 
 				break;
@@ -269,16 +269,16 @@ unsigned char irsservice(void){
 		}//switch 
 	}
 
-	if(irIO.overflow==0){
+	if(irS.overflow==0){
 		//service the inbound samples here
 		//keep in 64 byte buffer then send to USB for max sample rate
-		if(irIO.rxflag==1){ //a RX byte is in the buffer
-			if(irIO.RXsamples<=62){ //if we have room in the USB send buffer
-				irToy.usbOut[irIO.RXsamples]=h; //add to USB send buffer
-				irIO.RXsamples++;
-				irToy.usbOut[irIO.RXsamples]=l; //add to USB send buffer
-				irIO.RXsamples++;
-				irIO.rxflag=0;				//reset the flag
+		if(irS.rxflag==1){ //a RX byte is in the buffer
+			if(irS.RXsamples<=62){ //if we have room in the USB send buffer
+				irToy.usbOut[irS.RXsamples]=h; //add to USB send buffer
+				irS.RXsamples++;
+				irToy.usbOut[irS.RXsamples]=l; //add to USB send buffer
+				irS.RXsamples++;
+				irS.rxflag=0;				//reset the flag
 			//removed this check. we might hit this several times while before the send can clear
 			//that can be perfectly fine, as long as it happens before we need to move the next samples in
 			//the new overflow check in interrupt routine will also catch this error
@@ -289,10 +289,10 @@ unsigned char irsservice(void){
 		}
 
 		//if the buffer is full, send it to USB
-		if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
-			putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
-			irIO.RXsamples=0;
-			irIO.flushflag=0;
+		if( ( (irS.RXsamples==64) || (irS.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
+			putUSBUSART(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+			irS.RXsamples=0;
+			irS.flushflag=0;
 		}
 	}else{//overflow error
 		//on overflow we loop until we can send 6 0xff then reset everything
@@ -303,8 +303,8 @@ unsigned char irsservice(void){
 			irToy.usbOut[3]=0xff; //add to USB send buffer
 			irToy.usbOut[4]=0xff; //add to USB send buffer
 			irToy.usbOut[5]=0xff; //add to USB send buffer
-			irIO.RXsamples=6;
-			putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
+			irS.RXsamples=6;
+			putUSBUSART(irToy.usbOut,irS.RXsamples);//send current buffer to USB
 
 			T1ON=0;		//t1 is the usb packet timeout, disable it
 			TM0ON=0; //timer0 off
@@ -313,9 +313,9 @@ unsigned char irsservice(void){
 			IRRX_IE=1;
 			IRRX_IF=0;
 
-			irIO.RXsamples=0;
-			irIO.flushflag=0;
-			irIO.overflow=0;
+			irS.RXsamples=0;
+			irS.flushflag=0;
+			irS.overflow=0;
 
 			//LED_LAT &=(~LED_PIN); //LED off
 			LedOff();
@@ -372,10 +372,10 @@ void irsInterruptHandlerHigh (void){
 			TMR1L=0;
 			T1ON=1;		//timer on
 			
-			if(irIO.rxflag==0){//check if data is pending
-				irIO.rxflag=1;
+			if(irS.rxflag==0){//check if data is pending
+				irS.rxflag=1;
 			}else{//error, overflow
-				irIO.overflow=1;
+				irS.overflow=1;
 			}
 		}
 		//clear portb interrupt		
@@ -392,15 +392,15 @@ void irsInterruptHandlerHigh (void){
 		TM0ON=0; //timer0 off
 		TM0IF=0; //clear interrupt flag
 
-		if(irIO.TX==1){//timer0 interrupt means the IR transmit period is over
+		if(irS.TX==1){//timer0 interrupt means the IR transmit period is over
 			TM0IE=0;
 
 			//!!!!if txflag is 0 then raise error flag!!!!!!!
-			if(irIO.txflag==0 || irIO.TXend==1){
+			if(irS.txflag==0 || irS.TXend==1){
 				//disable the PWM, output ground
 				CCP1CON &=(~0b1100); 
 				LedOff();
-				irIO.TX=0;
+				irS.TX=0;
 				//reset receive interrupt
 				IRRX_IF=0;
 				IRRX_IE=1;
@@ -408,15 +408,15 @@ void irsInterruptHandlerHigh (void){
 				return;
 			}
 
-			if(irIO.TXInvert==IRS_TRANSMIT_HI){
+			if(irS.TXInvert==IRS_TRANSMIT_HI){
 				//enable the PWM
 				TMR2=0;
 				CCP1CON |=0b1100; 
-				irIO.TXInvert=IRS_TRANSMIT_LO;
+				irS.TXInvert=IRS_TRANSMIT_LO;
 			}else{
 				//disable the PWM, output ground
 				CCP1CON &=(~0b1100); 
-				irIO.TXInvert=IRS_TRANSMIT_HI;
+				irS.TXInvert=IRS_TRANSMIT_HI;
 			}
 			//setup timer
 			TMR0H=tmr0h_buf;//first set the high byte
@@ -424,19 +424,19 @@ void irsInterruptHandlerHigh (void){
 			TM0IF=0;
 			TM0IE=1;
 			TM0ON=1;//enable the timer
-			irIO.txflag=0; //buffer ready for new byte
+			irS.txflag=0; //buffer ready for new byte
 
 		}else{//receive mode
 
-			if(irIO.rxflag==0){//check if data is pending
+			if(irS.rxflag==0){//check if data is pending
 				//packet terminator, 1.7S with no signal
 				h=0xff; //add to USB send buffer
 				l=0xff; //add to USB send buffer
-				irIO.rxflag=1;
+				irS.rxflag=1;
 				//set the flush flag to send the packet from the main loop
-				irIO.flushflag=1;
+				irS.flushflag=1;
 			}else{//error, overflow
-				irIO.overflow=1;
+				irS.overflow=1;
 			}
 	
 			//reset the pin interrupt, just in case
@@ -453,7 +453,7 @@ void irsInterruptHandlerHigh (void){
 		//the idea is that the 1.7s delay for the terminaor byte is really long
 		//we want to send the accumulated data sooner than that, or response will appear sluggish
 		//time1 (adjust as needed) sets teh flush flag and sends any pending data on it's way
-		irIO.flushflag=1;	
+		irS.flushflag=1;	
 		T1IF=0;		//clear the interrupt flag
 	}  
 }
