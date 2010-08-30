@@ -30,6 +30,10 @@
 extern struct _irtoy irToy;
 
 static unsigned char h,l,tmr0_buf[2];
+static unsigned char modFreq[8];
+static unsigned char modFreqCnt;
+
+void cleanup(void);
 
 static struct{
 	unsigned char RXsamples;
@@ -78,6 +82,8 @@ void irssetup(void){
 	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
 	CCP1CON = 0b00010000 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
 
+	IRFREQ_PIN_SETUP();
+						
 	//setup for IR RX
 	irS.rxflag=0;
 	irS.txflag=0;
@@ -129,18 +135,26 @@ typedef struct _smCommand {
 	unsigned char parCnt;
 } _smCommand;
 
-
-#define IRIO_RESET 0x00
-#define IRIO_SETUP_SAMPLETIMER 0x01
-#define IRIO_SETUP_PWM 0x02
-#define IRIO_TRANSMIT 0x03
-#define IRIO_REPLAY 0x04
-
+//
+// COMMANDS
+//
+#define IRIO_RESET 		0x00
+//1 and 2 reserved for SUMP RUN and ID
+#define IRIO_TRANSMIT 	0x03
+#define IRIO_FREQ 		0x04
+#define IRIO_SETUP_SAMPLETIMER 0x05
+#define IRIO_SETUP_PWM 	0x06
+#define IRIO_LEDMUTEON 	0x10
+#define IRIO_LEDMUTEOFF 0x11
+#define IRIO_LEDON 		0x12
+#define IRIO_LEDOFF 	0x13
+#define IRIO_LITTLEENDIAN 0x20
+#define IRIO_BIGENDIAN 	0x21
 //
 // irIO periodic service routine
 // moves bytes in and out
 //
-unsigned char irsservice(void){
+unsigned char irsService(void){
 	static unsigned char TxBuffCtr;
 	static unsigned int tmr16;
 	static _smio irIOstate = I_IDLE;
@@ -158,24 +172,10 @@ unsigned char irsservice(void){
 
 					switch(irToy.s[TxBuffCtr]){
 						case IRIO_RESET: //reset, return to RC5 (same as SUMP) 
-							CCP1CON=0; 
-							TM0ON=0;
-							TM0IE=0;
-							T0CON=0;
-							T2ON=0; 
-							T1ON=0; 
-							T1IE=0;
-							IRRX_IE = 0;
-							IRTX_TRIS|=IRTX_PIN;//digital INPUT (no PWM until active)
-							IRTX_LAT&=(~IRTX_PIN);//direction 0
+							cleanup();
 							LedOff();
 							LedOut();
 							return 1; //need to flag exit!
-							break;
-						case IRIO_SETUP_PWM: //setup PWM frequency
-							irIOcommand.command[0]=irToy.s[TxBuffCtr];
-							irIOcommand.parameters=2;
-							irIOstate=I_PARAMETERS;
 							break;
 						case IRIO_TRANSMIT: //start transmitting
 							//setup for transmit mode:
@@ -189,6 +189,41 @@ unsigned char irsservice(void){
 								//setup timer 0
 							irS.txflag=0;//transmit flag =0 reset the transmit flag
 							irIOstate = I_DATA_H; //change to transmit data processing state 
+							break;
+						case IRIO_FREQ:
+							if((irToy.HardwareVersion>1)&&(mUSBUSARTIsTxTrfReady())){ //if we have full buffer, or end of capture flush
+								modFreq[7]=TMR3L;
+								modFreq[6]=TMR3H;
+								putUSBUSART(modFreq,8);//send current buffer to USB
+							}							
+							break;
+						case IRIO_LEDMUTEON:
+							LedIn();
+							break;
+						case IRIO_LEDMUTEOFF:
+							LedOut();
+							break;
+						case IRIO_LEDON:
+							LedOn();
+							break;
+						case IRIO_LEDOFF:
+							LedOff();
+							break;
+						case IRIO_LITTLEENDIAN:
+							irS.bigendian=0;
+							break;
+						case IRIO_BIGENDIAN:
+							irS.bigendian=1;
+							break;
+						case IRIO_SETUP_PWM: //setup PWM frequency
+							irIOcommand.command[0]=irToy.s[TxBuffCtr];
+							irIOcommand.parameters=2;
+							irIOstate=I_PARAMETERS;
+							break;
+						case IRIO_SETUP_SAMPLETIMER: //setup sample timer prescaler
+							irIOcommand.command[0]=irToy.s[TxBuffCtr];
+							irIOcommand.parameters=1;
+							irIOstate=I_PARAMETERS;
 							break;
 						default:
 							break;
@@ -214,6 +249,16 @@ unsigned char irsservice(void){
 							CCP1CON = 0b00001100 ; //5-4 two LSB of duty, 3-0 set PWM
 
 						T2CON = 0b00000101; //enable timer again, 4x prescaler				
+						break;
+					case IRIO_SETUP_SAMPLETIMER:	
+						T0CON=0;	//setup timer 0
+						IRRX_IE=0;  //IR RX interrupt off
+						//configure prescaler
+						//bit 2-0 T0PS2:T0PS0: Timer0 Prescaler Select bits
+						T0CON|=(irIOcommand.command[1]&0b111); //set new prescaler bits
+						IRRX_IF = 0;  //IR RX interrupt on
+						IRRX_IE = 1;  //IR RX interrupt on
+						IRRX_IF = 0;  //IR RX interrupt on
 						break;
 				}
 				irIOstate=I_IDLE;//return to idle state
@@ -274,7 +319,6 @@ unsigned char irsservice(void){
 
 					irS.txflag=0; //buffer ready for new byte
 					irS.TX=1;
-					//LED_LAT |= LED_PIN;//LED ON
 					LedOn();
 				}
 
@@ -347,6 +391,20 @@ unsigned char irsservice(void){
 	return 0;//CONTINUE
 }
 
+void cleanup(void){
+	CCP1CON=0; 
+	TM0ON=0;
+	TM0IE=0;
+	T0CON=0;
+	T2ON=0; 
+	T3CON=0;
+	IRFREQ_CCPxCON=0; 
+	T1ON=0; 
+	T1IE=0;
+	IRRX_IE = 0;
+	IRTX_TRIS|=IRTX_PIN;//digital INPUT (no PWM until active)
+	IRTX_LAT&=(~IRTX_PIN);//direction 0
+}
 
 //the first falling edge starts timer0
 //the next pin interrupt copies the timer0 value to a buffer and resets timer0
@@ -354,7 +412,7 @@ unsigned char irsservice(void){
 //high priority interrupt routine
 #pragma interrupt irsInterruptHandlerHigh
 void irsInterruptHandlerHigh (void){
-
+	static unsigned int lastCap, newCap;
 
 	if(IRRX_IE==1 && IRRX_IF == 1){ //if RB Port Change Interrupt	
 		l=IRRX_PORT;
@@ -373,6 +431,23 @@ void irsInterruptHandlerHigh (void){
 				T1IF=0;		//clear the interrupt flag
 				T1IE=1; 	//able interrupts...
 				T1ON=1;		//timer on
+				
+				//setup the period capture module to measure the raw IR waveform period
+				if(irToy.HardwareVersion>1){
+					//capture module measures raw IR frequency
+					IRFREQ_CAP_SETUP();		
+					IRFREQ_CAP_IF=0;
+					IRFREQ_CAP_IE=1;
+
+					//frequency detector is also connected to TMR3 external clock
+					//here we setup the 16bit counter to count the total number of clocks in the signal
+					T3CON=0b00000110;
+					TMR3H=0;
+					TMR3L=1; //first tick is rising edge after next falling edge
+					T3CON|=0b1; //turn it on
+					
+					modFreqCnt=0;//used to ignore the first measurement and get the more accurate second measurement
+				}
 			}
 
 		}else{//timer running, save value and reset
@@ -400,7 +475,25 @@ void irsInterruptHandlerHigh (void){
 		}
 		//clear portb interrupt		
     	IRRX_IF=0;    //Reset the RB Port Change Interrupt Flag bit  
+		
+	}else if(IRFREQ_CAP_IF==1 && IRFREQ_CAP_IE==1){//capture of raw IR frequency
+		if (modFreqCnt<6){
+			//we capture on rising edge, 
+			//this will return 3 samples
+			//subtract 2nd from 1st, 3rd from 2nd to get actual time
+			modFreq[modFreqCnt]=IRFREQ_CAP_H;
+			modFreqCnt++;
+			modFreq[modFreqCnt]=IRFREQ_CAP_L;
+			modFreqCnt++;
 
+			IRFREQ_CAP_IF=0;
+
+			if(modFreqCnt==6){
+				IRFREQ_CAP_IE=0;
+				IRFREQ_CCPxCON=0;
+			}
+
+		}
 	}else if(TM0IE==1 && TM0IF==1){ //is this timer 0 interrupt?
 		//the idea is that if we got here
 		//it has been so long without a pin change that 
@@ -409,6 +502,7 @@ void irsInterruptHandlerHigh (void){
 		//need to examine the limits of typical protocols closer
 
 		T1ON=0;		//t1 is the usb packet timeout, disable it
+		T3CON&=(~0b1); //turn it off
 		TM0ON=0; //timer0 off
 		TM0IF=0; //clear interrupt flag
 
@@ -418,7 +512,7 @@ void irsInterruptHandlerHigh (void){
 			//!!!!if txflag is 0 then raise error flag!!!!!!!
 			if(irS.txflag==0 || irS.TXend==1){
 				//disable the PWM, output ground
-				CCP1CON &=(~0b1100); 
+				PWMoff(); 
 				LedOff();
 				irS.TX=0;
 				//reset receive interrupt
@@ -430,12 +524,11 @@ void irsInterruptHandlerHigh (void){
 
 			if(irS.TXInvert==IRS_TRANSMIT_HI){
 				//enable the PWM
-				TMR2=0;
-				CCP1CON |=0b1100; 
+				PWMon();
 				irS.TXInvert=IRS_TRANSMIT_LO;
 			}else{
 				//disable the PWM, output ground
-				CCP1CON &=(~0b1100); 
+				PWMoff(); 
 				irS.TXInvert=IRS_TRANSMIT_HI;
 			}
 			//setup timer
