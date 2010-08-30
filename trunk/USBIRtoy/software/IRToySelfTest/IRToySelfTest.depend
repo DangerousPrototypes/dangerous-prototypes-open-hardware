@@ -1,0 +1,71 @@
+# depslib dependency file v1.0
+1282923009 source:c:\jamz\irtoyselftest\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1282835633 c:\jamz\irtoyselftest\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1282934990 source:c:\jamz\irtoyselftest\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<unistd.h>
+	<string.h>
+	<windef.h>
+	"serial.h"
+
+1282944608 source:e:\work\dp-svn\trunk\usbirtoy\software\irtoyselftest\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1282857232 e:\work\dp-svn\trunk\usbirtoy\software\irtoyselftest\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1283179152 source:e:\work\dp-svn\trunk\usbirtoy\software\irtoyselftest\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<unistd.h>
+	<string.h>
+	<windef.h>
+	"serial.h"
+
