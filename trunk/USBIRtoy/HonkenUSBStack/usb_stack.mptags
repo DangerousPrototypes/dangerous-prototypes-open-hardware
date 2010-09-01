@@ -1,0 +1,488 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+BC98::0x03	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	189;"	d	line:189
+BDADDR	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	179;"	m	line:179	struct:BDENTRY
+BDCNT	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	178;"	m	line:178	struct:BDENTRY
+BDENTRY	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	166;"	s	line:166
+BDSTAT	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	177;"	m	line:177	struct:BDENTRY
+BDentry	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	180;"	t	line:180
+BSTALL::0x04	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	188;"	d	line:188
+BusyCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	266;"	f	line:266	signature:( void )
+BusyCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	5;"	p	line:5	signature:( void )
+CAT::(x,y)XCAT(x,y)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	20;"	d	line:20	file:
+CDC_AUX_JACK_HOOK_STATE::0x08	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	61;"	d	line:61	file:
+CDC_CALL_STATE_CHANGE::0x28	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	66;"	d	line:66	file:
+CDC_CLEAR_COMM_FEATURE::0x04	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	17;"	d	line:17	file:
+CDC_CLEAR_UNIT_PARAMETER::0x39	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	40;"	d	line:40	file:
+CDC_CONNECTION_SPEED_CHANGE::0x2A	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	68;"	d	line:68	file:
+CDC_DIAL_DIGITS::0x36	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	37;"	d	line:37	file:
+CDC_GET_ATM_DEVICE_STATISTICS::0x51	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	50;"	d	line:50	file:
+CDC_GET_ATM_VC_STATISTICS::0x53	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	52;"	d	line:52	file:
+CDC_GET_COMM_FEATURE::0x03	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	16;"	d	line:16	file:
+CDC_GET_ENCAPSULATED_RESPONSE::0x01	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	14;"	d	line:14	file:
+CDC_GET_ETHERNET_POWER_MANAGEMENT_PATTERN_FILTER::0x42	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	45;"	d	line:45	file:
+CDC_GET_ETHERNET_STATISTIC::0x44	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	47;"	d	line:47	file:
+CDC_GET_LINE_CODING::0x21	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	27;"	d	line:27	file:
+CDC_GET_LINE_PARMS::0x35	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	36;"	d	line:36	file:
+CDC_GET_OPERATION_PARMS::0x33	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	34;"	d	line:34	file:
+CDC_GET_PROFILE::0x3A	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	41;"	d	line:41	file:
+CDC_GET_RINGER_PARMS::0x31	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	32;"	d	line:32	file:
+CDC_GET_UNIT_PARAMETER::0x38	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	39;"	d	line:39	file:
+CDC_LINE_STATE_CHANGE::0x29	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	67;"	d	line:67	file:
+CDC_NETWORK_CONNECTION::0x00	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	58;"	d	line:58	file:
+CDC_PULSE_SETUP::0x12	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	21;"	d	line:21	file:
+CDC_RESPONSE_AVAILABLE::0x01	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	59;"	d	line:59	file:
+CDC_RING_AUX_JACK::0x15	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	24;"	d	line:24	file:
+CDC_RING_DETECT::0x09	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	62;"	d	line:62	file:
+CDC_SEND_BREAK::0x23	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	29;"	d	line:29	file:
+CDC_SEND_ENCAPSULATED_COMMAND::0x00	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	13;"	d	line:13	file:
+CDC_SEND_PULSE::0x13	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	22;"	d	line:22	file:
+CDC_SERIAL_STATE::0x20	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	64;"	d	line:64	file:
+CDC_SET_ATM_DATA_FORMAT::0x50	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	49;"	d	line:49	file:
+CDC_SET_ATM_DEFAULT_VC::0x52	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	51;"	d	line:51	file:
+CDC_SET_AUX_LINE_STATE::0x10	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	19;"	d	line:19	file:
+CDC_SET_COMM_FEATURE::0x02	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	15;"	d	line:15	file:
+CDC_SET_CONTROL_LINE_STATE::0x22	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	28;"	d	line:28	file:
+CDC_SET_ETHERNET_MULTICAST_FILTERS::0x40	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	43;"	d	line:43	file:
+CDC_SET_ETHERNET_PACKET_FILTER::0x43	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	46;"	d	line:46	file:
+CDC_SET_ETHERNET_POWER_MANAGEMENT_PATTERN_FILTER::0x41	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	44;"	d	line:44	file:
+CDC_SET_HOOK_STATE::0x11	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	20;"	d	line:20	file:
+CDC_SET_LINE_CODING::0x20	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	26;"	d	line:26	file:
+CDC_SET_LINE_PARMS::0x34	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	35;"	d	line:35	file:
+CDC_SET_OPERATION_PARMS::0x32	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	33;"	d	line:33	file:
+CDC_SET_PULSE_TIME::0x14	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	23;"	d	line:23	file:
+CDC_SET_RINGER_PARMS::0x30	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	31;"	d	line:31	file:
+CDC_SET_UNIT_PARAMETER::0x37	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	38;"	d	line:38	file:
+CloseCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	262;"	f	line:262	signature:( void )
+CloseCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	11;"	p	line:11	signature:( void )
+DPRINTF::(...)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	9;"	d	line:9	file:
+DPRINTF::(...)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	16;"	d	line:16	file:
+DPRINTF::(...)printf((constfarromchar*)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	7;"	d	line:7	file:
+DPRINTF::(...)printf((constfarromchar*)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	14;"	d	line:14	file:
+DTR	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	90;"	m	line:90	struct:cdc_ControlLineState	file:
+DTS::0x40	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	184;"	d	line:184
+DTSEN::0x08	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	187;"	d	line:187
+DataRdyCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	271;"	f	line:271	signature:( void )
+DataRdyCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	14;"	p	line:14	signature:( void )
+HIGHB::(x)((x)>>8)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	51;"	d	line:51
+INCDIS::0x10	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	186;"	d	line:186
+KEN::0x20	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	185;"	d	line:185
+LOWB::(x)((x)&0xFF)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	52;"	d	line:52
+OpenCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	256;"	f	line:256	signature:(unsigned char config, unsigned int spbrg)
+OpenCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	8;"	p	line:8	signature:(unsigned char config, unsigned int spbrg)
+RTS	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	91;"	m	line:91	struct:cdc_ControlLineState	file:
+RXTX_BUFFER_SIZE::32u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	24;"	d	line:24
+UEIE	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	243;"	l	line:243
+UEP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	462;"	l	line:462
+UOWN::0x80	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	183;"	d	line:183
+USB_ALL_ENDPOINTS	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	75;"	d	line:75
+USB_BUS_POWERED::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	8;"	d	line:8
+USB_CALC_BD::(ep,dir,sync)(((ep)==0&&(dir)=	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	149;"	d	line:149
+USB_CALC_BD::(ep,dir,sync)(((ep)==0)?(dir):	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	155;"	d	line:155
+USB_CALC_BD::(ep,dir,sync)(2*(ep)+(dir))	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	146;"	d	line:146
+USB_CALC_BD::(ep,dir,sync)(4*(ep)+2*(dir)+(	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	152;"	d	line:152
+USB_CONFIGURATION_DESCRIPTOR_TYPE::2u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	24;"	d	line:24
+USB_CONFIG_DESC_TOT_LENGTH::(9+9+5+4+5+5+7+9+7+7)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\descriptors.h	28;"	d	line:28
+USB_DEBUG_DESCRIPTOR_TYPE::10u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	32;"	d	line:32
+USB_DEVICE_DESCRIPTOR_TYPE::1u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	23;"	d	line:23
+USB_DEVICE_QUALIFIER_DESCRIPTOR_TYPE::6u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	28;"	d	line:28
+USB_DEVICE_REQUEST	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	204;"	s	line:204
+USB_DIR_IN::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	139;"	d	line:139
+USB_DIR_OUT::0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	138;"	d	line:138
+USB_ENDPOINTS	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	46;"	d	line:46
+USB_ENDPOINTS	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	69;"	d	line:69
+USB_ENDPOINT_DESCRIPTOR_TYPE::5u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	27;"	d	line:27
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	127;"	d	line:127	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	135;"	d	line:135	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	225;"	d	line:225	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	237;"	d	line:237	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	31;"	d	line:31	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	408;"	d	line:408	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	42;"	d	line:42	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	52;"	d	line:52	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	64;"	d	line:64	file:
+USB_EP	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	79;"	d	line:79
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	124;"	d	line:124	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	223;"	d	line:223	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	235;"	d	line:235	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	29;"	d	line:29	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	37;"	d	line:37	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	407;"	d	line:407	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	50;"	d	line:50	file:
+USB_EP::(num,flow,typ,size,callback)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	60;"	d	line:60	file:
+USB_EP::(num,flow,typ,size,callback)+1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	77;"	d	line:77
+USB_EP::(num,flow,typ,size,callback)CA	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	133;"	d	line:133	file:
+USB_EP_BULK::(1)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	48;"	d	line:48
+USB_EP_CONTROL::(USB_UEP_EPHSHK|USB_UEP_EPINEN	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	42;"	d	line:42
+USB_EP_IN::(USB_UEP_EPHSHK|USB_UEP_EPINEN	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	44;"	d	line:44
+USB_EP_INOUT::(USB_UEP_EPHSHK|USB_UEP_EPINEN	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	41;"	d	line:41
+USB_EP_INTERRUPT::(0)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	47;"	d	line:47
+USB_EP_ISOCHRONOUS::(2)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	49;"	d	line:49
+USB_EP_NONE::(0x00)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	45;"	d	line:45
+USB_EP_OUT::(USB_UEP_EPHSHK|USB_UEP_EPOUTE	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	43;"	d	line:43
+USB_FULL_SPEED_DEVICE::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	12;"	d	line:12
+USB_INTERFACE_ASSOCIATION_DESCRIPTOR_TYPE::11u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	33;"	d	line:33
+USB_INTERFACE_DESCRIPTOR_TYPE::4u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	26;"	d	line:26
+USB_INTERFACE_POWER_DESCRIPTOR_TYPE::8u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	30;"	d	line:30
+USB_INTERNAL_PULLUPS::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	10;"	d	line:10
+USB_INTERNAL_TRANSCIEVER::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	9;"	d	line:9
+USB_INTERNAL_VREG::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	11;"	d	line:11
+USB_LANGID_Chinese_Macau_SAR::0x1404	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	4;"	d	line:4
+USB_LANGID_Croatian::0x041a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	5;"	d	line:5
+USB_LANGID_Czech::0x0405	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	6;"	d	line:6
+USB_LANGID_Danish::0x0406	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	7;"	d	line:7
+USB_LANGID_Dutch_Belgium::0x0813	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	9;"	d	line:9
+USB_LANGID_Dutch_Netherlands::0x0413	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	8;"	d	line:8
+USB_LANGID_English_Australian::0x0c09	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	12;"	d	line:12
+USB_LANGID_English_Belize::0x2809	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	19;"	d	line:19
+USB_LANGID_English_Canadian::0x1009	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	13;"	d	line:13
+USB_LANGID_English_Caribbean::0x2409	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	18;"	d	line:18
+USB_LANGID_English_Ireland::0x1809	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	15;"	d	line:15
+USB_LANGID_English_Jamaica::0x2009	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	17;"	d	line:17
+USB_LANGID_English_New_Zealand::0x1409	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	14;"	d	line:14
+USB_LANGID_English_Philippines::0x3409	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	22;"	d	line:22
+USB_LANGID_English_South_Africa::0x1c09	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	16;"	d	line:16
+USB_LANGID_English_Trinidad::0x2c09	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	20;"	d	line:20
+USB_LANGID_English_United_Kingdom::0x0809	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	11;"	d	line:11
+USB_LANGID_English_United_States::0x0409	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	10;"	d	line:10
+USB_LANGID_English_Zimbabwe::0x3009	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	21;"	d	line:21
+USB_LANGID_Estonian::0x0425	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	23;"	d	line:23
+USB_LANGID_Faeroese::0x0438	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	24;"	d	line:24
+USB_LANGID_Farsi::0x0429	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	25;"	d	line:25
+USB_LANGID_Finnish::0x040b	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	26;"	d	line:26
+USB_LANGID_French_Belgian::0x080c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	28;"	d	line:28
+USB_LANGID_French_Canadian::0x0c0c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	29;"	d	line:29
+USB_LANGID_French_Luxembourg::0x140c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	31;"	d	line:31
+USB_LANGID_French_Monaco::0x180c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	32;"	d	line:32
+USB_LANGID_French_Standard::0x040c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	27;"	d	line:27
+USB_LANGID_French_Switzerland::0x100c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	30;"	d	line:30
+USB_LANGID_Georgian::0x0437	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	33;"	d	line:33
+USB_LANGID_German_Austria::0x0c07	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	36;"	d	line:36
+USB_LANGID_German_Liechtenstein::0x1407	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	38;"	d	line:38
+USB_LANGID_German_Luxembourg::0x1007	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	37;"	d	line:37
+USB_LANGID_German_Standard::0x0407	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	34;"	d	line:34
+USB_LANGID_German_Switzerland::0x0807	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	35;"	d	line:35
+USB_LANGID_Greek::0x0408	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	39;"	d	line:39
+USB_LANGID_Gujarati::0x0447	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	40;"	d	line:40
+USB_LANGID_HID_UDD::0x04ff	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	115;"	d	line:115
+USB_LANGID_HID_Vendor1::0xf0ff	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	116;"	d	line:116
+USB_LANGID_HID_Vendor2::0xf4ff	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	117;"	d	line:117
+USB_LANGID_HID_Vendor3::0xf8ff	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	118;"	d	line:118
+USB_LANGID_HID_Vendor4::0xfcff	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	119;"	d	line:119
+USB_LANGID_Hebrew::0x040d	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	41;"	d	line:41
+USB_LANGID_Hindi::0x0439	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	42;"	d	line:42
+USB_LANGID_Hungarian::0x040e	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	43;"	d	line:43
+USB_LANGID_Icelandic::0x040f	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	44;"	d	line:44
+USB_LANGID_Indonesian::0x0421	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	45;"	d	line:45
+USB_LANGID_Italian_Standard::0x0410	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	46;"	d	line:46
+USB_LANGID_Italian_Switzerland::0x0810	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	47;"	d	line:47
+USB_LANGID_Japanese::0x0411	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	48;"	d	line:48
+USB_LANGID_Kannada::0x044b	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	49;"	d	line:49
+USB_LANGID_Kashmiri_India::0x0860	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	50;"	d	line:50
+USB_LANGID_Kazakh::0x043f	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	51;"	d	line:51
+USB_LANGID_Konkani::0x0457	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	52;"	d	line:52
+USB_LANGID_Korean::0x0412	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	53;"	d	line:53
+USB_LANGID_Korean_Johab::0x0812	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	54;"	d	line:54
+USB_LANGID_Latvian::0x0426	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	55;"	d	line:55
+USB_LANGID_Lithuanian::0x0427	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	56;"	d	line:56
+USB_LANGID_Lithuanian_Classic::0x0827	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	57;"	d	line:57
+USB_LANGID_Macedonian::0x042f	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	58;"	d	line:58
+USB_LANGID_Malay_Brunei_Darussalam::0x083e	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	60;"	d	line:60
+USB_LANGID_Malay_Malaysian::0x043e	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	59;"	d	line:59
+USB_LANGID_Malayalam::0x044c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	61;"	d	line:61
+USB_LANGID_Manipuri::0x0458	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	62;"	d	line:62
+USB_LANGID_Marathi::0x044e	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	63;"	d	line:63
+USB_LANGID_Nepali_India::0x0861	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	64;"	d	line:64
+USB_LANGID_Norwegian_Bokmal::0x0414	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	65;"	d	line:65
+USB_LANGID_Norwegian_Nynorsk::0x0814	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	66;"	d	line:66
+USB_LANGID_Oriya::0x0448	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	67;"	d	line:67
+USB_LANGID_Polish::0x0415	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	68;"	d	line:68
+USB_LANGID_Portuguese_Brazil::0x0416	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	69;"	d	line:69
+USB_LANGID_Portuguese_Standard::0x0816	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	70;"	d	line:70
+USB_LANGID_Punjabi::0x0446	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	71;"	d	line:71
+USB_LANGID_Romanian::0x0418	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	72;"	d	line:72
+USB_LANGID_Russian::0x0419	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	73;"	d	line:73
+USB_LANGID_Sanskrit::0x044f	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	74;"	d	line:74
+USB_LANGID_Serbian_Cyrillic::0x0c1a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	75;"	d	line:75
+USB_LANGID_Serbian_Latin::0x081a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	76;"	d	line:76
+USB_LANGID_Sindhi::0x0459	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	77;"	d	line:77
+USB_LANGID_Slovak::0x041b	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	78;"	d	line:78
+USB_LANGID_Slovenian::0x0424	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	79;"	d	line:79
+USB_LANGID_Spanish_Argentina::0x2c0a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	90;"	d	line:90
+USB_LANGID_Spanish_Bolivia::0x400a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	95;"	d	line:95
+USB_LANGID_Spanish_Chile::0x340a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	92;"	d	line:92
+USB_LANGID_Spanish_Colombia::0x240a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	88;"	d	line:88
+USB_LANGID_Spanish_Costa_Rica::0x140a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	84;"	d	line:84
+USB_LANGID_Spanish_Dominican_Republic::0x1c0a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	86;"	d	line:86
+USB_LANGID_Spanish_Ecuador::0x300a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	91;"	d	line:91
+USB_LANGID_Spanish_El_Salvador::0x440a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	96;"	d	line:96
+USB_LANGID_Spanish_Guatemala::0x100a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	83;"	d	line:83
+USB_LANGID_Spanish_Honduras::0x480a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	97;"	d	line:97
+USB_LANGID_Spanish_Mexican::0x080a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	81;"	d	line:81
+USB_LANGID_Spanish_Modern_Sort::0x0c0a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	82;"	d	line:82
+USB_LANGID_Spanish_Nicaragua::0x4c0a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	98;"	d	line:98
+USB_LANGID_Spanish_Panama::0x180a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	85;"	d	line:85
+USB_LANGID_Spanish_Paraguay::0x3c0a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	94;"	d	line:94
+USB_LANGID_Spanish_Peru::0x280a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	89;"	d	line:89
+USB_LANGID_Spanish_Puerto_Rico::0x500a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	99;"	d	line:99
+USB_LANGID_Spanish_Traditional_Sort::0x040a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	80;"	d	line:80
+USB_LANGID_Spanish_Uruguay::0x380a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	93;"	d	line:93
+USB_LANGID_Spanish_Venezuela::0x200a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	87;"	d	line:87
+USB_LANGID_Sutu::0x0430	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	100;"	d	line:100
+USB_LANGID_Swahili_Kenya::0x0441	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	101;"	d	line:101
+USB_LANGID_Swedish::0x041d	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	102;"	d	line:102
+USB_LANGID_Swedish_Finland::0x081d	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	103;"	d	line:103
+USB_LANGID_Tamil::0x0449	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	104;"	d	line:104
+USB_LANGID_Tatar_Tatarstan::0x0444	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	105;"	d	line:105
+USB_LANGID_Telugu::0x044a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	106;"	d	line:106
+USB_LANGID_Thai::0x041e	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	107;"	d	line:107
+USB_LANGID_Turkish::0x041f	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	108;"	d	line:108
+USB_LANGID_Ukrainian::0x0422	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	109;"	d	line:109
+USB_LANGID_Urdu_India::0x0820	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	111;"	d	line:111
+USB_LANGID_Urdu_Pakistan::0x0420	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	110;"	d	line:110
+USB_LANGID_Uzbek_Cyrillic::0x0843	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	113;"	d	line:113
+USB_LANGID_Uzbek_Latin::0x0443	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	112;"	d	line:112
+USB_LANGID_Vietnamese::0x042a	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	114;"	d	line:114
+USB_MAX_BUFFER_SIZE::8	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	195;"	d	line:195
+USB_MAX_BUFFER_SIZE::8u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	23;"	d	line:23
+USB_NUM_EP::(0USB_ALL_ENDPOINTS)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	78;"	d	line:78
+USB_OTG_DESCRIPTOR_TYPE::9u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	31;"	d	line:31
+USB_OTHER_SPEED_CONFIGURATION_DESCRIPTOR_TYPE::7u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	29;"	d	line:29
+USB_PP_BUF_MODE::0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	21;"	d	line:21
+USB_PP_EVEN::0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	140;"	d	line:140
+USB_PP_ODD::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	141;"	d	line:141
+USB_REQUEST_CLEAR_FEATURE::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	252;"	d	line:252
+USB_REQUEST_GET_CONFIGURATION::8	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	257;"	d	line:257
+USB_REQUEST_GET_DESCRIPTOR::6	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	255;"	d	line:255
+USB_REQUEST_GET_INTERFACE::10	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	259;"	d	line:259
+USB_REQUEST_GET_STATUS::0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	251;"	d	line:251
+USB_REQUEST_SET_ADDRESS::5	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	254;"	d	line:254
+USB_REQUEST_SET_CONFIGURATION::9	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	258;"	d	line:258
+USB_REQUEST_SET_DESCRIPTOR::7	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	256;"	d	line:256
+USB_REQUEST_SET_FEATURE::3	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	253;"	d	line:253
+USB_REQUEST_SET_INTERFACE::11	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	260;"	d	line:260
+USB_REQUEST_SYNCH_FRAME::12	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	261;"	d	line:261
+USB_STRING	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	372;"	d	line:372	file:
+USB_STRING	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	85;"	d	line:85	file:
+USB_STRING::(num,...)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	370;"	d	line:370	file:
+USB_STRING::(num,size,...)romconstunsigned	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	83;"	d	line:83	file:
+USB_STRING_DESCRIPTOR_TYPE::3u	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	25;"	d	line:25
+USB_TOKEN_ACK::0b00001000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	13;"	d	line:13
+USB_TOKEN_DATA0::0b00001100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	9;"	d	line:9
+USB_TOKEN_DATA1::0b00101100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	10;"	d	line:10
+USB_TOKEN_DATA2::0b00011100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	11;"	d	line:11
+USB_TOKEN_ERR::0b00110000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	18;"	d	line:18
+USB_TOKEN_IN::0b00100100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	6;"	d	line:6
+USB_TOKEN_MDATA::0b00111100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	12;"	d	line:12
+USB_TOKEN_Mask::0b00111100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	4;"	d	line:4
+USB_TOKEN_NAK::0b00101000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	14;"	d	line:14
+USB_TOKEN_NYET::0b00011000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	16;"	d	line:16
+USB_TOKEN_OUT::0b00000100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	5;"	d	line:5
+USB_TOKEN_PING::0b00010000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	20;"	d	line:20
+USB_TOKEN_PRE::0b00110000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	17;"	d	line:17
+USB_TOKEN_SETUP::0b00110100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	8;"	d	line:8
+USB_TOKEN_SOF::0b00010100	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	7;"	d	line:7
+USB_TOKEN_SPLIT::0b00100000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	19;"	d	line:19
+USB_TOKEN_STALL::0b00111000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	15;"	d	line:15
+USB_UCFG_FSEN_VALUE::(0)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	114;"	d	line:114
+USB_UCFG_FSEN_VALUE::(1<<2)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	112;"	d	line:112
+USB_UCFG_REGISTER_VALUE::((USB_UCFG_UPUEN_VALUE)|	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	163;"	d	line:163
+USB_UCFG_UPUEN_VALUE::(0)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	98;"	d	line:98
+USB_UCFG_UPUEN_VALUE::(1<<4)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	96;"	d	line:96
+USB_UCFG_UTRDIS_VALUE::(0)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	104;"	d	line:104
+USB_UCFG_UTRDIS_VALUE::(1<<3)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	106;"	d	line:106
+USB_UEP_EPCONDIS::(0x08)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	37;"	d	line:37
+USB_UEP_EPHSHK::(0x10)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	36;"	d	line:36
+USB_UEP_EPINEN::(0x02)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	39;"	d	line:39
+USB_UEP_EPOUTEN::(0x04)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	38;"	d	line:38
+USB_USTAT2BD::(X)(((X)>2)?(X)/4+1:(X)/2)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	148;"	d	line:148
+USB_USTAT2BD::(X)(((X)>4)?(X)/2-2:(X)/4)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	154;"	d	line:154
+USB_USTAT2BD::(X)((X)/2)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	151;"	d	line:151
+USB_USTAT2BD::(X)((X)/4)	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	145;"	d	line:145
+USB_bDescriptorIndex::2	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	215;"	d	line:215
+USB_bDescriptorType::3	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	217;"	d	line:217
+USB_bInterface::4	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	219;"	d	line:219
+USB_bRequest::1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	213;"	d	line:213
+USB_bmRequestType::0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	212;"	d	line:212
+USB_bmRequestType_Class::0b00100000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	243;"	d	line:243
+USB_bmRequestType_D2H::0b10000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	240;"	d	line:240
+USB_bmRequestType_Device::0b00000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	246;"	d	line:246
+USB_bmRequestType_Endpoint::0b00000010	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	248;"	d	line:248
+USB_bmRequestType_H2D::0b00000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	239;"	d	line:239
+USB_bmRequestType_Interface::0b00000001	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	247;"	d	line:247
+USB_bmRequestType_Other::0b00000011	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	249;"	d	line:249
+USB_bmRequestType_PhaseMask::0b10000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	238;"	d	line:238
+USB_bmRequestType_RecipientMask::0b00000011	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	245;"	d	line:245
+USB_bmRequestType_Standard::0b00000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	242;"	d	line:242
+USB_bmRequestType_TypeMask::0b01100000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	241;"	d	line:241
+USB_bmRequestType_Vendor::0b01000000	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	244;"	d	line:244
+USB_wIndex::4	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	218;"	d	line:218
+USB_wIndexHigh::5	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	220;"	d	line:220
+USB_wLength::6	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	221;"	d	line:221
+USB_wLengthHigh::7	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	222;"	d	line:222
+USB_wValue::2	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	214;"	d	line:214
+USB_wValueHigh::3	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	216;"	d	line:216
+XCAT::(x,y)x##y	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	19;"	d	line:19	file:
+__CDC_H__	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	2;"	d	line:2
+__DESCRIPTORS_H__	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\descriptors.h	2;"	d	line:2
+__USB_CONFIG_H__	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	2;"	d	line:2
+__USB_LANG_H__	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_lang.h	2;"	d	line:2
+__USB_STACK_H__	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	2;"	d	line:2
+_user_putc	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	247;"	f	line:247	signature:( char c )
+bCharFormat	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	84;"	m	line:84	struct:cdc_LineCodeing	file:
+bDataBits	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	86;"	m	line:86	struct:cdc_LineCodeing	file:
+bParityType	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	85;"	m	line:85	struct:cdc_LineCodeing	file:
+bRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	206;"	m	line:206	struct:USB_DEVICE_REQUEST
+baudCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	311;"	f	line:311	signature:( unsigned char baudconfig )
+baudCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	32;"	p	line:32	signature:( unsigned char baudconfig )
+bd	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	586;"	l	line:586
+bdp	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	75;"	v	line:75
+bmRequestType	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	205;"	m	line:205	struct:USB_DEVICE_REQUEST
+c	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	277;"	l	line:277
+cdc_ControlLineState	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	89;"	s	line:89	file:
+cdc_LineCodeing	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	82;"	s	line:82	file:
+cdc_acm_in	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	208;"	f	line:208	signature:(void)
+cdc_get_line_coding	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	179;"	f	line:179	signature:( void )
+cdc_get_line_coding	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	75;"	p	line:75	file:	signature:( void )
+cdc_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	99;"	f	line:99	signature:(void)
+cdc_rx	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	230;"	f	line:230	signature:( void )
+cdc_rx	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	51;"	p	line:51	signature:( void )
+cdc_set_control_line_state_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	203;"	f	line:203	signature:( void )
+cdc_set_control_line_state_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	76;"	p	line:76	file:	signature:( void )
+cdc_set_line_coding_data	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	184;"	f	line:184	signature:( void )
+cdc_set_line_coding_data	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	73;"	p	line:73	file:	signature:( void )
+cdc_set_line_coding_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	198;"	f	line:198	signature:( void )
+cdc_set_line_coding_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	74;"	p	line:74	file:	signature:( void )
+cdc_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	113;"	f	line:113	signature:(void)
+cdc_tx	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	241;"	f	line:241	signature:( void )
+cdc_tx	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	52;"	p	line:52	signature:( void )
+class_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	279;"	p	line:279	signature:( void )
+class_init::cdc_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	49;"	d	line:49
+class_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	280;"	p	line:280	signature:( void )
+class_setup::cdc_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_config.h	48;"	d	line:48
+cls	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	94;"	v	line:94
+data	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	96;"	v	line:96
+data_end	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	96;"	v	line:96
+dir	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	464;"	l	line:464
+dwDTERate	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	83;"	m	line:83	struct:cdc_LineCodeing	file:
+epbd	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	465;"	l	line:465
+epnum	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	463;"	l	line:463
+even	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	e	line:79	enum:parity	file:
+getcCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	276;"	f	line:276	signature:( void )
+getcCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	17;"	p	line:17	signature:( void )
+getcCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\main.c	66;"	p	line:66	file:
+getsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	285;"	f	line:285	signature:( char *buffer, unsigned char len)
+getsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	20;"	p	line:20	signature:( char *buffer, unsigned char len)
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	115;"	l	line:115
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	231;"	l	line:231
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	286;"	l	line:286
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	105;"	l	line:105
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	559;"	l	line:559
+i	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	585;"	l	line:585
+in_handlers	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	77;"	v	line:77
+linecodeing	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	87;"	v	line:87
+main	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\main.c	48;"	f	line:48	signature:( void )
+mark	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	e	line:79	enum:parity	file:
+none	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	e	line:79	enum:parity	file:
+odd	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	e	line:79	enum:parity	file:
+one	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	78;"	e	line:78	enum:stopbits	file:
+oneandahalf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	78;"	e	line:78	enum:stopbits	file:
+out_handlers	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	78;"	v	line:78
+packet	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	114;"	l	line:114
+packet	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	306;"	l	line:306
+packet	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	424;"	l	line:424
+packet	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	461;"	l	line:461
+packet_len	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	587;"	l	line:587
+parity	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	g	line:79	file:
+parity_str	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	80;"	v	line:80
+putcCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	291;"	f	line:291	signature:( char c )
+putcCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	23;"	p	line:23	signature:( char c )
+putrsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	305;"	f	line:305	signature:( const rom char *str )
+putrsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	29;"	p	line:29	signature:( const rom char *str )
+putsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	299;"	f	line:299	signature:( char *str )
+putsCDC	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.h	26;"	p	line:26	signature:( char *str )
+rbdp	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	75;"	v	line:75
+reply_len	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	116;"	l	line:116
+rxbdp	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	97;"	v	line:97
+space	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	79;"	e	line:79	enum:parity	file:
+stopbits	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	78;"	g	line:78	file:
+trn_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	74;"	v	line:74
+two	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	78;"	e	line:78	enum:stopbits	file:
+txbdp	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	97;"	v	line:97
+unused1	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	92;"	m	line:92	struct:cdc_ControlLineState	file:
+unused2	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\cdc.c	93;"	m	line:93	struct:cdc_ControlLineState	file:
+usb_RequestError	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	558;"	f	line:558	signature:( void )
+usb_RequestError	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	99;"	p	line:99	file:	signature:( void )
+usb_RequestError	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	277;"	p	line:277	signature:( void )
+usb_ack	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	544;"	f	line:544	signature:( BDentry *bd )
+usb_ack	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	274;"	p	line:274	signature:( BDentry * )
+usb_ack_out	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	553;"	f	line:553	signature:( BDentry *bd )
+usb_ack_out	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	276;"	p	line:276	signature:( BDentry * )
+usb_ack_zero	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	548;"	f	line:548	signature:( BDentry *bd )
+usb_ack_zero	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	275;"	p	line:275	signature:( BDentry * )
+usb_addr_pending	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	72;"	v	line:72
+usb_bdt	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	23;"	v	line:23
+usb_config_descriptor	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\descriptors.h	29;"	v	line:29
+usb_configured	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	71;"	v	line:71
+usb_desc_len	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	81;"	v	line:81
+usb_desc_ptr	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	80;"	v	line:80
+usb_device_descriptor	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\descriptors.h	7;"	v	line:7
+usb_device_request	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	210;"	t	line:210
+usb_device_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	138;"	l	line:138
+usb_device_status	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	70;"	v	line:70
+usb_ep0_in_buf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	40;"	v	line:40
+usb_ep0_in_buf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	62;"	v	line:62
+usb_ep0_out_buf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	61;"	v	line:61
+usb_ep0_out_even_buf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	38;"	v	line:38
+usb_ep0_out_odd_buf	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	39;"	v	line:39
+usb_handle_ClassRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	508;"	f	line:508	signature:( void )
+usb_handle_ClassRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	97;"	p	line:97	file:	signature:( void )
+usb_handle_StandardDeviceRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	305;"	f	line:305	signature:( BDentry *bdp )
+usb_handle_StandardDeviceRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	94;"	p	line:94	file:	signature:( BDentry* )
+usb_handle_StandardEndpointRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	460;"	f	line:460	signature:( BDentry *bdp )
+usb_handle_StandardEndpointRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	96;"	p	line:96	file:	signature:( BDentry* )
+usb_handle_StandardInterfaceRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	423;"	f	line:423	signature:( BDentry *bdp )
+usb_handle_StandardInterfaceRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	95;"	p	line:95	file:	signature:( BDentry* )
+usb_handle_VendorRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	513;"	f	line:513	signature:( void )
+usb_handle_VendorRequest	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	98;"	p	line:98	file:	signature:( void )
+usb_handle_error::UEIR=0	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	88;"	d	line:88	file:
+usb_handle_in	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	517;"	f	line:517	signature:( void )
+usb_handle_in	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	93;"	p	line:93	file:	signature:( void )
+usb_handle_out	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	526;"	f	line:526	signature:( void )
+usb_handle_out	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	92;"	p	line:92	file:	signature:( void )
+usb_handle_reset	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	187;"	f	line:187	signature:( void )
+usb_handle_reset	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	89;"	p	line:89	file:	signature:( void )
+usb_handle_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	270;"	f	line:270	signature:( void )
+usb_handle_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	91;"	p	line:91	file:	signature:( void )
+usb_handle_transaction	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	246;"	f	line:246	signature:( void )
+usb_handle_transaction	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	90;"	p	line:90	file:	signature:( void )
+usb_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	153;"	f	line:153	signature:( void )
+usb_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	269;"	p	line:269	signature:( void )
+usb_handler_t	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	266;"	t	line:266
+usb_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	104;"	f	line:104	signature:( void )
+usb_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	268;"	p	line:268	signature:( void )
+usb_low_power_request::Nop	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	122;"	d	line:122
+usb_low_power_request::Nop	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	128;"	d	line:128
+usb_low_power_resume::Nop	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	125;"	d	line:125
+usb_low_power_resume::Nop	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	129;"	d	line:129
+usb_send_descriptor	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	102;"	p	line:102	file:	signature:( void )
+usb_send_descriptor	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	584;"	f	line:584	signature:( void )
+usb_set_address	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	101;"	p	line:101	file:	signature:( void )
+usb_set_address	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	575;"	f	line:575	signature:( void )
+usb_set_in_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	536;"	f	line:536	signature:(int ep, usb_handler_t in_handler)
+usb_set_in_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	270;"	p	line:270	signature:( int ep, usb_handler_t handler )
+usb_set_out_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.c	540;"	f	line:540	signature:(int ep, usb_handler_t out_handler)
+usb_set_out_handler	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	271;"	p	line:271	signature:( int ep, usb_handler_t handler )
+usb_unset_in_handler::(ep)usb_set_in_handler(ep,(usb	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	272;"	d	line:272
+usb_unset_out_handler::(ep)usb_set_in_handler(ep,(usb	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	273;"	d	line:273
+vendor_init	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	281;"	p	line:281	signature:( void )
+vendor_setup	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	282;"	p	line:282	signature:( void )
+wIndex	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	208;"	m	line:208	struct:USB_DEVICE_REQUEST
+wLength	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	209;"	m	line:209	struct:USB_DEVICE_REQUEST
+wValue	C:\Documents and Settings\Tomas\Mina dokument\Projekt\Microchip\Honken USB Stack\usb_stack.h	207;"	m	line:207	struct:USB_DEVICE_REQUEST
