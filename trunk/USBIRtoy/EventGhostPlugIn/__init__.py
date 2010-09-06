@@ -16,30 +16,35 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 #
-# $LastChangedDate: 2009-03-18 22:43:55 +0100 (Mi, 18 Mrz 2009) $
-# $LastChangedRevision: 855 $
-# $LastChangedBy: Bitmonster $
+# 
+# 00.08.00 (7) 
+#   - First Release
+# 00.08.01 (7)
+#   - Cleaned the code
+#   - Added Icon
+
+
 
 from __future__ import with_statement
 import eg
 
 eg.RegisterPlugin(
-    name = "USB IR Toy Based on UIRT2",
+    #name = "USB IR Toy Based on UIRT2",
     author = ":)",
-    #version = "1.1." + "$LastChangedRevision: 855 $".split()[1],
-    version = "00.08.00" ,
+    version = "00.08.01" ,
     kind = "remote",
     canMultiLoad = True,
     description = (
         'Hardware plugin for the <a href="http://dangerousprototypes.com/">'
         'USB IR Toy</a>.'
     ),
-    icon = (
-        "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAaElEQVR42mNkoBAwDgMD"
-        "/jMw/IeaRLJhIL1gAw4eOMBg7+AANwQsgYWNrrkR2QWkGALTXE+uAQ1APkgziguQQpU8"
-        "F5BiAE4XNEIkGYkJRJghcANgmkmJRpAhjA1QA0jVjORlysDAGwAAHWBIBf4cTRAAAAAA"
-        "SUVORK5CYII="
-    ),
+#     icon = (
+#         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAaElEQVR42mNkoBAwDgMD"
+#         "/jMw/IeaRLJhIL1gAw4eOMBg7+AANwQsgYWNrrkR2QWkGALTXE+uAQ1APkgziguQQpU8"
+#         "F5BiAE4XNEIkGYkJRJghcANgmkmJRpAhjA1QA0jVjORlysDAGwAAHWBIBf4cTRAAAAAA"
+#         "SUVORK5CYII="
+#     ),
+    iconFile='icon'
 )
 
 import wx
@@ -49,56 +54,6 @@ from binascii import hexlify, unhexlify
 from Queue import Queue, Full
 from string import hexdigits
 from ComIRDevice import ComIRDevice
-
-# currently unused stuff
-
-#def GetStructTime(code, start):
-#    tvalue = (ord(code[start+1]) * 256) + ord(code[start+2])
-#    bBits = ord(code[start+3])
-#    bHdr1 = ord(code[start+4])
-#    bHdr0 = ord(code[start+5])
-#    bOff0 = ord(code[start+6])
-#    bOff1 = ord(code[start+7])
-#    bOn0 = ord(code[start+8])
-#    bOn1 = ord(code[start+9])
-#    tvalue += bHdr1 + bHdr0
-#    for i in range(0, bBits):
-#        bit = (ord(code[start + 10 + (i / 8)]) >> (i % 8)) & 1
-#        if (i % 2) == 0:
-#            if bit:
-#                tvalue += bOn1
-#            else:
-#                tvalue += bOn0
-#        else:
-#            if bit:
-#                tvalue += bOff1
-#            else:
-#                tvalue += bOff0
-#    return tvalue
-#
-#
-#def CalcTime(code):
-#    tvalue = 0
-#    if code[0] == "\x36":  
-#        # RAW
-#        length = ord(code[1])
-#        tvalue = (ord(code[2]) * 256) + ord(code[3])
-#        for i in range(4, length + 4):
-#            tvalue += ord(code[i])
-#        tvalue = tvalue * (ord(code[-2]) & 0x1F)
-#        #tvalue -= (ord(code[2]) * 256) + ord(code[3])
-#    elif (ord(code[0]) & 0x1F) > 0:
-#        # REMSTRUCT1
-#        repeat = ord(code[0]) & 0x1F
-#        tvalue = GetStructTime(code, 0) * repeat
-#        #tvalue -= (ord(code[1]) * 256) + ord(code[2])
-#
-#    else:
-#        # REMSTRUCT2
-#        tvalue = GetStructTime(code, 0)
-#        repeat = ord(code[26]) & 0x1F
-#        tvalue = tvalue + (GetStructTime(code, 26) * repeat)
-#    return tvalue * SAMPLE_TIME
 
 
 def CalcChecksum(data):
@@ -178,9 +133,8 @@ class HexValidator(wx.PyValidator):
 
 class UIRT2(eg.IrDecoderPlugin):
 
-    #modify this if necessary... by 7
+    # MOIDY THIS IF NECESSARY!!! (7)
     __USBIRTOYFWVERSION="V107"
-    #__SAMPLINGPERIOD=21.1111
     __SAMPLINGPERIOD=50.0
     
     def __init__(self):
@@ -196,34 +150,20 @@ class UIRT2(eg.IrDecoderPlugin):
         serialThread.Start()
         #serialThread.SetRts()
         self.MyComIrDevice=ComIRDevice(mySerialThread=serialThread)
-        #self.MyComIrDevice.ResetMode()
-
-        #print self.MyComIrDevice.GetVersion()
-        #print self.MyComIrDevice.GetVersion()
-        #print self.MyComIrDevice.GetVersion()
         
         for dummyCounter in range(3):
             sleep(0.05)
             self.MyComIrDevice.ResetMode()
             USBIrToyFWVer=self.MyComIrDevice.GetVersion()
-            print "USB IR Toy Version",USBIrToyFWVer
+            
+            print "USB IR Toy Version ",USBIrToyFWVer
             if(USBIrToyFWVer!=self.__USBIRTOYFWVERSION):
                 continue
-
-            print "Entering Sampling Mode"
-            if(self.MyComIrDevice.EnterSamplingMode() == False):
+            print "Entering Sampling Mode..."
+            if(self.MyComIrDevice.EnterSamplingMode('S01') == False):
                 continue
-            
+            print "Entered Sampling Mode!"
             break
-##            serialThread.Flush()            
-##            serialThread.Write("\x23\xdd") # get version
-##            if serialThread.Read(3, 0.2) != "\x01\x04\xFB":
-##                continue            
-##            serialThread.Write("\x21\xdf") # set RAW mode
-##            if serialThread.Read(1, 0.1) != "\x21":
-##                continue
-            
-#break
         else:
             serialThread.Close()
             raise self.Exceptions.InitFailed
@@ -240,63 +180,61 @@ class UIRT2(eg.IrDecoderPlugin):
         self.alive = False
         self.sendQueue.put((StopIteration, None))
         self.serialThread.SuspendReadEvents()
-        self.serialThread.Write("\x20\xe0")
+        #self.serialThread.Write("\x20\xe0")
+        self.MyComIrDevice.ResetMode()
         self.serialThread.Close()
         
         
     def __close__(self):
         self.irDecoder.Close()
 
-
-## This is the data when i press enter on my remote (Orange)
-##[422, 210, 26, 26, 26, 25, 27, 25, 26, 26, 26, 25, 27, 25, 26, 26, 26, 26, 27, 78,
-## 26, 78, 26, 79, 27, 78, 26, 78, 26, 79, 27, 78, 26, 78, 26, 26, 26, 25, 27, 25, 26,
-## 26, 27, 24, 27, 24, 26, 79, 26, 25, 26, 79, 28, 77, 27, 77, 25, 80, 27, 78, 27, 77,
-## 27, 25, 27, 77, 27, 1871, 421, 105, 26, 65535]
-        
+       
 
     #@eg.LogIt
-    __SCALE=21.33/50.0
+    __SCALE=(21.3333/50.0)
+    
     def OnReceive(self, serialThread):
         self.buffer += serialThread.Read(1024)
-##        for x in self.buffer:
-##            print ("%x ") % (ord(x))
-##        return
         while True:
-            #terminatorPos = self.buffer.find("\xff")
-            terminatorPos = self.buffer.find("\xff\xff")
-            #print terminatorPos
+            terminatorPos = self.buffer.find("\xff\xff") # this is ok temporarily
             if terminatorPos < 0:
                 break
-            #data = self.buffer[2:terminatorPos+1]
-            #self.buffer = self.buffer[terminatorPos+1:]
-
-            #data = self.buffer[0:terminatorPos+2]
             data=""
             ctr=0
 
             #convert the 16bit data to 8 bit data            
+#             while(ctr<terminatorPos):
+#                 x=(ord(self.buffer[ctr]))<<8
+#                 y=ord(self.buffer[ctr+1])
+#                 #print ("%x ") % (x+y)
+#                 tempInt=(int)((x+y)*(self.__SCALE))
+#                 data+=chr(tempInt&0xFF)
+#                 ctr+=2                
+
             while(ctr<terminatorPos):
-                x=(ord(self.buffer[ctr]))<<8
-                y=ord(self.buffer[ctr+1])
+                #x=((ord(self.buffer[ctr]))<<8) + 
+                #y=ord(self.buffer[ctr+1])
                 #print ("%x ") % (x+y)
-                tempInt=(int)((x+y)*(self.__SCALE))
+                tempInt=(int)((  ((ord(self.buffer[ctr]))<<8) +   ord(self.buffer[ctr+1]))*(self.__SCALE))
                 data+=chr(tempInt&0xFF)
                 ctr+=2                
             
-            self.buffer = self.buffer[terminatorPos+2:]
+            self.buffer = '' # empty buffer TODO:Temporary buffer emptying
             
             if len(data) < 2:
                 continue
-            strtemp=""
+                
             print "IR Data Received!"
-
-            for x in data:
-                strtemp+=("0x%x ") % (ord(x))    
-                #print ("%x ") % (ord(x))
-            print strtemp
+            
+            #display what was received (for debugging)
+#             strtemp=""
+# 
+#             for x in data:
+#                 strtemp+=("0x%x ") % (ord(x))    
+#                 #print ("%x ") % (ord(x))
+#             print strtemp
+            
             self.irDecoder.Decode(data, len(data))
-
             self.buffer = '' # empty buffer TODO:Temporary buffer emptying
         
         
@@ -481,3 +419,25 @@ class TransmitIR(eg.ActionBase):
 ##                #print ("%x ") % (ord(x))
 ##            print strtemp
 ##            self.irDecoder.Decode(data, len(data))
+
+
+
+# eg.RegisterPlugin(
+#     name = "USB IR Toy Based on UIRT2",
+#     author = ":)",
+#     version = "00.08.01" ,
+#     kind = "remote",
+#     canMultiLoad = True,
+#     description = (
+#         'Hardware plugin for the <a href="http://dangerousprototypes.com/">'
+#         'USB IR Toy</a>.'
+#     ),
+# #     icon = (
+# #         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAaElEQVR42mNkoBAwDgMD"
+# #         "/jMw/IeaRLJhIL1gAw4eOMBg7+AANwQsgYWNrrkR2QWkGALTXE+uAQ1APkgziguQQpU8"
+# #         "F5BiAE4XNEIkGYkJRJghcANgmkmJRpAhjA1QA0jVjORlysDAGwAAHWBIBf4cTRAAAAAA"
+# #         "SUVORK5CYII="
+# #     ),
+#     iconFile='icon'
+# )
+
