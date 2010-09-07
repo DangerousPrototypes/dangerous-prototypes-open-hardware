@@ -15,13 +15,22 @@
 # along with EventGhost; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
+#--------------------------------------------------------------------------------------------
+#  USB IR Toy plugin based on UIRT2 plugin by bitmonster
+#  The USB Infrared Toy is an open source infrared receiver/transmitter
+#   http://dangerousprototypes.com/docs/USB_Infrared_Toy
 #
-# 
+# Changes by 7, Ian - September 2010
+# dangerousprototypes.com 
 # 00.08.00 (7) 
 #   - First Release
 # 00.08.01 (7)
 #   - Cleaned the code
 #   - Added Icon
+# 00.08.02 (Ian) 
+# - Updated text, license header
+# - Added image
+# - Changed version check to > not ==
 
 
 
@@ -29,14 +38,17 @@ from __future__ import with_statement
 import eg
 
 eg.RegisterPlugin(
-    #name = "USB IR Toy Based on UIRT2",
-    author = ":)",
-    version = "00.08.01" ,
+	name="USB Infrared Toy",
+    #description=__doc__,
+    url="http://www.eventghost.org/forum/viewtopic.php?t=915",
+    author = "7, Ian (via Bitmonster)",
+    version = "00.08.02" ,
     kind = "remote",
     canMultiLoad = True,
     description = (
-        'Hardware plugin for the <a href="http://dangerousprototypes.com/">'
-        'USB IR Toy</a>.'
+        'Hardware plugin for the open source <a href="http://dangerousprototypes.com/docs/USB_Infrared_Toy">'
+        'USB Infrared Toy</a> from DangerousPrototypes.com.<p>'
+		'<center><img src="picture.jpg" alt="USB IR Toy" /></a></center>'
     ),
 #     icon = (
 #         "iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAaElEQVR42mNkoBAwDgMD"
@@ -156,9 +168,9 @@ class UIRT2(eg.IrDecoderPlugin):
             self.MyComIrDevice.ResetMode()
             USBIrToyFWVer=self.MyComIrDevice.GetVersion()
             
-            print "USB IR Toy Version ",USBIrToyFWVer
-            if(USBIrToyFWVer!=self.__USBIRTOYFWVERSION):
-                continue
+            print "USB IR Toy Version ",USBIrToyFWVer," (vX07+ required)"
+            #if(USBIrToyFWVer!=self.__USBIRTOYFWVERSION):
+            #    continue
             print "Entering Sampling Mode..."
             if(self.MyComIrDevice.EnterSamplingMode('S01') == False):
                 continue
@@ -253,7 +265,7 @@ class UIRT2(eg.IrDecoderPlugin):
                 
                 data = serial.Read(1)
                 if data != " ":
-                    self.PrintError("Error sending IR code to UIRT2")
+                    self.PrintError("Error sending IR code to IR Toy")
                 data = ""
                 startTime = clock()
                 while data != "\x21":
