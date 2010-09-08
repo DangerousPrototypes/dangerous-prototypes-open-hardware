@@ -406,15 +406,15 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 	case USB_REQUEST_SET_CONFIGURATION:
 		if (USB_NUM_CONFIGURATIONS >= packet[USB_wValue]) {
 
-			/* Configure endpoints (UEPn - registers) */
+			/* Configure endpoints (UEPn – registers) */
 			#define USB_EP(num, flow, typ, size, callback) \
-				CAT(UEP,num) = flow;\
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDCNT = size; \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN; /* TODO: Should add DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDCNT = size; \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDSTAT = UOWN;  /* TODO: Should add DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = 0;     /* TODO: Should be DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_ODD)].BDSTAT = 0;      /* TODO: Should be DTSEN */ \
+			CAT(UEP,num) = flow;\
+			usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDCNT = size; \
+			usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN; /* TODO: Should add DTSEN */ \
+			//usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDCNT = size; \
+			//usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDSTAT = UOWN; /* TODO: Should add DTSEN */ \
+			usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = 0; /* TODO: Should be DTSEN */ \
+			//usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_ODD)].BDSTAT = 0; /* TODO: Should be DTSEN */ \
 			USB_ENDPOINTS
 			#undef USB_EP
 
