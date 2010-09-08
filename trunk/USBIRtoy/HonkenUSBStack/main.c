@@ -49,6 +49,14 @@ or send a letter to
 #pragma config EBTR3 = OFF
 #pragma config EBTRB = OFF
 
+#define	LED_LAT  LATA
+#define LED_TRIS TRISA
+#define LED_PIN  0b1
+#define LedOff() LED_LAT&=(~LED_PIN)
+#define LedOn() LED_LAT|=LED_PIN
+#define LedOut() LED_TRIS&=(~LED_PIN)
+#define LedIn() LED_TRIS|=LED_PIN
+
 #include <p18cxxx.h>
 #include "usb_stack.h"
 #include "cdc.h"
@@ -70,13 +78,21 @@ void main( void ) {
 	stderr = _H_USART;
 	fprintf(stderr, (const far rom char *) "\n\nHonken USB Stack Debug\n");
 #endif
+
+
+	LedOut();
+	LedOff();
+	
 	usb_init();
 
 	// Infinity local echo
 	while(1) {
 		usb_handler();
-		if (DataRdyCDC())
+		if (DataRdyCDC()){
+			LedOn();
 			putcCDC(getcCDC());
+			LedOff();
+		}
 	}
 }
 
