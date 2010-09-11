@@ -14,13 +14,11 @@ typedef unsigned int u16;
 #include "Compiler.h"
 #include "usb_config.h"
 
-#if 0
+#if 1
 #include "USBStack\usb.h"
 #include "USBStack\usb_device.h"
 #include "USBStack\usb_function_cdc.h"
-#endif
-
-#if 1
+#else
 //USB stack
 #include "./USB/usb.h"
 #include "./USB/usb_function_cdc.h"
@@ -32,6 +30,8 @@ typedef unsigned int u16;
 #include "IRIO.h" 		//IRIO functions
 #include "IRs.h" 		//IRs functions
 #include "RCdecoder.h" 	//RC5 decoder
+#include "IrReflect.h"
+#include "usb2uart.h"
 
 //our USB input buffer functions
 #include "USBbuf.h"
@@ -42,5 +42,8 @@ typedef unsigned int u16;
 // For portability purpose: adjusts itself accdg to the target processor
 #include <capture.h>
 #include <timers.h>
+
+#define INVALID	0xFF
+
 
 #endif
