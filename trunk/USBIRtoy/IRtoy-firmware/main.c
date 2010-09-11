@@ -44,6 +44,7 @@ static enum _mode {
 	IR_SUMP, //SUMP logic analyzer
 	IR_IO, //IR input output mode
 	IR_S, //IR Sampling mode
+	IR_REFLECT, // IR Reflection mode
 	//IR_RECORDER //record IR signal to EEPROM, playback
 } mode=IR_DECODER; //mode variable tracks the IR Toy mode
 
@@ -71,12 +72,17 @@ void main(void){
 	irssetup();
 #endif
 
+
+
 	//
 	//	Never ending loop services each task in small increments
 	//
  	USBDeviceInit();		//initialize USB (usb_device.c)
 
+
+
 	while(1){
+
 
         USBDeviceTasks(); ////service USB tasks	
 	    //CDCTxService(); //service the CDC stack
@@ -102,6 +108,8 @@ void main(void){
 			usbcfg=0;//clear flag
 		}
 
+
+
 		switch(mode){ //periodic service routines
 			case IR_SUMP:
 				//see if there's byte to be fetched
@@ -126,6 +134,13 @@ void main(void){
 					SetupRC5();
 					mode=IR_DECODER; //exit if done dumping
 				}
+				break;
+			case IR_REFLECT:
+				if(IrReflectService()!=0)
+					{
+					SetupRC5();
+					mode=IR_DECODER; //exit if done dumping
+					}
 				break;
 			//case IR_RECORDER: 				//save IR wave to EEPROM for playback
 			//case IR_DECODER:
@@ -168,6 +183,13 @@ void main(void){
 						mode=IR_IO;
 						irIOsetup();
 						break;
+
+					case 'E':
+					case 'e':
+						mode=IR_REFLECT;
+						IrReflectSetup();
+						break;
+
 					case 'T':
 					case 't'://self test
 						IRRX_IE=0; 				//disable RX interrupts
@@ -441,6 +463,9 @@ void InterruptHandlerHigh(void){
 			break;
 		case IR_DECODER:
 			_asm goto IRdecoderInterruptHandlerHigh _endasm //see RCdecoder.c
+			break;
+		case IR_REFLECT:
+			_asm goto IrReflectionInterruptHandlerHigh _endasm //see RCdecoder.c
 			break;
 	}
 }
