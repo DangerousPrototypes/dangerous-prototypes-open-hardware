@@ -45,6 +45,7 @@ static enum _mode {
 	IR_IO, //IR input output mode
 	IR_S, //IR Sampling mode
 	IR_REFLECT, // IR Reflection mode
+	USB_UART
 	//IR_RECORDER //record IR signal to EEPROM, playback
 } mode=IR_DECODER; //mode variable tracks the IR Toy mode
 
@@ -142,6 +143,15 @@ void main(void){
 					mode=IR_DECODER; //exit if done dumping
 					}
 				break;
+
+			case USB_UART:
+				if(Usb2UartService()!=0)
+					{
+					SetupRC5();
+					mode=IR_DECODER; //exit if done dumping
+					}
+				break;
+
 			//case IR_RECORDER: 				//save IR wave to EEPROM for playback
 			//case IR_DECODER:
 			default:
@@ -188,6 +198,12 @@ void main(void){
 					case 'e':
 						mode=IR_REFLECT;
 						IrReflectSetup();
+						break;
+
+					case 'U':
+					case 'u':
+						mode=USB_UART;
+						Usb2UartSetup();
 						break;
 
 					case 'T':
@@ -466,6 +482,9 @@ void InterruptHandlerHigh(void){
 			break;
 		case IR_REFLECT:
 			_asm goto IrReflectionInterruptHandlerHigh _endasm //see RCdecoder.c
+			break;
+		case USB_UART:
+			_asm goto Usb2UartInterruptHandlerHigh _endasm //see RCdecoder.c
 			break;
 	}
 }
