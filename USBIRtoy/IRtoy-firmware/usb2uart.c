@@ -6,15 +6,9 @@
 *	http://dangerousprototypes.com
 *
 */
-//
-//	IR IO
-//
-//#ifdef IR_IO
-//#define RXtest
 
 #include "globals.h"
 
-//extern struct _irtoy irToy;
 
 typedef enum
 {
@@ -33,28 +27,22 @@ static u8 TxBuffer[BUFSZ],TxBufferCtrIn,TxBufferCtrOut;
 static volatile u8 RxBuffer[BUFSZ],RxBufferCtrIn,RxBufferCtrOut;
 
 
+//setup for USB UART
 void Usb2UartSetup(void){
-//send version string
-if( mUSBUSARTIsTxTrfReady() )
+if(mUSBUSARTIsTxTrfReady())
 	{
 	irToy.usbOut[0]='U';//answer OK
 	irToy.usbOut[1]='0';
 	irToy.usbOut[2]='1';
 	putUSBUSART(irToy.usbOut,3);
 	}
-
-//setup for USB UART
-
 Sm_Usb_Uart=SM_USB_UART_FLUSH_BUFFER;
 Configbuffctr=0;
 }
 
 
 
-
-
-
-
+// to go back to the other default, user must unplug USB IR Toy
 u8 Usb2UartService(void)
 {
 static u8 buff_config[5];
@@ -66,68 +54,75 @@ static u8 buff_config[5];
  * 4 = SPBRG
  */
 
-
-// TODO enhancement: convert to switch case
-if(SM_USB_UART_FLUSH_BUFFER==Sm_Usb_Uart)
+switch (Sm_Usb_Uart)
 	{
-	FlushUsbRx();
-	Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE;
-	}
-
-// get configuration data
-else if(SM_USB_UART_CONFIG_MODE==Sm_Usb_Uart)
-	{
-	if(getsUSBUSART(UsbRxDataBuffer,1))
+	// TODO enhancement: convert to switch case
+	case SM_USB_UART_FLUSH_BUFFER:
 		{
-		buff_config[Configbuffctr]=UsbRxDataBuffer[0];
-		Configbuffctr++;
-		if(Configbuffctr==5)
+		FlushUsbRx();
+		Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE;
+		break;
+		}
+
+	// get configuration data
+	case SM_USB_UART_CONFIG_MODE:
+		{
+		if(getsUSBUSART(UsbRxDataBuffer,1))
 			{
-			//execute config data here
-			TRISC|=0xC0;
-			TXSTA=		buff_config[0];
-			RCSTA=		buff_config[1];
-			BAUDCON=	buff_config[2];
-			SPBRGH=		buff_config[3];
-			SPBRG=		buff_config[4];
-			PIE1=	0x20;
-			Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE_OK;
-			ResetUsbUartTxBuffers();
-			ResetUsbUartRxBuffers();
+			buff_config[Configbuffctr]=UsbRxDataBuffer[0];
+			Configbuffctr++;
+			if(Configbuffctr==5)
+				{
+				//execute config data here
+				TRISC|=		0xC0;
+				TXSTA=		buff_config[0];
+				RCSTA=		buff_config[1];
+				BAUDCON=	buff_config[2];
+				SPBRGH=		buff_config[3];
+				SPBRG=		buff_config[4];
+				PIE1=		0x20;
+				Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE_OK;
+				ResetUsbUartTxBuffers();
+				ResetUsbUartRxBuffers();
+				}
 			}
-		}
-	}
-else if(SM_USB_UART_CONFIG_MODE_OK==Sm_Usb_Uart)
-	{
-	Sm_Usb_Uart=SM_USB_UART_RUN_MODE;
-	if(mUSBUSARTIsTxTrfReady())
-		putrsUSBUSART("OK");
-	}
-
-else if(SM_USB_UART_RUN_MODE==Sm_Usb_Uart)
-	{
-
-	if(getsUSBUSART(UsbRxDataBuffer,1))
-		{
-		TxBuffer[TxBufferCtrIn]=UsbRxDataBuffer[0];
-		TxBufferCtrIn++;
-		TxBufferCtrIn&=USBUARTBUFCTRMASK;
+		break;
 		}
 
-	else if(RxBufferCtrIn!=RxBufferCtrOut)
+	case SM_USB_UART_CONFIG_MODE_OK:
 		{
-		if( mUSBUSARTIsTxTrfReady() )
+		Sm_Usb_Uart=SM_USB_UART_RUN_MODE;
+		if(mUSBUSARTIsTxTrfReady())
+			putrsUSBUSART("OK");
+		break;
+		}
+
+	case SM_USB_UART_RUN_MODE:
+		{
+		if(getsUSBUSART(UsbRxDataBuffer,1))
 			{
-			LAT_LED_PIN^=1;
-			irToy.usbOut[0]=RxBuffer[RxBufferCtrOut];//answer OK
-			putUSBUSART(irToy.usbOut,1);
-
-			RxBufferCtrOut++;
-			RxBufferCtrOut&=USBUARTBUFCTRMASK;
+			TxBuffer[TxBufferCtrIn]=UsbRxDataBuffer[0];
+			TxBufferCtrIn++;
+			TxBufferCtrIn&=USBUARTBUFCTRMASK;
 			}
-		}
 
-	if((TxIf)&&(TxBufferCtrIn!=TxBufferCtrOut))  // If Uart is not full
+		else if(RxBufferCtrIn!=RxBufferCtrOut)
+			{
+			if( mUSBUSARTIsTxTrfReady() )
+				{
+				LAT_LED_PIN^=1; // toggle led every sending
+				irToy.usbOut[0]=RxBuffer[RxBufferCtrOut];//answer OK
+				putUSBUSART(irToy.usbOut,1);
+
+				RxBufferCtrOut++;
+				RxBufferCtrOut&=USBUARTBUFCTRMASK;
+				}
+			}
+		break;
+		}
+	} // end of switch
+
+	if((TxIf)&&(TxBufferCtrIn!=TxBufferCtrOut))  // If Uart is not full and no data to be sent
 		{
 		TXREG=TxBuffer[TxBufferCtrOut];
 		TxBufferCtrOut++;
@@ -139,10 +134,9 @@ else if(SM_USB_UART_RUN_MODE==Sm_Usb_Uart)
 		RCSTAbits.CREN=0;
 		RCSTAbits.CREN=1;
 		}
-	}
 
 // this will contain the routine for receiving and transmit
-	return 0;//CONTINUE
+return 0;//CONTINUE
 }
 
 

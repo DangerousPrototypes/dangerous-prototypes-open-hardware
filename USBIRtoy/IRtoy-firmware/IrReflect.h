@@ -13,9 +13,24 @@
 #define LAT_IRTX	LATCbits.LATC2
 
 
+#define RBINTERRUPTCOUNTLIMIT	10
+
+#define IsRbCountExceeded()	(RBInterruptCount>RBINTERRUPTCOUNTLIMIT)
+
+#define EnablePortbChangeInterrupt() IRRX_IF=0; IRRX_IE=1;
+#define DisablePortbChangeInterrupt() IRRX_IE=0;
+
+#define IrTxTurnOn()  			TRIS_IRTX=0
+#define IrTxTurnOff()			TRIS_IRTX=1
+
+typedef enum
+{
+	TX_LED_TURN_OFF=0,
+	TX_LED_TURN_ON
+}SM_TX_LED_STATE;
+
 u8 IrReflectService(void);
 void IrReflectSetup(void);
 void IrReflectionInterruptHandlerHigh (void);
-//void irIOInterruptHandlerHigh(void);
 
 #endif
