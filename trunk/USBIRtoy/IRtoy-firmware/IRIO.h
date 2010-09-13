@@ -6,11 +6,12 @@
 *	http://dangerousprototypes.com
 *
 */
-#ifndef USB2UART_H
-#define USB2UART_H
+#ifndef IRIO_H
+#define IRIO_H
 
-void Usb2UartSetup(void);
-u8 Usb2UartService(void);
-void Usb2UartInterruptHandlerHigh (void);
+unsigned char irIOservice(void);
+void irIOsetup(void);
+void irIOInterruptHandlerHigh(void);
 
 #endif
+

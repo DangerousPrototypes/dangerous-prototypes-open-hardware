@@ -6,32 +6,14 @@
 *	http://dangerousprototypes.com
 *
 */
-//
-//	IR IO
-//
-//#ifdef IR_IO
-//#define RXtest
+
 
 #include "globals.h"
 
-#define RBINTERRUPTCOUNTLIMIT	10
 
-#define IsRbCountExceeded()	(RBInterruptCount>RBINTERRUPTCOUNTLIMIT)
-
-#define EnablePortbChangeInterrupt() IRRX_IF=0; IRRX_IE=1;
-#define DisablePortbChangeInterrupt() IRRX_IE=0;
 
 volatile u8 RBInterruptCount=0;
 
-
-#define IrTxTurnOn()  			TRIS_IRTX=0;
-#define IrTxTurnOff()			TRIS_IRTX=1;
-
-typedef enum
-{
-	TX_LED_TURN_OFF=0,
-	TX_LED_TURN_ON
-}SM_TX_LED_STATE;
 
 
 volatile SM_TX_LED_STATE txledstate;
@@ -57,7 +39,7 @@ static void IrReflectTxPwmSetup(void )
 
 //LAT_IRTX=0;//TX LED off
 //TRIS_IRTX=1; // input mode
-IrTxTurnOff()
+IrTxTurnOff();
 
 CCP1CON=0;
 T2CON=0;
@@ -72,18 +54,11 @@ CCP1CON = 0b00011100 ; //we leave this on for visual inspection (5-4 two LSB of 
 
 
 
-#if 0
-static void IrReflectTxPwmDeactivate()
-{
-LAT_IRTX=0;//TX LED off
-TRIS_IRTX=1; // input mode
-}
-#endif
+
+
 
 
 void IrReflectSetup(void){
-
-
 if( mUSBUSARTIsTxTrfReady() )
 	{
 	irToy.usbOut[0]='E';//answer OK
@@ -91,9 +66,6 @@ if( mUSBUSARTIsTxTrfReady() )
 	irToy.usbOut[2]='1';
 	putUSBUSART(irToy.usbOut,3);
 	}
-
-
-
 IrReflectTxPwmSetup();
 EnablePortbChangeInterrupt()
 RBInterruptCount=0;
@@ -161,10 +133,6 @@ if(ctr>5000) //just a magic trial and error number :)
 ctr++;
 return 0;
 }
-
-
-
-
 
 
 
