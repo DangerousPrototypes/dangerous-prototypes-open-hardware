@@ -49,7 +49,7 @@ static struct{
 	unsigned char bigendian:1;
 } irS;
 
-void irssetup(void){
+void irsSetup(void){
 
 	//send version string
   	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better

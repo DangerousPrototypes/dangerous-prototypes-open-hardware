@@ -184,7 +184,7 @@ void main(void){
 						T2IE=0; 	//disable any Timer 2 interrupt
 						IRRX_IE=0; 	//enable RX interrupts for data ACQ
 						mode=IR_S;
-						irssetup();
+						irsSetup();
 						break;
 					case 'X':		//IRIO RXTX mode
 					case 'x':
