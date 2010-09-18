@@ -16,6 +16,7 @@ void Usb2UartSetup(void);
 u8 Usb2UartService(void);
 void Usb2UartInterruptHandlerHigh (void);
 
+void mySetLineCodingHandler(void);
 
 #define RcIf	PIR1bits.RCIF
 #define TxIf	PIR1bits.TXIF
@@ -31,5 +32,8 @@ void Usb2UartInterruptHandlerHigh (void);
 #define ResetUsbUartRxBuffers() RxBufferCtrIn=0;RxBufferCtrOut=0;
 
 #define FlushUsbRx() getsUSBUSART(irToy.s,64)
+
+#define CLOCK_FREQ 48000000
+
 
 #endif
