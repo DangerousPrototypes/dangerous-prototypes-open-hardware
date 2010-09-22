@@ -43,7 +43,7 @@ void irIOsetup(void){
 		irToy.usbOut[0]='X';//answer OK
 		irToy.usbOut[1]='0';
 		irToy.usbOut[2]='1';
-		putUSBUSART(irToy.usbOut,3);
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,3);
 	}
 
 	//setup for IR TX
@@ -114,7 +114,7 @@ unsigned char irIOservice(void){
 	//00000000 - reset, return to RC5 (same as SUMP) LED output/off, CPP1CON=0; T2ON=0; T1ON=0; T1IE=0;
 	//1xxxxxxx - data
 	if(irIO.TXsamples==0){
-		irIO.TXsamples=getsUSBUSART(irToy.s,64);
+		irIO.TXsamples=getUnsignedCharArrayUsbUart(irToy.s,64);
 		c=0;
 	}
 
@@ -230,7 +230,7 @@ unsigned char irIOservice(void){
 	}
 	//if the buffer is full, send it to USB
 	if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
-		putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
 		irIO.RXsamples=0;
 		irIO.flushflag=0;
 	}

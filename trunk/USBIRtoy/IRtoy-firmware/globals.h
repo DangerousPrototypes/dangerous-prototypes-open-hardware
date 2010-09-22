@@ -9,6 +9,12 @@ typedef unsigned int u16;
 typedef unsigned long u32;
 
 
+
+#define putUnsignedCharArrayUsbUsart(u8Array,Num) 	putUSBUSART((char*)(u8Array),(Num))
+#define getUnsignedCharArrayUsbUart(u8Array,Num)	getsUSBUSART((char*)(u8Array),(Num))
+
+#define INVALID	0xFF
+
 // =================== GLOBAL HEADERS
 #include "HardwareProfile.h"
 #include "GenericTypeDefs.h"
@@ -34,6 +40,8 @@ typedef unsigned long u32;
 #include "IrReflect.h"
 #include "usb2uart.h"
 
+#include "hal_lin_m.h"
+
 //our USB input buffer functions
 #include "USBbuf.h"
 
@@ -44,7 +52,8 @@ typedef unsigned long u32;
 #include <capture.h>
 #include <timers.h>
 
-#define INVALID	0xFF
+
+
 
 
 #endif

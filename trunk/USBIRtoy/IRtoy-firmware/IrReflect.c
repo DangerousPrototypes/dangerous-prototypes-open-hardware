@@ -64,7 +64,7 @@ if( mUSBUSARTIsTxTrfReady() )
 	irToy.usbOut[0]='E';//answer OK
 	irToy.usbOut[1]='0';
 	irToy.usbOut[2]='1';
-	putUSBUSART(irToy.usbOut,3);
+	putUnsignedCharArrayUsbUsart(irToy.usbOut,3);
 	}
 IrReflectTxPwmSetup();
 EnablePortbChangeInterrupt()
@@ -82,7 +82,7 @@ char buff;
 
 if(getsUSBUSART(&buff,1)!=0)
 	{
-	if((buff=='0')||(buff==0)) // TODO remove the 0 later hehe
+	if((buff=='0')||(buff==0))
 		{
 		IrTxTurnOff();
 		DisablePortbChangeInterrupt();
@@ -295,7 +295,7 @@ unsigned char irIOservice(void){
 	}
 	//if the buffer is full, send it to USB
 	if( ( (irIO.RXsamples==64) || (irIO.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
-		putUSBUSART(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,irIO.RXsamples);//send current buffer to USB
 		irIO.RXsamples=0;
 		irIO.flushflag=0;
 	}

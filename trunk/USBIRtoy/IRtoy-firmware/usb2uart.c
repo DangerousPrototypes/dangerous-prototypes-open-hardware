@@ -34,7 +34,8 @@ if(mUSBUSARTIsTxTrfReady())
 	irToy.usbOut[0]='U';//answer OK
 	irToy.usbOut[1]='0';
 	irToy.usbOut[2]='1';
-	putUSBUSART(irToy.usbOut,3);
+	//putUSBUSART(irToy.usbOut,3);
+	putUnsignedCharArrayUsbUsart(irToy.usbOut,3);
 	}
 Sm_Usb_Uart=SM_USB_UART_FLUSH_BUFFER;
 Configbuffctr=0;
@@ -98,7 +99,6 @@ static u8 buff_config[5];
 
 switch (Sm_Usb_Uart)
 	{
-	// TODO enhancement: convert to switch case
 	case SM_USB_UART_FLUSH_BUFFER:
 		{
 		FlushUsbRx();
@@ -175,11 +175,11 @@ switch (Sm_Usb_Uart)
 			irToy.usbOut[3]=MyBaudRate>>24;
 
 
-			putUSBUSART(irToy.usbOut,6);
+			putUnsignedCharArrayUsbUsart(irToy.usbOut,6);
 #else
 			irToy.usbOut[0]='O';//answer OK
 			irToy.usbOut[1]='K';
-			putUSBUSART(irToy.usbOut,2);
+			putUnsignedCharArrayUsbUsart(irToy.usbOut,2);
 #endif
 
 			}
@@ -188,7 +188,7 @@ switch (Sm_Usb_Uart)
 
 	case SM_USB_UART_RUN_MODE:
 		{
-		if(getsUSBUSART(UsbRxDataBuffer,1))
+		if(getUnsignedCharArrayUsbUart(UsbRxDataBuffer,1))
 			{
 			TxBuffer[TxBufferCtrIn]=UsbRxDataBuffer[0];
 			TxBufferCtrIn++;
@@ -201,7 +201,7 @@ switch (Sm_Usb_Uart)
 				{
 				LAT_LED_PIN^=1; // toggle led every sending
 				irToy.usbOut[0]=RxBuffer[RxBufferCtrOut];//answer OK
-				putUSBUSART(irToy.usbOut,1);
+				putUnsignedCharArrayUsbUsart(irToy.usbOut,1);
 
 				RxBufferCtrOut++;
 				RxBufferCtrOut&=USBUARTBUFCTRMASK;

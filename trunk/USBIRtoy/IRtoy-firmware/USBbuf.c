@@ -22,7 +22,7 @@ static struct _irtoyusbbuffer{
 void usbbufservice(void){
 	
 	if(usbbuf.cnt==0){//if the buffer is empty, get more data
-		usbbuf.cnt = getsUSBUSART(usbbuf.inBuf,30);
+		usbbuf.cnt = getUnsignedCharArrayUsbUart(usbbuf.inBuf,30);
 		usbbuf.rdptr=0;
 	}
 
