@@ -228,7 +228,7 @@ void main(void){
 		
 						break;
 					case 'V':
-					case 'v'://self test
+					case 'v'://version string
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 							version();
 						}

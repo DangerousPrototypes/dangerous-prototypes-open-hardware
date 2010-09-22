@@ -49,20 +49,6 @@ void mySetLineCodingHandler(void)
     //If the request is not in a valid range
     if(cdc_notice.GetLineCoding.dwDTERate.Val > 115200)
     {
-        //NOTE: There are two ways that an unsupported baud rate could be
-        //handled.  The first is just to ignore the request and don't change
-        //the values.  That is what is currently implemented in this function.
-        //The second possible method is to stall the STATUS stage of the request.
-        //STALLing the STATUS stage will cause an exception to be thrown in the
-        //requesting application.  Some programs, like HyperTerminal, handle the
-        //exception properly and give a pop-up box indicating that the request
-        //settings are not valid.  Any application that does not handle the
-        //exception correctly will likely crash when this requiest fails.  For
-        //the sake of example the code required to STALL the status stage of the
-        //request is provided below.  It has been left out so that this demo
-        //does not cause applications without the required exception handling
-        //to crash.
-        //---------------------------------------
         USBStallEndpoint(0,1);
     }
     else
