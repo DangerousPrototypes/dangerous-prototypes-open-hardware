@@ -56,7 +56,7 @@ void irsSetup(void){
 		irToy.usbOut[0]='S';//answer OK
 		irToy.usbOut[1]='0';
 		irToy.usbOut[2]='1';
-		putUSBUSART(irToy.usbOut,3);
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,3);
 	}
 
 	//setup for IR TX
@@ -162,7 +162,7 @@ unsigned char irsService(void){
 	static _smCommand irIOcommand;
 
 	if(irS.TXsamples==0){
-		irS.TXsamples=getsUSBUSART(irToy.s,64);
+		irS.TXsamples=getUnsignedCharArrayUsbUart(irToy.s,64);
 		TxBuffCtr=0;
 	}
 
@@ -194,7 +194,7 @@ unsigned char irsService(void){
 							if((irToy.HardwareVersion>1)&&(mUSBUSARTIsTxTrfReady())){ //if we have full buffer, or end of capture flush
 								modFreq[7]=TMR3L;
 								modFreq[6]=TMR3H;
-								putUSBUSART(modFreq,8);//send current buffer to USB
+								putUnsignedCharArrayUsbUsart(modFreq,8);//send current buffer to USB
 							}							
 							break;
 						case IRIO_LEDMUTEON:
@@ -357,7 +357,7 @@ unsigned char irsService(void){
 
 		//if the buffer is full, send it to USB
 		if( ( (irS.RXsamples==64) || (irS.flushflag==1) ) && (mUSBUSARTIsTxTrfReady()) ){ //if we have full buffer, or end of capture flush
-			putUSBUSART(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+			putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
 			irS.RXsamples=0;
 			irS.flushflag=0;
 		}
@@ -371,7 +371,7 @@ unsigned char irsService(void){
 			irToy.usbOut[4]=0xff; //add to USB send buffer
 			irToy.usbOut[5]=0xff; //add to USB send buffer
 			irS.RXsamples=6;
-			putUSBUSART(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+			putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
 
 			T1ON=0;		//t1 is the usb packet timeout, disable it
 			TM0ON=0; //timer0 off

@@ -52,7 +52,7 @@ void IRmanString(void){
 	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 		irToy.usbOut[0]='O';//answer OK
 		irToy.usbOut[1]='K';
-		putUSBUSART(irToy.usbOut,2);
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,2);
 	}
 }
 
@@ -103,7 +103,7 @@ void ProcessIR(void){
 		irToy.usbOut[4]=0x00;
 		irToy.usbOut[5]=0x00;	
 
-		putUSBUSART(irToy.usbOut,6);
+		putUnsignedCharArrayUsbUsart(irToy.usbOut,6);
 
 		decoderState=IDLE;//wait for more RC commands....
 		IRRX_IE=1;//interrupts back on	

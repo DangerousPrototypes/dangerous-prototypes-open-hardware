@@ -31,7 +31,7 @@ void mySetLineCodingHandler(void);
 #define ResetUsbUartTxBuffers() TxBufferCtrIn=0;TxBufferCtrOut=0;
 #define ResetUsbUartRxBuffers() RxBufferCtrIn=0;RxBufferCtrOut=0;
 
-#define FlushUsbRx() getsUSBUSART(irToy.s,64)
+#define FlushUsbRx() getUnsignedCharArrayUsbUart(irToy.s,64)
 
 #define CLOCK_FREQ 48000000
 

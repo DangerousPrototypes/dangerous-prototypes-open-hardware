@@ -68,7 +68,7 @@ void SUMPlogicCommand(unsigned char inByte){
 						irToy.usbOut[1]='A';
 						irToy.usbOut[2]='L';
 						irToy.usbOut[3]='S';
-						putUSBUSART(irToy.usbOut,4);
+						putUnsignedCharArrayUsbUsart(irToy.usbOut,4);
 					}
 					break;
 				case SUMP_RUN://arm the triger
@@ -133,7 +133,7 @@ unsigned char SUMPlogicService(void){
 					}
 
 				}
-				putUSBUSART(irToy.usbOut,USBWriteCount);
+				putUnsignedCharArrayUsbUsart(irToy.usbOut,USBWriteCount);
 
 			}
 			break;

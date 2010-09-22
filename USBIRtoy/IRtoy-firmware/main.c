@@ -223,7 +223,7 @@ void main(void){
 							}else{
 								version();
 							}
-							putUSBUSART(irToy.usbOut,4);
+							putUnsignedCharArrayUsbUsart(irToy.usbOut,4);
 						}
 		
 						break;
@@ -407,7 +407,7 @@ void version(void){
 	irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
 	irToy.usbOut[2]=FIRMWARE_VERSION_H;
 	irToy.usbOut[3]=FIRMWARE_VERSION_L;
-	putUSBUSART(irToy.usbOut,4);
+	putUnsignedCharArrayUsbUsart(irToy.usbOut,4);
 }
 
 //
