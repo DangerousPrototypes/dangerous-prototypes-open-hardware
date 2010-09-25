@@ -34,10 +34,9 @@ if(mUSBUSARTIsTxTrfReady())
 	irToy.usbOut[0]='U';//answer OK
 	irToy.usbOut[1]='0';
 	irToy.usbOut[2]='1';
-	//putUSBUSART(irToy.usbOut,3);
 	putUnsignedCharArrayUsbUsart(irToy.usbOut,3);
 	}
-Sm_Usb_Uart=SM_USB_UART_FLUSH_BUFFER;
+Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE;
 Configbuffctr=0;
 }
 
@@ -46,27 +45,22 @@ Configbuffctr=0;
 #if defined(USB_CDC_SET_LINE_CODING_HANDLER)
 void mySetLineCodingHandler(void)
 {
-    //If the request is not in a valid range
-    if(cdc_notice.GetLineCoding.dwDTERate.Val > 115200)
-    {
-        USBStallEndpoint(0,1);
-    }
-    else
-    {
-        DWORD_VAL dwBaud;
+//If the request is not in a valid range
+if(cdc_notice.GetLineCoding.dwDTERate.Val > 115200)
+	{
+	USBStallEndpoint(0,1);
+	}
+else
+	{
+	DWORD_VAL dwBaud;
 
-        //Update the baudrate info in the CDC driver
-        CDCSetBaudRate(cdc_notice.GetLineCoding.dwDTERate.Val);
+	CDCSetBaudRate(cdc_notice.GetLineCoding.dwDTERate.Val);
 
-        //Update the baudrate of the UART
-        //FOSC/[4 (n + 1)]
-        //MyBaudRate=line_coding.dwDTERate.Val;
+	dwBaud.Val = (CLOCK_FREQ/4)/line_coding.dwDTERate.Val-1;
 
-		dwBaud.Val = (CLOCK_FREQ/4)/line_coding.dwDTERate.Val-1; // TODO: must check this...
-
-		SPBRG = dwBaud.v[0];
-		SPBRGH = dwBaud.v[1];
-    }
+	SPBRG = dwBaud.v[0];
+	SPBRGH = dwBaud.v[1];
+	}
 }
 #endif
 
@@ -75,99 +69,33 @@ void mySetLineCodingHandler(void)
 u8 Usb2UartService(void)
 {
 static u8 buff_config[5];
-/*
- * 0 = TXSTA
- * 1 = RCSTA
- * 2 = BAUDCON
- * 3 = SPBRGH
- * 4 = SPBRG
- */
 
 switch (Sm_Usb_Uart)
 	{
-	case SM_USB_UART_FLUSH_BUFFER:
-		{
-		FlushUsbRx();
-		Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE;
-		break;
-		}
-
 	// get configuration data
 	case SM_USB_UART_CONFIG_MODE:
-#if 0
 		{
-		if(getsUSBUSART(UsbRxDataBuffer,1))
-			{
-			buff_config[Configbuffctr]=UsbRxDataBuffer[0];
-			Configbuffctr++;
-			if(Configbuffctr==5)
-				{
-				//execute config data here
-				TRISC|=		0xC0;
-				TXSTA=		buff_config[0];
-				RCSTA=		buff_config[1];
-				BAUDCON=	buff_config[2];
-				SPBRGH=		buff_config[3];
-				SPBRG=		buff_config[4];
-				PIE1=		0x20;
-				Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE_OK;
-				ResetUsbUartTxBuffers();
-				ResetUsbUartRxBuffers();
-				}
-			}
-		}
-		break;
-#else
-		{
-		//DWORD_VAL dwBaud;
-
-		//mySer.write(chr(0)) #SPBRGH
-		//mySer.write(chr(0x0F)) #SPBRG
-
+		FlushUsbRx();
 		TRISC|=		0xC0;
 		TXSTA=		0x24;
 		RCSTA=		0x90;
-		BAUDCON=	0;
-		//SPBRGH=		buff_config[3];
-		//SPBRG=		buff_config[4];
-		//CDCSetBaudRate(cdc_notice.GetLineCoding.dwDTERate.Val);
-		//dwBaud.Val = (CLOCK_FREQ/4)/line_coding.dwDTERate.Val-1;
-		//SPBRG = dwBaud.v[0];
-		//SPBRGH = dwBaud.v[1];
-//        SPBRG = 0x71;
-//        SPBRGH = 0x02;      	// 0x0271 for 48MHz -> 19200 baud
+		BAUDCON=	0x08;
 		PIE1=		0x20;
 		Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE_OK;
 		ResetUsbUartTxBuffers();
 		ResetUsbUartRxBuffers();
 		break;
 		}
-#endif
+
 
 	case SM_USB_UART_CONFIG_MODE_OK:
 		{
 		Sm_Usb_Uart=SM_USB_UART_RUN_MODE;
 		if(mUSBUSARTIsTxTrfReady())
 			{
-			//putrsUSBUSART("OK");
-#if 0
-			irToy.usbOut[0]='O';//answer OK
-			irToy.usbOut[1]='K';
-			//irToy.usbOut[2]=SPBRG; // for debugging purpose
-			//irToy.usbOut[3]=SPBRGH;
-			irToy.usbOut[2]=MyBaudRate; // for debugging purpose
-			irToy.usbOut[3]=MyBaudRate>>8;
-			irToy.usbOut[2]=MyBaudRate>>16; // for debugging purpose
-			irToy.usbOut[3]=MyBaudRate>>24;
-
-
-			putUnsignedCharArrayUsbUsart(irToy.usbOut,6);
-#else
 			irToy.usbOut[0]='O';//answer OK
 			irToy.usbOut[1]='K';
 			putUnsignedCharArrayUsbUsart(irToy.usbOut,2);
-#endif
-
 			}
 		break;
 		}

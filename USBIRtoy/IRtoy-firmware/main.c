@@ -55,7 +55,7 @@ void SetupBoard(void);
 void InterruptHandlerHigh();
 void InterruptHandlerLow();
 unsigned char SelfTest(void);
-void version(void);
+void GetUsbIrToyVersion(void);
 
 #pragma code
 void main(void){   		
@@ -73,16 +73,12 @@ void main(void){
 	irssetup();
 #endif
 
-
-
 	//
 	//	Never ending loop services each task in small increments
 	//
  	USBDeviceInit();		//initialize USB (usb_device.c)
 
-
-
-	while(1){
+ 	while(1){
 
 
         USBDeviceTasks(); ////service USB tasks	
@@ -179,7 +175,7 @@ void main(void){
 						mode=IR_DECODER;
 						IRmanString(); //send OK for IRman mode
 						break;
-					case 'S':		//IRIO RXTX mode
+					case 'S':		//IRIO Sampling Mode
 					case 's':
 						T2IE=0; 	//disable any Timer 2 interrupt
 						IRRX_IE=0; 	//enable RX interrupts for data ACQ
@@ -221,16 +217,16 @@ void main(void){
 								irToy.usbOut[2]=((inByte&0b1100)>>2)+0x30; //frequency detector error code
 								irToy.usbOut[3]=(inByte&0b11)+0x30;			//receiver error code
 							}else{
-								version();
+								GetUsbIrToyVersion();
 							}
 							putUnsignedCharArrayUsbUsart(irToy.usbOut,4);
 						}
 		
 						break;
 					case 'V':
-					case 'v'://version string
+					case 'v':// Acquire Version
 					  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
-							version();
+							GetUsbIrToyVersion();
 						}
 		
 						break;
@@ -402,7 +398,7 @@ void SetupBoard(void){
 // Give the version number
 //
 //
-void version(void){
+void GetUsbIrToyVersion(void){
 	irToy.usbOut[0]='V';//answer OK
 	irToy.usbOut[1]=(irToy.HardwareVersion+0x30);
 	irToy.usbOut[2]=FIRMWARE_VERSION_H;
