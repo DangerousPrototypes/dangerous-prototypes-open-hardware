@@ -334,6 +334,7 @@ void SetupBoard(void){
 	//
 	//test IR_FREQ pin to see if this is v1 or v2
 	//CAP and EC to ground (C0 C1)
+#if defined (USBIRTOY)
 	IRFREQ_CAP_LAT&=(~IRFREQ_CAP_PIN);//ground
 	IRFREQ_EC_LAT&=(~IRFREQ_EC_PIN);//ground
 	IRFREQ_CAP_TRIS&=(~IRFREQ_CAP_PIN);//output
@@ -358,6 +359,9 @@ void SetupBoard(void){
 	IRRX_PULLUP=1;//disable(1) RB pullups
 	TRISB=0xff;	//all inputs
 	IRFREQ_PIN_SETUP(); //all inputs
+#else
+	irToy.HardwareVersion=0;
+#endif
 
 	//
 	// SETUP
