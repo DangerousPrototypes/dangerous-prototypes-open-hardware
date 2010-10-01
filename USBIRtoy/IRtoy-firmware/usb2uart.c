@@ -91,12 +91,6 @@ switch (Sm_Usb_Uart)
 	case SM_USB_UART_CONFIG_MODE_OK:
 		{
 		Sm_Usb_Uart=SM_USB_UART_RUN_MODE;
-		if(mUSBUSARTIsTxTrfReady())
-			{
-			irToy.usbOut[0]='O';//answer OK
-			irToy.usbOut[1]='K';
-			putUnsignedCharArrayUsbUsart(irToy.usbOut,2);
-			}
 		break;
 		}
 
