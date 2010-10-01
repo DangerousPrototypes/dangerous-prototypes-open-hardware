@@ -12,7 +12,7 @@
 
 #define HARDWARE_VERSION '1'
 #define FIRMWARE_VERSION_H '0'
-#define FIRMWARE_VERSION_L '7'
+#define FIRMWARE_VERSION_L '8'
 
 
 #define SAMPLE_ARRAY_SIZE 0x0080 //0x0010
@@ -25,9 +25,9 @@ struct _irtoy{
 };
 
 //hardware platform?
-#define USBIRTOY //Dangerous Prototypes IR Toy, RX on RB4 and RB2,TX on RC2, 2550
+//#define USBIRTOY //Dangerous Prototypes IR Toy, RX on RB4 and RB2,TX on RC2, 2550
 #define IRRX_ONRB4 //force RB4 interrupt instead of INT2 on USBIRTOY
-//#define HAD_USBIRC //hackaday RX on B4 only, PIC 2455
+#define HAD_USBIRC //hackaday RX on B4 only, PIC 2455
 
 //select the correct interrupt pin depending on hardware and settings
 #if defined (HAD_USBIRC) || defined (IRRX_ONRB4)// irRX B4 (25)
@@ -63,6 +63,7 @@ struct _irtoy{
 	#define	LED_LAT  LATA
 	#define LED_TRIS TRISA
 	#define LED_PIN  0b1
+#endif
 	// irTX C2 (13) CCP1
 	#define	IRTX_LAT  LATC
 	#define IRTX_TRIS TRISC
@@ -101,7 +102,6 @@ struct _irtoy{
 	
 	//all connected IR FREQ pin to input
 	#define IRFREQ_PIN_SETUP() IRFREQ_CAP_TRIS|=IRFREQ_CAP_PIN; IRFREQ_INT_TRIS|=IRFREQ_INT_PIN; IRFREQ_EC_TRIS|=IRFREQ_EC_PIN
-#endif
 
 // RX C7 (18)
 // TX C6 (17)

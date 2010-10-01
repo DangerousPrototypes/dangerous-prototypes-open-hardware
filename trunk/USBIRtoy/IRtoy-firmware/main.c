@@ -246,6 +246,10 @@ unsigned char SelfTest(void){
 	unsigned char err=0x30; //error flag starts with ASCII 0
 	unsigned int cnt;
 
+#ifndef USBIRTOY
+	return err;
+#endif
+
 	#define ERROR_RXPULLUP 		0b1
 	#define ERROR_RXACT 		0b10
 	#define ERROR_FREQPULLUP	0b100
