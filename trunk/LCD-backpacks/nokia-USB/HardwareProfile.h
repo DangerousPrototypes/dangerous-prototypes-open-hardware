@@ -41,6 +41,9 @@ C6 RP17 CLOCK
 #define PIN_RESET	PORTBbits.RB1
 #define LAT_RESET LATBbits.LATB1
 
+#define EnableSPIPPS() 	RPOR18=9;RPOR17=10
+#define DisableSPIPPS() 	RPOR18=0;RPOR17=0
+
 #define BootloaderJump() _asm goto 0x16 _endasm
 
 //these are unneeded, but the stack complains if they're not defined

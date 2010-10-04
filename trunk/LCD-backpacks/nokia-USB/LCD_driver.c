@@ -47,6 +47,8 @@ void LCD_command(unsigned char data)
 {
 	char j;
 
+	//DisableSPIPPS();
+
 	LCD_SCK=0;    
 	LCD_CS=0;      	// Enable Chip (Bring CS signal LOW)
  
@@ -54,7 +56,12 @@ void LCD_command(unsigned char data)
 
     LCD_SCK=0;      	// send clock pulse (Bring clock signal LOW)
     LCD_SCK=1;		// (Bring clock signal HIGH)
+    LCD_SCK=0;    	// send clock pulse (Bring clock signal LOW)
+	EnableSPIPPS();
+	SSP2BUF=data;
+	while(SSP2STATbits.BF==0);
 
+/*
     for (j = 0; j < 8; j++)
     {
         if ((data & 0x80) == 0x80) LCD_DIO=1;	//Set data line HIGH
@@ -65,8 +72,10 @@ void LCD_command(unsigned char data)
 
         data <<= 1;
     }
+*/
 
     LCD_CS=1;    		// Disable Chip (Bring CS signal HIGH)
+	DisableSPIPPS();
 
 }
 
@@ -86,8 +95,12 @@ void LCD_data(unsigned char data)
 
     LCD_SCK=0;    	// send clock pulse (Bring clock signal LOW)
     LCD_SCK=1;		// (Bring clock signal HIGH)
+    LCD_SCK=0;    	// send clock pulse (Bring clock signal LOW)
+	EnableSPIPPS();
+	SSP2BUF=data;
+	while(SSP2STATbits.BF==0);
 
-	for (j = 0; j < 8; j++)
+/*	for (j = 0; j < 8; j++)
     {
         if ((data & 0x80) == 0x80) LCD_DIO=1;	//Set data line HIGH
         else LCD_DIO=0;							//Set data line LOW
@@ -96,9 +109,10 @@ void LCD_data(unsigned char data)
         LCD_SCK=1;								// (Bring clock signal HIGH)
   
       	data <<= 1;
-    }
+    }*/
 
     LCD_CS=1;     		// Disable Chip (Bring CS signal HIGH)
+	DisableSPIPPS();
 }
 
 //Usage: LCD_init();
@@ -142,6 +156,8 @@ void LCD_init(void)
     LCD_data(0x0c);   	//0xc (0x00) 12 = 1100 - CL dividing ratio [don't divide] switching period 8H (default)
     LCD_data(0x20);		//0c20
     LCD_data(0x02);		//0x02 (0x0a)	
+
+    LCD_data(0x01);		//??
 	
     LCD_command(COMSCN);  	// common scanning direction(EPSON)
     LCD_data(0x01);
@@ -150,65 +166,38 @@ void LCD_init(void)
     
     LCD_command(SLPOUT);  	// sleep out(EPSON)
 	LCD_command(SLEEPOUT);	//sleep out(PHILLIPS)
-    
-    LCD_command(VOLCTR);  	// electronic volume, this is the contrast/brightness(EPSON)
-    LCD_data(0x18);   	// volume (contrast) setting - fine tuning, original
-    LCD_data(0x03);   	// internal resistor ratio - coarse adjustment
-	LCD_command(SETCON);	//Set Contrast(PHILLIPS)
-	LCD_data(0x30);	
-	
-    LCD_command(TMPGRD);
-	LCD_data(0x00);		// default
-    
+
     LCD_command(PWRCTR); 	// power ctrl(EPSON)
     LCD_data(0x0F);    //everything on, no external reference resistors
     LCD_command(BSTRON);	//Booset On(PHILLIPS)
-	
+    
     LCD_command(DISINV);  	// invert display mode(EPSON)
 	LCD_command(INVON);	// invert display mode(PHILLIPS)
 
-	LCD_command(PTLOUT);	// Partial Out (no partial display)    
-
     LCD_command(DATCTL);  	// data control(EPSON)
-    LCD_data(0b111);	//bit2 adscan dir, bit1 col, bit0 page
+    LCD_data(0x03);	//bit2 adscan dir, bit1 col, bit0 page
     LCD_data(0x00);   	//0x00 normal RGB arrangement
-    //LCD_data(0x01);   	//0x01 8-bit grayscale
- 	//see: http://www.idcomm.com/personal/lorenblaney/sparkfun.html
-	LCD_data(0x04);  // special mode selects 12-bit color for single pixels
-
+    LCD_data(0x02);   	//0x01 8-bit grayscale
 
 	LCD_command(MADCTL);	//Memory Access Control(PHILLIPS)
 	LCD_data(0xC8);
 	
 	LCD_command(COLMOD);	//Set Color Mode(PHILLIPS)
 	LCD_data(0x02);	
-	
- /*   
-    LCD_command(RGBSET8);   // setup 8-bit color lookup table  [RRRGGGBB](EPSON)
-    //RED
-    LCD_data(0);
-    LCD_data(2);
-    LCD_data(4);
-    LCD_data(6);
-    LCD_data(8);
-    LCD_data(10);
-    LCD_data(12);
-    LCD_data(15);
-    // GREEN
-    LCD_data(0);
-    LCD_data(2);
-    LCD_data(4);
-    LCD_data(6);
-    LCD_data(8);
-    LCD_data(10);
-    LCD_data(12);
-    LCD_data(15);
-    //BLUE
-    LCD_data(0);
-    LCD_data(4);
-    LCD_data(9);
-    LCD_data(15);
-    */
+
+
+    LCD_command(VOLCTR);  	// electronic volume, this is the contrast/brightness(EPSON)
+    LCD_data(0x24);   	// volume (contrast) setting - fine tuning, original
+    LCD_data(0x03);   	// internal resistor ratio - coarse adjustment
+	LCD_command(SETCON);	//Set Contrast(PHILLIPS)
+	LCD_data(0x30);	
+	/*
+    LCD_command(TMPGRD);
+	LCD_data(0x00);		// default
+    
+
+	LCD_command(PTLOUT);	// Partial Out (no partial display)    
+*/
     LCD_command(NOP);  	// nop(EPSON)
 	LCD_command(NOPP);		// nop(PHILLIPS)
 
@@ -221,7 +210,7 @@ void LCD_init(void)
 //  maxed out so one can continue sending colour data bytes to the 'open'
 //  RAMWR command to fill further memory.  issuing any other command
 //  finishes RAMWR.
-void pset(unsigned char color, unsigned char x, unsigned char y)
+void pset(unsigned int color, unsigned char x, unsigned char y)
 {
 
 	#ifdef EPSON
@@ -236,7 +225,15 @@ void pset(unsigned char color, unsigned char x, unsigned char y)
 		LCD_data(ENDCOL);
   
 		LCD_command(RAMWR);    // write
-		LCD_data(color);
+		//LCD_data(color);
+		//LCDCommand(RAMWR);    // write
+	//LCD_data(0b11110000);
+	//LCD_data(0x00);
+	//LCD_data(0x00);
+
+		LCD_data((color>>4)&0x00FF);
+		LCD_data((color&0x000F)<<4);
+		LCD_data(0x00);  	// nop(EPSON)	
 	#endif
 }
 
@@ -245,6 +242,7 @@ void pset(unsigned char color, unsigned char x, unsigned char y)
 //used to re-zero the data pointer for image drawing
 //exits with RAMWR command, use LCD_data() to send pixel data
 void fillBox(unsigned char x, unsigned char y){
+	unsigned char i,m;
 
 		LCD_command(PASET);   // page start/end ram
 		LCD_data(x);
@@ -258,4 +256,5 @@ void fillBox(unsigned char x, unsigned char y){
 		
 		//now ready for data
 		LCD_command(RAMWR);    // write
+
 }
