@@ -66,7 +66,7 @@ void setupFPGASPIslave(void);
 
 #pragma code
 void main(void){   
-	unsigned char clr[]={0b11100000,0b00011100,0b00000011, 0b11111100, 0b11100011, 0b00011111};
+	unsigned int clr[]={0b111100000000,0b11110000,0b1111, 0b11111100, 0b11100011, 0b00011111};
 	int i,j;
 	int m;
 	long k;
@@ -81,14 +81,41 @@ void main(void){
 	//sm.state=COMMAND;	//start up looking for a command
 	//sm.cmdcnt=0;
 
+//B2 RP5 CS
+//B1 RP4 RESET
+//B0 RP3 BKLIT
+//C7 RP18 DATA
+//C6 RP17 CLOCK
+
+	//CS disabled
+	LAT_CS=1; //CS high
+	TRIS_CS=0; //CS output
+
+	LAT_MOSI=0; //MOSI low
+	TRIS_MOSI=0; //MOSI output
+	//RPOR18=9; //PPS output
+	
+	LAT_SCK=0; //MOSI low
+	TRIS_SCK=0; //MOSI output
+	//RPOR17=10; //PPS output
+
+	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
+	SSP2STAT=0b01000000; //cke=1
+
 	LCD_init(); //init the LCD
 
 	while(1){
 		//draw screen with colors from the clr pallet...
-		for(j=0;j<sizeof(clr);j++){
+		for(j=0;j<3;j++){
+			fillBox(0,0);
 			for(i=0; i<ENDPAGE; i++){
-				for(m=0;m<ENDCOL;m++){
-					pset(clr[j],i,m);
+				for(m=0;m<ENDCOL;m=m+2){
+					//pset(clr[j],i,m);
+					#define color clr[j]
+					LCD_data((color>>4)&0x00FF);
+					LCD_data(((color&0x0F)<<4)|(color>>8));
+					LCD_data(color&0x0FF);  	// nop(EPSON)		
+					#undef color
 				}
 			}
 		    //for (k = 0; k < 300000; k++);	//delay_ms(100);
