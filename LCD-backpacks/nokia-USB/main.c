@@ -34,15 +34,8 @@ unsigned char buf[USB_OUT_BUF];
 unsigned char uartincnt=0;
 
 //ROM update mode commands
-#define COMMAND 0
-#define ID 1
-#define WRITE 2
-#define READ 3
-#define SUCCESS 4
-#define ERASE 5
-#define ERROR 6
-#define STATUS 7
-#define VERSION 8
+#define BYTE1 0
+#define BYTE2 1
 
 //ROM update struct
 static struct _sm {
@@ -54,21 +47,18 @@ static struct _sm {
 }sm;
 
 static void init(void);
-void setupROMSPI(void);
-void teardownROMSPI(void);
 unsigned char spi(unsigned char c);
 void usbbufservice(void);
 void usbbufflush(void);
 unsigned char usbbufgetbyte(unsigned char* c);
-static void setupUART(void);
-void setupFPGASPImaster(void);
-void setupFPGASPIslave(void);
+
 
 #pragma code
-void main(void){   
+void main(void){  
+	unsigned char inbuf; 
 	unsigned int clr[]={0b111100000000,0b11110000,0b1111, 0b11111100, 0b11100011, 0b00011111};
 	int i,j;
-	int m;
+	int m, color;
 	long k;
 
 	unsigned long timer;
@@ -76,34 +66,14 @@ void main(void){
 
     init();			//setup the crystal, pins, hold the FPGA in reset
 	usbbufflush();	//setup the USB byte buffer
-	
-	//setupROMSPI();	//setup SPI to program ROM
-	//sm.state=COMMAND;	//start up looking for a command
-	//sm.cmdcnt=0;
-
-//B2 RP5 CS
-//B1 RP4 RESET
-//B0 RP3 BKLIT
-//C7 RP18 DATA
-//C6 RP17 CLOCK
-
-	//CS disabled
-	LAT_CS=1; //CS high
-	TRIS_CS=0; //CS output
-
-	LAT_MOSI=0; //MOSI low
-	TRIS_MOSI=0; //MOSI output
-	//RPOR18=9; //PPS output
-	
-	LAT_SCK=0; //MOSI low
-	TRIS_SCK=0; //MOSI output
-	//RPOR17=10; //PPS output
-
-	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
-	SSP2STAT=0b01000000; //cke=1
 
 	LCD_init(); //init the LCD
+	fillBox(0,0);
 
+	sm.state=BYTE1;	//start up looking for a command
+	sm.cmdcnt=0;
+
+/*
 	while(1){
 		//draw screen with colors from the clr pallet...
 		for(j=0;j<3;j++){
@@ -122,8 +92,10 @@ void main(void){
 		}
 	
 	}
-/*
+*/
+
     USBDeviceInit();//setup usb
+
 
     while(1){
         USBDeviceTasks(); 
@@ -131,18 +103,29 @@ void main(void){
     	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 		usbbufservice();//load any USB data into byte buffer
 
-			//send data from the FPGA receive buffer to USB
-			if((mUSBUSARTIsTxTrfReady()) && (uartincnt > 0)){
-				putUSBUSART(&buf[0], uartincnt);
-			}
+		switch(sm.state){//switch between the upgrade mode states
+			case BYTE1:
+				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
+				color=inbuf;
+				color=color<<8;
 
-		}
+				sm.state=BYTE2;  //wait for next instruction packet
+			case BYTE2:
+				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
+
+				color|=(inbuf&0x00ff);
+
+				LCD_data((color>>4)&0x00FF);
+				LCD_data(((color&0x0F)<<4)|(color>>8));
+				LCD_data(color&0x0FF);  	// nop(EPSON)		
+
+				sm.state=BYTE1;  //wait for next instruction packet
+				break;
+		}//switch
 
     	CDCTxService();
 
     }//end while
-
-*/
 }//end main
 
 static void init(void){
@@ -161,6 +144,26 @@ static void init(void){
 	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
 	OSCTUNEbits.PLLEN = 1;  //enable PLL
 	while(cnt--); //wait for lock
+
+	//B2 RP5 CS
+	//B1 RP4 RESET
+	//B0 RP3 BKLIT
+	//C7 RP18 DATA
+	//C6 RP17 CLOCK
+	//CS disabled
+	LAT_CS=1; //CS high
+	TRIS_CS=0; //CS output
+
+	LAT_MOSI=0; //MOSI low
+	TRIS_MOSI=0; //MOSI output
+	//RPOR18=9; //PPS output
+	
+	LAT_SCK=0; //MOSI low
+	TRIS_SCK=0; //MOSI output
+	//RPOR17=10; //PPS output
+
+	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
+	SSP2STAT=0b01000000; //cke=1
 }
 
 unsigned char spi(unsigned char c){
@@ -169,59 +172,7 @@ unsigned char spi(unsigned char c){
 	c=SSP2BUF;
 	return c;
 }
-/*
-void setupROMSPI(void){
-	//setup SPI for ROM
-	//!!!leave unconfigured (input) except when PROG_B is held low!!!
-	PIN_PROG_B=0; //ground
-	TRIS_PROG_B=0; //output
-	//A0 PR0 flash_si
-	//A1 PR1 flash_so
-	//B5 RP8 flash_sck
-	//A2 flash_cs
 
-	//CS disabled
-	PIN_FLASH_CS=1; //CS high
-	TRIS_FLASH_CS=0; //CS output
-
-	//TRIS_FLASH_MISO=1;
-	RPINR21=1;//PPS input
-
-	TRIS_FLASH_MOSI=0;
-	PIN_FLASH_MOSI=0;
-	RPOR0=9; //PPS output
-	
-	TRIS_FLASH_SCK=0;
-	PIN_FLASH_SCK=0;
-	RPOR8=10; //PPS output
-
-	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
-	SSP2STAT=0b01000000; //cke=1
-}
-
-void teardownROMSPI(void){
-
-	SSP2CON1=0; //disable SPI
-	//A0 PR0 flash_si
-	//A1 PR1 flash_so
-	//B5 RP8 flash_sck
-	//A2 flash_cs
-	//TRIS_FLASH_MISO=1;
-	RPINR21=0b11111; //move PPS to nothing
-
-	TRIS_FLASH_MOSI=1;
-	RPOR0=0;
-	
-	TRIS_FLASH_SCK=1;
-	RPOR8=0;
-	
-	//CS disabled
-	TRIS_FLASH_CS=1; //CS input
-	PIN_FLASH_CS=0; //CS low
-
-	TRIS_PROG_B=1; //input, release PROG_B
-}
-*/
 void usbbufservice(void){
 	if(ubuf.cnt==0){//if the buffer is empty, get more data
 		ubuf.cnt = getsUSBUSART(ubuf.inbuf,64);
@@ -288,6 +239,7 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     }      
     return TRUE; 
 }
+
 /*
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
