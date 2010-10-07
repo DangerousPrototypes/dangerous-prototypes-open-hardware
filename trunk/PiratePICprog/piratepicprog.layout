@@ -1,73 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="Debug" />
+	<ActiveTarget name="Release" />
 	<File name="buspirate.c" open="1" top="0" tabpos="4">
 		<Cursor position="777" topLine="0" />
 	</File>
-	<File name="buspirate.h" open="1" top="0" tabpos="18">
+	<File name="buspirate.h" open="1" top="0" tabpos="8">
 		<Cursor position="187" topLine="0" />
 	</File>
-	<File name="common.c" open="1" top="0" tabpos="15">
+	<File name="common.c" open="1" top="0" tabpos="6">
 		<Cursor position="93" topLine="0" />
 	</File>
 	<File name="common.h" open="0" top="0" tabpos="6">
 		<Cursor position="137" topLine="0" />
 	</File>
-	<File name="data_file.c" open="1" top="0" tabpos="17">
+	<File name="data_file.c" open="1" top="0" tabpos="7">
 		<Cursor position="4062" topLine="184" />
 	</File>
-	<File name="data_file.h" open="1" top="0" tabpos="20">
+	<File name="data_file.h" open="1" top="0" tabpos="9">
 		<Cursor position="349" topLine="0" />
 	</File>
-	<File name="iface.c" open="1" top="0" tabpos="14">
+	<File name="iface.c" open="1" top="0" tabpos="5">
 		<Cursor position="676" topLine="0" />
 	</File>
 	<File name="iface.h" open="1" top="0" tabpos="3">
-		<Cursor position="940" topLine="2" />
+		<Cursor position="940" topLine="1" />
 	</File>
 	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="560" topLine="30" />
+		<Cursor position="5934" topLine="0" />
 	</File>
 	<File name="pic.c" open="1" top="0" tabpos="2">
 		<Cursor position="379" topLine="13" />
-	</File>
-	<File name="pic.h" open="1" top="0" tabpos="13">
-		<Cursor position="474" topLine="0" />
-	</File>
-	<File name="pic12.c" open="1" top="0" tabpos="7">
-		<Cursor position="168" topLine="0" />
-	</File>
-	<File name="pic12.h" open="1" top="0" tabpos="8">
-		<Cursor position="213" topLine="0" />
-	</File>
-	<File name="pic16.c" open="1" top="0" tabpos="6">
-		<Cursor position="168" topLine="0" />
-	</File>
-	<File name="pic16.h" open="1" top="0" tabpos="9">
-		<Cursor position="201" topLine="0" />
-	</File>
-	<File name="pic18.c" open="1" top="0" tabpos="5">
-		<Cursor position="3467" topLine="107" />
-	</File>
-	<File name="pic18.h" open="1" top="0" tabpos="10">
-		<Cursor position="214" topLine="0" />
-	</File>
-	<File name="pic24.c" open="0" top="0" tabpos="4">
-		<Cursor position="8819" topLine="150" />
-	</File>
-	<File name="pic24.h" open="1" top="0" tabpos="11">
-		<Cursor position="214" topLine="0" />
-	</File>
-	<File name="proto_pic.c" open="0" top="0" tabpos="4">
-		<Cursor position="294" topLine="12" />
-	</File>
-	<File name="proto_pic.h" open="1" top="0" tabpos="12">
-		<Cursor position="352" topLine="0" />
-	</File>
-	<File name="serial.c" open="1" top="0" tabpos="16">
-		<Cursor position="3634" topLine="186" />
-	</File>
-	<File name="serial.h" open="1" top="0" tabpos="19">
-		<Cursor position="1287" topLine="29" />
 	</File>
 </CodeBlocks_layout_file>
