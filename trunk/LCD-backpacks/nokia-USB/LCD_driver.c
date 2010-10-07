@@ -241,18 +241,18 @@ void pset(unsigned int color, unsigned char x, unsigned char y)
 //and extends to the edge of the screen
 //used to re-zero the data pointer for image drawing
 //exits with RAMWR command, use LCD_data() to send pixel data
-void fillBox(unsigned char x, unsigned char y){
+void fillBox(unsigned char x, unsigned char y, unsigned char xend, unsigned char yend){
 	unsigned char i,m;
 
 		LCD_command(PASET);   // page start/end ram
 		LCD_data(x);
-		//LCD_data(x);
-		LCD_data(ENDPAGE-1);
+		LCD_data(xend);
+		//LCD_data(ENDPAGE-1);
   
 		LCD_command(CASET);   // column start/end ram
 		LCD_data(y);
-		//LCD_data(y);
-		LCD_data(ENDCOL);
+		LCD_data(yend);
+		//LCD_data(ENDCOL);
 		
 		//now ready for data
 		LCD_command(RAMWR);    // write

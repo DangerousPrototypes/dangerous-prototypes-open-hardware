@@ -9,16 +9,11 @@
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
 
-#include "GenericTypeDefs.h"
-#include "Compiler.h"
-#include "HardwareProfile.h"
-#include "config.h"
-#include "./USB/usb.h"
-#include "./USB/usb_function_cdc.h"
-#include "usb_config.h"
-#include "USB\usb_device.h"
-#include "USB\usb.h"
-#include "LCD_driver.h"
+//#include "GenericTypeDefs.h"
+//#include "Compiler.h"
+//#include "HardwareProfile.h"
+//USB stack
+#include "globals.h"
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
 #pragma udata
@@ -33,100 +28,293 @@ static struct _usbbuffer{
 unsigned char buf[USB_OUT_BUF];
 unsigned char uartincnt=0;
 
-//ROM update mode commands
-#define BYTE1 0
-#define BYTE2 1
-
-//ROM update struct
-static struct _sm {
-	unsigned char state;
-	unsigned int repeat;
-	unsigned char crc;
-	unsigned char cmdcnt;
-	unsigned char cmdbuf[4];
-}sm;
-
 static void init(void);
 unsigned char spi(unsigned char c);
 void usbbufservice(void);
 void usbbufflush(void);
 unsigned char usbbufgetbyte(unsigned char* c);
-
+unsigned char waitforbyte(void);
+unsigned char checkforbyte(void);
+void fillLCD12bitColor(unsigned int color);
+void sendok(void);
+void send(unsigned char c);
+void waitforpixels(unsigned int pixels);
 
 #pragma code
 void main(void){  
-	unsigned char inbuf; 
-	unsigned int clr[]={0b111100000000,0b11110000,0b1111, 0b11111100, 0b11100011, 0b00011111};
-	int i,j;
-	int m, color;
-	long k;
-
-	unsigned long timer;
-	#define longDelay(x) timer=x; while(timer--)
-
+	unsigned char inbuf, b[9], cmd; 
+	unsigned int k, color, clr[]={0b111100000000,0b11110000,0b1111, 0b11111100, 0b11100011, 0b00011111};
+	unsigned char i,j,m;
+	static unsigned char xs=0,ys=0,xe=ENDPAGE-1,ye=ENDCOL;
+	#define fillbox_whole() fillBox(0,0, ENDPAGE-1,ENDCOL)
+	#define fillbox_current() fillBox(xs,ys,xe,ye)
+	
     init();			//setup the crystal, pins, hold the FPGA in reset
 	usbbufflush();	//setup the USB byte buffer
 
 	LCD_init(); //init the LCD
-	fillBox(0,0);
-
-	sm.state=BYTE1;	//start up looking for a command
-	sm.cmdcnt=0;
-
-/*
-	while(1){
-		//draw screen with colors from the clr pallet...
-		for(j=0;j<3;j++){
-			fillBox(0,0);
-			for(i=0; i<ENDPAGE; i++){
-				for(m=0;m<ENDCOL;m=m+2){
-					//pset(clr[j],i,m);
-					#define color clr[j]
-					LCD_data((color>>4)&0x00FF);
-					LCD_data(((color&0x0F)<<4)|(color>>8));
-					LCD_data(color&0x0FF);  	// nop(EPSON)		
-					#undef color
-				}
-			}
-		    //for (k = 0; k < 300000; k++);	//delay_ms(100);
-		}
-	
-	}
-*/
+	fillbox_whole();
+	fillLCD12bitColor(0xffff);
 
     USBDeviceInit();//setup usb
 
-
     while(1){
+
         USBDeviceTasks(); 
 
     	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 		usbbufservice();//load any USB data into byte buffer
+		
+		cmd=waitforbyte();
 
-		switch(sm.state){//switch between the upgrade mode states
-			case BYTE1:
-				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
-				color=inbuf;
-				color=color<<8;
-
-				sm.state=BYTE2;  //wait for next instruction packet
-			case BYTE2:
-				if(!usbbufgetbyte(&inbuf)) continue; //wait for more data
-
-				color|=(inbuf&0x00ff);
-
-				LCD_data((color>>4)&0x00FF);
-				LCD_data(((color&0x0F)<<4)|(color>>8));
-				LCD_data(color&0x0FF);  	// nop(EPSON)		
-
-				sm.state=BYTE1;  //wait for next instruction packet
+		switch(cmd){//switch between the upgrade mode states
+			case 0:
+				//reset LCD
 				break;
+			case 'i'://INIT
+				LCD_init(); //init the LCD
+				sendok();
+				break;
+			case 'v': //VERSION:
+			  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+					b[0]='H';//answer OK
+					b[1]='1';
+					b[2]='F';
+					b[3]='0';//FIRMWARE_VERSION_L;
+					b[4]='0';//FIRMWARE_VERSION_L;
+					b[5]='B';//FIRMWARE_VERSION_L;
+					b[6]='F';//FIRMWARE_VERSION_L;
+					b[7]='F';//FIRMWARE_VERSION_L;
+					b[8]=0x00;//FIRMWARE_VERSION_L;
+					putUnsignedCharArrayUsbUsart(b,9);
+				}				
+				break;
+			case 'c'://CONTRAST:
+				b[0]=waitforbyte();
+				b[1]=waitforbyte();
+				b[2]=waitforbyte();
+			    LCD_command(VOLCTR);  	// electronic volume, this is the contrast/brightness(EPSON)
+			    LCD_data(b[0]);   	// volume (contrast) setting - fine tuning, original
+			    LCD_data(b[1]);   	// internal resistor ratio - coarse adjustment
+				LCD_command(SETCON);	//Set Contrast(PHILLIPS)
+				LCD_data(b[2]);	
+				sendok();
+				break;
+			case 'b'://SET BOX:
+				xs=waitforbyte();
+				ys=waitforbyte();
+				xe=waitforbyte();
+				ye=waitforbyte();
+				fillbox_current();
+				sendok();
+				break;
+			case 'P'://DATA:
+				//calculate the number of pixels in the current box
+				//loop and push the pixels
+				fillbox_whole();
+				for(k=0; k<(ENDPAGE*(ENDCOL/2)); k++){
+					LCD_data(waitforbyte());
+					LCD_data(waitforbyte());
+					LCD_data(waitforbyte()); 
+				}
+				sendok();
+				break;	
+			case 'p'://DATA BOX:
+				//calculate the number of pixels in the current box
+				//loop and push the pixels
+				fillbox_current();
+				for(i=xs; i<xe; i++){
+					for(m=ys;m<ye;m=m+2){
+						LCD_data(waitforbyte());
+						LCD_data(waitforbyte());
+						LCD_data(waitforbyte()); 
+					}	
+				}
+				sendok();
+				break;	
+			case 'T'://TEST
+				while(1){
+					//draw screen with colors from the clr pallet...
+					for(j=0;j<3;j++){
+						if(checkforbyte()) goto test_end;//exit on any char
+						fillbox_whole();
+						fillLCD12bitColor(clr[j]);
+					}
+				
+				}	
+test_end:			
+				//this test measures the feedback from the 7volt power supply on AN0
+				ANCON0&=(~0b0001); //clear AN0 to make analog
+				ADCON0=0b00000000; //setup ADC to no reference, AN0, off (pg 341)
+				ADCON1=0b10111110; //setup ADC for max time, max divider (pg 342)
+				ADCON0|=0b1;		//turn on ADC
+				ADCON0|=0b10;		//start conversion
+				while(ADCON0 & 0b10); //wait for conversion to finish
+			
+				ANCON0=0xff; //all pins back to digital
+				ADCON0=0x00; //disable ADC
+			
+				if((ADRES<0x00) || (ADRES>0xffff)){
+					send('0');
+				}else{
+					send('1');
+				}
+				break;	
+
+			case 't'://TEST BOX
+				while(1){
+					//draw screen with colors from the clr pallet...
+					for(j=0;j<3;j++){
+						if(checkforbyte()) goto test_end;//exit on any char
+						fillbox_current();
+						for(i=xs; i<xe; i++){
+							for(m=ys;m<ye;m=m+2){
+								//pset(clr[j],i,m);
+								#define color clr[j]
+								LCD_data((color>>4)&0x00FF);
+								LCD_data(((color&0x0F)<<4)|(color>>8));
+								LCD_data(color&0x0FF);  	// nop(EPSON)		
+								#undef color
+							}
+						}
+					}
+				
+				}	
+				break;	
+
+			case 'F'://fill
+				color=waitforbyte();
+				color=color<<8;
+				color|=(waitforbyte()&0x00ff);
+
+				fillLCD12bitColor(color);
+
+				sendok();
+
+				break;	
+
+			case 'f'://fill partial
+				color=waitforbyte();
+				color=color<<8;
+				color|=(waitforbyte()&0x00ff);
+
+				fillbox_current();
+				for(i=xs; i<xe; i++){
+					for(m=ys;m<ye;m=m+2){
+						LCD_data((color>>4)&0x00FF);
+						LCD_data(((color&0x0F)<<4)|(color>>8));
+						LCD_data(color&0x0FF);  	// nop(EPSON)		
+					}
+				}
+				sendok();
+				break;	
+			case 'a'://read ADC
+				//this test measures the feedback from the 7volt power supply on AN0
+				ANCON0&=(~0b0001); //clear AN0 to make analog
+				ADCON0=0b00000000; //setup ADC to no reference, AN0, off (pg 341)
+				ADCON1=0b10111110; //setup ADC for max time, max divider (pg 342)
+				ADCON0|=0b1;		//turn on ADC
+				ADCON0|=0b10;		//start conversion
+				while(ADCON0 & 0b10); //wait for conversion to finish
+				ANCON0=0xff; //all pins back to digital
+				ADCON0=0x00; //disable ADC
+			
+				b[0]=(ADRES >>8);
+				b[1]=(ADRES& 0x00ff);
+			  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+					putUnsignedCharArrayUsbUsart(b,2);
+				}
+				break;
+	
 		}//switch
 
     	CDCTxService();
 
     }//end while
 }//end main
+
+void fillLCD12bitColor(unsigned int color){
+	unsigned int j;
+	unsigned char c[3];
+
+	//precalculate the color variables
+	c[0]=((color>>4)&0x00FF);
+	c[1]=(((color&0x0F)<<4)|(color>>8));
+	c[2]=(color&0x0FF);
+
+	fillbox_whole();
+
+	for(j=0; j<(ENDPAGE*(ENDCOL/2)); j++){
+		LCD_data(c[0]);
+		LCD_data(c[1]);
+		LCD_data(c[2]);  	// nop(EPSON)		
+	}
+
+}
+
+void waitforpixels(unsigned int pixels){
+	unsigned int j;
+	for(j=0; j<pixels; j++){
+		LCD_data(waitforbyte());
+		LCD_data(waitforbyte());
+		LCD_data(waitforbyte()); 
+	}
+
+}
+
+void send(unsigned char c){
+	unsigned char b[2];
+
+  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+		b[0]=c;
+		putUnsignedCharArrayUsbUsart(b,1);
+	}	
+
+}
+
+void sendok(void){
+	unsigned char b[2];
+
+  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+		b[0]='1';//answer OK
+		putUnsignedCharArrayUsbUsart(b,1);
+	}	
+
+}
+
+unsigned char waitforbyte(void){
+	unsigned char inbuf;
+
+	if(usbbufgetbyte(&inbuf)) return inbuf; //return data
+	//wait for more USB data
+	//services USB peripheral
+	while(1){
+		USBDeviceTasks(); 
+	   	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)){
+			return 0; //goto USB_loop_jump; //USB gone, fail out to main loop
+		}
+		usbbufservice();//load any USB data into byte buffer
+		if(usbbufgetbyte(&inbuf)) return inbuf; //wait for more data
+	    CDCTxService();
+	}
+
+} 
+
+unsigned char checkforbyte(void){
+	unsigned char inbuf;
+
+	if(usbbufgetbyte(&inbuf)) return 1; //return data
+	//wait for more USB data
+	//services USB peripheral
+	USBDeviceTasks(); 
+   	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)){
+		return 1; //goto USB_loop_jump; //USB gone, fail out to main loop
+	}
+	usbbufservice();//load any USB data into byte buffer
+	if(usbbufgetbyte(&inbuf)) return 1; //wait for more data
+    CDCTxService();
+	return 0;
+} 
 
 static void init(void){
 	unsigned int cnt = 2048;

@@ -21,7 +21,8 @@ void LCD_init(void);
 void LCD_command(unsigned char data);
 void LCD_data(unsigned char data);
 void pset(unsigned int color, unsigned char x, unsigned char y);
-void fillBox(unsigned char x, unsigned char y);
+//void fillBox(unsigned char x, unsigned char y);
+void fillBox(unsigned char x, unsigned char y, unsigned char xend, unsigned char yend);
 //******************************************************
 //
 //					LCD Dimensions
