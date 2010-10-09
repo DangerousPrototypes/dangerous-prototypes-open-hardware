@@ -84,7 +84,7 @@ int main(int argc, char** argv)
 {
 	   int opt;
 	   char buffer[MAX_BUFFER]={0};
-	   int fd,timeout_counter;
+	   int fd;
 	   int res,c;
 	   FILE *fp;
 	   char *param_port = NULL;
@@ -225,54 +225,32 @@ int main(int argc, char** argv)
 		printf(" Sending some bytes \n");
         //read first bytes and ignore it (BM)
 
-        //   fgets(buffer,2,fp);  //enable this if header info is needed
+        //   fread(&buffer,sizeof(unsigned char),2,fp) ;  //enable this if header info is needed
 
         // jump to where the data is
         fseek(fp,header.bfOffBits,SEEK_SET); //and disable this if above fgets is enabled
 
         chunksize=3;  //send 4kbytes at a time- should be the buffer size of the backpack
 
-
-
 		while(!feof(fp)) {
-			if(fgets(buffer, chunksize, fp)) {
+		    if ((res=fread(&buffer,sizeof(unsigned char),chunksize,fp)) > 0) {
 				//send to bp
 				printf(" sending image data.. ");
 				//disable if annoying
-				for (c=0; c<chunksize; c++)
+				for (c=0; c<res; c++)
 				   printf("%02X ", (uint8_t) buffer[c]);
 				printf("\n");
 
 				serial_write( fd, buffer,chunksize );
-				//wait for reply before sending the next chunks //pic should reply '1'
-				timeout_counter=0;
-				/*
-				while(1) {
-					res= serial_read(fd, buffer, sizeof(buffer));
-					if(res>0){
-					   //wait for '1'
-					   printf(" Replay recieved: %02X ", (uint8_t) buffer[0]); //should recieve '1'
-					   if (buffer[0]=='1')
-					        printf("--->OK\n");
-					   else
-					        printf("--->Not Good\n");
 
-					   break;
-					}
-					else {
-						printf(" waiting...");
-						Sleep(1);
-						timeout_counter++;
-						if(timeout_counter > 10){
-							printf(" No reply.... sending next chunks of bytes.\n ");
-							timeout_counter=0;
-							break;
-						}
-					}
-				}
-				*/
 			}
 		}
+
+
+	Sleep(1);
+	res= serial_read(fd, buffer, sizeof(buffer));
+	printf("\n Reply received: %c\n",buffer[0]);
+
     printf(" Done! :-)\n\n");
 
     //close lcd

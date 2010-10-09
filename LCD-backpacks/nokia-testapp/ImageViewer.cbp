@@ -35,14 +35,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\framework\buspirate.c">
+		<Unit filename="serial.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\framework\buspirate.h" />
-		<Unit filename="..\framework\serial.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\framework\serial.h" />
+		<Unit filename="serial.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
