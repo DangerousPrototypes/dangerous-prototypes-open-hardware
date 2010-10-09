@@ -11,7 +11,7 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-p com3  -s 115200 -f  data1.DCX" />
+				<Option parameters="-p com3  -s 115200 -f  tulips.bmp" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -35,14 +35,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\framework\buspirate.c">
+		<Unit filename="serial.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\framework\buspirate.h" />
-		<Unit filename="..\framework\serial.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\framework\serial.h" />
+		<Unit filename="serial.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
