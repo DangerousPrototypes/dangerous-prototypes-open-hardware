@@ -1,0 +1,78 @@
+# depslib dependency file v1.0
+1286467687 source:c:\jamz\powertools\framework\buspirate.c
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	<unistd.h>
+	"serial.h"
+	"buspirate.h"
+
+1283731120 c:\jamz\powertools\framework\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1283731120 c:\jamz\powertools\framework\buspirate.h
+	<stdint.h>
+
+1283731120 source:c:\jamz\powertools\framework\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1282861516 source:e:\work\dp-svn\trunk\lcd-backpacks\nokia-testapp\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1282857232 e:\work\dp-svn\trunk\lcd-backpacks\nokia-testapp\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1286608695 source:e:\work\dp-svn\trunk\lcd-backpacks\nokia-testapp\main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<wingdi.h>
+	<WinDef.h>
+	"serial.h"
+
