@@ -1,0 +1,29 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'MCP4019-1.sym';
+Pin 'VDD' Sup None Middle R0 Both 0 (-17.78 7.62);
+Pin 'VSS/B' Sup None Middle R0 Both 0 (-17.78 0);
+Pin 'SCL' In Clk Middle R0 Both 0 (-17.78 -7.62);
+Pin 'SDA' I/O None Middle R180 Both 0 (15.24 -5.08);
+Pin 'W' I/O None Middle R180 Both 0 (15.24 7.62);
+Layer 94;
+Wire  0.254 (-12.7 10.16) (10.16 10.16) (10.16 -10.16) (-12.7 -10.16) \
+      (-12.7 10.16);
+Wire  0.254 (-3.81 0) (-2.54 0) (-1.27 1.27) (0 0) \
+      (1.27 1.27) (2.54 0) (3.81 1.27) (5.08 0) \
+      (6.35 0);
+Layer 94;
+Circle 0 (6.35 0) (7.1532 0);
+Layer 94;
+Wire  0.254 (5.08 7.62) (1.27 7.62) (1.27 2.54) (2.54 3.81);
+Wire  0.254 (1.27 2.54) (0 3.81);
+Layer 96;
+Change Size 1.27;
+Change Ratio 8;
+Change Font Proportional;
+Text 'MCP4019' R0 (-12.7 -12.7);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-12.7 12.7);

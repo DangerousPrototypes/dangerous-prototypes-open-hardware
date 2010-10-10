@@ -1,0 +1,37 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'FT232RL.sym';
+Layer 94;
+Wire  0.254 (-12.7 25.4) (12.7 25.4) (12.7 -22.86) (-12.7 -22.86) \
+      (-12.7 25.4);
+Pin '3V3OUT' I/O None Middle R0 Both 0 (-17.78 22.86);
+Pin 'USBDM' I/O None Middle R0 Both 0 (-17.78 12.7);
+Pin 'USBDP' I/O None Middle R0 Both 0 (-17.78 10.16);
+Pin '!RESET' I/O None Middle R0 Both 0 (-17.78 5.08);
+Pin 'OSCI' I/O None Middle R0 Both 0 (-17.78 0);
+Pin 'OSCO' I/O None Middle R0 Both 0 (-17.78 -5.08);
+Pin 'TEST' I/O None Middle R0 Both 0 (-17.78 -12.7);
+Pin 'AGND' I/O None Middle R90 Both 0 (-5.08 -27.94);
+Pin 'GND@1' I/O None Middle R90 Both 0 (0 -27.94);
+Pin 'GND@2' I/O None Middle R90 Both 0 (2.54 -27.94);
+Pin 'GND@3' I/O None Middle R90 Both 0 (5.08 -27.94);
+Pin 'VCC' I/O None Middle R270 Both 0 (0 30.48);
+Pin 'VCCIO' I/O None Middle R270 Both 0 (2.54 30.48);
+Pin 'TXD' I/O None Middle R180 Both 0 (17.78 22.86);
+Pin 'RXD' I/O None Middle R180 Both 0 (17.78 20.32);
+Pin '!DTR' I/O None Middle R180 Both 0 (17.78 17.78);
+Pin '!DSR' I/O None Middle R180 Both 0 (17.78 15.24);
+Pin '!RTS' I/O None Middle R180 Both 0 (17.78 12.7);
+Pin '!CTS' I/O None Middle R180 Both 0 (17.78 10.16);
+Pin '!DCD' I/O None Middle R180 Both 0 (17.78 7.62);
+Pin '!RI' I/O None Middle R180 Both 0 (17.78 5.08);
+Pin '!TXLED' I/O None Middle R180 Both 0 (17.78 0);
+Pin '!RXLED' I/O None Middle R180 Both 0 (17.78 -2.54);
+Pin 'TXDEN' I/O None Middle R180 Both 0 (17.78 -5.08);
+Pin '!PWREN' I/O None Middle R180 Both 0 (17.78 -7.62);
+Pin '!SLEEP' I/O None Middle R180 Both 0 (17.78 -10.16);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text 'FT232RL' R0 (-12.7 27.94);

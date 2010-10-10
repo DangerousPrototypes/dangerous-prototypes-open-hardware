@@ -1,0 +1,16 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'JUMP3_DESC.sym';
+Layer 94;
+Change Size 1.27;
+Change Ratio 8;
+Text '(Jumper description)' R0 (-10.16 0);
+Layer 94;
+Change Size 1.27;
+Change Ratio 8;
+Text '>LEFT=' R0 (-10.16 -2.54);
+Layer 94;
+Change Size 1.27;
+Change Ratio 8;
+Text '>RIGHT=' R0 (-10.16 -5.08);

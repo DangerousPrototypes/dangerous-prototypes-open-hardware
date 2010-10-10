@@ -1,0 +1,12 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'MIC_5205.sym';
+Pin 'IN' In None Middle R0 Both 0 (-15.24 2.54);
+Pin 'GND' I/O None Middle R90 Both 0 (-7.62 -12.7);
+Pin 'EN' I/O None Middle R90 Both 0 (7.62 -12.7);
+Pin 'BYP' I/O None Middle R90 Both 0 (0 -12.7);
+Pin 'OUT' Out None Middle R180 Both 0 (15.24 2.54);
+Layer 94;
+Wire  0.254 (-10.16 5.08) (-10.16 -7.62) (10.16 -7.62) (10.16 5.08) \
+      (-10.16 5.08);

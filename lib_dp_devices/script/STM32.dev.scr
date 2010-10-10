@@ -1,0 +1,19 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'STM32.dev';
+Prefix 'IC';
+Description 'STM32F102C6';
+Value On;
+Add STM32-48 'G$1' Next 0 (0 0);
+Package 'LQFP48' '''''';
+Technology '';
+Connect  'G$1.VBAT' '1'  'G$1.PC13-TAMPER-RTC' '2'  'G$1.PC14-0SC32_IN' '3'  'G$1.PC15-OSC32_OUT' '4'  'G$1.PD0-OSC_IN' '5' \
+         'G$1.PD1-OSC_OUT' '6'  'G$1.NRST' '7'  'G$1.VSSA' '8'  'G$1.VDDA' '9'  'G$1.PA0-WKUP' '10'  'G$1.PA1' '11' \
+         'G$1.PA2' '12'  'G$1.VDD_2' '36'  'G$1.VSS_2' '35'  'G$1.PA13/JTMS-SWDIO' '34'  'G$1.PA12/USART1_RTS/USBDP' '33'  'G$1.PA11/USART1_CTS/USBDM' '32' \
+         'G$1.PA10.USART1_RX' '31'  'G$1.PA9/USART1_TX' '30'  'G$1.PA8/USART1_CK/MCO' '29'  'G$1.PB15' '28'  'G$1.PB14' '27'  'G$1.PB13' '26' \
+         'G$1.PB12' '25'  'G$1.PA3' '13'  'G$1.PA4' '14'  'G$1.PA5' '15'  'G$1.PA6' '16'  'G$1.PA7' '17' \
+         'G$1.PB0' '18'  'G$1.PB1' '19'  'G$1.PB2' '20'  'G$1.PB10' '21'  'G$1.PB11' '22'  'G$1.VSS_1' '23' \
+         'G$1.VDD_1' '24'  'G$1.VDD_3' '48'  'G$1.VSS_3' '47'  'G$1.PB9' '46'  'G$1.PB8' '45'  'G$1.BOOT0' '44' \
+         'G$1.PB7/I2C_SDA' '43'  'G$1.PB6/I2C_SCL' '42'  'G$1.PB5/I2C_SMBA' '41'  'G$1.PB4/JNTRST' '40'  'G$1.PB3/JTDO' '39'  'G$1.PA15/JTDI' '38' \
+         'G$1.PA14/JTCK/SWCLK' '37';

@@ -1,0 +1,11 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'TC74.dev';
+Prefix '';
+Description '';
+Value Off;
+Add TC74 'G$1' Next 0 (0 2.54);
+Package 'SOT-23-5' '''''';
+Technology '';
+Connect  'G$1.GND' '2'  'G$1.VDD' '3'  'G$1.SCL' '4'  'G$1.SDA' '5';

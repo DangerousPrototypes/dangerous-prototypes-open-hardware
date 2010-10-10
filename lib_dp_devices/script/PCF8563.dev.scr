@@ -1,0 +1,12 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'PCF8563.dev';
+Prefix '';
+Description '';
+Value Off;
+Add PCF8563 'G$1' Next 0 (0 0);
+Package 'SO8' '''''';
+Technology '';
+Connect  'G$1.OSCI' '1'  'G$1.OSCO' '2'  'G$1.!INT' '3'  'G$1.VSS' '4'  'G$1.SDA' '5' \
+         'G$1.SCL' '6'  'G$1.CLKOUT' '7'  'G$1.VDD' '8';

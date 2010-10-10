@@ -1,0 +1,43 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'ARDUINO.pac';
+Description '';
+Change Drill 0.8;Pad 'D_0' Round 0 R0 (-22.86 15.24);
+Change Drill 0.8;Pad 'D_1' Round 0 R0 (-22.86 12.7);
+Change Drill 0.8;Pad 'D_2' Round 0 R0 (-22.86 10.16);
+Change Drill 0.8;Pad 'D_3' Round 0 R0 (-22.86 7.62);
+Change Drill 0.8;Pad 'D_4' Round 0 R0 (-22.86 5.08);
+Change Drill 0.8;Pad 'D_5' Round 0 R0 (-22.86 2.54);
+Change Drill 0.8;Pad 'D_6' Round 0 R0 (-22.86 0);
+Change Drill 0.8;Pad 'D_7' Round 0 R0 (-22.86 -2.54);
+Change Drill 0.8;Pad 'D_8' Round 0 R0 (-22.86 -6.985);
+Change Drill 0.8;Pad 'D_9' Round 0 R0 (-22.86 -9.525);
+Change Drill 0.8;Pad 'D_10' Round 0 R0 (-22.86 -12.065);
+Change Drill 0.8;Pad 'D_11' Round 0 R0 (-22.86 -14.605);
+Change Drill 0.8;Pad 'D_12' Round 0 R0 (-22.86 -17.145);
+Change Drill 0.8;Pad 'D_13' Round 0 R0 (-22.86 -19.685);
+Change Drill 0.8;Pad 'GND0' Round 0 R0 (-22.86 -22.225);
+Change Drill 0.8;Pad 'AREF' Round 0 R0 (-22.86 -24.765);
+Layer 21;
+Wire  0.127 (-23.495 15.875) (-22.225 15.875) (-22.225 -3.175) (-23.495 -3.175) \
+      (-23.495 15.875);
+Wire  0.127 (-23.495 -6.35) (-22.225 -6.35) (-22.225 -25.4) (-23.495 -25.4) \
+      (-23.495 -6.35);
+Change Drill 0.8;Pad 'A_5' Round 0 R0 (25.4 15.24);
+Change Drill 0.8;Pad 'A_4' Round 0 R0 (25.4 12.7);
+Change Drill 0.8;Pad 'A_3' Round 0 R0 (25.4 10.16);
+Change Drill 0.8;Pad 'A_2' Round 0 R0 (25.4 7.62);
+Change Drill 0.8;Pad 'A_1' Round 0 R0 (25.4 5.08);
+Change Drill 0.8;Pad 'A_0' Round 0 R0 (25.4 2.54);
+Change Drill 0.8;Pad 'VIN' Round 0 R0 (25.4 -2.54);
+Change Drill 0.8;Pad 'GND2' Round 0 R0 (25.4 -5.08);
+Change Drill 0.8;Pad 'GND1' Round 0 R0 (25.4 -7.62);
+Change Drill 0.8;Pad '5V' Round 0 R0 (25.4 -10.16);
+Change Drill 0.8;Pad '3V3' Round 0 R0 (25.4 -12.7);
+Change Drill 0.8;Pad 'RESET' Round 0 R0 (25.4 -15.24);
+Layer 21;
+Wire  0.127 (24.765 15.875) (26.035 15.875) (26.035 1.905) (24.765 1.905) \
+      (24.765 15.875);
+Wire  0.127 (24.765 -1.905) (26.035 -1.905) (26.035 -15.875) (24.765 -15.875) \
+      (24.765 -1.905);

@@ -1,0 +1,22 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'LD-1117.sym';
+Pin 'GND' I/O None Short R90 Pad 0 (0 -2.54);
+Pin 'VIN' I/O None Short R0 Pin 0 (-12.7 7.62);
+Pin 'VOUT' I/O None Short R180 Pin 0 (12.7 7.62);
+Layer 94;
+Wire  0.254 (-10.16 10.16) (10.16 10.16) (10.16 0) (-10.16 0) \
+      (-10.16 10.16);
+Layer 95;
+Change Size 1.4224;
+Change Ratio 10;
+Text '>NAME' R0 (-10.16 12.7);
+Layer 96;
+Change Size 1.4224;
+Change Ratio 10;
+Text '>VALUE' R0 (-10.16 10.16);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text 'GND' R0 (-2.794 0.762);

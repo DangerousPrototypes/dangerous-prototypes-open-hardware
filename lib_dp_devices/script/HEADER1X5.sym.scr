@@ -1,0 +1,12 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'HEADER1X5.sym';
+Pin '1' I/O None Middle R0 Both 0 (-10.16 5.08);
+Pin '2' I/O None Middle R0 Both 0 (-10.16 2.54);
+Pin '3' I/O None Middle R0 Both 0 (-10.16 0);
+Pin '4' I/O None Middle R0 Both 0 (-10.16 -2.54);
+Pin '5' I/O None Middle R0 Both 0 (-10.16 -5.08);
+Layer 94;
+Wire  0.254 (-5.08 7.62) (5.08 7.62) (5.08 -7.62) (-5.08 -7.62) \
+      (-5.08 7.62);

@@ -1,0 +1,13 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit '24AA*.dev';
+Prefix 'IC';
+Description '';
+Value On;
+Add 24AA 'G$1' Next 0 (0 2.54);
+Package 'SOT-23-5' '''''';
+Technology '';
+Technology '';
+Attribute 24AA '24AA' variable;
+Connect  'G$1.SCL' '1'  'G$1.GND' '2'  'G$1.SDA' '3'  'G$1.VCC' '4'  'G$1.WP' '5';

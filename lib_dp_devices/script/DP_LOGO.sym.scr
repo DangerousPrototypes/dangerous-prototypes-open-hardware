@@ -1,0 +1,16 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'DP_LOGO.sym';
+Layer 94;
+Change Size 1.016;
+Change Ratio 8;
+Text 'DP LOGO ADDED' R0 (0 2.54);
+Layer 94;
+Change Size 1.016;
+Change Ratio 8;
+Text '>PROJECT=' R0 (0 0);
+Layer 94;
+Change Size 1.016;
+Change Ratio 8;
+Text '>LICENSE=' R0 (0 -2.54);

@@ -1,0 +1,32 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'CONNECTER_HR911105A.pac';
+Description '';
+Layer 21;
+Wire  0.127 (-8.001 10.795) (8.001 10.795) (8.001 -10.795) (-8.001 -10.795) \
+      (-8.001 10.795);
+Change Drill 0.8128;Pad '1' Square 1.524 R180 (4.445 -6.35);
+Change Drill 0.8128;Pad '2' Round 1.524 R180 (3.175 -8.89);
+Change Drill 0.8128;Pad '3' Round 1.524 R180 (1.905 -6.35);
+Change Drill 0.8128;Pad '4' Round 1.524 R180 (0.635 -8.89);
+Change Drill 0.8128;Pad '5' Round 1.524 R180 (-0.635 -6.35);
+Change Drill 0.8128;Pad '6' Round 1.524 R180 (-1.905 -8.89);
+Change Drill 0.8128;Pad '7' Round 1.524 R180 (-3.175 -6.35);
+Change Drill 0.8128;Pad '8' Round 1.524 R180 (-4.445 -8.89);
+Change Drill 0.8128;Pad '9' Round 1.524 R180 (6.604 4.9022);
+Change Drill 0.8128;Pad '10' Round 1.524 R180 (4.064 4.9022);
+Change Drill 0.8128;Pad '11' Round 1.524 R180 (-4.064 4.9022);
+Change Drill 0.8128;Pad '12' Round 1.524 R180 (-6.604 4.9022);
+Change Drill 1.651;Pad '13' Round 2.159 R180 (8.001 -3.175);
+Change Drill 1.651;Pad '14' Round 2.159 R180 (-8.001 -3.175);
+Layer 25;
+Change Size 1.27;
+Change Ratio 8;
+Text '>name' R0 (-7.62 11.43);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>value' R0 (0.635 11.43);
+Hole 3.2004 (5.715 0);
+Hole 3.2004 (-5.715 0);

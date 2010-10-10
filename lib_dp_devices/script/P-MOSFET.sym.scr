@@ -1,0 +1,42 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'P-MOSFET.sym';
+Pin 'S' Pas None Short R90 Off 0 (2.54 -5.08);
+Pin 'G' Pas None Short R0 Off 0 (-2.54 -2.54);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-11.43 0);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text '>NAME' R0 (-11.43 2.54);
+Pin 'D' Pas None Short R270 Off 0 (2.54 5.08);
+Layer 94;
+Wire  0.254 \
+      (0.762 0.762) (0.762 0) (0.762 -0.762);
+Wire  0.254 (0.762 3.175) (0.762 2.54) (0.762 1.905);
+Wire  0.1524 (0.762 0) (2.54 0) (2.54 -2.54);
+Wire  0.254 (0.762 -1.905) (0.762 -2.54) (0.762 -3.175);
+Wire  0.254 (0 2.54) (0 -2.54);
+Wire  0.1524 (2.54 -2.54) (0.762 -2.54);
+Wire  0.1524 (3.81 2.54) (3.81 -0.508) (3.81 -2.54);
+Wire  0.1524 (2.54 -2.54) (3.81 -2.54);
+Wire  0.1524 (0.762 2.54) (3.81 2.54);
+Wire  0.1524 (3.048 -0.762) (3.302 -0.508) (3.81 -0.508) (4.318 -0.508) \
+      (4.572 -0.254);
+Layer 94;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0.1524  (3.81 -0.508) (4.318 0.254) (3.302 0.254) (3.81 -0.508);
+Layer 94;
+Circle 0 (2.54 -2.54) (2.8992 -2.54);
+Layer 94;
+Circle 0 (2.54 2.54) (2.8992 2.54);
+Layer 94;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0.1524  (2.032 0) (1.016 -0.762) (1.016 0.762) (2.032 0);

@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'DP_LOGO.dev';
+Prefix '';
+Description '';
+Value Off;
+Add DP_LOGO 'G$1' Next 0 (-2.54 0);
+Package 'DP_LOGO' '''''';
+Technology '';
+Technology '';
+Attribute LICENSE 'CC-BY-SA' variable;
+Attribute PROJECT 'project' variable;
+Grid inch;

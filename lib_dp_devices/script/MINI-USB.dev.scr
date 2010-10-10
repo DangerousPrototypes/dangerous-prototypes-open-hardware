@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'MINI-USB.dev';
+Prefix 'USB';
+Description '';
+Value Off;
+Add USB-CON 'G$1' Next 0 (0 0);
+Package 'MINI-USBB' 'USB1';
+Technology '';
+Connect  'G$1.VCC' '1'  'G$1.DATA-' '2'  'G$1.DATA+' '3'  'G$1.GND' '5';
+Package 'CONN_MINI_USB_B' 'USB2';
+Technology '';
+Connect  'G$1.DATA+' 'D+'  'G$1.DATA-' 'D-'  'G$1.VCC' 'VUSB'  'G$1.GND' 'GND';

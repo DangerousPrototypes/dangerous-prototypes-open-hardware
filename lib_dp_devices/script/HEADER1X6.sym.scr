@@ -1,0 +1,17 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'HEADER1X6.sym';
+Pin '1' I/O None Middle R0 Both 0 (-10.16 5.08);
+Pin '2' I/O None Middle R0 Both 0 (-10.16 2.54);
+Pin '3' I/O None Middle R0 Both 0 (-10.16 0);
+Pin '4' I/O None Middle R0 Both 0 (-10.16 -2.54);
+Pin '5' I/O None Middle R0 Both 0 (-10.16 -5.08);
+Pin '6' I/O None Middle R0 Both 0 (-10.16 -7.62);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-5.08 -12.7);
+Layer 94;
+Wire  0.254 (-5.08 7.62) (-5.08 -10.16) (2.54 -10.16) (2.54 7.62) \
+      (-5.08 7.62);

@@ -1,0 +1,17 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'LED.dev';
+Prefix 'LED';
+Description '';
+Value On;
+Add LED 'G$1' Next 0 (0 0);
+Package 'LED-3MM' '3MM';
+Technology '';
+Connect  'G$1.A' 'A'  'G$1.C' 'K';
+Package 'LED-5MM' '5MM';
+Technology '';
+Connect  'G$1.A' 'A'  'G$1.C' 'K';
+Package 'LED-805' '805';
+Technology '';
+Connect  'G$1.C' 'C'  'G$1.A' 'A';

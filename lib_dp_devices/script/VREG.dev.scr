@@ -1,0 +1,11 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'VREG.dev';
+Prefix 'VREG';
+Description '';
+Value On;
+Add MIC_5205 'G$1' Next 0 (0 0);
+Package 'SOT23-5' '''''';
+Technology '';
+Connect  'G$1.IN' 'IN'  'G$1.GND' 'GND'  'G$1.EN' 'EN'  'G$1.BYP' 'BYP'  'G$1.OUT' 'OUT';

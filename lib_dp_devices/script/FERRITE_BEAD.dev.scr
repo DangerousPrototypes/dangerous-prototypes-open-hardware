@@ -1,0 +1,20 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'FERRITE_BEAD.dev';
+Prefix 'L';
+Description '';
+Value On;
+Add INDUCTOR 'G$1' Next 0 (0 0);
+Package 'FB1206' '1206';
+Technology '';
+Connect  'G$1.2' '2'  'G$1.1' '1';
+Package 'FB402' '402';
+Technology '';
+Connect  'G$1.1' '1'  'G$1.2' '2';
+Package 'FB805' '805';
+Technology '';
+Connect  'G$1.1' '1'  'G$1.2' '2';
+Package 'FB603' '603';
+Technology '';
+Connect  'G$1.1' '1'  'G$1.2' '2';
