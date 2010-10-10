@@ -1,0 +1,64 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'SO-08.pac';
+Description '\
+<B>Small Outline Narrow Plastic Gull Wing</B><p>\n\
+150-mil body, package type SN';
+Layer 1;
+Smd '2' 0.6 2.2 -0 R0 (-0.635 -2.6);
+Layer 1;
+Smd '7' 0.6 2.2 -0 R0 (-0.635 2.6);
+Layer 1;
+Smd '1' 0.6 2.2 -0 R0 (-1.905 -2.6);
+Layer 1;
+Smd '3' 0.6 2.2 -0 R0 (0.635 -2.6);
+Layer 1;
+Smd '4' 0.6 2.2 -0 R0 (1.905 -2.6);
+Layer 1;
+Smd '8' 0.6 2.2 -0 R0 (-1.905 2.6);
+Layer 1;
+Smd '6' 0.6 2.2 -0 R0 (0.635 2.6);
+Layer 1;
+Smd '5' 0.6 2.2 -0 R0 (1.905 2.6);
+Layer 39;
+Wire  0.1998 (-2.9 3.9) (2.9 3.9) (2.9 -3.9) (-2.9 -3.9) \
+      (-2.9 3.9);
+Layer 51;
+Rect R0 (-2.1501 -3.1001) (-1.6599 -2);
+Layer 51;
+Rect R0 (-0.8801 -3.1001) (-0.3899 -2);
+Layer 51;
+Rect R0 (0.3899 -3.1001) (0.8801 -2);
+Layer 51;
+Rect R0 (1.6599 -3.1001) (2.1501 -2);
+Layer 51;
+Rect R0 (1.6599 2) (2.1501 3.1001);
+Layer 51;
+Rect R0 (0.3899 2) (0.8801 3.1001);
+Layer 51;
+Rect R0 (-0.8801 2) (-0.3899 3.1001);
+Layer 51;
+Rect R0 (-2.1501 2) (-1.6599 3.1001);
+Layer 51;
+Wire  0.2032 (2.4 1.9) (2.4 -1.4) (2.4 -1.9) (-2.4 -1.9) \
+      (-2.4 -1.4) (-2.4 1.9) (2.4 1.9);
+Wire  0.2032 (2.4 -1.4) (-2.4 -1.4);
+Layer 25;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R90 (-2.667 -1.905);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R90 (3.937 -1.905);
+Layer 48;
+Change Size 0.4064;
+Change Ratio 8;
+Text 'IPC SO8' R0 (-1.905 -0.635);
+Layer 48;
+Change Size 0.3048;
+Change Ratio 8;
+Text 'JEDEC MS-012 AA' R0 (-1.905 0.365);
+Layer 35;
+Rect R0 (-1 -1) (1 1);

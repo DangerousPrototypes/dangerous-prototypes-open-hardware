@@ -1,0 +1,23 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'CAP.sym';
+Pin '1' Pas None Short R270 Off 1 (0 5.08);
+Pin '2' Pas None Short R90 Off 1 (0 -2.54);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Change Font Proportional;
+Text '>NAME' R0 (1.524 2.921);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (1.524 -2.159);
+Layer 94;
+Rect R0 (-2.032 0.508) (2.032 1.016);
+Layer 94;
+Rect R0 (-2.032 1.524) (2.032 2.032);
+Layer 94;
+Change Style Continuous;
+Wire  0.1524 (0 2.54) (0 2.032);
+Wire  0.1524 (0 0) (0 0.508);

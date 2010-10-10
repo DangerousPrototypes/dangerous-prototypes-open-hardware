@@ -1,0 +1,5 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'HEADER1X1.sym';
+Pin '1' I/O None Middle R270 Both 0 (0 5.08);

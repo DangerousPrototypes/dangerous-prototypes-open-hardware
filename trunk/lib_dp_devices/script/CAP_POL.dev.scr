@@ -1,0 +1,20 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'CAP_POL.dev';
+Prefix 'C';
+Description '';
+Value On;
+Add CAP_POL 'G$1' Next 0 (0 0);
+Package 'SMC_A' 'SMC_A';
+Technology '';
+Connect  'G$1.+' '+'  'G$1.-' '-';
+Package 'SMC_B' 'SMC_B';
+Technology '';
+Connect  'G$1.+' '+'  'G$1.-' '-';
+Package 'CASE_A' 'CASE_A';
+Technology '';
+Connect  'G$1.-' '-'  'G$1.+' '+';
+Package 'CASE_B' 'CASE_B';
+Technology '';
+Connect  'G$1.-' '-'  'G$1.+' '+';

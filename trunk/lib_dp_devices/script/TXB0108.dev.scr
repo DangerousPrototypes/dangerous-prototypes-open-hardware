@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'TXB0108.dev';
+Prefix '';
+Description '';
+Value Off;
+Add TXB0108 'G$1' Next 0 (0 0);
+Package 'SSOP20' 'PW';
+Technology '';
+Connect  'G$1.A1' '1'  'G$1.VA' '2'  'G$1.A2' '3'  'G$1.A3' '4'  'G$1.A4' '5' \
+         'G$1.A5' '6'  'G$1.A6' '7'  'G$1.A7' '8'  'G$1.A8' '9'  'G$1.OE' '10'  'G$1.GND' '11' \
+         'G$1.B8' '12'  'G$1.B7' '13'  'G$1.B6' '14'  'G$1.B5' '15'  'G$1.B4' '16'  'G$1.B3' '17' \
+         'G$1.B2' '18'  'G$1.VB' '19'  'G$1.B1' '20';

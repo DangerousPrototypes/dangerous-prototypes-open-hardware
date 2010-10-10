@@ -1,0 +1,20 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'PIC_ICSP.sym';
+Pin '+' I/O None Middle R0 Both 0 (-7.62 2.54);
+Pin '/MCLR' I/O None Middle R0 Both 0 (-7.62 5.08);
+Pin 'GND' I/O None Middle R0 Both 0 (-7.62 0);
+Pin 'PGC' I/O None Middle R0 Both 0 (-7.62 -5.08);
+Pin 'PGD' I/O None Middle R0 Both 0 (-7.62 -2.54);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-2.54 -10.16);
+Layer 96;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-2.54 -12.7);
+Layer 94;
+Wire  0.254 (-2.54 -7.62) (-2.54 7.62) (7.62 7.62) (7.62 -7.62) \
+      (-2.54 -7.62);

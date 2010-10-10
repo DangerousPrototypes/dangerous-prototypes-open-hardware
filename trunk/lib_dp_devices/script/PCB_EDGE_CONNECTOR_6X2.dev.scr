@@ -1,0 +1,13 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'PCB_EDGE_CONNECTOR_6X2.dev';
+Prefix 'CON';
+Description '';
+Value On;
+Add EDGE_CONNECTOR_6X2 'G$1' Next 0 (0 0);
+Package 'PCB_EDGE_CONNECTOR_6X2' '''''';
+Technology '';
+Connect  'G$1.A3' 'A3'  'G$1.A4' 'A4'  'G$1.A5' 'A5'  'G$1.A6' 'A6'  'G$1.A2' 'A2' \
+         'G$1.A1' 'A1'  'G$1.B1' 'B1'  'G$1.B2' 'B2'  'G$1.B3' 'B3'  'G$1.B4' 'B4'  'G$1.B5' 'B5' \
+         'G$1.B6' 'B6';

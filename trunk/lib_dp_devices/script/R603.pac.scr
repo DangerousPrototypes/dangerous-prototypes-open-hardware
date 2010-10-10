@@ -1,0 +1,24 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'R603.pac';
+Description '';
+Layer 1;
+Smd '1' 1 1.1 -0 R0 (-0.85 0);
+Layer 1;
+Smd '2' 1 1.1 -0 R0 (0.85 0);
+Layer 25;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-0.762 1.016);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-0.762 -2.286);
+Layer 51;
+Rect R0 (0.4318 -0.4318) (0.8382 0.4318);
+Layer 51;
+Rect R0 (-0.8382 -0.4318) (-0.4318 0.4318);
+Layer 51;
+Wire  0.1524 (0.432 0.356) (-0.432 0.356);
+Wire  0.1524 (-0.432 -0.356) (0.432 -0.356);

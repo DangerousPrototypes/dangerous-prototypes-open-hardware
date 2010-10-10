@@ -1,0 +1,24 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'R1206.pac';
+Description '';
+Layer 1;
+Smd '2' 1.6 1.803 -0 R0 (1.422 0);
+Layer 1;
+Smd '1' 1.6 1.803 -0 R0 (-1.422 0);
+Layer 51;
+Wire  0.1524 (0.9525 -0.8128) (-0.9652 -0.8128);
+Wire  0.1524 (0.9525 0.8128) (-0.9652 0.8128);
+Layer 51;
+Rect R0 (-1.6891 -0.8763) (-0.9525 0.8763);
+Layer 51;
+Rect R0 (0.9525 -0.8763) (1.6891 0.8763);
+Layer 25;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-1.397 1.143);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-1.397 -2.413);

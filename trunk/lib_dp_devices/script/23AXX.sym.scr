@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit '23AXX.sym';
+Pin '+' Pwr None Middle R270 Both 0 (0 10.16);
+Pin '/CS' I/O None Middle R180 Both 0 (15.24 -2.54);
+Pin '/HOLD' I/O None Middle R180 Both 0 (15.24 0);
+Pin 'CLK' I/O None Middle R0 Both 0 (-15.24 -2.54);
+Pin 'DI' I/O None Middle R0 Both 0 (-15.24 2.54);
+Pin 'DO' I/O None Middle R0 Both 0 (-15.24 0);
+Pin 'G' Pwr None Middle R90 Both 0 (0 -10.16);
+Layer 94;
+Wire  0.254 (-10.16 5.08) (-10.16 -5.08) (10.16 -5.08) (10.16 5.08) \
+      (-10.16 5.08);

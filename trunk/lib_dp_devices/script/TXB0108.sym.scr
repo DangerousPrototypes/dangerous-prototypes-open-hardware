@@ -1,0 +1,35 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'TXB0108.sym';
+Pin 'A1' I/O None Middle R0 Both 0 (-12.7 5.08);
+Pin 'A2' I/O None Middle R0 Both 0 (-12.7 2.54);
+Pin 'A3' I/O None Middle R0 Both 0 (-12.7 0);
+Pin 'A4' I/O None Middle R0 Both 0 (-12.7 -2.54);
+Pin 'A5' I/O None Middle R0 Both 0 (-12.7 -5.08);
+Pin 'A6' I/O None Middle R0 Both 0 (-12.7 -7.62);
+Pin 'A7' I/O None Middle R0 Both 0 (-12.7 -10.16);
+Pin 'A8' I/O None Middle R0 Both 0 (-12.7 -12.7);
+Pin 'B1' I/O None Middle R180 Both 0 (12.7 5.08);
+Pin 'B2' I/O None Middle R180 Both 0 (12.7 2.54);
+Pin 'B3' I/O None Middle R180 Both 0 (12.7 0);
+Pin 'B4' I/O None Middle R180 Both 0 (12.7 -2.54);
+Pin 'B5' I/O None Middle R180 Both 0 (12.7 -5.08);
+Pin 'B6' I/O None Middle R180 Both 0 (12.7 -7.62);
+Pin 'B7' I/O None Middle R180 Both 0 (12.7 -10.16);
+Pin 'B8' I/O None Middle R180 Both 0 (12.7 -12.7);
+Pin 'GND' I/O None Middle R180 Both 0 (12.7 7.62);
+Pin 'OE' I/O None Middle R0 Both 0 (-12.7 7.62);
+Pin 'VA' I/O None Middle R0 Both 0 (-12.7 10.16);
+Pin 'VB' I/O None Middle R180 Both 0 (12.7 10.16);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-7.62 -17.78);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-7.62 -20.32);
+Layer 94;
+Wire  0.254 (-7.62 12.7) (7.62 12.7) (7.62 -15.24) (-7.62 -15.24) \
+      (-7.62 12.7);

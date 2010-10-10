@@ -1,0 +1,11 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'FET.dev';
+Prefix 'Q';
+Description '';
+Value On;
+Add FET 'G$1' Next 0 (0 0);
+Package 'SOT23' '''''';
+Technology '';
+Connect  'G$1.D' '3'  'G$1.S' '2'  'G$1.G' '1';

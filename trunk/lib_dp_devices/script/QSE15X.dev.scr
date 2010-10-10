@@ -1,0 +1,11 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'QSE15X.dev';
+Prefix '';
+Description '';
+Value Off;
+Add QSE15X 'G$1' Next 0 (-2.54 7.62);
+Package 'QSE15X' '''''';
+Technology '';
+Connect  'G$1.VCC' '1'  'G$1.OUT' '2'  'G$1.GND' '3';

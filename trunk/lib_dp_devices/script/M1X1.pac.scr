@@ -1,0 +1,17 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'M1X1.pac';
+Description '';
+Change Drill 0.8;Pad '1' Square 0 R0 FIRST (0 0);
+Layer 21;
+Wire  0.127 (-1.27 1.27) (1.27 1.27) (1.27 -1.27) (-1.27 -1.27) \
+      (-1.27 1.27);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-1.27 -3.81);
+Layer 25;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-1.27 -2.54);

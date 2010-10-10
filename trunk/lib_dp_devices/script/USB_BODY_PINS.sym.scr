@@ -1,0 +1,8 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'USB_BODY_PINS.sym';
+Pin 'BODY@4' Hiz None Middle R270 Off 0 (0 12.7);
+Pin 'BODY@3' Hiz None Middle R270 Off 0 (5.08 12.7);
+Pin 'BODY@1' Hiz None Middle R90 Off 0 (0 -12.7);
+Pin 'BODY@2' Hiz None Middle R90 Off 0 (5.08 -12.7);

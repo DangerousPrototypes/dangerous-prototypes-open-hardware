@@ -1,0 +1,23 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit '3WIRE.sym';
+Pin 'CS' I/O None Middle R0 Pin 0 (-10.16 5.08);
+Pin 'SK' I/O None Middle R0 Pin 0 (-10.16 2.54);
+Pin 'DI' I/O None Middle R0 Pin 0 (-10.16 0);
+Pin 'DO' I/O None Middle R0 Pin 0 (-10.16 -2.54);
+Pin 'VCC' I/O None Middle R180 Pin 0 (15.24 5.08);
+Pin 'DC' I/O None Middle R180 Pin 0 (15.24 2.54);
+Pin 'ORG' I/O None Middle R180 Pin 0 (15.24 0);
+Pin 'GND' I/O None Middle R180 Pin 0 (15.24 -2.54);
+Layer 94;
+Wire  0.254 (-5.08 7.62) (10.16 7.62) (10.16 -5.08) (-5.08 -5.08) \
+      (-5.08 7.62);
+Layer 95;
+Change Size 1.4224;
+Change Ratio 10;
+Text '>NAME' R0 (-5.08 -7.62);
+Layer 96;
+Change Size 1.4224;
+Change Ratio 10;
+Text '>VALUE' R0 (-5.08 -10.16);

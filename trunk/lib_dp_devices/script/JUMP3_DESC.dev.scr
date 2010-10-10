@@ -1,0 +1,18 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'JUMP3_DESC.dev';
+Prefix '';
+Description '\
+Nice formatted three legged jumperdescription<br>\n\
+<br>\n\
+Use attributes to change the values<br>\n\
+LEFT =  With jumper to the left<br>\n\
+RIGHT =  With jumper to the right<br>';
+Value Off;
+Add JUMP3_DESC 'G$1' Next 0 (0 0);
+Package 'JUMP3_DESC' '''''';
+Technology '';
+Technology '';
+Attribute LEFT 'left' variable;
+Attribute RIGHT 'right' variable;

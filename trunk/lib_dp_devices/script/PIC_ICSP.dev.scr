@@ -1,0 +1,11 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'PIC_ICSP.dev';
+Prefix '';
+Description '';
+Value Off;
+Add PIC_ICSP 'G$1' Next 0 (-2.54 0);
+Package 'M1X5' 'PTH';
+Technology '';
+Connect  'G$1./MCLR' '1'  'G$1.+' '2'  'G$1.GND' '3'  'G$1.PGD' '4'  'G$1.PGC' '5';

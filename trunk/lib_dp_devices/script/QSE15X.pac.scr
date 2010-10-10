@@ -1,0 +1,25 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'QSE15X.pac';
+Description '';
+Layer 51;
+Wire  0.127 (-2.3 1.3) (-2.3 -1.3) (2.3 -1.3) (2.3 1.3);
+Layer 21;
+Wire  0.127 (2.3 1.3) (1.2 1.3) (-1.2 1.3) (-2.3 1.3);
+Change Drill 0.7;Pad '1' Long 0 R90 (-1.9 -0.51);
+Change Drill 0.7;Pad '2' Long 0 R90 (0 -0.51);
+Change Drill 0.7;Pad '3' Long 0 R90 (1.91 -0.51);
+Layer 21;
+Wire  0.127 (1.2 0.9) (-1.2 0.9);
+Wire  0.127 (-1.2 1.3) (-1.2 0.9);
+Wire  0.127 (1.2 0.9) (1.2 1.3);
+Wire  0.127 (-2.3 1.3) (-2.3 0.8);
+Wire  0.127 (2.3 1.3) (2.3 0.8);
+Wire  0.127 (-0.8 -1.3) (-1.1 -1.3);
+Wire  0.127 (0.8 -1.3) (1.1 -1.3);
+Layer 21;
+Change Size 1.016;
+Change Ratio 16;
+Change Font Vector;
+Text '>NAME' R0 (-2.286 1.524);

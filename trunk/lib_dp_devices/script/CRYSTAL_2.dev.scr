@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'CRYSTAL_2.dev';
+Prefix 'X';
+Description '';
+Value Off;
+Add CRYSTAL-1 'G$1' Next 1 (0 0);
+Package '5X8' '8M_';
+Technology '';
+Connect  'G$1.X1' '1'  'G$1.X2' '2';
+Package '4X6' '12M_';
+Technology '';
+Connect  'G$1.X1' '1'  'G$1.X2' '2';

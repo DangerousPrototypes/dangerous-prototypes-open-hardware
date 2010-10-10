@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'MCP4019.dev';
+Prefix 'U';
+Description '\
+7-Bit Single I2C Digital Rheostat\n\
+\n\
+Source: http://ww1.microchip.com/downloads/en/DeviceDoc/22147a.pdf';
+Value Off;
+Add MCP4019-1 'G$1' Next 0 (0 0);
+Package 'SOT23-5-LT' '''''';
+Technology '';
+Connect  'G$1.VDD' 'P1'  'G$1.VSS/B' 'P2'  'G$1.SCL' 'P3'  'G$1.SDA' 'P4'  'G$1.W' 'P5';
