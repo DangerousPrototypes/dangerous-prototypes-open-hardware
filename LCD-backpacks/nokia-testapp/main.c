@@ -230,18 +230,37 @@ int main(int argc, char** argv)
         // jump to where the data is
         fseek(fp,header.bfOffBits,SEEK_SET); //and disable this if above fgets is enabled
 
-        chunksize=3;  //send 4kbytes at a time- should be the buffer size of the backpack
+        chunksize=6;  //send 4kbytes at a time- should be the buffer size of the backpack
 
 		while(!feof(fp)) {
 		    if ((res=fread(&buffer,sizeof(unsigned char),chunksize,fp)) > 0) {
+		        char b[3];
+
+		        //the LCD needs 12bit color, this is 24bit
+                //we need to discard the lower 4 bits of each byte
+                //and pack six half bytes into 3 bytes to send the LCD
+                //if we only have one pixel to process (3bytes) instead of 2, then the last should be 0
+                //need to do checks for end of data, make this more effecient
+                //R G
+                b[0]=((buffer[0]&0xf0)|((buffer[1]>>4)&0x0f));
+                //B R2
+                b[1]=(buffer[2]&0xf0)|((buffer[3]>>4)&0x0f);
+                //G2 B2
+                b[2]=(buffer[4]&0xf0)|((buffer[5]>>4)&0x0f);
+
 				//send to bp
 				printf(" sending image data.. ");
 				//disable if annoying
 				for (c=0; c<res; c++)
-				   printf("%02X ", (uint8_t) buffer[c]);
+                    printf("%02X ", (uint8_t) buffer[c]);
+
+                for(c=0; c<res/2;c++)
+                     printf("%02X ", (uint8_t) b[c]);
+
+
 				printf("\n");
 
-				serial_write( fd, buffer,chunksize );
+				serial_write( fd, b,chunksize/2 );
 
 			}
 		}
