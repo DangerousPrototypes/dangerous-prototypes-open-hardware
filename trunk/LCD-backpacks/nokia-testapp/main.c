@@ -219,7 +219,7 @@ int main(int argc, char** argv)
 
         //send the command 	//Send 'p' or 'P' send page of image data.
 		printf(" Setting image mode \n");
-        buffer[0]='p';
+        buffer[0]='P';
 		serial_write( fd, buffer,1 );
 
 		printf(" Sending some bytes \n");
@@ -241,12 +241,13 @@ int main(int argc, char** argv)
                 //and pack six half bytes into 3 bytes to send the LCD
                 //if we only have one pixel to process (3bytes) instead of 2, then the last should be 0
                 //need to do checks for end of data, make this more effecient
+                //BMP byte order of BGR...
                 //R G
-                b[0]=((buffer[0]&0xf0)|((buffer[1]>>4)&0x0f));
+                b[0]=((buffer[2]&0xf0)|((buffer[1]>>4)&0x0f));
                 //B R2
-                b[1]=(buffer[2]&0xf0)|((buffer[3]>>4)&0x0f);
+                b[1]=(buffer[0]&0xf0)|((buffer[5]>>4)&0x0f);
                 //G2 B2
-                b[2]=(buffer[4]&0xf0)|((buffer[5]>>4)&0x0f);
+                b[2]=(buffer[4]&0xf0)|((buffer[3]>>4)&0x0f);
 
 				//send to bp
 				printf(" sending image data.. ");
@@ -254,9 +255,10 @@ int main(int argc, char** argv)
 				for (c=0; c<res; c++)
                     printf("%02X ", (uint8_t) buffer[c]);
 
+                printf("-> ");
+
                 for(c=0; c<res/2;c++)
                      printf("%02X ", (uint8_t) b[c]);
-
 
 				printf("\n");
 
