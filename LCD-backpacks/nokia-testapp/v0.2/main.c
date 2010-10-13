@@ -387,18 +387,21 @@ int main(int argc, char** argv)
 			   }
 			}
             if(verbose_mode==TRUE) {
-			       for(counter=0;counter < c;counter++)
+			       for(counter=0;counter < c;counter++) {
 			           printf("[%i] %02X \n", i+counter, (uint8_t) buffer[counter]);
+			   //        printf(" %02X \n",  (uint8_t) buffer[counter]);
+			       }
+
             }
 			serial_write( fd, buffer,c);
-			i=i+c-1;
+			i=i+c;
 			if(has_more_data==FALSE)
 			   break;
 
 
 
 		}
-		printf("Total Bytes Sent: %i\n",i+1);
+		printf("Total Bytes Sent: %i\n",i);
 		Sleep(1);
 		res= serial_read(fd, buffer, sizeof(buffer));
 		for (i=0;i <res;i++)
