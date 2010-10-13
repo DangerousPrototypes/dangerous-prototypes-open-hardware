@@ -76,7 +76,7 @@ int print_usage(char * appname)
 		printf("   Example Usage:   %s -d COM1 -s 115200 -f sample.bmp -v\n",appname);
 		printf("\n");
 		printf("           Where: -p device is port e.g.  COM1  \n");
-		printf("                  -s Speed is port Speed  default is 115200 \n");
+		printf("                  -s Speed is port Speed  default is 921600 \n");
 		printf("                  -f Filename of BMP file \n");
 		printf("                  -b bytes to send - must be multiple of 3's. default is 6 \n");
 	    printf("                  -v verbose mode, shows whats going on \n");
@@ -139,7 +139,7 @@ int main(int argc, char** argv)
 					break;
 				case 's':
 					if (param_speed != NULL) {
-						printf(" Speed should be set: eg  115200 \n");
+						printf(" Speed should be set: eg  921600 \n");
 						exit(-1);
 					}
 					param_speed = strdup(optarg);
@@ -174,7 +174,7 @@ int main(int argc, char** argv)
 		}
 
 		if (param_speed==NULL)
-           param_speed=strdup("115200");  //default is 115200kbps
+           param_speed=strdup("921600");  //default is 921600kbps
 
 		if (param_imagefile !=NULL) {   //checks is needed to make sure this is a valid bmp file
 			//open the Imagefile  file
