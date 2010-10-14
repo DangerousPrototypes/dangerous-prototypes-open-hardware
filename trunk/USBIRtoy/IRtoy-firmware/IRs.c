@@ -225,6 +225,20 @@ unsigned char irsService(void){
 							irIOcommand.parameters=1;
 							irIOstate=I_PARAMETERS;
 							break;
+						case IRIO_IO_SET: //set these IO bits
+						case IRIO_IO_CLR: //clear these IO bits
+						case IRIO_IO_DIR: //Setup direction IO
+							irIOcommand.command[0]=irToy.s[TxBuffCtr];
+							irIOcommand.parameters=1;
+							irIOstate=I_PARAMETERS;
+							break;
+						case IRIO_IO_READ: //return the port read
+							if(mUSBUSARTIsTxTrfReady()){
+								irToy.usbOut[0]=PORTB; //not just portB, but the IO pins in the correct order....
+								irS.RXsamples=1;
+								putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+							}
+							break;
 						default:
 							break;
 					}
@@ -260,6 +274,16 @@ unsigned char irsService(void){
 						IRRX_IE = 1;  //IR RX interrupt on
 						IRRX_IF = 0;  //IR RX interrupt on
 						break;
+					case IRIO_IO_SET: //set these IO bits
+						PORTB|=irIOcommand.command[1];
+						break;
+					case IRIO_IO_CLR: //clear these IO bits
+						PORTB&=(~irIOcommand.command[1]);
+						break;						
+					case IRIO_IO_DIR: //Setup direction IO
+						TRISB=irIOcommand.command[1];
+						break;
+						
 				}
 				irIOstate=I_IDLE;//return to idle state
 				break;	
