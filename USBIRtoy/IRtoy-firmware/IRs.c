@@ -227,6 +227,7 @@ unsigned char irsService(void){
 							break;
 						case IRIO_IO_SET: //set these IO bits
 						case IRIO_IO_CLR: //clear these IO bits
+						case IRIO_IO_WRITE: //Write this to pins
 						case IRIO_IO_DIR: //Setup direction IO
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
 							irIOcommand.parameters=1;
@@ -238,6 +239,15 @@ unsigned char irsService(void){
 								irS.RXsamples=1;
 								putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
 							}
+							break;
+						case IRIO_UART_SETUP: //setup UART using CDC settings
+							break;
+						case IRIO_UART_CLOSE: //close UART
+							break;
+						case IRIO_UART_WRITE: //write to the UART, get byte to write
+							irIOcommand.command[0]=irToy.s[TxBuffCtr];
+							irIOcommand.parameters=1;
+							irIOstate=I_PARAMETERS;
 							break;
 						default:
 							break;
@@ -279,7 +289,10 @@ unsigned char irsService(void){
 						break;
 					case IRIO_IO_CLR: //clear these IO bits
 						PORTB&=(~irIOcommand.command[1]);
-						break;						
+						break;		
+					case IRIO_IO_CLR: //clear these IO bits
+						PORTB=(irIOcommand.command[1]);
+						break;							
 					case IRIO_IO_DIR: //Setup direction IO
 						TRISB=irIOcommand.command[1];
 						break;
