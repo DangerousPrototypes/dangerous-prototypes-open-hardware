@@ -35,6 +35,67 @@ static unsigned char modFreqCnt;
 
 void cleanup(void);
 
+
+
+///////////////////////// THIS IS FOR SETTING THE PORT
+
+#define HW_VERSION_V1
+//#define HW_VERSION_V2
+
+// only one at a time... else... stop the compiler immediately
+#if defined(HW_VERSION_V1) && defined (HW_VERSION_V2)
+	#error THIS SHOULD NOT OCCUR!
+#endif
+
+
+void IrS_SetPortEqual(u8 HiByte,u8 LoByte)
+{
+#if defined(HW_VERSION_V1)
+	LATC=(LATC&0x3F)|(LoByte& 0xC0);
+#elif defined(HW_VERSION_V2)
+LATA=(LATA&(~0x3C))|(LoByte&0x3C);
+LATB=(LATB&(~0x29))|(HiByte&0x29);
+#endif
+}
+
+
+
+void IrS_SetPortTrisEqual(u8 HiByte,u8 LoByte)
+{
+#if defined(HW_VERSION_V1)
+	TRISC=(TRISC&0x3F)|(LoByte& 0xC0);
+#elif defined(HW_VERSION_V2)
+TRISA=(TRISA&(~0x3C))|(LoByte&0x3C);
+TRISB=(TRISB&(~0x29))|(HiByte&0x29);
+#endif
+}
+
+
+
+u8 IrS_ReadPort(void)
+{
+#if defined(HW_VERSION_V1)
+return PORTC&0xC0;
+#elif defined(HW_VERSION_V2)
+// TODO to be done
+return
+	(
+	((PORTA>>2)&0x0F) |
+	(PORTBbits.RB0 << 4) |
+	(PORTBbits.RB3 << 5) |
+	(PORTBbits.RB5 << 6)
+	);
+#endif
+
+}
+
+
+////////////////////////
+
+
+
+
+
 static struct{
 	unsigned char RXsamples;
 	unsigned char TXsamples;
@@ -150,7 +211,17 @@ typedef struct _smCommand {
 #define IRIO_LEDOFF 	0x13
 #define IRIO_LITTLEENDIAN 0x20
 #define IRIO_BIGENDIAN 	0x21
+
+#define IRIO_IO_WRITE	0x30
+#define IRIO_IO_DIR		0x31
+#define IRIO_IO_READ	0x32
+
+#define IRIO_UART_SETUP 	0x40
+#define IRIO_UART_CLOSE		0x41
+#define IRIO_UART_WRITE		0x42
 //
+
+
 // irIO periodic service routine
 // moves bytes in and out
 //
@@ -225,17 +296,19 @@ unsigned char irsService(void){
 							irIOcommand.parameters=1;
 							irIOstate=I_PARAMETERS;
 							break;
-						case IRIO_IO_SET: //set these IO bits
-						case IRIO_IO_CLR: //clear these IO bits
+						//case IRIO_IO_SET: //set these IO bits
+						//case IRIO_IO_CLR: //clear these IO bits
 						case IRIO_IO_WRITE: //Write this to pins
 						case IRIO_IO_DIR: //Setup direction IO
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
-							irIOcommand.parameters=1;
+							irIOcommand.parameters=2; //1;
+							irIOcommand.parCnt=1;
 							irIOstate=I_PARAMETERS;
 							break;
 						case IRIO_IO_READ: //return the port read
 							if(mUSBUSARTIsTxTrfReady()){
-								irToy.usbOut[0]=PORTB; //not just portB, but the IO pins in the correct order....
+								//irToy.usbOut[0]=PORTB; //not just portB, but the IO pins in the correct order....
+								irToy.usbOut[0]=IrS_ReadPort(); //not just portB, but the IO pins in the correct order....
 								irS.RXsamples=1;
 								putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
 							}
@@ -260,7 +333,7 @@ unsigned char irsService(void){
 				irS.TXsamples--;
 				TxBuffCtr++;
 				irIOcommand.parCnt++;
-				if(irIOcommand.parCnt<irIOcommand.parameters) break; //if not all parameters, quit
+				if(irIOcommand.parCnt<(irIOcommand.parameters+1)) break; //if not all parameters, quit
 			case I_PROCESS:	//process long commands
 				switch(irIOcommand.command[0]){
 					case IRIO_SETUP_PWM: //setup user defined PWM frequency
@@ -284,18 +357,27 @@ unsigned char irsService(void){
 						IRRX_IE = 1;  //IR RX interrupt on
 						IRRX_IF = 0;  //IR RX interrupt on
 						break;
+
+#define  IRIO_COMMAND_PARAM irIOcommand.command[1],irIOcommand.command[2] // so it will be easy to adjust who is MSB and who is LSB hehe
+#if 0
 					case IRIO_IO_SET: //set these IO bits
-						PORTB|=irIOcommand.command[1];
+						//PORTB|=irIOcommand.command[1];
+						IrS_SetPortOr(IRIO_COMMAND_PARAM);
 						break;
 					case IRIO_IO_CLR: //clear these IO bits
-						PORTB&=(~irIOcommand.command[1]);
+						//PORTB&=(~irIOcommand.command[1]);
+						IrS_SetPortAnd(IRIO_COMMAND_PARAM);//
 						break;		
-					case IRIO_IO_CLR: //clear these IO bits
-						PORTB=(irIOcommand.command[1]);
+#endif
+					case IRIO_IO_WRITE: //clear these IO bits
+						//PORTB=(irIOcommand.command[1]);
+						IrS_SetPortEqual(IRIO_COMMAND_PARAM);
 						break;							
 					case IRIO_IO_DIR: //Setup direction IO
-						TRISB=irIOcommand.command[1];
+						//TRISB=irIOcommand.command[1];
+						IrS_SetPortTrisEqual(IRIO_COMMAND_PARAM);
 						break;
+#undef IRIO_COMMAND_PARAM
 						
 				}
 				irIOstate=I_IDLE;//return to idle state
