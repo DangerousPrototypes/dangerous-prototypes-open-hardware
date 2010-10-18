@@ -2,7 +2,7 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="2226" topLine="57" />
+		<Cursor position="7811" topLine="250" />
 	</File>
 	<File name="serial.c" open="1" top="0" tabpos="2">
 		<Cursor position="4660" topLine="229" />
