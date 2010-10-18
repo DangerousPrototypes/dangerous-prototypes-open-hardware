@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="main.c" open="1" top="1" tabpos="1">
+		<Cursor position="2226" topLine="57" />
+	</File>
+	<File name="serial.c" open="1" top="0" tabpos="2">
+		<Cursor position="4660" topLine="229" />
+	</File>
+</CodeBlocks_layout_file>
