@@ -65,6 +65,53 @@ else
 #endif
 
 
+void Usb2Uart_InitUart(u8 InitRx)
+{
+TRISC|=		0xC0;
+TXSTA=		0x24;
+RCSTA=(InitRx==TRUE)? 0x90:0x00;
+//RCSTA=		0x90;
+BAUDCON=	0x08;
+PIE1=		0x20;
+ResetUsbUartTxBuffers();
+ResetUsbUartRxBuffers();
+
+}
+
+
+
+void Usb2Uart_CloseUart(void)
+{
+TXSTA=0;
+RCSTA=0;
+}
+
+#if 0
+u8 Usb2UartPrepareTxData(void)
+{
+if(getUnsignedCharArrayUsbUart(UsbRxDataBuffer,1))
+	{
+	TxBuffer[TxBufferCtrIn]=UsbRxDataBuffer[0];
+	TxBufferCtrIn++;
+	TxBufferCtrIn&=USBUARTBUFCTRMASK;
+	return TRUE;
+	}
+return FALSE;
+}
+
+
+void Usb2UartSendTxDataFromBuff(void)
+{
+if((TxIf)&&(TxBufferCtrIn!=TxBufferCtrOut))  // If Uart is not full and no data to be sent
+	{
+	TXREG=TxBuffer[TxBufferCtrOut];
+	TxBufferCtrOut++;
+	TxBufferCtrOut&=USBUARTBUFCTRMASK;
+	}
+}
+#endif
+
+
 // to go back to the other default, user must unplug USB IR Toy
 u8 Usb2UartService(void)
 {
@@ -76,14 +123,15 @@ switch (Sm_Usb_Uart)
 	case SM_USB_UART_CONFIG_MODE:
 		{
 		FlushUsbRx();
-		TRISC|=		0xC0;
-		TXSTA=		0x24;
-		RCSTA=		0x90;
-		BAUDCON=	0x08;
-		PIE1=		0x20;
+		Usb2Uart_InitUart(TRUE);
+//		TRISC|=		0xC0;
+//		TXSTA=		0x24;
+//		RCSTA=		0x90;
+//		BAUDCON=	0x08;
+//		PIE1=		0x20;
+		//ResetUsbUartTxBuffers();
+		//ResetUsbUartRxBuffers();
 		Sm_Usb_Uart=SM_USB_UART_CONFIG_MODE_OK;
-		ResetUsbUartTxBuffers();
-		ResetUsbUartRxBuffers();
 		break;
 		}
 
@@ -96,14 +144,17 @@ switch (Sm_Usb_Uart)
 
 	case SM_USB_UART_RUN_MODE:
 		{
+#if 1
 		if(getUnsignedCharArrayUsbUart(UsbRxDataBuffer,1))
 			{
 			TxBuffer[TxBufferCtrIn]=UsbRxDataBuffer[0];
 			TxBufferCtrIn++;
 			TxBufferCtrIn&=USBUARTBUFCTRMASK;
 			}
+#endif
 
-		else if(RxBufferCtrIn!=RxBufferCtrOut)
+		if(RxBufferCtrIn!=RxBufferCtrOut)
+		//if ((Usb2UartPrepareTxData()==FALSE) && (RxBufferCtrIn!=RxBufferCtrOut))
 			{
 			if( mUSBUSARTIsTxTrfReady() )
 				{
@@ -119,13 +170,16 @@ switch (Sm_Usb_Uart)
 		}
 	} // end of switch
 
+
+//	Usb2UartSendTxDataFromBuff();
+#if 1
 	if((TxIf)&&(TxBufferCtrIn!=TxBufferCtrOut))  // If Uart is not full and no data to be sent
 		{
 		TXREG=TxBuffer[TxBufferCtrOut];
 		TxBufferCtrOut++;
 		TxBufferCtrOut&=USBUARTBUFCTRMASK;
 		}
-
+#endif
 	if(RCSTA&0x06) // error handling
 		{
 		RCSTAbits.CREN=0;

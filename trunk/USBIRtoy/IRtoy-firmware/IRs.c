@@ -314,12 +314,15 @@ unsigned char irsService(void){
 							}
 							break;
 						case IRIO_UART_SETUP: //setup UART using CDC settings
+							Usb2Uart_InitUart(FALSE);
 							break;
 						case IRIO_UART_CLOSE: //close UART
+							Usb2Uart_CloseUart();
 							break;
 						case IRIO_UART_WRITE: //write to the UART, get byte to write
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
 							irIOcommand.parameters=1;
+							irIOcommand.parCnt=1;
 							irIOstate=I_PARAMETERS;
 							break;
 						default:
@@ -378,7 +381,13 @@ unsigned char irsService(void){
 						IrS_SetPortTrisEqual(IRIO_COMMAND_PARAM);
 						break;
 #undef IRIO_COMMAND_PARAM
-						
+					case IRIO_UART_WRITE:
+						if(TxIf)  // If Uart is not full and no data to be sent
+							{
+							TXREG=irIOcommand.command[1];
+							}
+						break;
+
 				}
 				irIOstate=I_IDLE;//return to idle state
 				break;	

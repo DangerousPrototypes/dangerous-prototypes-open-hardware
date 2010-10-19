@@ -16,6 +16,10 @@ void Usb2UartSetup(void);
 u8 Usb2UartService(void);
 void Usb2UartInterruptHandlerHigh (void);
 
+void Usb2Uart_InitUart(u8 InitRx);
+void Usb2Uart_CloseUart(void);
+
+
 void mySetLineCodingHandler(void);
 
 #define RcIf	PIR1bits.RCIF
