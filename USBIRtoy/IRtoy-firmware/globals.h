@@ -15,6 +15,9 @@ typedef unsigned long u32;
 
 #define INVALID	0xFF
 
+//#define TRUE	1
+//#define FALSE 	0
+
 // =================== GLOBAL HEADERS
 #include "HardwareProfile.h"
 #include "GenericTypeDefs.h"
