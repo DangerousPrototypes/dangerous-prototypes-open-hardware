@@ -39,53 +39,43 @@ void cleanup(void);
 
 ///////////////////////// THIS IS FOR SETTING THE PORT
 
-#define HW_VERSION_V1
-//#define HW_VERSION_V2
-
-// only one at a time... else... stop the compiler immediately
-#if defined(HW_VERSION_V1) && defined (HW_VERSION_V2)
-	#error THIS SHOULD NOT OCCUR!
-#endif
-
-
 void IrS_SetPortEqual(u8 HiByte,u8 LoByte)
 {
-#if defined(HW_VERSION_V1)
-	LATC=(LATC&0x3F)|(LoByte& 0xC0);
-#elif defined(HW_VERSION_V2)
-LATA=(LATA&(~0x3C))|(LoByte&0x3C);
-LATB=(LATB&(~0x29))|(HiByte&0x29);
-#endif
+	if(irToy.HardwareVersion<2){
+		LATC=(LATC&0x3F)|(LoByte& 0xC0);
+	}else{
+		LATA=(LATA&(~0x3C))|(LoByte&0x3C);
+		LATB=(LATB&(~0x29))|(HiByte&0x29);
+	}
 }
 
 
 
 void IrS_SetPortTrisEqual(u8 HiByte,u8 LoByte)
 {
-#if defined(HW_VERSION_V1)
-	TRISC=(TRISC&0x3F)|(LoByte& 0xC0);
-#elif defined(HW_VERSION_V2)
-TRISA=(TRISA&(~0x3C))|(LoByte&0x3C);
-TRISB=(TRISB&(~0x29))|(HiByte&0x29);
-#endif
+	if(irToy.HardwareVersion<2){
+		TRISC=(TRISC&0x3F)|(LoByte& 0xC0);
+	}else{
+		TRISA=(TRISA&(~0x3C))|(LoByte&0x3C);
+		TRISB=(TRISB&(~0x29))|(HiByte&0x29);
+	}
 }
 
 
 
 u8 IrS_ReadPort(void)
 {
-#if defined(HW_VERSION_V1)
-return PORTC&0xC0;
-#elif defined(HW_VERSION_V2)
-// TODO to be done
-return
-	(
-	((PORTA>>2)&0x0F) |
-	(PORTBbits.RB0 << 4) |
-	(PORTBbits.RB3 << 5) |
-	(PORTBbits.RB5 << 6)
-	);
-#endif
+	if(irToy.HardwareVersion<2){
+		return PORTC&0xC0;
+	}else{
+		return
+			(
+			((PORTA>>2)&0x0F) |
+			(PORTBbits.RB0 << 4) |
+			(PORTBbits.RB3 << 5) |
+			(PORTBbits.RB5 << 6)
+			);
+	}
 
 }
 
