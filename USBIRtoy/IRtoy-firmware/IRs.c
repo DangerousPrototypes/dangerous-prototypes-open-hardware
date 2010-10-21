@@ -29,7 +29,7 @@
 
 extern struct _irtoy irToy;
 
-static unsigned char h,l,tmr0_buf[2];
+static unsigned char h,l,tmr0_buf[2], liyin=0;
 static unsigned char modFreq[8];
 static unsigned char modFreqCnt;
 
@@ -201,6 +201,7 @@ typedef struct _smCommand {
 #define IRIO_LEDOFF 	0x13
 #define IRIO_LITTLEENDIAN 0x20
 #define IRIO_BIGENDIAN 	0x21
+#define IRIO_LIYIN		0x22
 
 #define IRIO_IO_WRITE	0x30
 #define IRIO_IO_DIR		0x31
@@ -240,14 +241,14 @@ unsigned char irsService(void){
 							break;
 						case IRIO_TRANSMIT: //start transmitting
 							//setup for transmit mode:
-								//disable timer 0, 1, 2, etc
+							//disable timer 0, 1, 2, etc
 							TM0IE=0; 
 							T1IE=0;
 							IRRX_IE = 0;
 							irS.TXend=0;
 							irS.TX=0;
-								//setup the PWM pin, frequency etc.
-								//setup timer 0
+							//setup the PWM pin, frequency etc.
+							//setup timer 0
 							irS.txflag=0;//transmit flag =0 reset the transmit flag
 							irIOstate = I_DATA_H; //change to transmit data processing state 
 							break;
@@ -275,6 +276,9 @@ unsigned char irsService(void){
 							break;
 						case IRIO_BIGENDIAN:
 							irS.bigendian=1;
+							break;
+						case IRIO_LIYIN:
+							liyin=1;
 							break;
 						case IRIO_SETUP_PWM: //setup PWM frequency
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
@@ -330,16 +334,26 @@ unsigned char irsService(void){
 			case I_PROCESS:	//process long commands
 				switch(irIOcommand.command[0]){
 					case IRIO_SETUP_PWM: //setup user defined PWM frequency
+						//stop timer
 						T2CON = 0;
+
+						//setup the user defined period
 						PR2 = irIOcommand.command[1];//user period
-						CCPR1L =(irIOcommand.command[1]>>1);//upper 8 bits of duty cycle, 50% of period by binary division
-						if((irIOcommand.command[1]& 0b1)!=0)//if LSB is set, set bit 1 in CCP1CON
+#define DUTY irIOcommand.command[1]
+						//setup the duty cycle
+						if(irIOcommand.command[2]>0){;//user duty?
+							DUTY=irIOcommand.command[2];//move to variable
+						}
+
+						CCPR1L =(DUTY>>1);//upper 8 bits of duty cycle, 50% of period by binary division
+						if((DUTY& 0b1)!=0)//if LSB is set, set bit 1 in CCP1CON
 							CCP1CON = 0b00101100 ; //5-4 two LSB of duty, 3-0 set PWM
 						else
 							CCP1CON = 0b00001100 ; //5-4 two LSB of duty, 3-0 set PWM
 
 						T2CON = 0b00000101; //enable timer again, 4x prescaler				
 						break;
+#undef DUTY
 					case IRIO_SETUP_SAMPLETIMER:	
 						T0CON=0;	//setup timer 0
 						IRRX_IE=0;  //IR RX interrupt off
@@ -663,7 +677,7 @@ void irsInterruptHandlerHigh (void){
 				//packet terminator, 1.7S with no signal
 				h=0xff; //add to USB send buffer
 				l=0xff; //add to USB send buffer
-				irS.rxflag=1;
+				if(liyin==0)irS.rxflag=1;//only send 0xff oxff if you're not liyin
 				//set the flush flag to send the packet from the main loop
 				irS.flushflag=1;
 			}else{//error, overflow
