@@ -1,0 +1,16 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'MSP430F2132.dev';
+Prefix 'IC';
+Description '16-bit Ultra-Low-Power Microcontroller, 8kB Flash, 512B RAM, 10 bit ADC, 1 USCI';
+Value Off;
+Add MSP430F21X2 'G$1' Next 0 (0 0);
+Package 'TSSOP28' '''''';
+Technology '';
+Connect  'G$1.TEST/SBWTCK' '1'  'G$1.DVCC' '2'  'G$1.P2.5/ROSC/CA5' '3'  'G$1.DVSS' '4'  'G$1.XOUT/P2.7/CA7' '5' \
+         'G$1.XIN/P2.6/CA6' '6'  'G$1.!RST!/NMI/SBWTDIO' '7'  'G$1.P2.0/ACLK/A0/CA2' '8'  'G$1.P2.1/TAINCLK/SMCLK/A1/CA3' '9'  'G$1.P2.2/TA0.0/A2/CA4/CAOUT' '10'  'G$1.P3.0/UCB0STE/UCA0CLK/A5' '11' \
+         'G$1.P3.1/UCB0SIMO/UCB0SDA' '12'  'G$1.P3.2/UCB0SOMI/UCB0SCL' '13'  'G$1.P3.3/UCB0CLK/UCA0STE' '14'  'G$1.UCA0SIMO/UCA0TXD/P3.4' '15'  'G$1.UCA0SOMI/UCA0RXD/P3.5' '16'  'G$1.A6/TA1.0/P3.6' '17' \
+         'G$1.A7/TA1.1/P3.7' '18'  'G$1.CA0/VEREF-/VREF-/A3/TA0.1/P2.3' '19'  'G$1.CA1/VEREF+/VREF+/A4/TA0.2/P2.4' '20'  'G$1.CAOUT/ADC10CLK/TACLK/P1.0' '21'  'G$1.TA1.0/TA0.0/P1.1' '22'  'G$1.TA0.1/P1.2' '23' \
+         'G$1.TA0.2/P1.3' '24'  'G$1.TCK/SMCLK/P1.4' '25'  'G$1.TMS/TA0.0/P1.5' '26'  'G$1.TCLK/TDI/TA0.1/P1.6' '27'  'G$1.TDI/TDO/TA0.2/P1.7' '28';
+Grid inch;
