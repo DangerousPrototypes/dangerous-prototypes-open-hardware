@@ -1,0 +1,37 @@
+This is a port of FreeRTOS, uIP and FatFS to the WebPlatform
+============================================================
+
+By Matt Callow Oct 2010
+
+FreeRTOS - V6.0.5
+uIP - V1.0
+FatFS - R0.08a
+Ethernet interface with DMA is from the uIPStack by bonyrown
+
+Current state:
+ - Pre-emptive FreeRTOS kernel
+ - Ethernet using DMA
+ - Fat Filesystem, accessing the micro-SD card
+ - TCP/IP stack (uIP) running in a single task with:
+   - Web server, serving pages from the SD card
+   - dhcp client
+
+The we server reads file from the /WWW directory on the SD card. 
+Change the WWW_ROOT #define in httpd.c if you want to change this
+Currently, there FAT support is for 8.3 filenames only. 
+Therefore, you should create INDEX.HTM in the WW_ROOT of the SD card. This will be the default start page.
+
+On statup, the server will request an IP address via dhcp. The configured IP address is written to the serial port.
+
+TODO:
+ - CGI scripts/SSI - actually control something via the web interface!
+ - Reduce memory usage
+ - work out why we can't send full size segments from httpd
+ - Better handling of SD card startup
+ - Code cleanup
+ - DHCPC - renew lease
+ - LFN support?
+ - Better logging
+ - Telnet?
+ - Microchip IP announce protocol?
+
