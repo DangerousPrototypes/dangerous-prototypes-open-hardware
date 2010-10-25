@@ -38,3 +38,29 @@
 	<string.h>
 	"serial.h"
 
+1287999367 source:c:\source\dangerousprototypes\usbirtoy\software\irtoyrecplayv0.3\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1287999367 c:\source\dangerousprototypes\usbirtoy\software\irtoyrecplayv0.3\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+

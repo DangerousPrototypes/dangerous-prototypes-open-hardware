@@ -14,6 +14,34 @@
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
+/* spanner 2010-10 v0.31
+ * some minor tidy up of text, finished implementation of a v minimal verbose display option
+ * Added two automated / macro play modes to the original play mode:
+ * Three play modes:
+ * 1. -p f NAME
+ *     This is the unchanged method form the origianl release.
+ *     Plays all bin files matching NAME_nnn.bin, where nnn starts at 000 and consists of SEQUENTIAL numbers. Stops at first gap in numbers, or last file.
+ *     In this mode user MUST press any key, except 'x', to play next file/command.
+ * 2. -p f NAME - a nnn
+ *     Plays as above, except does NOT wait for any key to be pressed, instead delays nnn miliseconds between sending each file.
+ *     500 is recommended as a starting delay. On old P4 computer, no delay always hangs the IRToy (have to uplug & plug in again to reset).
+ * 3. -q -f NAME
+ *     Play command files listed in the file indicated in -f parameter (requires -f )
+ *
+ *         Note the file names can be random, ie the numbered sequential rule does not apply.
+ *         Sample file content:
+ *         sanyo_000.bin
+ *         sanyo_010.bin
+ *         sanyo_020.bin
+ *         sanyo_500.bin
+ *
+ *         Files can be in a subdirectory if use the following syntax:
+ *         .\\dvd\\sanyo_000.bin
+ *         .\\dvd\\sanyo_010.bin
+ *         .\\dvd\\sanyo_020.bin
+ *         .\\dvd\\sanyo_500.bin
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,17 +51,21 @@
 #ifdef _WIN32
 #include <conio.h>
 #include <windef.h>
+#include <windows.h>
 #else
 #include <sys/select.h>
 #include <ncurses.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 //#define int BOOL
 
 #endif
 
 #include "serial.h"
-#define FREE(x) if(x) free(x);
+#define FREE(x) if(x) free(x);#define IRTOY_VERSION "v0.031"
+
+
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -88,6 +120,7 @@ int print_usage(char * appname)
 
 		//print usage
 		printf("\n\n");
+       printf(" IRToy version: %s\n", IRTOY_VERSION);
         printf(" Usage:              \n");
 		printf("   %s  -d device [-s speed]\n ",appname);
 		printf("\n");
@@ -101,7 +134,10 @@ int print_usage(char * appname)
 		printf("                  -s Speed is port Speed  default is 115200 \n");
 		printf("                  -f Output/input file is a base filename for recording/playing pulses  \n");
         printf("                  -r Record into a file indicated in -f parameter (requires -f) \n");
-		printf("                  -p means play the file/sequence of file indicated in -f parameter (requires -f \n");
+		printf("                  -p Play the file/sequence of file indicated in -f parameter (requires -f \n");
+		printf("                  -q Play command files listed in the file indicated in -f parameter (requires -f )\n");
+		printf("                  -a Optional automatic play (does not wait for keypress). \n\t\t\tYou must specify delay in milliseconds between sending each command.\n");
+		printf("                  -v Display verbose output, have to specify level 0, 1 etc, although at present it is only on or off :).\n");
 		printf("\n");
 #ifdef _WIN32
 		printf("           %s -d com3    - default used is: -s 115200, displays data from IRTOY\n", appname);
@@ -131,13 +167,14 @@ int main(int argc, char** argv)
 	char *param_port = NULL;
 	char *param_speed = NULL;
 	char *param_fname=NULL;
+	char *param_delay=NULL;
 	char inkey;
 	FILE *fp=NULL;
 	char fnameseq[80];
 	#ifndef _WIN32
 	typedef bool BOOL;
 	#endif
-	BOOL record=FALSE, play=FALSE,no_data_yet=TRUE,file_created=FALSE;
+	BOOL record=FALSE, play=FALSE, queue=FALSE, no_data_yet=TRUE, file_created=FALSE;
 
 	#ifndef _WIN32
 //just to get the display need required on linux
@@ -154,7 +191,7 @@ int main(int argc, char** argv)
 
 	printf("-------------------------------------------------------------------------\n");
 	printf("\n");
-	printf(" IR TOY Recorder/Player utility v0.3 (CC-0)\n");
+	printf(" IR TOY Recorder/Player utility %s (CC-0)\n", IRTOY_VERSION);
 	printf(" http://dangerousprototypes.com\n");
 	printf("\n");
 	printf("-------------------------------------------------------------------------\n");
@@ -164,10 +201,21 @@ int main(int argc, char** argv)
 			exit(-1);
 		}
 
-	while ((opt = getopt(argc, argv, "mrps:d:f:")) != -1) {
+	while ((opt = getopt(argc, argv, "mrpqsv:a:d:f:")) != -1) {
        // printf("%c  \n",opt);
 		switch (opt) {
 
+			case 'v':  // verbose output
+                verbose=-1;
+				break;
+			case 'a':  // delay in miliseconds
+				if ( param_delay != NULL){
+					printf(" delay error!\n");
+					exit(-1);
+				}
+				param_delay = strdup(optarg);
+				//printf("delay %s - %d \n", param_delay, atoi(param_delay));
+				break;
 			case 'd':  // device   eg. com1 com12 etc
 				if ( param_port != NULL){
 					printf(" Device/PORT error!\n");
@@ -197,6 +245,9 @@ int main(int argc, char** argv)
             case 'p':    //play
                 play =TRUE;   // enable modem mode
 				break;
+            case 'q':    //play command queue from file (ie macro command list)
+                queue =TRUE;
+				break;
 			case 'r':    //record
                 record =TRUE;   // enable modem mode
 				break;
@@ -209,6 +260,8 @@ int main(int argc, char** argv)
 	}
 
  //defaults here --------------
+    if (param_delay==NULL)
+		param_delay=strdup("-1");
     if (param_port==NULL){
         printf(" No serial port set\n");
 		print_usage(argv[0]);
@@ -249,6 +302,7 @@ int main(int argc, char** argv)
     }
     else{
         fprintf(stderr," Error: IR Toy doesn't have a reply\n ");
+        exit(-1);
     }
     cnt=0;
     c=0;
@@ -364,6 +418,8 @@ int main(int argc, char** argv)
         printf(" Entering Player Mode \n");
         fcounter=0;
         inkey=0;
+        int delay = atoi(param_delay) ;
+        int firstfile = 0;
         while (1) {
             sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
             fp=fopen(fnameseq,"rb");
@@ -375,36 +431,46 @@ int main(int argc, char** argv)
 
                break;
             }
-            printf(" Press a key to start playing %s or X to exit \n",fnameseq);
-            while (1) {
-              if(kbhit()) {
+            if (delay< 0){
+				printf(" Press a key to start playing %s or X to exit \n",fnameseq);
+				while (1) {
+				  if(kbhit()) {
 #ifdef _WIN32
-                  inkey=getch();
+					  inkey=getch();
 #else
-                  inkey = fgetc(stdin);
+					  inkey = fgetc(stdin);
 #endif
 
-                 if ((inkey=='x') || (inkey=='X')) {
-                     break;
-                 }
-                 else
-                    break;
+					 if ((inkey=='x') || (inkey=='X')) {
+						 break;
+					 }
+					 else
+						break;
 
-              }
+				  }
 
+				}
+				if (inkey=='x'|| inkey=='X'){
+					  break;
+				}
+			}
+            if ((delay > 0) && (firstfile++ > 0)){
+                if (verbose)
+                    printf("....delay is %d miliseconds.\n", atoi(param_delay));
+                Sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
             }
-            if (inkey=='x'|| inkey=='X'){
-                  break;
-            }
+
             printf("\n Playing file: %s\n",fnameseq);
 
             serial_write( fd, "\x03", 1);
             while(!feof(fp)) {
 		       if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
-		            printf(" Sending Bytes to IRToy...\n");
-		            for(i=0;i<res;i++)
-		                printf(" %02X ",(uint8_t) buffer[i]);
-		            printf("\n");
+                    if (verbose){
+						printf(" Sending Bytes to IRToy...\n");
+						for(i=0;i<res;i++)
+							printf(" %02X ",(uint8_t) buffer[i]);
+						printf("\n");
+					}
                     serial_write( fd, buffer, res);
 
                }
@@ -415,7 +481,61 @@ int main(int argc, char** argv)
         }
 
     } // play=true
-    printf("\n Thank you for playing with the IRToy. \n");
+    if (queue==TRUE){
+        FILE *fpq=NULL;
+
+        //check filename if exist
+        printf(" Entering Queue mode: play commands from file\n");
+
+        fpq=fopen(param_fname,"r");
+        if (fpq==NULL)
+            printf(" Queue command file does not exist. \n");
+        else {
+            char cmdfile[255];
+            int len = 0;
+            while (fgets(cmdfile, sizeof(cmdfile), fpq )){
+                len = strlen(cmdfile);
+                if( cmdfile[len-1] == '\n' )
+                    cmdfile[len-1] = 0;
+                fp=fopen(cmdfile,"rb");
+                if (fp==NULL) {
+                    printf("    Comand file %s does not exist. \n", cmdfile);
+                    break;
+                }
+                else{
+                    printf("      Sending command file %s \n", cmdfile);
+                    serial_write( fd, "\x03", 1);
+                    int comsresult = 0;
+                    while(!feof(fp)) {
+                       if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
+                            if (verbose){
+                                printf(" Sending Bytes to IRToy...\n");
+                                for(i=0;i<res;i++)
+                                    printf(" %02X ",(uint8_t) buffer[i]);
+                                printf("\n");
+                            }
+                            comsresult = serial_write( fd, buffer, res);
+                            if (comsresult != res){
+                                printf("comms error level 2 %d\n", comsresult);
+                                break;
+                            }
+                            comsresult = 0;
+                            //wait 500 milliseconds - for comms to finish, else get errors. Could try smaller, but no delay always fails & locks up the ORToy!
+                            Sleep(500);             //check if same on unix, ....
+                       }
+                    }
+                    if(comsresult){
+                        printf("comms error level 1 %d\n", comsresult);
+                        break;
+                    }
+                }
+                fclose(fp);
+            }
+        }
+        fclose(fpq);
+    } // queue=true
+
+    printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
     serial_close(fd);
 	FREE(param_port);
 	FREE(param_speed);
