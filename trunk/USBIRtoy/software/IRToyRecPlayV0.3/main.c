@@ -64,6 +64,7 @@
 
 #include "serial.h"
 #define FREE(x) if(x) free(x);#define IRTOY_VERSION "v0.031"
+#define IRTOY_VERSION "v0.031"
 
 
 
