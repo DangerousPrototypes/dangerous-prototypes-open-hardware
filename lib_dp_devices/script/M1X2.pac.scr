@@ -3,8 +3,8 @@ Grid mm;
 
 Edit 'M1X2.pac';
 Description '';
-Change Drill 0.8;Pad '1' Square 0 R0 (-1.27 0);
-Change Drill 0.8;Pad '2' Round 0 R0 FIRST (1.27 0);
+Change Drill 0.8;Pad '1' Square 0 R0 FIRST (-1.27 0);
+Change Drill 0.8;Pad '2' Round 0 R0 (1.27 0);
 Layer 21;
 Wire  0.127 (-2.54 -1.27) (-2.54 1.27) (0 1.27) (2.54 1.27) \
       (2.54 -1.27) (0 -1.27) (-2.54 -1.27);

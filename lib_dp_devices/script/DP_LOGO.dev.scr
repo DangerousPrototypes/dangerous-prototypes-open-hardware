@@ -11,4 +11,3 @@ Technology '';
 Technology '';
 Attribute LICENSE 'CC-BY-SA' variable;
 Attribute PROJECT 'project' variable;
-Grid inch;
