@@ -63,8 +63,8 @@
 #endif
 
 #include "serial.h"
-#define FREE(x) if(x) free(x);#define IRTOY_VERSION "v0.031"
-#define IRTOY_VERSION "v0.031"
+#define FREE(x) if(x) free(x);
+#define IRTOY_VERSION "v0.032"
 
 
 
@@ -161,7 +161,7 @@ int main(int argc, char** argv)
 {
 	int cnt, i,flag;
 	int opt;
-	char buffer[256] = {0};
+	char buffer[128] = {0};   //[256] = {0};
 	uint8_t IRCode;
 	int fd,fcounter;
 	int res,c;
@@ -458,21 +458,37 @@ int main(int argc, char** argv)
             if ((delay > 0) && (firstfile++ > 0)){
                 if (verbose)
                     printf("....delay is %d miliseconds.\n", atoi(param_delay));
+#ifdef _WIN32
                 Sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+#else
+                sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+#endif
             }
 
             printf("\n Playing file: %s\n",fnameseq);
 
+            int comsresult = 0;
             serial_write( fd, "\x03", 1);
             while(!feof(fp)) {
-		       if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
+               if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
                     if (verbose){
-						printf(" Sending Bytes to IRToy...\n");
-						for(i=0;i<res;i++)
-							printf(" %02X ",(uint8_t) buffer[i]);
-						printf("\n");
-					}
-                    serial_write( fd, buffer, res);
+                        printf("     Sending %d Bytes to IRToy...\n", res);
+                        for(i=0;i<res;i++)
+                            printf(" %02X ",(uint8_t) buffer[i]);
+                        printf("\n");
+                    }
+                    comsresult = serial_write( fd, buffer, res);
+                    if (comsresult != res){
+                        printf("## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
+                        serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
+                        exit(-1);
+                    }
+                    comsresult = 0;
+#ifdef _WIN32
+                Sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+#else
+                sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+#endif
 
                }
            }
@@ -482,6 +498,7 @@ int main(int argc, char** argv)
         }
 
     } // play=true
+
     if (queue==TRUE){
         FILE *fpq=NULL;
 
@@ -510,19 +527,23 @@ int main(int argc, char** argv)
                     while(!feof(fp)) {
                        if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
                             if (verbose){
-                                printf(" Sending Bytes to IRToy...\n");
+                                printf(" ######Sending -%d- Bytes to IRToy...\n", res);
                                 for(i=0;i<res;i++)
                                     printf(" %02X ",(uint8_t) buffer[i]);
                                 printf("\n");
                             }
                             comsresult = serial_write( fd, buffer, res);
                             if (comsresult != res){
-                                printf("comms error level 2 %d\n", comsresult);
-                                break;
+                                printf("## comms error bytes sent %d <> bytes supposed to be sent %d\n", comsresult, res);
+                                serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);       //trying to 'reset' IR Toy after error
+                                exit(-1);
                             }
                             comsresult = 0;
-                            //wait 500 milliseconds - for comms to finish, else get errors. Could try smaller, but no delay always fails & locks up the ORToy!
-                            Sleep(500);             //check if same on unix, ....
+#ifdef _WIN32
+                            Sleep(500);                                       //wait 500 milliseconds - for comms to finish, else get errors. Could try smaller, but no delay always fails & locks up the ORToy!
+#else
+                            sleep(500));                                      //wait 500 milliseconds - for comms to finish, else get errors. Could try smaller, but no delay always fails & locks up the ORToy!
+#endif
                        }
                     }
                     if(comsresult){
