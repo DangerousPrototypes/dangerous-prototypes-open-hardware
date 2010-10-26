@@ -1,0 +1,15 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'W25X10.sym';
+Layer 94;
+Wire  0.254 (-7.62 10.16) (7.62 10.16) (7.62 -10.16) (-7.62 -10.16) \
+      (-7.62 10.16);
+Pin 'CS' I/O None Middle R0 Both 0 (-12.7 7.62);
+Pin 'DO' I/O None Middle R0 Both 0 (-12.7 2.54);
+Pin 'WP' I/O None Middle R0 Both 0 (-12.7 -2.54);
+Pin 'GND' Pwr None Middle R0 Both 0 (-12.7 -7.62);
+Pin 'DIO' I/O None Middle R180 Both 0 (12.7 -7.62);
+Pin 'CLK' I/O None Middle R180 Both 0 (12.7 -2.54);
+Pin 'HOLD' I/O None Middle R180 Both 0 (12.7 2.54);
+Pin 'VCC' Pwr None Middle R180 Both 0 (12.7 7.62);
