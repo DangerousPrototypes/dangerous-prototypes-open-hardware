@@ -11,7 +11,7 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-p com3  -s 115200 -f tulips.bmp -V" />
+				<Option parameters="-p com3  -s 115200 -f tulips.bmp -V -B 5460" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
