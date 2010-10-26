@@ -100,7 +100,7 @@ int print_usage(char * appname)
 	printf("           Where: -p device is port e.g.  COM1 (windows) or /dev/ttyS0 (*nix) \n");
 	printf("                  -s Speed is port Speed  default is 921600 \n");
 	printf("                  -f Filename of BMP file \n");
-	printf("                  -b bytes, bytes to send - must be multiple of 3's. default is 6 \n");
+	printf("                  -B bytes, No. Of chunks of bytes to send to the  port. MAX 5460   \n");
 	printf("                  -d percent, dim the backlight, Range (0-100)  \n");
 	printf("                  -a LCD Backligh voltage reading  \n");
 	printf("                  -v version information  \n");
@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 		BITMAPINFO *headerinfo;
 		int headersize,bitmapsize;
 		uint8_t *i_bits=NULL,*o_bits=NULL;  // input bits array from original bitmap file, output bit as converted
-		int chunksize=6;  //default chunk of bytes to send must be set to max the device can handle without loss of data
+		int chunksize=300 * 3 ;  //default chunk of bytes to send must be set to max the device can handle without loss of data
 		uint8_t b[3] ={0};
 		BOOL breakout=FALSE;
 		BOOL verbose_mode=FALSE;
@@ -158,7 +158,7 @@ int main(int argc, char** argv)
 			exit(-1);
 		}
 
-		while ((opt = getopt(argc, argv, "iTtvVbas:p:f:d:")) != -1) {
+		while ((opt = getopt(argc, argv, "iTtvVas:p:f:d:B:")) != -1) {
 
 			switch (opt) {
 				case 'p':  // device   eg. com1 com12 etc
@@ -182,11 +182,12 @@ int main(int argc, char** argv)
 					}
 					param_speed = strdup(optarg);
 					break;
-				case 'b':    //
-				    if ((atol(optarg) % 3 ==0)&&(atol(optarg)!=0) )
-				         chunksize=atol(optarg);
+				case 'B':    // added new: chuck size should be multiply by 3
+				    // 1 * 3 up to max of file size or max port speed?
+				    if ((atol(optarg) < MAX_BUFFER/3 )&&(atol(optarg)!=0) )
+				         chunksize=atol(optarg)*3;
 				    else {
-				       printf(" Invalid send byte parameter: using default\n");
+				       printf(" Invalid chunk size parameter: using default: %i x 3 = %i Bytes\n",chunksize/3,chunksize);
 
 				    }
 				    break;
@@ -358,13 +359,13 @@ int main(int argc, char** argv)
                      exit(-1);
                }
                headersize = header.bfOffBits - sizeof(BITMAPFILEHEADER);
-
+            //   printf("Header.bfoffbits: %lu  Sizeof Bitmapfilehader: %i Headersize is : %i\n",header.bfOffBits,sizeof(BITMAPFILEHEADER),headersize);
                if ((headerinfo = (BITMAPINFO *)malloc(headersize)) == NULL){
                     printf("Error allocating memory\n");
                     fclose(fp);
                     exit(-1);
                }
-               //error in debian here
+               //error in debian here-> might be because I am using 64 bit
                if ((res=fread(headerinfo, 1, headersize, fp)) < headersize){
                     printf("Error: Headersize Error %i < %i\n",res,headersize );
                     fclose(fp);
@@ -415,7 +416,7 @@ int main(int argc, char** argv)
 					 exit(-1);
 
 				}
-				printf(" Opening Port on %s at %sbps, using image file %s chunksize = %i \n", param_port, param_speed,param_imagefile,chunksize);
+				printf(" Opening Port on %s at %sbps, using image file %s chunksize = %i X %i \n", param_port, param_speed,param_imagefile,chunksize/3,3);
 				printf(" Ready to convert %d bit into 12 bit image data.. \n",headerinfo->bmiHeader.biBitCount);
 				printf(" Press any key when ready...\n");
 				getch();
@@ -514,6 +515,7 @@ int main(int argc, char** argv)
 				has_more_data=TRUE;
 				i=0;
 				while(i< in){
+
 					for (c=0; c < chunksize; c++) {
 						if (i+c < in){
 							buffer[c]= o_bits[i+c];

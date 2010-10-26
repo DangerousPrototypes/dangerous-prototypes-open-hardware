@@ -21,15 +21,14 @@
 #include <WinDef.h>
 
 #else
-
-//#include <curses.h>
-#define usleep(x) Sleep(x);
-
+#include <stdbool.h>
+#include <curses.h>
+#define  Sleep(x) usleep(x);
+#define HANDLE int;
 #endif
 #include "serial.h"
 char *dumpfile;
-HANDLE dumphandle;
-int modem =FALSE;   // use by command line switch -m to set to true
+
 #define FREE(x) if(x) free(x);
 
 #define MAX_BUFFER 16384   //16kbytes
@@ -37,6 +36,8 @@ int modem =FALSE;   // use by command line switch -m to set to true
 //structure of bmp header
 #ifndef _WIN32
 //taken from msdn so that it will compile under debian not yet done!!
+typedef unsigned char BYTE;
+//typedef int HANDLE;
 typedef struct tagBITMAPFILEHEADER {
   unsigned short bfType;
   unsigned long bfSize;
@@ -58,12 +59,23 @@ typedef struct tagBITMAPINFOHEADER {
   unsigned long biClrImportant;
 } BITMAPINFOHEADER;
 
+typedef struct tagRGBQUAD {
+  BYTE rgbBlue;
+  BYTE rgbGreen;
+  BYTE rgbRed;
+  BYTE rgbReserved;
+} RGBQUAD;
+
 typedef struct tagBITMAPINFO {
   BITMAPINFOHEADER bmiHeader;
   RGBQUAD bmiColors[1];
 } BITMAPINFO;
+typedef bool BOOL;
+#else
+HANDLE dumphandle;
 #endif
 
+int modem =FALSE;   // use by command line switch -m to set to true
 #  define BF_TYPE 0x4D42                   // MB
 int print_usage(char * appname)
 {
@@ -72,14 +84,23 @@ int print_usage(char * appname)
 	printf("\n");
 	printf(" Help Menu\n");
 	printf(" Usage:              \n");
-	printf("   %s  -p device -f sample.bmp -s speed -b bytes \n ",appname);
+	printf("   %s  -p device -f bmpfile -s speed -b bytes -V\n ",appname);
 	printf("\n");
+#ifdef _WIN32
 	printf("   Example Usage:   %s -d COM1 -s 921600 -f sample.bmp -v\n",appname);
+	printf("                    %s -d COM1 -s 921600 -v -a \n",appname);
+	printf("                    %s -d COM1 -s 921600 -i -d 20\n",appname);
+#else
+	printf("   Example Usage:   %s -d /dev/ttyS0 -s 921600 -f sample.bmp -v\n",appname);
+	printf("                    %s -d /dev/ttyS0 -s 921600 -v -a \n",appname);
+	printf("                    %s -d /dev/ttyS0 -s 921600 -i -d 20\n",appname);
+
+#endif
 	printf("\n");
-	printf("           Where: -p device is port e.g.  COM1  \n");
+	printf("           Where: -p device is port e.g.  COM1 (windows) or /dev/ttyS0 (*nix) \n");
 	printf("                  -s Speed is port Speed  default is 921600 \n");
 	printf("                  -f Filename of BMP file \n");
-	printf("                  -b bytes, bytes to send - must be multiple of 3's. default is 6 \n");
+	printf("                  -B bytes, No. Of chunks of bytes to send to the  port. MAX 5460   \n");
 	printf("                  -d percent, dim the backlight, Range (0-100)  \n");
 	printf("                  -a LCD Backligh voltage reading  \n");
 	printf("                  -v version information  \n");
@@ -87,8 +108,8 @@ int print_usage(char * appname)
 	printf("                  -V verbose mode- show something on screen  \n");
  	printf("                  -T Test pattern (full Screen)  \n");
  	printf("                  -h help menu \n");
-
-
+    printf("\n");
+    printf("           Note that the option -p is mandatory\n");
 
 	printf("\n");
 
@@ -99,11 +120,12 @@ int print_usage(char * appname)
 
 int main(int argc, char** argv)
 {
-		int opt;
+		int opt,adc;
 		char buffer[MAX_BUFFER]={0};
 		int fd;
 		int res,c,counter,i,in;
 		FILE *fp;
+		float v_in,v_out;
 		char *param_port = NULL;
 		char *param_speed = NULL;
 		char *param_imagefile=NULL;
@@ -113,7 +135,7 @@ int main(int argc, char** argv)
 		BITMAPINFO *headerinfo;
 		int headersize,bitmapsize;
 		uint8_t *i_bits=NULL,*o_bits=NULL;  // input bits array from original bitmap file, output bit as converted
-		int chunksize=6;  //default chunk of bytes to send must be set to max the device can handle without loss of data
+		int chunksize=300 * 3 ;  //default chunk of bytes to send must be set to max the device can handle without loss of data
 		uint8_t b[3] ={0};
 		BOOL breakout=FALSE;
 		BOOL verbose_mode=FALSE;
@@ -126,6 +148,7 @@ int main(int argc, char** argv)
 		printf("-----------------------------------------------------------------------------\n");
 		printf("\n");
 		printf(" BMP image sender for Nokia LCD Backpack V.0.3 \n");
+		printf(" Wiki Docs: http://dangerousprototypes.com/docs/Mathieu:_Another_LCD_backpack\n");
 		printf(" http://www.dangerousprototypes.com\n");
 		printf("\n");
 		printf("-----------------------------------------------------------------------------\n");
@@ -135,7 +158,7 @@ int main(int argc, char** argv)
 			exit(-1);
 		}
 
-		while ((opt = getopt(argc, argv, "iTtvVba:s:p:f:d:")) != -1) {
+		while ((opt = getopt(argc, argv, "iTtvVas:p:f:d:B:")) != -1) {
 
 			switch (opt) {
 				case 'p':  // device   eg. com1 com12 etc
@@ -159,11 +182,12 @@ int main(int argc, char** argv)
 					}
 					param_speed = strdup(optarg);
 					break;
-				case 'b':    //
-				    if ((atol(optarg) % 3 ==0)&&(atol(optarg)!=0) )
-				         chunksize=atol(optarg);
+				case 'B':    // added new: chuck size should be multiply by 3
+				    // 1 * 3 up to max of file size or max port speed?
+				    if ((atol(optarg) < MAX_BUFFER/3 )&&(atol(optarg)!=0) )
+				         chunksize=atol(optarg)*3;
 				    else {
-				       printf(" Invalid send byte parameter: using default\n");
+				       printf(" Invalid chunk size parameter: using default: %i x 3 = %i Bytes\n",chunksize/3,chunksize);
 
 				    }
 				    break;
@@ -262,13 +286,18 @@ int main(int argc, char** argv)
             // i Reset and initialize the LCD.
             buffer[0]='T';
             serial_write( fd, buffer,1 );
-		    printf(" Test Pattern Command Send\n");
+		    printf(" Test Pattern Command Send %c\n",buffer[0]);
 		    printf(" Hit any key to end test \n");
 		    if (getch()) {
 		        buffer[0]=0x00;   //any bytes to end
                 serial_write( fd, buffer,1 );
 		    }
-		    printf(" Full Screen Test Ends\n");
+		    Sleep(1);
+            res= serial_read(fd, buffer, sizeof(buffer));
+            printf(" Full Screen Test Ends: ");
+            for (i=0;i< res;i++)
+                printf(" %c",buffer[i]);
+		    printf(" \n");
 
         }
 
@@ -287,8 +316,11 @@ int main(int argc, char** argv)
 			printf(" Voltage Reading : ");
             for (i=0;i< res;i++)
                 printf(" %02x",buffer[i]);
-            printf("\n");
-            
+            adc = buffer[0] << 8;
+            adc += buffer[1];
+            v_out=((float)(adc)/1024.0)*3.3;
+			v_in = (1.24*(18000.0+3900.0))/3900.0;
+			printf("= %2.2f\n",v_in);
         }
         if(param_backlight !=NULL) {
           // convert 0-100 to bytes, 0x00 - 0xff
@@ -327,14 +359,15 @@ int main(int argc, char** argv)
                      exit(-1);
                }
                headersize = header.bfOffBits - sizeof(BITMAPFILEHEADER);
-
+            //   printf("Header.bfoffbits: %lu  Sizeof Bitmapfilehader: %i Headersize is : %i\n",header.bfOffBits,sizeof(BITMAPFILEHEADER),headersize);
                if ((headerinfo = (BITMAPINFO *)malloc(headersize)) == NULL){
                     printf("Error allocating memory\n");
                     fclose(fp);
                     exit(-1);
                }
-
-               if (fread(headerinfo, 1, headersize, fp) < headersize){
+               //error in debian here-> might be because I am using 64 bit
+               if ((res=fread(headerinfo, 1, headersize, fp)) < headersize){
+                    printf("Error: Headersize Error %i < %i\n",res,headersize );
                     fclose(fp);
                     exit(-1);
                }
@@ -383,7 +416,7 @@ int main(int argc, char** argv)
 					 exit(-1);
 
 				}
-				printf(" Opening Port on %s at %sbps, using image file %s chunksize = %i \n", param_port, param_speed,param_imagefile,chunksize);
+				printf(" Opening Port on %s at %sbps, using image file %s chunksize = %i X %i \n", param_port, param_speed,param_imagefile,chunksize/3,3);
 				printf(" Ready to convert %d bit into 12 bit image data.. \n",headerinfo->bmiHeader.biBitCount);
 				printf(" Press any key when ready...\n");
 				getch();
@@ -482,9 +515,11 @@ int main(int argc, char** argv)
 				has_more_data=TRUE;
 				i=0;
 				while(i< in){
+
 					for (c=0; c < chunksize; c++) {
 						if (i+c < in){
 							buffer[c]= o_bits[i+c];
+							printf("c= %i  i+c= %i\n",c, i+c);
 						}
 						else {
 			    // no more data
