@@ -1,20 +1,42 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
 Edit 'PIC_ICSP.sym';
-Pin '+' I/O None Middle R0 Both 0 (-7.62 2.54);
-Pin '/MCLR' I/O None Middle R0 Both 0 (-7.62 5.08);
-Pin 'GND' I/O None Middle R0 Both 0 (-7.62 0);
-Pin 'PGC' I/O None Middle R0 Both 0 (-7.62 -5.08);
-Pin 'PGD' I/O None Middle R0 Both 0 (-7.62 -2.54);
+Pin '+V' Pas Dot Short R0 Pad 0 (-2.54 2.54);
+Pin '/MCLR' Pas Dot Short R0 Pad 0 (-2.54 5.08);
+Pin 'GND' Pas Dot Short R0 Pad 0 (-2.54 0);
+Pin 'PGC' Pas Dot Short R0 Pad 0 (-2.54 -5.08);
+Pin 'PGD' Pas Dot Short R0 Pad 0 (-2.54 -2.54);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text '>NAME' R0 (-4.064 8.636);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-4.064 -10.16);
+Layer 94;
+Wire  0.4064 (-4.064 -7.62) (-4.064 7.62) (6.35 7.62) (6.35 -7.62) \
+      (-4.064 -7.62);
 Layer 95;
 Change Size 1.27;
 Change Ratio 8;
-Text '>NAME' R0 (-2.54 -10.16);
-Layer 96;
+Text '!MCLR' R0 (0.508 4.318);
+Layer 95;
 Change Size 1.27;
 Change Ratio 8;
-Text '>VALUE' R0 (-2.54 -12.7);
-Layer 94;
-Wire  0.254 (-2.54 -7.62) (-2.54 7.62) (7.62 7.62) (7.62 -7.62) \
-      (-2.54 -7.62);
+Text '+V' R0 (0.508 2.032);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text 'GND' R0 (0.508 -0.508);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text 'PGD' R0 (0.508 -3.048);
+Layer 95;
+Change Size 1.27;
+Change Ratio 8;
+Text 'PGC' R0 (0.508 -5.588);

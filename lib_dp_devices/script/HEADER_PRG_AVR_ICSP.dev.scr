@@ -1,0 +1,14 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'HEADER_PRG_AVR_ICSP.dev';
+Prefix 'CON';
+Description '2x3 AVR ICSP programming header';
+Value Off;
+Add AVR_ICSP 'G$1' Next 0 (0 0);
+Package 'HEADER_PRG_2X03' '''''';
+Technology '';
+Connect  'G$1.MISO' '1'  'G$1.+V' '2'  'G$1.SCK' '3'  'G$1.MOSI' '4'  'G$1.RST' '5' \
+         'G$1.GND' '6';

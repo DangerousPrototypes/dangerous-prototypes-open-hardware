@@ -1,0 +1,15 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'HEADER_PRG_XILINX_JTAG6.dev';
+Prefix 'CON';
+Description '6-pin Xilinx JTAG programming header';
+Value Off;
+Add XILINX_JTAG6 'G$1' Next 0 (0 0);
+Package 'HEADER_PRG_1X06' '''''';
+Technology '';
+Connect  'G$1.+V' '1'  'G$1.GND' '2'  'G$1.TCK' '3'  'G$1.TDO' '4'  'G$1.TMS' '5' \
+         'G$1.TDI' '6';
+Grid inch;
