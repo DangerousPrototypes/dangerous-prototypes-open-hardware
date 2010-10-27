@@ -295,9 +295,16 @@ int main(int argc, char** argv)
 		    Sleep(1);
             res= serial_read(fd, buffer, sizeof(buffer));
             printf(" Full Screen Test Ends: ");
-            for (i=0;i< res;i++)
-                printf(" %c",buffer[i]);
-		    printf(" \n");
+            if(res==1 && buffer[0]==0x01 ){
+                   printf(" Success!\n");
+				}
+				else {
+				    printf(" Reply received: ");
+                    for (i=0;i <res;i++)
+                      printf(" %02x",(uint8_t) buffer[i]);
+                   printf("\n");
+				}
+
 
         }
 
@@ -333,11 +340,17 @@ int main(int argc, char** argv)
             Sleep(1);
             res= serial_read(fd, buffer, sizeof(buffer));
             printf(" Dim command reply: ");
-            for (i=0;i< res;i++)
-                printf(" %c",buffer[i]);
-            printf("\n");
-            }
+            if(res==1 && buffer[0]==0x01 ){
+               printf(" Success!\n");
+			}
+			else {
+			   printf(" Reply received: ");
+               for (i=0;i <res;i++)
+                  printf(" %02x",(uint8_t) buffer[i]);
+               printf("\n");
+			}
 
+        }
 		if (param_imagefile !=NULL) {
 		    show_image=TRUE;
 		}
@@ -521,14 +534,14 @@ int main(int argc, char** argv)
 							buffer[c]= o_bits[i+c];
 						}
 						else {
-			    // no more data
+			            // no more data
 						has_more_data=FALSE;
 						break;   //breakout of for loop, c has the last chunk
 						}
 					}
 					if(verbose_mode==TRUE) {
 						for(counter=0;counter < c;counter++) {
-							printf("[%i] %02X \n", i+counter, (uint8_t) buffer[counter]);
+							printf(" [%i] %02X \n", i+counter, (uint8_t) buffer[counter]);
 					//        printf(" %02X \n",  (uint8_t) buffer[counter]);
 						}
 
@@ -538,13 +551,21 @@ int main(int argc, char** argv)
 					if(has_more_data==FALSE)
 					   break;
 				}
-				printf("Total Bytes Sent: %i\n",i);
+				printf(" Total Bytes Sent: %i\n",i);
 				Sleep(1);
 				res= serial_read(fd, buffer, sizeof(buffer));
-				for (i=0;i <res;i++)
-				   printf(" Reply received: %c\n",(uint8_t) buffer[i]);
-				printf(" Done! :-)\n\n");
 
+				if(res==1 && buffer[0]==0x01 ){
+                   printf(" Success!\n");
+				}
+				else {
+				    printf(" Reply received: ");
+                    for (i=0;i <res;i++)
+                      printf(" %02x",(uint8_t) buffer[i]);
+                   printf("\n");
+				}
+
+                printf(" Done! :-)\n\n");
 				//close lcd
 				fclose(fp);
 		}
