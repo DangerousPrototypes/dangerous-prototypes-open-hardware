@@ -74,5 +74,7 @@ Layer 208 208bmp;
 Layer 250 Descript;
 Layer 251 SMDround;
 Layer 254 cooling;
-Description '';
+Description '\
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 

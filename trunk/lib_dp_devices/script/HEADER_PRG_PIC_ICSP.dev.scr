@@ -1,0 +1,13 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'HEADER_PRG_PIC_ICSP.dev';
+Prefix 'CON';
+Description '5-pin PIC In Circuit Serial Programming header';
+Value Off;
+Add PIC_ICSP 'G$1' Next 0 (-2.54 0);
+Package 'HEADER_PRG_1X05' '''''';
+Technology '';
+Connect  'G$1./MCLR' '1'  'G$1.+V' '2'  'G$1.GND' '3'  'G$1.PGD' '4'  'G$1.PGC' '5';

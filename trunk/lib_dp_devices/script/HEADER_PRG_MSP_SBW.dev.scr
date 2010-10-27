@@ -1,0 +1,13 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'HEADER_PRG_MSP_SBW.dev';
+Prefix 'CON';
+Description '4-pin MSP Spy-Bi-Wire programming header';
+Value Off;
+Add MSP_SBW 'G$1' Next 0 (0 0);
+Package 'HEADER_PRG_1X04' '''''';
+Technology '';
+Connect  'G$1.SBWTCK' '1'  'G$1.SBWTDIO' '2'  'G$1.+V' '3'  'G$1.GND' '4';

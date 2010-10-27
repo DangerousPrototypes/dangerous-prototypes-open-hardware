@@ -1,0 +1,29 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'HEADER_PRG_1X05.pac';
+Description '';
+Change Drill 1.016;Pad '1' Square 0 R0 (-5.08 0);
+Change Drill 1.016;Pad '2' Round 0 R0 (-2.54 0);
+Change Drill 1.016;Pad '3' Round 0 R0 (0 0);
+Change Drill 1.016;Pad '4' Round 0 R0 (2.54 0);
+Change Drill 1.016;Pad '5' Round 0 R0 FIRST (5.08 0);
+Layer 21;
+Change Size 1.27;
+Change Ratio 8;
+Text '>NAME' R0 (-6.35 1.905);
+Layer 21;
+Wire  0.127 (-6.35 -1.27) (-6.35 1.27) (-3.81 1.27) (6.35 1.27) \
+      (6.35 -1.27) (-3.81 -1.27) (-6.35 -1.27);
+Wire  0.127 (-3.81 -1.27) (-3.81 1.27);
+Layer 27;
+Change Size 1.27;
+Change Ratio 8;
+Text '>VALUE' R0 (-2.54 -3.81);
+Layer 21;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (-5.08 -1.905) (-6.35 -3.175) (-3.81 -3.175) (-5.08 -1.905);
