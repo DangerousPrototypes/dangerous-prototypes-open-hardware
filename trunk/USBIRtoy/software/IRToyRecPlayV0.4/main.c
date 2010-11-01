@@ -575,7 +575,7 @@ int main(int argc, char** argv)
 
             }  //while
             //printf("size = %lu,  Absolute = %lu\n",size,absolute+200);
-            fprintf(fp_ols,";Size: %lu \n",size);
+            fprintf(fp_ols,";Size: %lu\n",size);
             fprintf(fp_ols,";Rate: 213333\n");
             fprintf(fp_ols,";Channels: 32\n");
             fprintf(fp_ols,";EnabledChannels: 255\n");

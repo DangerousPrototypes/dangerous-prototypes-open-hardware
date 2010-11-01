@@ -1,2 +1,2 @@
-irtoy -d COM3 -p -f test -r
+irtoy -d COM3 -p -f test -r 
 pause
