@@ -1,11 +1,13 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'PNP.dev';
+Edit 'BJT-NPN.dev';
 Prefix 'T';
 Description '<p>Most commonly used is <b>SOT23-BEC</b>';
 Value On;
-Add PNP 'G$1' Next 0 (0 0);
+Add NPN 'G$1' Next 0 (0 0);
 Package 'TO92-ECB' 'TO92ECB';
 Technology '';
 Connect  'G$1.B' 'B'  'G$1.E' 'E'  'G$1.C' 'C';

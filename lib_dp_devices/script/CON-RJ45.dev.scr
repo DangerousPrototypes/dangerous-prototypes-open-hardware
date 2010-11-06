@@ -1,9 +1,11 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'CONNECTER_HR911105A.dev';
+Edit 'CON-RJ45.dev';
 Prefix '';
-Description '';
+Description 'HR911105A Female Ethernet RJ-45 with internal transformer and 2 LEDs';
 Value Off;
 Add CONNECTER_HR911105A 'G$1' Next 0 (0 0);
 Package 'CONNECTER_HR911105A' '''''';

@@ -1,7 +1,9 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'OSCILLATOR.dev';
+Edit 'OSC-OSCILLATOR.dev';
 Prefix 'Q';
 Description 'Oscillator';
 Value Off;
@@ -9,4 +11,3 @@ Add OSCILLATOR 'G$1' Next 0 (0 0);
 Package 'OSCILLATOR_7X5_SMD' '''''';
 Technology '';
 Connect  'G$1.EN' '1'  'G$1.VCC' '4'  'G$1.OUT' '3'  'G$1.GND' '2';
-Grid inch;
