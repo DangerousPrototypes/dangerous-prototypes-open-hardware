@@ -1,7 +1,9 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'SMD_TACT_SMALL.dev';
+Edit 'SW-SMD-SMALL.dev';
 Prefix 'SW';
 Description '';
 Value On;

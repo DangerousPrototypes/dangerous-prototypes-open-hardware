@@ -1,0 +1,19 @@
+Set Wire_Bend 2;
+Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
+
+Edit 'CON-USB-MINI-B.dev';
+Prefix 'USB';
+Description 'USB connector';
+Value Off;
+Add CONN_USB 'USB' Next 0 (0 0);
+Add USB_BODY_PINS 'BODY' Request 0 (-5.08 0);
+Package 'CONN_USB_MINI-B' 'USB1';
+Technology '';
+Connect  'BODY.BODY@2' 'BODY@2'  'BODY.BODY@1' 'BODY@1'  'BODY.BODY@3' 'BODY@3'  'BODY.BODY@4' 'BODY@4'  'USB.D+' 'D+' \
+         'USB.USBID' 'ID'  'USB.D-' 'D-'  'USB.VUSB' 'VUSB'  'USB.GND' 'GND';
+Package 'MINI-USBB' 'USB2';
+Technology '';
+Connect  'BODY.BODY@1' 'M1'  'BODY.BODY@2' 'M2'  'BODY.BODY@4' 'M4'  'BODY.BODY@3' 'M3'  'USB.VUSB' '1' \
+         'USB.D-' '2'  'USB.D+' '3'  'USB.USBID' '4'  'USB.GND' '5';

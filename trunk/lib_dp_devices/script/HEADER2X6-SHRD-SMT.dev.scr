@@ -1,7 +1,9 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'PINSHRD_6X2.dev';
+Edit 'HEADER2X6-SHRD-SMT.dev';
 Prefix 'CONN';
 Description '6x2 SMT Shrouded pin header, pitch 0.100 [2.54]';
 Value Off;

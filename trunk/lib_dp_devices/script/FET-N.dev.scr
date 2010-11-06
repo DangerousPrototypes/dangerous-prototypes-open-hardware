@@ -1,7 +1,9 @@
 Set Wire_Bend 2;
 Grid mm;
+Dangerous Prototypes common devices\n\
+http://dangerousprototypes.com';
 
-Edit 'FET.dev';
+Edit 'FET-N.dev';
 Prefix 'Q';
 Description '';
 Value On;
