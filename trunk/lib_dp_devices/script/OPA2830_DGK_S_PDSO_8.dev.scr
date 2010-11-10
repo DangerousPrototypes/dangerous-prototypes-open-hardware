@@ -1,0 +1,13 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'OPA2830_DGK_S_PDSO_8.dev';
+Prefix '';
+Description '';
+Value Off;
+Add OPA2830 'G$1' Next 0 (-20.32 0);
+Package 'DGK_S_PDSO_G8' '''''';
+Technology '';
+Connect  'G$1.OUT1' '1'  'G$1.INPUT1-' '2'  'G$1.INPUT1+' '3'  'G$1.VS-' '4'  'G$1.INPUT2+' '5' \
+         'G$1.INPUT2-' '6'  'G$1.OUT2' '7'  'G$1.VS+' '8';
+Grid inch;
