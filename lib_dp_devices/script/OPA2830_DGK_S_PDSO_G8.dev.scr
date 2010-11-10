@@ -1,0 +1,9 @@
+Set Wire_Bend 2;
+Grid mm;
+
+Edit 'OPA2830_DGK_S_PDSO_G8.dev';
+Prefix '';
+Description '';
+Value Off;
+Add OPA2830 'G$1' Next 0 (-20.32 0);
+Technology '';
