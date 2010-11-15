@@ -11,6 +11,7 @@ or send a letter to
 	USA.
 */
 
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 #pragma config PLLDIV = 5
 #pragma config CPUDIV = OSC1_PLL2
 #pragma config USBDIV = 2
@@ -58,36 +59,69 @@ or send a letter to
 #define LedIn() LED_TRIS|=LED_PIN
 
 #include <p18cxxx.h>
-#include "usb_stack.h"
-#include "cdc.h"
 
-#ifdef __DEBUG
-#include <usart.h>
-#include <stdio.h>
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+
+#include <p24fxxxx.h>
+
 #endif
 
+#include "usb_stack.h"
+#include "cdc.h"
+void InterruptHandlerHigh();
+void InterruptHandlerLow();
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+
+//#pragma interrupt arbiter
+#pragma interruptlow arbiter
+void arbiter( void ) {
+	if (PIR2bits.USBIF)
+		usb_handler();
+		PIR2bits.USBIF = 0;
+}
+
+#pragma code
+
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+/*
+void __attribute__((__interrupt__(?))) arbiter( void ) {
+	usb_handler();
+}
+*/
+#endif
+	
 void main( void ) {
-#ifdef __DEBUG
-	OpenUSART(	USART_TX_INT_OFF &
-				USART_RX_INT_OFF &
-				USART_ASYNCH_MODE &
-				USART_EIGHT_BIT &
-				USART_CONT_RX &
-				USART_BRGH_HIGH,
-				25);								// 115200:8-n-1 @ 20MHz XTAL
-	stderr = _H_USART;
-	fprintf(stderr, (const far rom char *) "\n\nHonken USB Stack Debug\n");
+
+	DINIT();
+	DPRINTF("\n\nHonken USB Stack Debug\n");
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+	/* Setup and enable interrupts */
+	RCONbits.IPEN = 1;		// Enable interrupt priorities
+	PIR1 = PIR2 = 0;		// Clear all pending interrupts
+	PIE2bits.USBIE = 1;		// Enable USB interrupts
+	IPR2bits.USBIP = 1;		// USB interrupt high priority
+	INTCONbits.PEIE = 1;	// Enable peripherial interrupts
+	INTCONbits.GIE = 1;		// Enable all interrupts
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+//#error "Interrupt driven stack not implemented on pic24fj256GB110 family"
 #endif
 
 
 	LedOut();
 	LedOff();
-	
+
 	usb_init();
 
 	// Infinity local echo
 	while(1) {
+
+#if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+		/* No interrupt driven p24 just yet. */
 		usb_handler();
+#endif
+
 		if (DataRdyCDC()){
 			LedOn();
 			putcCDC(getcCDC());
@@ -96,11 +130,34 @@ void main( void ) {
 	}
 }
 
-
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
+#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
+#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
+
+//these statements remap the vector to our function
+//When the interrupt fires the PIC checks here for directions
+#pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
+void Remapped_High_ISR (void){
+     _asm GOTO arbiter _endasm
+}
+
+#pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
+void Remapped_Low_ISR (void){
+     _asm GOTO arbiter _endasm
+}
+
 //relocate the reset vector
 extern void _startup (void);  
 #pragma code REMAPPED_RESET_VECTOR = REMAPPED_RESET_VECTOR_ADDRESS
 void _reset (void){
     _asm goto _startup _endasm
+}
+//set the initial vectors so this works without the bootloader too.
+#pragma code HIGH_INTERRUPT_VECTOR = 0x08
+void High_ISR (void){
+     _asm goto REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS _endasm
+}
+#pragma code LOW_INTERRUPT_VECTOR = 0x18
+void Low_ISR (void){
+     _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
