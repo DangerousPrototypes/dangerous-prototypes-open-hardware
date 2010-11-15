@@ -1,13 +1,18 @@
-#include <p18cxxx.h>
+/*
+This work is licensed under the Creative Commons Attribution 3.0 Unported License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
+or send a letter to
+	Creative Commons,
+	171 Second Street,
+	Suite 300,
+	San Francisco,
+	California,
+	94105,
+	USA.
+*/
+
 #include <string.h>
 #include "usb_stack.h"
-
-#ifdef __DEBUG
-#include <stdio.h>
-#define DPRINTF(...) printf((const far rom char *) __VA_ARGS__)
-#else
-#define DPRINTF(...)
-#endif
 
 // CDC Request Codes
 #define CDC_SEND_ENCAPSULATED_COMMAND						0x00
@@ -93,7 +98,7 @@ struct cdc_ControlLineState {
 	char unused2;
 } cls;
 
-unsigned char volatile *data, *data_end;
+unsigned char *data, *data_end;
 BDentry *rxbdp, *txbdp;
 
 void cdc_init(void) {
@@ -152,7 +157,7 @@ void cdc_setup(void){
 			usb_ack(rbdp);
 			usb_set_in_handler(0, cdc_get_line_coding);
 
-			DPRINTF("CDC_GET_LINE_CODING bd: 0x%P len: %u Data: ", rbdp, reply_len);
+			DPRINTF("CDC_GET_LINE_CODING bd: 0x%p len: %u Data: ", rbdp, reply_len);
 			for (i=0; i<rbdp->BDCNT; i++)
 				DPRINTF("0x%02X ", rbdp->BDADDR[i]);
 			DPRINTF("\n");
@@ -163,7 +168,7 @@ void cdc_setup(void){
 			usb_set_in_handler(0, cdc_set_control_line_state_status);
 			usb_ack_zero(rbdp);
 
-			DPRINTF("CDC_SET_LINE_STATE 0x%04X\n", cls);
+			DPRINTF("CDC_SET_LINE_STATE 0x%04X\n", *((int *) (&cls)));
 			break;
 
 		case CDC_SEND_BREAK:					// Optional
@@ -207,8 +212,9 @@ void cdc_set_control_line_state_status( void ) {
 
 void cdc_acm_in(void) {
 	DPRINTF("cdc_acm_in\n");
-	if (0) { // Not TODO: Probably never implement this, we're not a modem.
-		/* Response Available Notification */
+	/*
+	if (0) { // Response Available Notification
+		// Not TODO: Probably never implement this, we're not a modem.
 		// Is this correct placement of the response notification?
 		bdp->BDADDR[USB_bmRequestType]	= USB_bmRequestType_D2H | USB_bmRequestType_Class | USB_bmRequestType_Interface;
 		bdp->BDADDR[USB_bRequest]		= CDC_RESPONSE_AVAILABLE;
@@ -220,11 +226,10 @@ void cdc_acm_in(void) {
 		bdp->BDADDR[USB_wLengthHigh]	= 0;
 		bdp->BDCNT = 8;
 		usb_ack(bdp);
-	} else if (0) {
-		/* Network Connection Notification */
-	} else if (0) {
-		/* Serial State Notification */
+	} else if (0) {	// Network Connection Notification
+	} else if (0) {	// Serial State Notification
 	}
+	*/
 }
 
 void cdc_rx( void ) {
@@ -247,15 +252,17 @@ void cdc_tx( void ) {
 int _user_putc( char c ) {
 	// TODO: Implement thread (interrupt) safety
 	while (txbdp->BDSTAT & UOWN);
+	DisableInterrupts();
 	txbdp->BDADDR[txbdp->BDCNT++] = c;
 	usb_ack(txbdp);
+	EnableInterrupts();
 	return (int) c;
 }
 
 /* Configure the USART. */
 void OpenCDC(unsigned char config, unsigned int spbrg) {
-	config;
-	spbrg;
+//	config;
+//	spbrg;
 }
 
 /* Disable the CDC. */
@@ -281,7 +288,7 @@ char getcCDC( void ) {
 	return c;
 }
 
-/* Read a string from the USART. */
+/* Read a string from the CDC ACM. */
 void getsCDC( char *buffer, unsigned char len) {
 	unsigned char i;
 	for (i=0; i<len; i++) *buffer++ = getcCDC();
@@ -291,24 +298,27 @@ void getsCDC( char *buffer, unsigned char len) {
 void putcCDC( char c ) {
 	// TODO: Implement thread (interrupt) safety
 	while (txbdp->BDSTAT & UOWN);
+	DisableInterrupts();
 	txbdp->BDADDR[txbdp->BDCNT++] = c;
+	DPRINTF("putcCDC BDSTAT 0x%02X\n", txbdp->BDSTAT);
 	usb_ack(txbdp);
+	EnableInterrupts();
 }
 
 /* Write a string from data memory to the USART. */
-void putsCDC( char *str ) {
+void putsCDC( const char *str ) {
 	while(*str)
 		putcCDC(*str++);
 }
 
 /* Write a string from program memory to the USART. */
-void putrsCDC( const rom char *str ) {
+void putrsCDC( const char *str ) {
 	while(*str)
 		putcCDC(*str++);
 }
 
 /* Set the baud rate configuration bits for enhanced USART. */
 void baudCDC( unsigned char baudconfig ) {
-	baudconfig;
+//	baudconfig;
 }
 

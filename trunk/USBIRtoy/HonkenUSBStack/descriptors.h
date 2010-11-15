@@ -16,8 +16,7 @@ or send a letter to
 
 #include "usb_stack.h"
 
-#pragma romdata
-rom const unsigned char usb_device_descriptor[] = {
+ROM const unsigned char usb_device_descriptor[] = {
 	0x12,								// bLength
 	USB_DEVICE_DESCRIPTOR_TYPE,			// bDescriptorType
 	0x10,								// bcdUSB (low byte)
@@ -39,7 +38,7 @@ rom const unsigned char usb_device_descriptor[] = {
 };
 
 #define USB_CONFIG_DESC_TOT_LENGTH (9+9+5+4+5+5+7+9+7+7)
-rom const unsigned char usb_config_descriptor[] = {
+ROM const unsigned char usb_config_descriptor[] = {
 	0x09,								// bLength
 	USB_CONFIGURATION_DESCRIPTOR_TYPE,	// bDescriptorType
 	LOWB(USB_CONFIG_DESC_TOT_LENGTH),	// wTotalLength (low byte), TODO: Automatic calculation - sizeof doesn't work here

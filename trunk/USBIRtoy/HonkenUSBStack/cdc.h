@@ -35,10 +35,10 @@ void getsCDC( char *buffer, unsigned char len);
 void putcCDC( char c );
 
 /* Write a string from data memory to the USART. */
-void putsCDC( char *str );
+void putsCDC( const char *str );
 
 /* Write a string from program memory to the USART. */
-void putrsCDC( const rom char *str );
+void putrsCDC( const char *str );
 
 /* Set the baud rate configuration bits for enhanced USART. */
 void baudCDC( unsigned char baudconfig );

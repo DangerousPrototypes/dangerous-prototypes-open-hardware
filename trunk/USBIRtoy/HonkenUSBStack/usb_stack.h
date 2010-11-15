@@ -45,29 +45,62 @@ or send a letter to
 #define USB_DEBUG_DESCRIPTOR_TYPE						10u
 #define USB_INTERFACE_ASSOCIATION_DESCRIPTOR_TYPE		11u
 
+#define USB_bmRequestType		0
+#define USB_bRequest			1
+#define USB_wValue				2
+#define USB_bDescriptorIndex	2
+#define USB_wValueHigh			3
+#define USB_bDescriptorType		3
+#define	USB_wIndex				4
+#define USB_bInterface			4
+#define USB_wIndexHigh			5
+#define USB_wLength				6
+#define	USB_wLengthHigh			7
+
+#define USB_bmRequestType_PhaseMask		0b10000000
+#define USB_bmRequestType_H2D			0b00000000
+#define USB_bmRequestType_D2H			0b10000000
+#define USB_bmRequestType_TypeMask		0b01100000
+#define USB_bmRequestType_Standard		0b00000000
+#define USB_bmRequestType_Class			0b00100000
+#define USB_bmRequestType_Vendor		0b01000000
+#define USB_bmRequestType_RecipientMask	0b00000011
+#define USB_bmRequestType_Device		0b00000000
+#define USB_bmRequestType_Interface		0b00000001
+#define USB_bmRequestType_Endpoint		0b00000010
+#define USB_bmRequestType_Other			0b00000011
+
+#define USB_REQUEST_GET_STATUS			0
+#define USB_REQUEST_CLEAR_FEATURE		1
+#define USB_REQUEST_SET_FEATURE			3
+#define USB_REQUEST_SET_ADDRESS			5
+#define USB_REQUEST_GET_DESCRIPTOR		6
+#define USB_REQUEST_SET_DESCRIPTOR		7
+#define USB_REQUEST_GET_CONFIGURATION	8
+#define USB_REQUEST_SET_CONFIGURATION	9
+#define USB_REQUEST_GET_INTERFACE		10
+#define USB_REQUEST_SET_INTERFACE		11
+#define USB_REQUEST_SYNCH_FRAME			12
+
 //typedef void(*)(unsigned char *) usb_ep_callback;
-#define USB_UEP_EPHSHK 		(0x10)
-#define USB_UEP_EPCONDIS	(0x08)
-#define USB_UEP_EPOUTEN 	(0x04)
-#define USB_UEP_EPINEN		(0x02)
-
-#define USB_EP_INOUT	(USB_UEP_EPHSHK | USB_UEP_EPINEN | USB_UEP_EPOUTEN | USB_UEP_EPCONDIS)
-#define USB_EP_CONTROL	(USB_UEP_EPHSHK | USB_UEP_EPINEN | USB_UEP_EPOUTEN)
-#define USB_EP_OUT		(USB_UEP_EPHSHK |                  USB_UEP_EPOUTEN | USB_UEP_EPCONDIS)
-#define USB_EP_IN		(USB_UEP_EPHSHK | USB_UEP_EPINEN                   | USB_UEP_EPCONDIS)
-#define USB_EP_NONE		(0x00)
-
-#define USB_EP_INTERRUPT	(0)
-#define USB_EP_BULK			(1)
-#define	USB_EP_ISOCHRONOUS	(2)
-
-#define HIGHB(x) ((x)>>8)
-#define LOWB(x) ((x) & 0xFF)
 
 #include "usb_lang.h"
 
 /* Include user configuration */
 #include "usb_config.h"
+
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+/* Abstractions for UsbIrToy */
+#include "usb_p18f.h"
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+/* Abstractions for BusPirate v4 */
+#include "usb_p24f.h"
+#endif
+
+/* Misc */
+#define HIGHB(x) ((x)>>8)
+#define LOWB(x) ((x) & 0xFF)
 
 /* Descriptors */
 #if USB_NUM_CONFIGURATIONS > 1
@@ -88,7 +121,7 @@ or send a letter to
   USB_ENDPOINTS
 
 #define USB_EP(num, flow, typ, size, callback) +1
-#define USB_NUM_EP ( 0 USB_ALL_ENDPOINTS )
+#define USB_NUM_EP (0 USB_ALL_ENDPOINTS)
 #undef USB_EP
 
 #if defined class_init
@@ -102,79 +135,6 @@ or send a letter to
 #else
  #error "Niether Class nor Vendor initialization function defined"
 #endif
-
-/* Hardware implementations */
-
-#if defined USB_INTERNAL_PULLUPS
-#define USB_UCFG_UPUEN_VALUE (1<<4)
-#elif defined USB_EXTERNAL_PULLUPS
-#define USB_UCFG_UPUEN_VALUE (0)
-#else
-#error "Neither internal nor external pullups defined"
-#endif
-
-#if defined USB_INTERNAL_TRANSCIEVER
-#define USB_UCFG_UTRDIS_VALUE (0)
-#elif defined USB_EXTERNAL_TRANSCIEVER
-#define USB_UCFG_UTRDIS_VALUE (1<<3)
-#else
-#error "Neither internal nor external transciever defined"
-#endif
-
-#if defined USB_FULL_SPEED_DEVICE
-#define USB_UCFG_FSEN_VALUE (1<<2)
-#elif defined USB_LOW_SPEED_DEVICE
-#define USB_UCFG_FSEN_VALUE (0)
-#else
-#error "Neither internal nor external pullups defined"
-#endif
-
-#if defined USB_BUS_POWERED
-#ifndef usb_low_power_request
-/* Default low power mode is DUD */
-#define usb_low_power_request() Nop()
-#endif
-#ifndef usb_low_power_resume
-#define usb_low_power_resume() Nop()
-#endif
-#elif defined USB_SELF_POWERED
-#define usb_low_power_request() Nop()
-#define usb_low_power_resume() Nop()
-#else
-#error "No source of device power defined"
-#endif
-
-#ifndef USB_INTERNAL_VREG
-#warning "Use of internal voltage regulator not defined. User must supply 3.3V on Vusb pin."
-#endif
-
-#define USB_DIR_OUT	0
-#define USB_DIR_IN	1
-#define USB_PP_EVEN	0
-#define USB_PP_ODD	1
-
-/* PingPong buffer descriptor table index calculations */
-#if USB_PP_BUF_MODE == 0
-#define USB_USTAT2BD(X)				( (X)/4 )
-#define USB_CALC_BD(ep, dir, sync)	( 2*(ep)+(dir) )
-#elif USB_PP_BUF_MODE == 1
-#define USB_USTAT2BD(X)				( ((X)>2)? (X)/4+1 : (X)/2 )
-#define USB_CALC_BD(ep, dir, sync)	( ((ep)==0 && (dir)==0)? (sync) : 2*(ep)+(dir) )
-#elif USB_PP_BUF_MODE == 2
-#define USB_USTAT2BD(X)				( (X)/2 )
-#define USB_CALC_BD(ep, dir, sync)	( 4*(ep)+2*(dir)+(sync) )
-#elif USB_PP_BUF_MODE == 3
-#define USB_USTAT2BD(X)				( ((X)>4)? (X)/2-2 : (X)/4 )
-#define USB_CALC_BD(ep, dir, sync)	( ((ep)==0)? (dir) : 4*(ep)+2*(dir)+(sync)-2 )
-#else
-#error "USB_PP_BUF_MODE outside scope."
-#endif
-
-#define USB_UCFG_REGISTER_VALUE	((USB_UCFG_UPUEN_VALUE) | \
-								 (USB_UCFG_UTRDIS_VALUE) | \
-								 (USB_UCFG_FSEN_VALUE) | \
-								 (USB_PP_BUF_MODE))
-
 
 typedef struct BDENTRY {
 	unsigned char
@@ -221,57 +181,6 @@ typedef struct USB_DEVICE_REQUEST {
 	unsigned int wIndex;
 	unsigned int wLength;
 } usb_device_request;
-
-#define USB_bmRequestType		0
-#define USB_bRequest			1
-#define USB_wValue				2
-#define USB_bDescriptorIndex	2
-#define USB_wValueHigh			3
-#define USB_bDescriptorType		3
-#define	USB_wIndex				4
-#define USB_bInterface			4
-#define USB_wIndexHigh			5
-#define USB_wLength				6
-#define	USB_wLengthHigh			7
-
-/*
-#define USB_CLEAR_FEATURE_REQUEST		0b00000000
-#define USB_GET_CONFIGURATION_REQUEST	0b10000000
-#define USB_GET_DESCRIPTOR_REQUEST		0b10000000
-#define USB_GET_INTERFACE_REQUEST		0b10000001
-#define USB_GET_STATUS_REQUEST			0b10000000
-#define USB_SET_ADDRESS_REQUEST			0b00000000
-#define USB_SET_CONFIGURATION_REQUEST	0b00000000
-#define USB_SET_DESCRIPTOR				0b00000000
-#define USB_SET_FEATURE_REQUEST			0b00000000
-#define USB_SET_INTERFACE_REQUEST		0b00000001
-#define USB_SYNCH_FRAME_REQUEST			0b10000010
-*/
-
-#define USB_bmRequestType_PhaseMask		0b10000000
-#define USB_bmRequestType_H2D			0b00000000
-#define USB_bmRequestType_D2H			0b10000000
-#define USB_bmRequestType_TypeMask		0b01100000
-#define USB_bmRequestType_Standard		0b00000000
-#define USB_bmRequestType_Class			0b00100000
-#define USB_bmRequestType_Vendor		0b01000000
-#define USB_bmRequestType_RecipientMask	0b00000011
-#define USB_bmRequestType_Device		0b00000000
-#define USB_bmRequestType_Interface		0b00000001
-#define USB_bmRequestType_Endpoint		0b00000010
-#define USB_bmRequestType_Other			0b00000011
-
-#define USB_REQUEST_GET_STATUS			0
-#define USB_REQUEST_CLEAR_FEATURE		1
-#define USB_REQUEST_SET_FEATURE			3
-#define USB_REQUEST_SET_ADDRESS			5
-#define USB_REQUEST_GET_DESCRIPTOR		6
-#define USB_REQUEST_SET_DESCRIPTOR		7
-#define USB_REQUEST_GET_CONFIGURATION	8
-#define USB_REQUEST_SET_CONFIGURATION	9
-#define USB_REQUEST_GET_INTERFACE		10
-#define USB_REQUEST_SET_INTERFACE		11
-#define USB_REQUEST_SYNCH_FRAME			12
 
 extern unsigned char trn_status;
 extern BDentry *bdp, *rbdp;

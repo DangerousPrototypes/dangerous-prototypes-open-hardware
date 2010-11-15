@@ -82,6 +82,7 @@ extern void cdc_tx( void );
 
 #define USB_NUM_CONFIGURATIONS	1u
 #define USB_NUM_INTERFACES		2u
+#define USB_NUM_ENDPOINTS		3u
 
 /* String identifiers */
 #define USB_iManufacturer		1u
