@@ -63,7 +63,8 @@ or send a letter to
 #elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
 
 #include <p24fxxxx.h>
-
+_CONFIG1( JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2) 
+_CONFIG2( 0xF7FF & IESO_OFF & FCKSM_CSDCMD & POSCMOD_HS & FNOSC_PRIPLL & PLLDIV_DIV3 & IOL1WAY_ON & PLL_96MHZ_ON)
 #endif
 
 #include "usb_stack.h"
@@ -90,8 +91,13 @@ void __attribute__((__interrupt__(?))) arbiter( void ) {
 }
 */
 #endif
-	
-void main( void ) {
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+void main( void ) 
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+int main(void)
+#endif	
+{
 
 	DINIT();
 	DPRINTF("\n\nHonken USB Stack Debug\n");
@@ -104,13 +110,12 @@ void main( void ) {
 	IPR2bits.USBIP = 1;		// USB interrupt high priority
 	INTCONbits.PEIE = 1;	// Enable peripherial interrupts
 	INTCONbits.GIE = 1;		// Enable all interrupts
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
-//#error "Interrupt driven stack not implemented on pic24fj256GB110 family"
-#endif
-
 
 	LedOut();
 	LedOff();
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+//#error "Interrupt driven stack not implemented on pic24fj256GB110 family"
+#endif
 
 	usb_init();
 
@@ -123,13 +128,17 @@ void main( void ) {
 #endif
 
 		if (DataRdyCDC()){
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 			LedOn();
+#endif
 			putcCDC(getcCDC());
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 			LedOff();
+#endif
 		}
 	}
 }
-
+#if defined(IRTOY_BOOTLOADER)
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -161,3 +170,4 @@ void High_ISR (void){
 void Low_ISR (void){
      _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
+#endif
