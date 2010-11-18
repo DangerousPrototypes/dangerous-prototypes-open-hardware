@@ -327,7 +327,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
     serial_setup(fd,(speed_t) param_speed);
-    printf(" Entering IR sample mode ....\n ");
+ printf(" Entering IR sample mode ....\n ");
     for (i=0;i<5;i++) {
         //send 5x, just to make sure it exit the sump mode too
         serial_write( fd, "\x00", 1);
@@ -351,6 +351,7 @@ int main(int argc, char** argv)
     flag=0;
     fcounter=0;
     if(record==TRUE){ //open the file
+
          if ( IRrecord(param_fname,fd)==-1) {
             FREE(param_port);
             FREE(param_speed);
@@ -365,16 +366,12 @@ int main(int argc, char** argv)
     } // play=true
     if (textfile==TRUE) {
          if (record==TRUE){
-
-           IRtxtrecord(param_fname);
+             IRtxtrecord(param_fname);
 
          }
 
-
-        if (play==TRUE){
+    if (play==TRUE){
            IRtxtplay(param_fname,fd,param_delay);
-
-
         }
 
     }
@@ -385,13 +382,21 @@ int main(int argc, char** argv)
     }  //OLS==true
 
     if (queue==TRUE){
+
         IRqueue(param_fname,fd);
     } // queue=true
 
-    printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
+
+    printf(" Resetting IRtoy ....\n ");
+    serial_write( fd, "\xFF\xFF", 2);
+    for (i=0;i<5;i++) {
+        //send 5x, just to make sure it exit the sump mode too
+        serial_write( fd, "\x00", 1);
+    }
     serial_close(fd);
 	FREE(param_port);
 	FREE(param_speed);
 	FREE(param_fname);
+    printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
     return 0;
 }  //main

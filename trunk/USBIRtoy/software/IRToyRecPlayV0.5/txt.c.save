@@ -50,7 +50,8 @@ void IRtxtrecord( char *param_fname)
                       for(i=0;i<res;i++) {
                        sprintf(temp,"%04X",(uint16_t) txt_buffer[i]);
                        sprintf(s,"%c%c%c%c",temp[2],temp[3],temp[0],temp[1]);
-                       printf("%s ",s);
+                       if (verbose==TRUE)
+                            printf("%s ",s);
                        fprintf(fp_txt,"%s ", s);
                    }
                 }
@@ -81,7 +82,7 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
     char *token;
     char hex1[2];
     char hex2[2];
-    uint8_t buf[2];
+    uint8_t buf[16*1024];
 
         //check filename if exist
         printf(" Entering Player Mode \n");
@@ -136,9 +137,17 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
             printf("\n Playing file: %s\n",fnameseq);
 
             int comsresult = 0;
+            for (i=0;i<5;i++) {
+            //send 5x, just to make sure it exit the sump mode too
+            serial_write( fd, "\x00", 1);
+            }
+
+            serial_write( fd, "S", 1);
+            res= serial_read(fd, buffer, sizeof(buffer));
             serial_write( fd, "\x03", 1);
 
             printf(" Sending IRCodes...\n");
+            int c=0;
             while(!feof(fp)) {
                if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
 
@@ -149,21 +158,22 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
                         //convert hex string into real hex, by fair
                         sprintf(hex1,"%c%c",temp[0],temp[1]);
                         i = (uint8_t) strtoul(hex1, NULL, 16);
-                        buf[0]=i;
+                        buf[c++]=i;
                         sprintf(hex2,"%c%c",temp[2],temp[3]);
                         i = (uint8_t) strtoul(hex2, NULL, 16);
-                        buf[1]=i;
-                        comsresult = serial_write( fd, (char *) buf, 2);
-                        if
-                        printf("%02X%02X ",buf[0],buf[1]);
+                        buf[c++]=i;
+                      
+                        if (verbose==TRUE)
+                            printf("%02X%02X ",buf[c-2],buf[c-1]);
                         token = strtok (NULL, " ");
                       }
 
-
+                     comsresult = serial_write( fd, (char *) buf, i);
+                     i=0;
 
 #ifdef _WIN32
    // temporary disabled to alow to pass here.. in win64 param_delay with -1 seems to wait forever. --Need to confirm
-   //             Sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+               Sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
                 sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #endif
