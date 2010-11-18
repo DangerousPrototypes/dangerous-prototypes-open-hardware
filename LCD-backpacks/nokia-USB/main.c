@@ -13,6 +13,7 @@
 //#include "Compiler.h"
 //#include "HardwareProfile.h"
 //USB stack
+#include "config.h"
 #include "globals.h"
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
@@ -45,8 +46,8 @@ void main(void){
 	unsigned char inbuf, b[9], cmd; 
 	unsigned int k, color, clr[]={0b111100000000,0b11110000,0b1111, 0b11111100, 0b11100011, 0b00011111};
 	unsigned char i,j,m;
-	static unsigned char xs=0,ys=0,xe=ENDPAGE-1,ye=ENDCOL;
-	#define fillbox_whole() fillBox(0,0, ENDPAGE-1,ENDCOL)
+	static unsigned char xs=0,ys=0,xe=ENDPAGE,ye=ENDCOL;
+	#define fillbox_whole() fillBox(0,0, ENDPAGE,ENDCOL)
 	#define fillbox_current() fillBox(xs,ys,xe,ye)
 	
     init();			//setup the crystal, pins, hold the FPGA in reset
@@ -225,6 +226,12 @@ test_end:
 					putUnsignedCharArrayUsbUsart(b,2);
 				}
 				break;
+			default:
+			  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+					b[0]=0xff;
+					putUnsignedCharArrayUsbUsart(b,1);
+				}			
+				break;
 	
 		}//switch
 
@@ -352,6 +359,13 @@ static void init(void){
 
 	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
 	SSP2STAT=0b01000000; //cke=1
+
+	TRIS_BKLITE=0;
+	LAT_BKLITE=1;
+
+
+
+
 }
 
 unsigned char spi(unsigned char c){
