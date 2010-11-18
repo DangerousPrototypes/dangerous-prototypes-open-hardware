@@ -82,34 +82,45 @@ or send a letter to
 #define USB_REQUEST_SET_INTERFACE		11
 #define USB_REQUEST_SYNCH_FRAME			12
 
-//typedef void(*)(unsigned char *) usb_ep_callback;
-
 #include "usb_lang.h"
 
 /* Include user configuration */
 #include "usb_config.h"
 
-
 #if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
-/* Abstractions for UsbIrToy */
 #include "usb_p18f.h"
 #elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
-/* Abstractions for BusPirate v4 */
 #include "usb_p24f.h"
 #endif
+
+/* Structs for defining endpoints */
+//typedef void(*)(unsigned char *) usb_ep_callback;
+typedef void(*usb_handler_t)(void);
+
+typedef struct USB_EP_TYPE {
+	usb_uep_t		type;
+	unsigned int 	buffer_size;
+	unsigned char	*in_buffer, *out_buffer;
+	usb_handler_t	in_handler, out_handler;
+} usb_ep_t;
 
 /* Misc */
 #define HIGHB(x) ((x)>>8)
 #define LOWB(x) ((x) & 0xFF)
+
+#define XCAT(x,y) x ## y
+#define CAT(x,y) XCAT(x,y)
 
 /* Descriptors */
 #if USB_NUM_CONFIGURATIONS > 1
 #error "More than 1 configuration not supported yet"
 #endif
 
+/*
 #ifndef USB_STRINGS
-#warning "No usb device strings defined"
+#error "No usb device strings defined"
 #endif
+*/
 
 #ifndef USB_ENDPOINTS
 #define USB_ENDPOINTS
@@ -164,12 +175,16 @@ typedef struct BDENTRY {
 
 extern BDentry usb_bdt[];
 
+#ifndef USB_EP0_BUFFER_SIZE
+#define USB_EP0_BUFFER_SIZE 8u
+#endif
+
 #ifndef USB_MAX_BUFFER_SIZE
-#define USB_MAX_BUFFER_SIZE 8
-#elif USB_MAX_BUFFER_SIZE == 8
-#elif USB_MAX_BUFFER_SIZE == 16
-#elif USB_MAX_BUFFER_SIZE == 32
-#elif USB_MAX_BUFFER_SIZE == 64
+#define USB_MAX_BUFFER_SIZE 8u
+#elif USB_MAX_BUFFER_SIZE == 8u
+#elif USB_MAX_BUFFER_SIZE == 16u
+#elif USB_MAX_BUFFER_SIZE == 32u
+#elif USB_MAX_BUFFER_SIZE == 64u
 #else
 #error "USB_MAX_BUFFER_SIZE needs to be 8, 16, 32 or 64 bytes"
 #endif
@@ -182,17 +197,23 @@ typedef struct USB_DEVICE_REQUEST {
 	unsigned int wLength;
 } usb_device_request;
 
-extern unsigned char trn_status;
+extern usb_status_t trn_status;
 extern BDentry *bdp, *rbdp;
 
-typedef void(*usb_handler_t)(void);
-
-extern void usb_init( void );
-extern void usb_handler( void );
+extern void usb_init(	ROM const unsigned char *dev_descriptor, 
+						ROM const unsigned char *config_descriptor, 
+						ROM const unsigned char *string_descriptor, int num_string_descriptors );
+extern void usb_start( void );
+extern void usb_register_endpoint(	unsigned int endpoint, usb_uep_t type,
+									unsigned int buffer_size, unsigned char *out_buffer, unsigned char *in_buffer, 
+									usb_handler_t out_handler, usb_handler_t in_handler );
 extern void usb_set_in_handler( int ep, usb_handler_t handler );
 extern void usb_set_out_handler( int ep, usb_handler_t handler );
 #define usb_unset_in_handler(ep) usb_set_in_handler(ep, (usb_handler_t) 0)
 #define usb_unset_out_handler(ep) usb_set_in_handler(ep, (usb_handler_t) 0)
+
+extern void usb_handler( void );
+
 extern void usb_ack( BDentry * );
 extern void usb_ack_zero( BDentry * );
 extern void usb_ack_out( BDentry * );
