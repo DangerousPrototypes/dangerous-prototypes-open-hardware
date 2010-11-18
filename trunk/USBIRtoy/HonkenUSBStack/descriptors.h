@@ -16,7 +16,7 @@ or send a letter to
 
 #include "usb_stack.h"
 
-ROM const unsigned char usb_device_descriptor[] = {
+ROM const unsigned char cdc_device_descriptor[] = {
 	0x12,								// bLength
 	USB_DEVICE_DESCRIPTOR_TYPE,			// bDescriptorType
 	0x10,								// bcdUSB (low byte)
@@ -37,8 +37,8 @@ ROM const unsigned char usb_device_descriptor[] = {
 	USB_NUM_CONFIGURATIONS				// bNumConfigurations 
 };
 
-#define USB_CONFIG_DESC_TOT_LENGTH (9+9+5+4+5+5+7+9+7+7)
-ROM const unsigned char usb_config_descriptor[] = {
+#define USB_CONFIG_DESC_TOT_LENGTH (9+9+5+4+5+5+7+9+7+7+9+9)
+ROM const unsigned char cdc_config_descriptor[] = {
 	0x09,								// bLength
 	USB_CONFIGURATION_DESCRIPTOR_TYPE,	// bDescriptorType
 	LOWB(USB_CONFIG_DESC_TOT_LENGTH),	// wTotalLength (low byte), TODO: Automatic calculation - sizeof doesn't work here
@@ -114,7 +114,33 @@ ROM const unsigned char usb_config_descriptor[] = {
 	0x02,								// bmAttributes (0x02=bulk)
 	0x20,								// wMaxPacketSize (low byte)
 	0x00,								// wMaxPacketSize (high byte)
-	0x00								// bInterval
+	0x00,								// bInterval
+
+	0x09,								// bLength (Interface2 descriptor)
+	USB_INTERFACE_DESCRIPTOR_TYPE,		// bDescriptorType
+	0x02,								// bInterfaceNumber
+	0x00,								// bAlternateSetting
+	0x00,								// bNumEndpoints (None, only control pipe used)
+	0xFE,								// bInterfaceClass
+	0x01,								// bInterfaceSubClass
+	0x01,								// bInterfaceProtocol
+	0x00,								// iInterface (none)
+
+	0x09,								// bFunctionLength (DFU functional descriptor)
+	0x21,								// bDescriptorType
+	0x03,								// bmAttributes (!bitWillDetatch + !bitManifestationTolerant + bitCanUpload + bitCanDownload)
+	0x80, 0x00,							// wDetachTimeout (128 ms initial guess)
+	0x20, 0x00,							// wTransferSize (32 bytes)
+	0x10, 0x01							// bcdDFUVersion
+};
+
+// TODO: Rework to ordinary datastructures.
+
+ROM unsigned char cdc_str_descs[] = {
+	0,                  4, USB_LANGID_English_United_States,
+	USB_iManufacturer, 12, 'H',0,'o',0,'n',0,'k',0,'e',0,'n',0,
+	USB_iProduct,      32, 'G',0,'e',0,'n',0,'e',0,'r',0,'i',0,'c',0,' ',0,'p',0,'r',0,'o',0,'d',0,'u',0,'c',0,'t',0,
+	USB_iSerialNum,    18, '0',0,'0',0,'0',0,'0',0,'0',0,'0',0,'0',0,'1',0
 };
 
 /* TODO: Develop prebuild script for generating all complex structures */

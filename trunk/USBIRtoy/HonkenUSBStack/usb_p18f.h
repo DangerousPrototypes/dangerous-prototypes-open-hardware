@@ -33,6 +33,8 @@ or send a letter to
 #define USB_EP_BULK			(1)
 #define	USB_EP_ISOCHRONOUS	(2)
 
+typedef unsigned char usb_uep_t;
+#define USB_UEP				((usb_uep_t*) (&UEP0))
 #define USB_UEP0			UEP0
 #define USB_UEP1			UEP1
 #define USB_UEP2			UEP2
@@ -96,7 +98,12 @@ or send a letter to
 #define GetUsbAddress()						(UADDR)
 
 /* USTAT */
+typedef unsigned char usb_status_t;
 #define GetUsbTransaction()					(USTAT)
+#define USB_STAT2EP(x)						((x>>3)&0x0F)
+#define USB_STAT2DIR(x)						((x>>2)&0x01)
+#define USB_STAT2ADDR(x)					((x>>2)&0x1F)
+#define USB_STAT2PPI(x)						((x>>1)&0x01)
 
 /* Hardware implementations */
 

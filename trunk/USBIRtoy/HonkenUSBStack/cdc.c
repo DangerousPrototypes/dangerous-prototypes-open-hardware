@@ -13,6 +13,7 @@ or send a letter to
 
 #include <string.h>
 #include "usb_stack.h"
+#include "descriptors.h"
 
 // CDC Request Codes
 #define CDC_SEND_ENCAPSULATED_COMMAND						0x00
@@ -101,7 +102,15 @@ struct cdc_ControlLineState {
 unsigned char *data, *data_end;
 BDentry *rxbdp, *txbdp;
 
+#pragma udata usb_data
+unsigned char cdc_rx_buffer[CDC_BUFFER_SIZE];
+unsigned char cdc_tx_buffer[CDC_BUFFER_SIZE];
+#pragma udata
+
 void cdc_init(void) {
+
+	usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, 4);	// TODO: Remove magic with macro
+
 	linecodeing.dwDTERate = 115200;
 	linecodeing.bCharFormat = one;
 	linecodeing.bParityType = none;
@@ -111,8 +120,10 @@ void cdc_init(void) {
 	rxbdp = &usb_bdt[USB_CALC_BD(2, USB_DIR_OUT, USB_PP_EVEN)];
 	txbdp = &usb_bdt[USB_CALC_BD(3, USB_DIR_IN, USB_PP_EVEN)];
 	data = data_end = 0;
-	usb_set_out_handler(2, cdc_rx);
-	usb_set_in_handler(3, cdc_tx);
+	usb_register_endpoint(2, USB_EP_OUT, CDC_BUFFER_SIZE, cdc_rx_buffer, NULL, cdc_rx, NULL);
+	usb_register_endpoint(3, USB_EP_IN,  CDC_BUFFER_SIZE, NULL, cdc_tx_buffer, NULL, cdc_tx);
+
+	usb_start();
 }
 
 void cdc_setup(void){
@@ -124,15 +135,13 @@ void cdc_setup(void){
 	case (USB_bmRequestType_Class | USB_bmRequestType_Interface):
 		switch (packet[USB_bRequest]) {
 
-		case CDC_SEND_ENCAPSULATED_COMMAND:		// Required
-			usb_ack_zero(rbdp);		// TODO: Implement
-
+		case CDC_SEND_ENCAPSULATED_COMMAND:		// Required TODO: Implement
+			usb_ack_zero(rbdp);
 			DPRINTF("CDC_SEND_ENCAPSULATED_COMMAND\n");
 			break;
 
-		case CDC_GET_ENCAPSULATED_RESPONSE:		// Required
-			usb_ack_zero(rbdp);		// TODO: Implement
-
+		case CDC_GET_ENCAPSULATED_RESPONSE:		// Required TODO: Implement
+			usb_ack_zero(rbdp);
 			DPRINTF("CDC_SEND_ENCAPSULATED_RESPONSE\n");
 			break;
 
@@ -297,7 +306,7 @@ void getsCDC( char *buffer, unsigned char len) {
 /* Write a byte to the USART. */
 void putcCDC( char c ) {
 	// TODO: Implement thread (interrupt) safety
-	while (txbdp->BDSTAT & UOWN);
+	while (txbdp->BDSTAT & UOWN && txbdp->BDCNT < CDC_BUFFER_SIZE);
 	DisableInterrupts();
 	txbdp->BDADDR[txbdp->BDCNT++] = c;
 	DPRINTF("putcCDC BDSTAT 0x%02X\n", txbdp->BDSTAT);

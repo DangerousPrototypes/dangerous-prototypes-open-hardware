@@ -21,75 +21,37 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 #include <string.h>
 
 #include "usb_stack.h"
-#include "descriptors.h"
 
-#define XCAT(x,y) x ## y
-#define CAT(x,y) XCAT(x,y)
+ROM const unsigned char *usb_device_descriptor;
+ROM const unsigned char *usb_config_descriptor;
+ROM const unsigned char *usb_string_descriptor;
+int usb_num_string_descriptors;
+usb_ep_t endpoints[16];
 
-#pragma udata usb_bdt=0x400
-BDentry usb_bdt[2*4];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+/* Allocate buffers for buffer description table and the actual buffers */
+#pragma udata usb_bdt
+BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
 
+#pragma udata usb_data
+/* TODO: Move all user defined ep buffers to user application compile time allocation. 
+	Only claim buffer for ep 0 */
 #if USB_PP_BUF_MODE == 0
-
-#define USB_EP(num, flow, typ, size, callback) \
-	unsigned char usb_ep ## num ## _out_buf[size]; \
-	unsigned char usb_ep ## num ## _in_buf[size];
-USB_ALL_ENDPOINTS
-#undef USB_EP
-
-#elif USB_PP_BUF_MODE == 1
-
-#define USB_EP(num, flow, typ, size, callback) \
-	unsigned char usb_ep ## num ## _out_buf[size]; \
-	unsigned char usb_ep ## num ## _in_buf[size];
-unsigned char usb_ep0_out_even_buf[USB_MAX_BUFFER_SIZE];
-unsigned char usb_ep0_out_odd_buf[USB_MAX_BUFFER_SIZE];
-unsigned char usb_ep0_in_buf[USB_MAX_BUFFER_SIZE];
-USB_ENDPOINTS
-#undef USB_EP
-
-#elif USB_PP_BUF_MODE == 2
-
-#define USB_EP(num, flow, typ, size, callback) \
-	unsigned char usb_ep ## num ## _out_even_buf[size]; \
-	unsigned char usb_ep ## num ## _out_odd_buf[size]; \
-	unsigned char usb_ep ## num ## _in_even_buf[size]; \
-	unsigned char usb_ep ## num ## _in_odd_buf[size];
-USB_ALL_ENDPOINTS
-#undef USB_EP
-
-#elif USB_PP_BUF_MODE == 3
-
-#define USB_EP(num, flow, typ, size, callback) \
-	unsigned char usb_ep ## num ## _out_even_buf[size]; \
-	unsigned char usb_ep ## num ## _out_odd_buf[size]; \
-	unsigned char usb_ep ## num ## _in_even_buf[size]; \
-	unsigned char usb_ep ## num ## _in_odd_buf[size];
 unsigned char usb_ep0_out_buf[USB_MAX_BUFFER_SIZE];
 unsigned char usb_ep0_in_buf[USB_MAX_BUFFER_SIZE];
-USB_ENDPOINTS
-#undef USB_EP
-
+#else
+#error "Ping pong buffer not implemented yet!"
 #endif
-
 #pragma udata
 
 unsigned int usb_device_status;
 unsigned int usb_configured;
 unsigned char usb_addr_pending;
 
-unsigned char trn_status;					// Global since it is needed everywere
+usb_status_t trn_status;					// Global since it is needed everywere
 BDentry *bdp, *rbdp;						// Dito
 
-usb_handler_t in_handlers[16];
-usb_handler_t out_handlers[16];
-
-const ROM unsigned char *usb_desc_ptr;
+ROM const unsigned char *usb_desc_ptr;
 unsigned int usb_desc_len;
-
-#define USB_STRING(num, size, ...) ROM const unsigned char CAT(usb_str_desc,num) [] = {2*(size+1), USB_STRING_DESCRIPTOR_TYPE, __VA_ARGS__};
-USB_STRINGS
-#undef USB_STRING
 
 /* Forward Reference Prototypes */
 void usb_handle_error( void );
@@ -108,9 +70,18 @@ void usb_RequestError( void );
 void usb_set_address( void );
 void usb_send_descriptor( void );
 
-void usb_init( void ) {
+void usb_init(	ROM const unsigned char *device_descriptor, 
+				ROM const unsigned char *config_descriptor, 
+				ROM const unsigned char *string_descriptor,
+				int num_string_descriptors ) {
+	int i;
 
 	DPRINTF("USB init ");
+
+	usb_device_descriptor = device_descriptor;
+	usb_config_descriptor = config_descriptor;
+	usb_string_descriptor = string_descriptor;
+	usb_num_string_descriptors = num_string_descriptors;
 
 	ResetPPbuffers();
 
@@ -122,28 +93,25 @@ void usb_init( void ) {
 	
 	ConfigureUsbHardware();
 
-/* Configure endpoint buffer descriptors */
+	usb_register_endpoint(0, USB_EP_CONTROL, USB_EP0_BUFFER_SIZE, usb_ep0_out_buf, usb_ep0_in_buf, NULL, NULL);		// Register ep0 - no handlers
+
+	/* Configure endpoints */
+	for (i=0; i<16; i++) {
+		/* Configure endpoints (USB_UEPn - registers) */
+		USB_UEP[i] = endpoints[i].type;
+		/* Configure buffer descriptors */
 #if USB_PP_BUF_MODE == 0
-#define USB_EP(num, flow, typ, size, callback) \
-	bdp = &usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, 0)]; \
-	bdp->BDCNT = size; \
-	bdp->BDADDR = usb_ep ## num ## _out_buf; \
-	bdp->BDSTAT = UOWN + DTSEN; \
-	bdp = &usb_bdt[USB_CALC_BD(num, USB_DIR_IN, 0)]; \
-	bdp->BDCNT = size; \
-	bdp->BDADDR = usb_ep ## num ## _in_buf; \
-	bdp->BDSTAT = DTSEN;
-
-	USB_ALL_ENDPOINTS
-#undef USB_EP
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDCNT  = endpoints[i].buffer_size;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDADDR = endpoints[i].out_buffer;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN + DTSEN;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDCNT  = 0;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDADDR = endpoints[i].in_buffer;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = DTS + DTSEN;					// Set DTS => First packet inverts, ie. is Data0
 #else
-	#error "PP Mode not implemented yet"
+		// TODO: Implement Ping-Pong buffering setup.
+		#error "PP Mode not implemented yet"
 #endif
-
-/* Configure endpoints (USB_UEPn - registers) */
-#define USB_EP(num, flow, typ, size, callback) CAT(USB_UEP,num) = flow;
-USB_ALL_ENDPOINTS
-#undef USB_EP
+	}
 
 #ifdef USB_SELF_POWERED
 	usb_device_status = 0x0001;
@@ -152,9 +120,11 @@ USB_ALL_ENDPOINTS
 #endif
 	usb_configured = 0x00;
 	usb_addr_pending = 0x00;
+}
 
-	class_init();
+void usb_start( void ) {
 
+	DPRINTF("Starting usb ");
 	EnableUsb();					// Enable USB-hardware
 	while(SingleEndedZeroIsSet());	// Busywait for initial power-up
 	EnableUsbInterrupt(STALL + IDLE + TRN + ACTIV + UERR + URST);
@@ -203,6 +173,8 @@ void usb_handle_error( void ) {
 
 void usb_handle_reset( void ) {
 
+	int i;
+
 #ifdef USB_SELF_POWERED
 	usb_device_status = 0x0001;
 #else
@@ -237,27 +209,21 @@ void usb_handle_reset( void ) {
 	ClearAllUsbErrorInterruptFlags();
 
 /* Configure endpoints (USB_UEPn - registers) */
-#define USB_EP(num, flow, typ, size, callback)\
-	CAT(USB_UEP,num) = flow;
-USB_ALL_ENDPOINTS
-#undef USB_EP
-
-/* Configure buffer descriptors */
+	for (i=0; i<16; i++) {
+		USB_UEP[i] = endpoints[i].type;
+		/* Configure buffer descriptors */
 #if USB_PP_BUF_MODE == 0
-#define USB_EP(num, flow, typ, size, callback) \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDCNT  = size; \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDADDR = usb_ep ## num ##_out_buf; \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN + DTSEN; \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDCNT  = 0; \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDADDR = usb_ep ## num ##_in_buf; \
-	usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = DTS + DTSEN;				// Set DTS => First packet inverts, ie. is Data0
-	USB_ALL_ENDPOINTS
-#undef USB_EP
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDCNT  = endpoints[i].buffer_size;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDADDR = endpoints[i].out_buffer;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN + DTSEN;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDCNT  = 0;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDADDR = endpoints[i].in_buffer;
+		usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = DTS + DTSEN;				// Set DTS => First packet inverts, ie. is Data0
 #else
-	// TODO: Implement Ping-Pong buffering setup.
-	#error "PP Mode not implemented yet"
+		// TODO: Implement Ping-Pong buffering setup.
+		#error "PP Mode not implemented yet"
 #endif
-
+	}
 	EnableAllUsbErrorInterrupts();
 }
 
@@ -314,7 +280,7 @@ void usb_handle_setup( void ) {
 		usb_RequestError();
 	}
 	/* Prepare endpoint for new reception */
-	bdp->BDCNT = USB_MAX_BUFFER_SIZE;
+	bdp->BDCNT = USB_MAX_BUFFER_SIZE;	// TODO: Fix correct size for current EP
 	bdp->BDSTAT = (!(bdp->BDADDR[USB_bmRequestType] & USB_bmRequestType_PhaseMask) &&
 					(bdp->BDADDR[USB_wLength] || bdp->BDADDR[USB_wLengthHigh]))? UOWN + DTS + DTSEN : UOWN + DTSEN;
 	EnablePacketTransfer();
@@ -322,7 +288,7 @@ void usb_handle_setup( void ) {
 
 void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 	unsigned char *packet = bdp->BDADDR;
-
+	int i;
 	switch(packet[USB_bRequest]) {
 	case USB_REQUEST_GET_STATUS:
 		rbdp->BDADDR[0] = usb_device_status & 0xFF;
@@ -370,10 +336,14 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 			DPRINTF("DEV Dev_desc_req ");
 			break;
 		case USB_CONFIGURATION_DESCRIPTOR_TYPE:
-			if (USB_NUM_CONFIGURATIONS <= packet[USB_bDescriptorIndex])
+			if (packet[USB_bDescriptorIndex] >= usb_device_descriptor[17])	// TODO: remove magic
 				usb_RequestError();
 			usb_desc_ptr = usb_config_descriptor;
 			usb_desc_len = usb_desc_ptr[2] + usb_desc_ptr[3] * 256;
+			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {				// Implicit linked list traversal until requested configuration
+				usb_desc_ptr += usb_desc_len;
+				usb_desc_len = usb_desc_ptr[2] + usb_desc_ptr[3] * 256;
+			}
 			if ((packet[USB_wLengthHigh] <  usb_desc_ptr[3]) || 
 				(packet[USB_wLengthHigh] == usb_desc_ptr[3] && packet[USB_wLength] < usb_desc_ptr[2]))
 				usb_desc_len = packet[USB_wLength] + packet[USB_wLengthHigh] * 256;
@@ -381,17 +351,14 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 			break;
 		case USB_STRING_DESCRIPTOR_TYPE:
 			// TODO: Handle language request. For now return standard language.
-			switch(packet[USB_bDescriptorIndex]) {
-#define USB_STRING(num, ...) \
-			case num: \
-				usb_desc_ptr = CAT(usb_str_desc,num); \
-				break;
-			USB_STRINGS
-#undef USB_STRING
-			default:
+			if (packet[USB_bDescriptorIndex] >= usb_num_string_descriptors)
 				usb_RequestError();
-			}
+			usb_desc_ptr = usb_string_descriptor;
 			usb_desc_len = usb_desc_ptr[0];
+			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {				// Implicit linked list traversal until requested configuration
+				usb_desc_ptr += usb_desc_len;
+				usb_desc_len = usb_desc_ptr[0];
+			}
 			if (0u==packet[USB_wLengthHigh] && packet[USB_wLength] < usb_desc_len)
 				usb_desc_len = packet[USB_wLength];
 			DPRINTF("DEV Str_desc_req 0x%02X%02X 0x%02X%02X ", packet[USB_wValueHigh], packet[USB_wValue], packet[USB_wIndexHigh], packet[USB_wIndex]);
@@ -414,17 +381,19 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 		if (USB_NUM_CONFIGURATIONS >= packet[USB_wValue]) {
 
 			/* Configure endpoints (USB_UEPn - registers) */
-			#define USB_EP(num, flow, typ, size, callback) \
-				CAT(USB_UEP,num) = flow;\
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDCNT = size; \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN; /* TODO: Should add DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDCNT = size; \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_OUT, USB_PP_ODD)].BDSTAT = UOWN;  /* TODO: Should add DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = 0;     /* TODO: Should be DTSEN */ \
-				usb_bdt[USB_CALC_BD(num, USB_DIR_IN, USB_PP_ODD)].BDSTAT = 0;      /* TODO: Should be DTSEN */ \
-			USB_ENDPOINTS
-			#undef USB_EP
-
+			for (i=0; i<16; i++) {
+				USB_UEP[i] = endpoints[i].type;
+				/* Configure buffer descriptors */
+#if USB_PP_BUF_MODE == 0
+				usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDCNT  = endpoints[i].buffer_size;
+				usb_bdt[USB_CALC_BD(i, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN + DTSEN;
+				usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDCNT  = 0;
+				usb_bdt[USB_CALC_BD(i, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = DTS + DTSEN;	// Set DTS => First packet inverts, ie. is Data0
+#else
+				// TODO: Implement Ping-Pong buffering setup.
+				#error "PP Mode not implemented yet"
+#endif
+			}
 			usb_configured = packet[USB_wValue];
 			rbdp->BDCNT = 0;
 			rbdp->BDSTAT = UOWN + DTS + DTSEN;
@@ -477,7 +446,6 @@ void usb_handle_StandardInterfaceRequest( BDentry *bdp ) {
 
 void usb_handle_StandardEndpointRequest( BDentry *bdp ) {
 	unsigned char *packet;
-	unsigned char *USB_UEP;
 	unsigned char epnum;
 	unsigned char dir;
 	BDentry	*epbd;
@@ -488,8 +456,7 @@ void usb_handle_StandardEndpointRequest( BDentry *bdp ) {
 	case USB_REQUEST_GET_STATUS:
 		epnum = packet[USB_wIndex] & 0x0F;
 		dir = packet[USB_wIndex] >> 7;
-		USB_UEP = (unsigned char *)&USB_UEP0 + epnum;	// TODO: Rework for 16bit arch
-		rbdp->BDADDR[0] = *USB_UEP & USB_UEP_EPSTALL;
+		rbdp->BDADDR[0] = USB_UEP[epnum] & USB_UEP_EPSTALL;
 		rbdp->BDADDR[1] = 0x00;
 		rbdp->BDCNT = 2;
 		rbdp->BDSTAT = UOWN + DTS + DTSEN;
@@ -533,30 +500,41 @@ void usb_handle_VendorRequest( void ) {
 }
 
 void usb_handle_in( void ) {
-	DPRINTF("In  EP: %u Handler: 0x%p\t", trn_status >> 3, in_handlers[trn_status>>3]);
-	if (in_handlers[trn_status>>3]) {
-		in_handlers[trn_status>>3]();
+	DPRINTF("In  EP: %u Handler: 0x%p\t", trn_status >> 3, endpoints[USB_STAT2EP(trn_status)].in_handler);
+	if (endpoints[USB_STAT2EP(trn_status)].in_handler) {
+		endpoints[USB_STAT2EP(trn_status)].in_handler();
 	} else {
 		DPRINTF("No handler\n");
 	}
 }
 
 void usb_handle_out( void ) {
-	DPRINTF("Out EP: %u Handler: 0x%p\t", trn_status >> 3, out_handlers[trn_status>>3]);
+	DPRINTF("Out EP: %u Handler: 0x%p\t", trn_status >> 3, endpoints[USB_STAT2EP(trn_status)].out_handler);
 	//rbdp->BDSTAT &= ~UOWN;									// Reclaim reply buffer
-	if (out_handlers[trn_status>>3]) {
-		out_handlers[trn_status>>3]();
+	if (endpoints[USB_STAT2EP(trn_status)].out_handler) {
+		endpoints[USB_STAT2EP(trn_status)].out_handler();
 	} else {
 		DPRINTF("No handler\n");
 	}
 }
 
+void usb_register_endpoint(	unsigned int ep, usb_uep_t type, unsigned int buf_size, 
+							unsigned char *out_buf, unsigned char *in_buf, 
+							usb_handler_t out_handler, usb_handler_t in_handler ) {
+	endpoints[ep].type			= type;
+	endpoints[ep].buffer_size	= buf_size;
+	endpoints[ep].out_buffer	= out_buf;
+	endpoints[ep].in_buffer		= in_buf;
+	endpoints[ep].out_handler	= out_handler;
+	endpoints[ep].in_handler	= in_handler;
+}
+
 void usb_set_in_handler(int ep, usb_handler_t in_handler) {
-	in_handlers[ep] = in_handler;
+	endpoints[ep].in_handler = in_handler;
 }
 
 void usb_set_out_handler(int ep, usb_handler_t out_handler) {
-	out_handlers[ep] = out_handler;
+	endpoints[ep].out_handler = out_handler;
 }
 
 void usb_ack( BDentry *bd ) {
@@ -569,7 +547,7 @@ void usb_ack_zero( BDentry *bd ) {
 }
 
 void usb_ack_out( BDentry *bd ) {
-	bd->BDCNT = USB_MAX_BUFFER_SIZE;
+	bd->BDCNT = USB_MAX_BUFFER_SIZE;	// TODO: Fix correct size for current EP
 	bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
 }
 
@@ -604,7 +582,7 @@ void usb_send_descriptor( void ) {
 	BDentry *bd;
 	size_t packet_len;
 	if (usb_desc_len) {
-		packet_len = (usb_desc_len < USB_MAX_BUFFER_SIZE) ? usb_desc_len : USB_MAX_BUFFER_SIZE;
+		packet_len = (usb_desc_len < USB_MAX_BUFFER_SIZE) ? usb_desc_len : USB_MAX_BUFFER_SIZE;		// Allways on EP0 so use MAX_BUFFER_SIZE
 		bd = &usb_bdt[USB_CALC_BD(0, USB_DIR_IN, 0x01 ^ ((trn_status & 0x02)>>1))];
 		DPRINTF("Send bd: 0x%p dst: 0x%p src: 0x%p len: %u Data: ", rbdp, rbdp->BDADDR, usb_desc_ptr, packet_len);
 		//ARCH_memcpy(rbdp->BDADDR, usb_desc_ptr, packet_len);
