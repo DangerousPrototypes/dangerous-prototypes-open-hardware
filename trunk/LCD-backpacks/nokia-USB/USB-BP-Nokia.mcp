@@ -8,7 +8,7 @@ dir_src=
 dir_bin=output
 dir_tmp=work
 dir_sin=
-dir_inc=.;c:\mcc18\h;..\microchip\include
+dir_inc=c:\mcc18\h;..\microchip\include
 dir_lib=C:\mcc18\lib
 dir_lkr=
 [CAT_FILTERS]
