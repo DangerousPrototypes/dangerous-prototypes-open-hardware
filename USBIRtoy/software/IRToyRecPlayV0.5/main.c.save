@@ -171,7 +171,8 @@ int print_usage(char * appname)
 		printf("\n");
 		printf(" To record and play a text file test_000.txt, use \n");
         printf("           IRtoy.exe -d  com3  -f test -p -t -r\n\n");
-        printf(" NOTE:     Use only the base name of the output/input file\n");
+        printf(" NOTE:     Except for -q command, Use only the base name of the\n");
+        printf("           output/input file, without the numeric sequence:\n");
         printf("           use -f test instead of -f test_000.bin \n");
         printf("           _000 to _999 will be supplied by this utility. \n");
         printf("           You may also edit the resulting text file and replace \n");
@@ -326,7 +327,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
     serial_setup(fd,(speed_t) param_speed);
-    printf(" Entering IR sample mode ....\n ");
+ printf(" Entering IR sample mode ....\n ");
     for (i=0;i<5;i++) {
         //send 5x, just to make sure it exit the sump mode too
         serial_write( fd, "\x00", 1);
@@ -350,6 +351,25 @@ int main(int argc, char** argv)
     flag=0;
     fcounter=0;
     if(record==TRUE){ //open the file
+         printf(" Entering IR sample mode ....\n ");
+    for (i=0;i<5;i++) {
+        //send 5x, just to make sure it exit the sump mode too
+        serial_write( fd, "\x00", 1);
+    }
+
+    serial_write( fd, "S", 1);
+    res= serial_read(fd, buffer, sizeof(buffer));  //get version
+
+    if (res>0){
+        printf("IR Toy Protocol version: ");
+        for (i=0;i<res;i++)
+            printf(" %c ",buffer[i]);
+        printf("\n");
+    }
+    else{
+        fprintf(stderr," Error: IR Toy doesn't have a reply\n ");
+        exit(-1);
+    }
          if ( IRrecord(param_fname,fd)==-1) {
             FREE(param_port);
             FREE(param_speed);
@@ -364,13 +384,50 @@ int main(int argc, char** argv)
     } // play=true
     if (textfile==TRUE) {
          if (record==TRUE){
+            printf(" Entering IR sample mode ....\n ");
+    for (i=0;i<5;i++) {
+        //send 5x, just to make sure it exit the sump mode too
+        serial_write( fd, "\x00", 1);
+    }
 
+    serial_write( fd, "S", 1);
+    res= serial_read(fd, buffer, sizeof(buffer));  //get version
+
+    if (res>0){
+        printf("IR Toy Protocol version: ");
+        for (i=0;i<res;i++)
+            printf(" %c ",buffer[i]);
+        printf("\n");
+    }
+    else{
+        fprintf(stderr," Error: IR Toy doesn't have a reply\n ");
+        exit(-1);
+    }
            IRtxtrecord(param_fname);
 
          }
 
 
         if (play==TRUE){
+             printf(" Entering IR sample mode ....\n ");
+    for (i=0;i<5;i++) {
+        //send 5x, just to make sure it exit the sump mode too
+        serial_write( fd, "\x00", 1);
+    }
+
+    serial_write( fd, "S", 1);
+    res= serial_read(fd, buffer, sizeof(buffer));  //get version
+
+    if (res>0){
+        printf("IR Toy Protocol version: ");
+        for (i=0;i<res;i++)
+            printf(" %c ",buffer[i]);
+        printf("\n");
+    }
+    else{
+        fprintf(stderr," Error: IR Toy doesn't have a reply\n ");
+        exit(-1);
+    }
            IRtxtplay(param_fname,fd,param_delay);
 
 
@@ -384,6 +441,7 @@ int main(int argc, char** argv)
     }  //OLS==true
 
     if (queue==TRUE){
+        
         IRqueue(param_fname,fd);
     } // queue=true
 

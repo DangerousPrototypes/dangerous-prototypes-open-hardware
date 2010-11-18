@@ -28,7 +28,7 @@ void create_ols( char *param_fname)
                 if (fcounter > 0)
                     printf(" No more file(s). \n\n");
                 else
-                    printf(" File does not exits. \n");
+                    printf(" OLS File does not exits. \n");
                break;
             }
 

@@ -145,6 +145,8 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
         inkey=0;
         int delay = atoi(param_delay) ;
         int firstfile = 0;
+
+
         while (1) {
             sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
             fp=fopen(fnameseq,"rb");
@@ -152,7 +154,7 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
                 if (fcounter > 0)
                     printf(" No more file(s). \n");
                 else
-                    printf(" File does not exits. \n");
+                    printf(" Bin File does not exits. \n");
 
                break;
             }
@@ -190,7 +192,13 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
             }
 
             printf("\n Playing file: %s\n",fnameseq);
+             for (i=0;i<5;i++) {
+            //send 5x, just to make sure it exit the sump mode too
+            serial_write( fd, "\x00", 1);
+            }
 
+            serial_write( fd, "S", 1);
+            res= serial_read(fd, buffer, sizeof(buffer));
             int comsresult = 0;
             serial_write( fd, "\x03", 1);
             while(!feof(fp)) {

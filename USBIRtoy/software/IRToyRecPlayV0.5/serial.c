@@ -211,8 +211,10 @@ int serial_write(int fd, char *buf, int size)
 	//fprintf(stderr, "size = %d ret = %d\n", size, ret);
 	//buspirate_print_buffer(buf, size);
 
-   	if (ret != size)
+   	if (ret != size){
 	    	fprintf(stderr, " Error sending data\n");
+
+   	}
 	return ret;
 
 
