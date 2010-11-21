@@ -277,7 +277,7 @@ static void init(void){
 
 void usbbufservice(void){
 	if(ubuf.cnt==0){//if the buffer is empty, get more data
-		ubuf.cnt = getsUSBUSART(ubuf.inbuf,64);
+		ubuf.cnt = getUnsignedCharArrayUsbUart(ubuf.inbuf,64);
 		ubuf.rdptr=0;
 	}
 }
