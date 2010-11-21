@@ -10,7 +10,10 @@ ACL_REVERSE=0,
 FORWARD
 }HAL_ACL_DIRECTION;
 
-u8 hal_Acl_Read(u8 r);
-void hal_Acl_Enable(void);
+
+
+
+u8 hal_acl_read(u8 r);
+void hal_acl_enable(void);
 
 #endif
