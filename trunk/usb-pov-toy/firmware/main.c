@@ -33,10 +33,12 @@ unsigned char waitforbyte(void);
 unsigned char checkforbyte(void);
 void sendok(void);
 void send(unsigned char c);
-unsigned char spi(unsigned char c);
+//unsigned char spi(unsigned char c);
 
-unsigned char aclRead(unsigned char r);
-void aclEnable(void);
+void UsageMode(void);
+
+//unsigned char hal_Acl_Read(unsigned char r);
+//void hal_Acl_Enable(void);
 
 #pragma code
 void main(void){  
@@ -53,7 +55,7 @@ void main(void){
 	//C0 PR11 MISO 
 	//C1 PR12 MOSI
 	//C2 RP13 CLK
-#define ACL_CS LATAbits.LATA2
+
 	LATAbits.LATA2=1;
 	TRISAbits.TRISA2=0;
 
@@ -91,7 +93,7 @@ void main(void){
 	LATB=0;
 	TRISB=0;
 
-	aclEnable();
+	hal_acl_enable();
 	
     USBDeviceInit();//setup usb
 
@@ -115,9 +117,9 @@ void main(void){
 				break;
 			case 0x01: 
 				ACL_CS=0;
-				spi((0x0d<<1));
+				hal_spi_rw((0x0d<<1));
 				param[0]=0x00;//spi(0xff);
-				param[1]=spi(0xff);
+				param[1]=hal_spi_rw(0xff);
 				ACL_CS=1;
 			  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 					putUnsignedCharArrayUsbUsart(param,2);
@@ -129,19 +131,19 @@ void main(void){
 				break;
 			case 0x06:
 				while(1){
-					LATB=aclRead(0x06);
+					LATB=hal_acl_read(0x06);
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x07:
 				while(1){
-					LATB=aclRead(0x07);
+					LATB=hal_acl_read(0x07);
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x08:
 				while(1){
-					LATB=aclRead(0x08);
+					LATB=hal_acl_read(0x08);
 					if(checkforbyte())break;
 				}
 				break;
@@ -149,8 +151,8 @@ void main(void){
 				param[0]=0x00;//spi(0xff);
 				while(1){
 					ACL_CS=0;
-					spi((0x06<<1));
-					param[1]=spi(0xff);
+					hal_spi_rw((0x06<<1));
+					param[1]=hal_spi_rw(0xff);
 					ACL_CS=1;
 				  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 						putUnsignedCharArrayUsbUsart(param,2);
@@ -166,21 +168,38 @@ void main(void){
 
 }//end main
 
-unsigned char aclRead(unsigned char r){
-	unsigned char c;
 
-	ACL_CS=0;
-	spi((r<<1));
-	c=spi(0xff);
-	ACL_CS=1;
+
+
+// TODO
+void UsageMode(void)
+{
+// Initialization Here
+
+while(1)
+	{
+
+
+	}
 }
 
-void aclEnable(void){
-	ACL_CS=0;
-	spi((0x16<<1)|0b10000000);//write setup
-	spi(0b0001);//low g, measurement
-	ACL_CS=1;
-}
+//unsigned char hal_Acl_Read(unsigned char r){
+//	unsigned char c;
+//
+//	ACL_CS=0;
+//	hal_spi_rw((r<<1));
+//	c=hal_spi_rw(0xff);
+//	ACL_CS=1;
+//}
+//
+//void hal_Acl_Enable(void){
+//	ACL_CS=0;
+//	hal_spi_rw((0x16<<1)|0b10000000);//write setup
+//	hal_spi_rw(0b0001);//low g, measurement
+//	ACL_CS=1;
+//}
+
+
 
 void send(unsigned char c){
 	unsigned char b[2];
@@ -236,12 +255,7 @@ unsigned char checkforbyte(void){
 	return 0;
 } 
 
-unsigned char spi(unsigned char c){
-	SSP2BUF=c;
-	while(SSP2STATbits.BF==0);
-	c=SSP2BUF;
-	return c;
-}
+
 
 static void init(void){
 	unsigned int cnt = 2048;

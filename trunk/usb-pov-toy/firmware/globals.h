@@ -20,18 +20,13 @@ typedef unsigned long u32;
 #include "GenericTypeDefs.h"
 #include "Compiler.h"
 #include "usb_config.h"
-#include "HD44780.h" 
+//#include "HD44780.h" 
 
-#if 0
-#include "USBStack\usb.h"
-#include "USBStack\usb_device.h"
-#include "USBStack\usb_function_cdc.h"
-#else
 //USB stack
 #include "./USB/usb.h"
 #include "./USB/usb_function_cdc.h"
 #include "./USB/usb_device.h"
-#endif
+
 
 //our USB input buffer functions
 //#include "USBbuf.h"
@@ -44,6 +39,10 @@ typedef unsigned long u32;
 #include <capture.h>
 #include <timers.h>
 
+
+#include "hal_accelerometer.h"
+#include "hal_spi.h"
+#include "hal_pov.h"
 
 
 
