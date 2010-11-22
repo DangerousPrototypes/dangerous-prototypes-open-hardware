@@ -93,7 +93,33 @@ void main(void){
 	LATB=0;
 	TRISB=0;
 
+
 	hal_acl_enable();
+	hal_accel_config();
+
+	ACL_INT_SETUP();
+
+
+	while(1){
+
+		//if pin ready
+		if(ACL_INT1==1){
+			//read and find direction
+			//if left to right, light LED
+			if(hal_acl_IsItReverseOrForward==ACL_FORWARD){
+				PORTB=0xff;
+			}else{//else LED off
+				PORTB=0x00;
+			}
+
+			//setup change interrupt
+			//clear interrupt (write 0b11 to 0x17)
+			//enable interrupt (write 0x00 to 0x17)
+			hal_acl_write(INTRST, 0b11);
+			hal_acl_write(INTRST, 0x00);
+
+		}
+	}
 	
     USBDeviceInit();//setup usb
 
