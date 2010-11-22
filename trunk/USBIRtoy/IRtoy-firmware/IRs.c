@@ -218,7 +218,7 @@ typedef struct _smCommand {
 //
 unsigned char irsService(void){
 	static unsigned char TxBuffCtr;
-	static unsigned int tmr16;
+	static unsigned int tmr16, txcnt;
 	static _smio irIOstate = I_IDLE;
 
 	static _smCommand irIOcommand;
@@ -242,6 +242,7 @@ unsigned char irsService(void){
 						case IRIO_TRANSMIT: //start transmitting
 							//setup for transmit mode:
 							//disable timer 0, 1, 2, etc
+							txcnt=0;//reset transmit byte counter, used for diagnostic
 							TM0IE=0; 
 							T1IE=0;
 							IRRX_IE = 0;
@@ -296,7 +297,7 @@ unsigned char irsService(void){
 						case IRIO_IO_DIR: //Setup direction IO
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
 							irIOcommand.parameters=2; //1;
-							irIOcommand.parCnt=1;
+							//irIOcommand.parCnt=1;
 							irIOstate=I_PARAMETERS;
 							break;
 						case IRIO_IO_READ: //return the port read
@@ -316,7 +317,7 @@ unsigned char irsService(void){
 						case IRIO_UART_WRITE: //write to the UART, get byte to write
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
 							irIOcommand.parameters=1;
-							irIOcommand.parCnt=1;
+							//irIOcommand.parCnt=1;
 							irIOstate=I_PARAMETERS;
 							break;
 						default:
@@ -324,13 +325,14 @@ unsigned char irsService(void){
 					}
 					irS.TXsamples--;
 					TxBuffCtr++;
+					irIOcommand.parCnt=0;
 				break;
 			case I_PARAMETERS://get optional parameters
+				irIOcommand.parCnt++;
 				irIOcommand.command[irIOcommand.parCnt]=irToy.s[TxBuffCtr];//store each parameter
 				irS.TXsamples--;
 				TxBuffCtr++;
-				irIOcommand.parCnt++;
-				if(irIOcommand.parCnt<(irIOcommand.parameters+1)) break; //if not all parameters, quit
+				if(irIOcommand.parCnt<(irIOcommand.parameters)) break; //if not all parameters, quit
 			case I_PROCESS:	//process long commands
 				switch(irIOcommand.command[0]){
 					case IRIO_SETUP_PWM: //setup user defined PWM frequency
@@ -401,6 +403,7 @@ unsigned char irsService(void){
 					irIOstate = I_DATA_L; //advance and get the next byte on the next pass
 					irS.TXsamples--;
 					TxBuffCtr++;
+					txcnt++;//total bytes transmitted
 				}
 				break;
 			case I_DATA_L:
@@ -411,13 +414,24 @@ unsigned char irsService(void){
 					tmr0_buf[1]=irToy.s[TxBuffCtr];//put the second byte in the buffer
 				}
 
+				txcnt++;//total bytes transmitted
+
 				//check here for 0xff 0xff and return to IDLE state
 				if((tmr0_buf[0]==0xff) && (tmr0_buf[1]==0xff)){
 					//irIO.TXInvert=IRS_TRANSMIT_LO;
 					//irIO.TXend=1;	
 					tmr0_buf[0]=0;				
-					tmr0_buf[1]=20;
+					tmr0_buf[1]=20;//put an off value in anyways, or the flip echos on the the receiver, RX is re-enabled in interrupt
 					irIOstate=I_IDLE;//return to idle state, data done
+
+					//return the total number of bytes transmitted
+					if(mUSBUSARTIsTxTrfReady()){
+						irToy.usbOut[0]='t';
+						irToy.usbOut[1]=(txcnt>>8)&0xff; 
+						irToy.usbOut[2]=(txcnt&0xff); 
+						irS.RXsamples=3;
+						putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+					}
 				}else{
 					irIOstate = I_DATA_H; //advance and get the next byte on the next pass
 				}	
