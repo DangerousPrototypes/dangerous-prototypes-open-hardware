@@ -10,11 +10,12 @@ use constant SAMPLE_TIMER_CMD => 0x05;
 
 use constant PRESCALER => 21.3333;
 
-use constant CTRL       => 0b0000;
-use constant DEBUG      => 0b0001;
-use constant GETRAWDATA => 0b0010;
-use constant DECODE     => 0b0100;
-use constant SKIP_RX    => 0b1000;
+use constant CTRL       => 0;
+use constant DEBUG      => ( 1 << 0 );
+use constant GETRAWDATA => ( 1 << 1 );
+use constant DECODE     => ( 1 << 2 );
+use constant SKIP_RX    => ( 1 << 3 );
+use constant TXSHORT    => ( 1 << 4 );
 
 use constant RS_RX_MAXLOOPS => 1000;
 
@@ -24,6 +25,7 @@ sub round($)
 {
 	return int( $_[0] + 0.5 );
 }
+
 #
 # $txt = hexDump($data, $bool_print_ascii);
 sub hexDump
@@ -153,6 +155,41 @@ sub rsTxByte($$$)
 }
 
 #
+# my $transmittedBytesCount = rsTxBytes($rs232Obj, $FunctionControlBits, $BytesToSend_ArrRef);
+sub rsTxBytes($$$)
+{
+	my ( $rs, $ctrl, $bytes ) = @_;
+	my $i = 0;
+	my $x;
+	my $tx      = '';
+	my $dbg     = ( $ctrl & DEBUG );
+	my $txshort = ( $ctrl & TXSHORT );
+	printf " rsTxBytes(ctrl:%04b): sending %d as %s\n", $ctrl,
+	  ($txshort) ? ( $#{$bytes} + 1 ) * 2 : ( $#{$bytes} + 1 ),
+	  ($txshort) ? 'short' : 'byte'
+	  if $dbg;
+	foreach $x (@$bytes)
+	{
+
+		if ($txshort)
+		{
+			$tx .= pack( "n", $x );
+		}
+		else
+		{
+			$tx .= pack( "C", $x );
+		}
+	}
+	$x = $rs->write($tx);
+	printf "rsTxBytes(): %d of %d %s sent.\n", $x, $#{$bytes} + 1,
+	  ($txshort)
+	  ? 'short'
+	  : 'byte'
+	  if $dbg;
+	return $x;
+} ## end sub rsTxBytes($$$)
+
+#
 # my $receivedData = rsTxRx($rs232Obj,$FunctionControlBits,$ByteToSend);
 sub rsTxRx($$$)
 {
@@ -207,15 +244,17 @@ sub rsTxRx($$$)
 } ## end sub rsTxRx($$$)
 
 #
-# $prescaler = irtoy_setPrescaler($rs232Obj,$proposed value);
-#This function should set prescaler (cmd:0x05, folowed by prescaler???)
-# FIXME at the moment it returns only default PRESCALER value. 
-sub irtoy_setPrescaler
+# $prescaler = irtoy_setPrescaler($rs232Obj,$scaler;
+# function to set prescaler (cmd:0x05), $scaler is in the range 7..0
+# returns the multiplyer value to get usecs
+sub irtoy_setPrescaler($$)
 {
 	my ( $rs, $val ) = @_;
-	return PRESCALER;
-
-	#return (PRESCALER/(8-$val)); # FIXME
+	my @arr = (SAMPLE_TIMER_CMD);
+	$val &= 0b111;
+	push @arr, $val;
+	my $ret = rsTxBytes( $rs, CTRL, \@arr );
+	return ( PRESCALER / ( 8 - $val ) );
 }
 
 #
@@ -276,7 +315,7 @@ sub irtoy_chkEnd($$)
 	}
 	printf "toy_chk_end(): '0' 0x%04x\n", $x if $dbg;
 	return 0;
-} ## end sub irtoy_chk_end($$)
+} ## end sub irtoy_chkEnd($$)
 
 #
 # ($min,$sum,$array_ref) = irtoy_process($multiply, $filename, $FunctionControlBits, $data)
