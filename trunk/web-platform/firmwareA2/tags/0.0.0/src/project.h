@@ -17,7 +17,7 @@
 //#include "proc.h"
 
 #define WEB_PLATFORM_HARDWARE_VERS		"1.X"
-#define WEB_PLATFORM_FIRMWARE_VERS		"(trunk)"
+#define WEB_PLATFORM_FIRMWARE_VERS		"0.0.0"
 #define WEB_PLATFORM_FIRMWARE_TIME		__TIME__" on "__DATE__
 
 #define UNKNOWN		0
