@@ -34,8 +34,10 @@ void hal_acl_config(void)
 	//setup change interrupt
 //16 - mode control
 //10 (4g) 10 (level detect)
-
-hal_acl_write(MCTRL, 0b1010);
+//00: 8g is selected for measurement range.
+//10: 4g is selected for measurement range.
+//01: 2g is selected for measurement range.
+hal_acl_write(MCTRL, 0b0101);
 
 //18 int or absolute
 //xPxxxxxx p=1 positive/negative
@@ -43,7 +45,7 @@ hal_acl_write(MCTRL, 0b1010);
 	//xxZYXxxx
 //xxxxxIIx ii=00 level detection
 
-hal_acl_write(CTL1, 0x00);
+hal_acl_write(CTL1, CTL1_CFG);
 
 //enable interrupt (write 0x00 to 0x17)
 
@@ -56,16 +58,21 @@ hal_acl_write(INTRST, 0x00);
 
 //1a detection threshold
 
-hal_acl_write(LVLTH, 0x0b11100000);
+hal_acl_write(LVLTH, 0x7f);
 
 }
 
 
 HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void)
 {
+unsigned char c;
 //TODO
-return ACL_REVERSE;
-//return ACL_FORWARD;
+					c=hal_acl_read(ACL_DIRECTION);
+					if(c&0b10000000){//negative
+						return ACL_REVERSE;
+					}
+//return ACL_REVERSE;
+return ACL_FORWARD;
 }
 
 void hal_acl_adjustInterruptLvl(u8 value)

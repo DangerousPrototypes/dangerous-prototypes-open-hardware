@@ -42,7 +42,7 @@ void UsageMode(void);
 
 #pragma code
 void main(void){  
-	unsigned char i,cmd, param[9]; 
+	unsigned char i,cmd, param[9],c; 
 	//unsigned char t[]={"Hello World"};
 
     init();			//setup the crystal, pins
@@ -95,32 +95,13 @@ void main(void){
 
 
 	hal_acl_enable();
-	hal_accel_config();
+
+
 
 	ACL_INT_SETUP();
 
 
-	while(1){
 
-		//if pin ready
-		if(ACL_INT1==1){
-			//read and find direction
-			//if left to right, light LED
-			if(hal_acl_IsItReverseOrForward==ACL_FORWARD){
-				PORTB=0xff;
-			}else{//else LED off
-				PORTB=0x00;
-			}
-
-			//setup change interrupt
-			//clear interrupt (write 0b11 to 0x17)
-			//enable interrupt (write 0x00 to 0x17)
-			hal_acl_write(INTRST, 0b11);
-			hal_acl_write(INTRST, 0x00);
-
-		}
-	}
-	
     USBDeviceInit();//setup usb
 
     while(1){
@@ -156,8 +137,13 @@ void main(void){
 				LATB=param[0];
 				break;
 			case 0x06:
+
 				while(1){
-					LATB=hal_acl_read(0x06);
+					c=hal_acl_read(0x06);
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+					LATB=c;
 					if(checkforbyte())break;
 				}
 				break;
@@ -186,6 +172,53 @@ void main(void){
 					if(checkforbyte())break;
 				}
 				break;
+			case 0x16:
+				while(1){
+					ACL_CS=0;
+					hal_spi_rw((0x06<<1));
+					param[0]=hal_spi_rw(0xff);
+					param[1]='|';
+					param[2]=hal_spi_rw(0xff);
+					param[3]=':';
+					param[4]=hal_spi_rw(0xff);
+					param[5]=0x13;
+					param[6]=0x10;
+					ACL_CS=1;
+				  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
+						putUnsignedCharArrayUsbUsart(param,7);
+					}
+					if(checkforbyte())break;
+				}
+				break;
+			case 0x17:
+start_mode:
+	hal_acl_config();
+	while(1){
+
+		//if pin ready
+		//|********ooooooooo|
+		if(ACL_INT1==1){
+			//read and find direction
+			//if left to right, light LED
+
+			if(hal_acl_IsItReverseOrForward()==1){
+				PORTB=0xff;
+			}else{//else LED off
+				PORTB=0x00;
+			}
+			//setup change interrupt
+			//clear interrupt (write 0b11 to 0x17)
+			//enable interrupt (write 0x00 to 0x17)
+			hal_acl_write(INTRST, 0b11);
+			hal_acl_write(INTRST, 0x00);
+
+
+		}
+
+		if(checkforbyte())break;
+	}
+	hal_acl_enable();
+break;
 			default: //error
 				break;
 		}
