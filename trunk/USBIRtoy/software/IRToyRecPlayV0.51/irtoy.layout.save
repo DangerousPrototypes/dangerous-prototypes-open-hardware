@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="bin.c" open="1" top="0" tabpos="2">
+		<Cursor position="5201" topLine="169" />
+	</File>
+	<File name="bin.h" open="0" top="0" tabpos="5">
+		<Cursor position="301" topLine="10" />
+	</File>
+	<File name="kbhit.c" open="1" top="0" tabpos="7">
+		<Cursor position="151" topLine="0" />
+	</File>
+	<File name="kbhit.h" open="0" top="0" tabpos="10">
+		<Cursor position="122" topLine="0" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="6163" topLine="316" />
+	</File>
+	<File name="ols.c" open="1" top="1" tabpos="5">
+		<Cursor position="4563" topLine="0" />
+	</File>
+	<File name="ols.h" open="0" top="0" tabpos="4">
+		<Cursor position="301" topLine="0" />
+	</File>
+	<File name="queue.c" open="0" top="0" tabpos="6">
+		<Cursor position="2603" topLine="37" />
+	</File>
+	<File name="serial.c" open="1" top="0" tabpos="4">
+		<Cursor position="6555" topLine="195" />
+	</File>
+	<File name="serial.h" open="1" top="0" tabpos="3">
+		<Cursor position="1986" topLine="58" />
+	</File>
+	<File name="txt.c" open="1" top="0" tabpos="6">
+		<Cursor position="2997" topLine="79" />
+	</File>
+	<File name="txt.h" open="0" top="0" tabpos="9">
+		<Cursor position="282" topLine="8" />
+	</File>
+</CodeBlocks_layout_file>
