@@ -124,13 +124,28 @@ void irsSetup(void){
 	 * use it at your own risks
 	 * http://www.micro-examples.com/public/microex-navig/doc/097-pwm-calculator
 	 */
+
+/*
+ * PWM registers configuration
+ * Fosc = 48000000 Hz
+ * Fpwm = 37974.68 Hz (Requested : 38000 Hz)
+ * Duty Cycle = 50 %
+ * Resolution is 10 bits
+ * Prescaler is 4
+ * Ensure that your PWM pin is configured as digital output
+ * see more details on http://www.micro-examples.com/
+ * this source code is provided 'as is',
+ * use it at your own risks
+ */
 	IRTX_TRIS&=(~IRTX_PIN);//digital output
 	IRTX_LAT&=(~IRTX_PIN); //low (hold PWM transistor base off)
 	T2IF=0;//clear the interrupt flag
 	T2IE=0; //disable interrupts
-	PR2 = 0b01010010 ; //82
+	//PR2 = 0b01010010 ; //36KHz
+	PR2 = 0b01001110 ; //38KHz
 	T2CON = 0b00000101 ;
-	CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
+	//CCPR1L = 0b00101001 ;	//upper 8 bits of duty cycte
+	CCPR1L = 0b00100111 ;//50%
 	CCP1CON = 0b00010000 ; //should be cleared on exit! (5-4 two LSB of duty, 3-0 set PWM)
 
 	IRFREQ_PIN_SETUP();
@@ -202,6 +217,7 @@ typedef struct _smCommand {
 #define IRIO_LITTLEENDIAN 0x20
 #define IRIO_BIGENDIAN 	0x21
 #define IRIO_LIYIN		0x22
+#define IRIO_DESCRIPTOR	0x23
 
 #define IRIO_IO_WRITE	0x30
 #define IRIO_IO_DIR		0x31
@@ -280,6 +296,20 @@ unsigned char irsService(void){
 							break;
 						case IRIO_LIYIN:
 							liyin=1;
+							break;
+						case IRIO_DESCRIPTOR:
+							if(mUSBUSARTIsTxTrfReady()){
+								irToy.usbOut[0]=PR2; //PWM
+								irToy.usbOut[1]=CCPR1L; //duty cycle
+								irToy.usbOut[2]=T2CON; //PWM prescaler, 2 extra bits of duty cycle
+								irToy.usbOut[3]=T0CON; //transmit timer prescaler
+								irToy.usbOut[4]=0x2; //48000000Hz (4 bytes)
+								irToy.usbOut[5]=0xdc; //add to USB send buffer
+								irToy.usbOut[6]=0x6c; //add to USB send buffer
+								irToy.usbOut[7]=0x00; //add to USB send buffer
+								irS.RXsamples=8;
+								putUnsignedCharArrayUsbUsart(irToy.usbOut,irS.RXsamples);//send current buffer to USB
+							}
 							break;
 						case IRIO_SETUP_PWM: //setup PWM frequency
 							irIOcommand.command[0]=irToy.s[TxBuffCtr];
