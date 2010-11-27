@@ -21,11 +21,15 @@ hal_spi_rw(v);
 ACL_CS=1;
 }
 
+
 void hal_acl_enable(void){
+hal_acl_write(MODE_CTRL_REG,0b0001);
+#if 0
 ACL_CS=0;
 hal_spi_rw((0x16<<1)|0b10000000);//write setup
 hal_spi_rw(0b0001);//low g, measurement
 ACL_CS=1;
+#endif
 }
 
 
@@ -37,7 +41,7 @@ void hal_acl_config(void)
 //00: 8g is selected for measurement range.
 //10: 4g is selected for measurement range.
 //01: 2g is selected for measurement range.
-hal_acl_write(MCTRL, 0b0101);
+hal_acl_write(MODE_CTRL_REG, 0b0101);
 
 //18 int or absolute
 //xPxxxxxx p=1 positive/negative
@@ -49,8 +53,8 @@ hal_acl_write(CTL1, CTL1_CFG);
 
 //enable interrupt (write 0x00 to 0x17)
 
-hal_acl_write(INTRST, 0b11);
-hal_acl_write(INTRST, 0x00);
+hal_acl_write(INT_LATCH_RST, 0b11);
+hal_acl_write(INT_LATCH_RST, 0x00);
 
 //
 //19 OR or AND
@@ -59,24 +63,24 @@ hal_acl_write(INTRST, 0x00);
 //1a detection threshold
 
 hal_acl_write(LVLTH, 0x7f);
-
 }
 
 
 HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void)
 {
 unsigned char c;
-//TODO
-					c=hal_acl_read(ACL_DIRECTION);
-					if(c&0b10000000){//negative
-						return ACL_REVERSE;
-					}
-//return ACL_REVERSE;
+c=hal_acl_read(ACL_DIRECTION);
+if(c&0b10000000)
+	{//negative
+	return ACL_REVERSE;
+	}
 return ACL_FORWARD;
 }
 
+
+
+#if 0
 void hal_acl_adjustInterruptLvl(u8 value)
 {
-// TODO
 }
-
+#endif

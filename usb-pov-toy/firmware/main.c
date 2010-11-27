@@ -42,7 +42,8 @@ void UsageMode(void);
 
 #pragma code
 void main(void){  
-	unsigned char i,cmd, param[9],c; 
+	u8 i,cmd, param[9],c;
+	u16 temp; // TODO to be removed later on
 	//unsigned char t[]={"Hello World"};
 
     init();			//setup the crystal, pins
@@ -139,7 +140,9 @@ void main(void){
 			case 0x06:
 
 				while(1){
-					c=hal_acl_read(0x06);
+					//c=hal_acl_read(0x06);
+					c=hal_acl_read(OUTPUT_X_8BIT);
+
 					if(c&0b10000000){//negative
 						c^=0xff;
 					}
@@ -149,13 +152,13 @@ void main(void){
 				break;
 			case 0x07:
 				while(1){
-					LATB=hal_acl_read(0x07);
+					LATB=hal_acl_read(OUTPUT_Y_8BIT);
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x08:
 				while(1){
-					LATB=hal_acl_read(0x08);
+					LATB=hal_acl_read(OUTPUT_Z_8BIT);
 					if(checkforbyte())break;
 				}
 				break;
@@ -193,26 +196,47 @@ void main(void){
 			case 0x17:
 start_mode:
 	hal_acl_config();
+	i=ACL_INT1;
 	while(1){
+
+#if 0
+		////////// LOADING BITMAP ///////////////
+		if(hal_pov_LoadBitmapCheck()==TRUE)
+			{
+			hal_pov_loadBitmapFromEeToRam();
+			}
+		hal_pov_displayBitmap(); // call this to update the display
+		/////// END OF LOADING BITMAP ////////////
+#endif
 
 		//if pin ready
 		//|********ooooooooo|
-		if(ACL_INT1==1){
+
+		while(ACL_INT1==i); //wait here until the pin changes
+		i=ACL_INT1; //immediately store the value
+
+		//debounce/delay
+		temp=2000; // adjust if needed
+		while(temp!=0){temp--;}
+
+		if(i==1){
 			//read and find direction
 			//if left to right, light LED
 
-			if(hal_acl_IsItReverseOrForward()==1){
+			//if(hal_acl_IsItReverseOrForward()==1){
+			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD)
+				{
 				PORTB=0xff;
-			}else{//else LED off
+				}
+			else
+				{//else LED off
 				PORTB=0x00;
-			}
+				}
 			//setup change interrupt
 			//clear interrupt (write 0b11 to 0x17)
 			//enable interrupt (write 0x00 to 0x17)
-			hal_acl_write(INTRST, 0b11);
-			hal_acl_write(INTRST, 0x00);
-
-
+			hal_acl_write(INT_LATCH_RST, 0b11);
+			hal_acl_write(INT_LATCH_RST, 0x00);
 		}
 
 		if(checkforbyte())break;
