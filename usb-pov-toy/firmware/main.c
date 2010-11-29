@@ -152,13 +152,23 @@ void main(void){
 				break;
 			case 0x07:
 				while(1){
-					LATB=hal_acl_read(OUTPUT_Y_8BIT);
+					c=hal_acl_read(OUTPUT_Y_8BIT);
+
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+					LATB=c;
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x08:
 				while(1){
-					LATB=hal_acl_read(OUTPUT_Z_8BIT);
+					c=hal_acl_read(OUTPUT_Z_8BIT);
+
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+					LATB=c;
 					if(checkforbyte())break;
 				}
 				break;
@@ -166,8 +176,8 @@ void main(void){
 				param[0]=0x00;//spi(0xff);
 				while(1){
 					ACL_CS=0;
-					hal_spi_rw((0x06<<1));
-					param[1]=hal_spi_rw(0xff);
+					//hal_spi_rw((0x06<<1));
+					param[1]=hal_acl_read(OUTPUT_X_8BIT);
 					ACL_CS=1;
 				  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 						putUnsignedCharArrayUsbUsart(param,2);
@@ -197,6 +207,16 @@ void main(void){
 start_mode:
 	hal_acl_config();
 	i=ACL_INT1;
+   	INTCONbits.GIEL = 1;//enable peripheral interrupts
+   	INTCONbits.GIEH = 1;//enable interrupts
+#define T1IF 	PIR1bits.TMR1IF
+#define T1IE 	PIE1bits.TMR1IE
+#define T1ON	T1CONbits.TMR1ON
+	T1CON=0b00110000;//8x prescaler
+T1IF=0;
+T1IE=1;
+
+
 	while(1){
 
 #if 0
@@ -212,7 +232,73 @@ start_mode:
 		//if pin ready
 		//|********ooooooooo|
 
-		while(ACL_INT1==i); //wait here until the pin changes
+
+		//wait for the first half of the forward stroke
+		while(1){
+			while(ACL_INT1==0); //wait here until the pin changes
+			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD){
+				//setup timer 0
+				T0CON=0;
+				//configure prescaler
+				//bit 2-0 T0PS2:T0PS0: Timer0 Prescaler Select bits
+				//111 = 1:256 Prescale value
+				//110 = 1:128 Prescale value
+				//101 = 1:64 Prescale value
+				//100 = 1:32 Prescale value
+				//011 = 1:16 Prescale value
+				//010 = 1:8 Prescale value
+				//001 = 1:4 Prescale value
+				//000 = 1:2 Prescale value
+				T0CON=0b111;
+				//T0CONbits.T08BIT=1; //16bit mode
+				//internal clock
+				//low to high
+				T0CONbits.PSA=0; //1=not assigned
+				#define TM0IF INTCONbits.T0IF
+				#define TM0IE INTCONbits.T0IE
+				#define TM0ON T0CONbits.TMR0ON
+				TMR0H=0;//first set the high byte
+				TMR0L=0;//set low byte copies high byte too
+				TM0IE=0;
+				TM0IF=0;
+				TM0ON=1;//enable the timer
+				break;
+			}
+		}	
+
+		//wait for the middle of the back stroke
+		while(1){
+			while(ACL_INT1==0); //wait here until the pin changes
+			if(hal_acl_IsItReverseOrForward()==ACL_REVERSE){
+				//stop timer 0
+				//TMR0H=0;//first set the high byte
+				//TMR0L=0;//set low byte copies high byte too
+				TM0ON=0;//enable the timer
+				break;
+			}
+
+		}
+
+		//divide that value into the new period value.
+	   //2^0=1
+	   //2^1=2
+	   //2^2=4
+	   //2^3=8
+	   //2^4=16
+	   //2^5=32
+	   //2^6=64
+	   //2^7=128
+
+		while(endflag==1);//wait for last pixel to display on back stroke
+
+		//to do: sanity checks, averaging 
+		TMR1H=TMR0H;//setup pixel timer with measured value (TMR1 is only 1:8 prescale, so it is /32)
+		TMR1L=TMR0L;
+		
+
+//////////////////////
+		//at the end of the current timer, replace the lead timer with the new timer value
+		while(endflag==0);
 		i=ACL_INT1; //immediately store the value
 
 		//debounce/delay
