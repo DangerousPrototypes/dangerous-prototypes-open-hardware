@@ -99,7 +99,7 @@ void main(void){
 
 
 
-	ACL_INT_SETUP();
+	hal_acl_IntSetup();
 
 
 
@@ -206,16 +206,11 @@ void main(void){
 			case 0x17:
 start_mode:
 	hal_acl_config();
-	i=ACL_INT1;
-   	INTCONbits.GIEL = 1;//enable peripheral interrupts
-   	INTCONbits.GIEH = 1;//enable interrupts
-#define T1IF 	PIR1bits.TMR1IF
-#define T1IE 	PIE1bits.TMR1IE
-#define T1ON	T1CONbits.TMR1ON
-	T1CON=0b00110000;//8x prescaler
-T1IF=0;
-T1IE=1;
-
+	//i=ACL_INT1;
+	hal_pov_setupInt();
+   	//INTCONbits.GIEL = 1;//enable peripheral interrupts
+   	//INTCONbits.GIEH = 1;//enable interrupts
+	hal_pov_setupTmr1();
 
 	while(1){
 
@@ -234,34 +229,13 @@ T1IE=1;
 
 
 		//wait for the first half of the forward stroke
-		while(1){
+		while(1)
+			{
 			while(ACL_INT1==0); //wait here until the pin changes
-			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD){
-				//setup timer 0
-				T0CON=0;
-				//configure prescaler
-				//bit 2-0 T0PS2:T0PS0: Timer0 Prescaler Select bits
-				//111 = 1:256 Prescale value
-				//110 = 1:128 Prescale value
-				//101 = 1:64 Prescale value
-				//100 = 1:32 Prescale value
-				//011 = 1:16 Prescale value
-				//010 = 1:8 Prescale value
-				//001 = 1:4 Prescale value
-				//000 = 1:2 Prescale value
-				T0CON=0b111;
-				//T0CONbits.T08BIT=1; //16bit mode
-				//internal clock
-				//low to high
-				T0CONbits.PSA=0; //1=not assigned
-				#define TM0IF INTCONbits.T0IF
-				#define TM0IE INTCONbits.T0IE
-				#define TM0ON T0CONbits.TMR0ON
-				TMR0H=0;//first set the high byte
-				TMR0L=0;//set low byte copies high byte too
-				TM0IE=0;
-				TM0IF=0;
-				TM0ON=1;//enable the timer
+			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD)
+				{
+				hal_pov_setupTmr0();
+				hal_pov_SetState(ACL_FORWARD);
 				break;
 			}
 		}	
@@ -273,7 +247,9 @@ T1IE=1;
 				//stop timer 0
 				//TMR0H=0;//first set the high byte
 				//TMR0L=0;//set low byte copies high byte too
-				TM0ON=0;//enable the timer
+				//TM0ON=0;//enable the timer
+				hal_pov_SetState(ACL_REVERSE);
+				hal_pov_disableTmr0();
 				break;
 			}
 
@@ -289,16 +265,18 @@ T1IE=1;
 	   //2^6=64
 	   //2^7=128
 
-		while(endflag==1);//wait for last pixel to display on back stroke
+		hal_pov_u8endflag=FALSE; //reset the flag
+		while(hal_pov_u8endflag==FALSE);//wait for last pixel to display on back stroke
+
 
 		//to do: sanity checks, averaging 
-		TMR1H=TMR0H;//setup pixel timer with measured value (TMR1 is only 1:8 prescale, so it is /32)
-		TMR1L=TMR0L;
+		//TMR1H=TMR0H;//setup pixel timer with measured value (TMR1 is only 1:8 prescale, so it is /32)
+		//TMR1L=TMR0L;
 		
 
 //////////////////////
 		//at the end of the current timer, replace the lead timer with the new timer value
-		while(endflag==0);
+		while(hal_pov_u8endflag==0);
 		i=ACL_INT1; //immediately store the value
 
 		//debounce/delay

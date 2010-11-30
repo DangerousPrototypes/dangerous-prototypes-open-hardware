@@ -3,7 +3,7 @@
 
 #define ACL_CS LATAbits.LATA2
 #define ACL_INT1 PORTAbits.RA1
-#define ACL_INT_SETUP() TRISAbits.TRISA1=1
+#define hal_acl_IntSetup() TRISAbits.TRISA1=1
 
 
 typedef enum

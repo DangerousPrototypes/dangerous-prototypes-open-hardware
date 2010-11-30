@@ -45,6 +45,13 @@ typedef unsigned long u32;
 #include "hal_pov.h"
 
 
+//register definitions
+#define T1IF 	PIR1bits.TMR1IF
+#define T1IE 	PIE1bits.TMR1IE
+#define T1ON	T1CONbits.TMR1ON
 
+#define TM0IF INTCONbits.T0IF
+#define TM0IE INTCONbits.T0IE
+#define TM0ON T0CONbits.TMR0ON
 
 #endif
