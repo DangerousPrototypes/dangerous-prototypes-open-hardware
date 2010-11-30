@@ -19,7 +19,7 @@ HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void);
 
 void hal_pov_setupTmr0(void);
 void hal_pov_setupTmr1(void);
-
+void hal_pov_SetState(HAL_ACL_DIRECTION state);
 
 
 #endif
