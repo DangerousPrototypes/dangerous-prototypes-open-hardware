@@ -1,0 +1,19 @@
+LIBRARY	"DP_plugin"
+
+EXPORTS
+  DISPLAYDLL_CustomChar
+  DISPLAYDLL_CustomCharIndex
+  DISPLAYDLL_DefaultParameters
+  DISPLAYDLL_Done
+  DISPLAYDLL_DriverName
+  DISPLAYDLL_Init
+  DISPLAYDLL_PowerResume
+  DISPLAYDLL_ReadKey
+  DISPLAYDLL_SetBacklight
+  DISPLAYDLL_SetBrightness
+  DISPLAYDLL_SetContrast
+  DISPLAYDLL_SetFan
+  DISPLAYDLL_SetGPO
+  DISPLAYDLL_SetPosition
+  DISPLAYDLL_Usage
+  DISPLAYDLL_Write
