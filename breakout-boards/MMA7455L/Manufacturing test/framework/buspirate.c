@@ -69,11 +69,11 @@ int BP_EnableBinary(int fd)   // should return BBIO if ok, ERR if not
 	//int cmd_sent = 0;
 	int tries=0;
 
-	printf(" Entering binary mode...\n");
+	printf("\n Entering binary mode...");
 
 	if (fd==-1)   //added because the fd has already returned null
 	{
-	    printf("Port does not exist!");
+	    printf("\n Port does not exist!");
 	    ret=ERR;
 
 	}
@@ -126,7 +126,7 @@ int BP_EnableMode(int fd, char bbmode)
 	//int cmd_sent = 0;
 	int tries=0;
     current_mode=(int)bbmode;
-	printf(" Switching to %s mode\n",modes[current_mode]);
+	printf("\n Switching to %s mode..",modes[current_mode]);
 
 
 	tmp[0] = bbmode;

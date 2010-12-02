@@ -16,7 +16,7 @@
  *  Reference on the wiki:
  *  http://dangerousprototypes.com/docs/Bus_Pirate_PIC_programming_adapter
  *  http://dangerousprototypes.com/docs/Bitbang
- *
+ *  http://dangerousprototypes.com/docs/SPI_(binary)
  *  video instruction : http://www.whereisian.com/files/j-hvp-self-test.swf
  *
  *   Forum links :  http://dangerousprototypes.com/forum/index.php?topic=1046.0
@@ -26,6 +26,8 @@
 //
 /*
 Doc ref: http://dangerousprototypes.com/docs/MMA7455L_breakout_board_manufacturing_tests#Notes
+svn      http://dangerous-prototypes-open-hardware\trunk\breakout-boards\MMA7455L\Manufacturing test
+
 The automated test app uses the Bus Pirate to test the connection to the MMA7455L:
 Enter BBIO mode
 Enter SPI mode
@@ -50,7 +52,6 @@ Repeat from 2
 #include "..\framework\buspirate.h"
 #include "..\framework\serial.h"
 
-
 int modem =FALSE;   //set this to TRUE of testing a MODEM
 int verbose = 0;
 //int disable_comport = 0;   //1 to say yes, disable comport, any value to enable port default is 0 meaning port is enable.
@@ -60,24 +61,20 @@ char *dumpfile;
 int print_usage(char * appname)
 {
 	//print usage
-	printf("\n\n");
-
+	//printf("\n\n");
 	printf("-------------------------------------------------------------------------\n");
+	printf(" Help Menu");
 	printf("\n");
 	printf(" Usage:              \n");
-	printf("   %s  -p device \n ",appname);
+	printf("    MMAtest.exe  -p device [-s speed] \n ");
 	printf("\n");
-	printf("   Example Usage:   %s COM1 -R \n",appname);
+	printf("   Example Usage:   MMAtest.exe -p COM1  \n");
 	printf("\n");
 	printf("           Where: -p device is port e.g.  COM1  \n");
 	printf("                  -s Speed is port Speed  default is 115200 \n");
 	printf("\n");
-
 	printf("\n");
-
 	printf("-------------------------------------------------------------------------\n");
-
-
 	return 0;
 }
 
@@ -93,17 +90,17 @@ int main(int argc, char** argv)
 	int flag=0,firsttime=0;
 	char *param_port = NULL;
 	char *param_speed = NULL;
-   	char ret,i;
+   	char i;
 
-	printf("-------------------------------------------------------------------------------------\n");
+	printf("-------------------------------------------------------------------------\n");
 	printf("\n");
-	printf(" Bus Pirate-MMA7455L breakout board manufacturing SELF TEST utility v0.1 (CC-0)\n");
-	printf(" http://www.dangerousprototypes.com\n");
+	printf("  Bus Pirate-MMA7455L breakout board\n");
+    printf("  SELF TEST utility v0.1 (CC-0)\n");
+	printf("  http://www.dangerousprototypes.com\n");
 	printf("\n");
-	printf("-------------------------------------------------------------------------------------\n");
+	printf("-------------------------------------------------------------------------\n");
 
 	if (argc <= 1){
-		printf(" Help Menu\n");
 		print_usage(argv[0]);
 		exit(-1);
 	}
@@ -125,13 +122,10 @@ int main(int argc, char** argv)
 					exit(-1);
 				}
 				param_speed = strdup(optarg);
-
 				break;
-
 			default:
 				printf(" Invalid argument %c", opt);
 				print_usage(argv[0]);
-				//exit(-1);
 				break;
 		}
 	}
@@ -142,21 +136,18 @@ int main(int argc, char** argv)
 			exit(-1);
 		}
 
-	if (param_speed==NULL)
+	if (param_speed==NULL){
 		param_speed=strdup("115200");
-
+	}
 
 	printf("\n Parameters used: Device = %s,  Speed = %s\n\n",param_port,param_speed);
 	flag=0;
 	//
 	// Loop and repeat test as needed for manufacturing
 	//
-
 	printf(" Press Esc to exit, any other key to start the self-test \n\n");
 	while(1){
-
 		//pause for space, or ESC to exit
-
 		if (flag==1){
 			printf("\n--------------------- Starting a new Test-------------------------\n");
 		}
@@ -174,18 +165,15 @@ int main(int argc, char** argv)
 					exit(-1);
 				}
 				else {//make space only
-					printf("\n Starting test! \n");
+					printf(" Starting test! \n");
 					break;
 				}
 			}
 		}
 
-
-
 //
 // Open serial port
 //
-
 		printf(" Opening Bus Pirate on %s at %sbps...\n", param_port, param_speed);
 		fd = serial_open(param_port);
 		if (fd < 0) {
@@ -194,29 +182,27 @@ int main(int argc, char** argv)
 		}
         //Set Speed of port
 		serial_setup(fd,(speed_t) param_speed);
-
 		printf(" Configuring Bus Pirate ....\n");
-
 		//go into binary bitbang mode
-		printf(" Going into Binary Bitbang mode..\n");
+		printf(" Going into Binary Bitbang mode..");
 		if(BP_EnableBinary(fd)!=BBIO){
-			printf(" Buspirate cannot switch to binary bitbang mode :( \n");
+			printf(" \nBuspirate cannot switch to binary bitbang mode :( \n");
 			return -1;
 		}
-		else
-			printf(" ..ok\n\n");
-
+		else {
+			printf(" ..ok\n");
+		}
 		printf(" Going into SPI mode..");
-
 		if(BP_EnableMode(fd, SPI)!=SPI){
 			printf(" Buspirate cannot switch to SPI mode :( \n");
 			return -1;
 		}
-		else
-			printf(" ..ok\n\n");
+		else {
+			printf(" ..ok\n");
+		}
 		//0100wxyz - Configure peripherals w=power, x=pull-ups, y=AUX, z=CS
 		i=0x40;
-		i|=0x08;//power on
+		i|=0x08; //power on
 		i|=0x01; //CS high
 		printf(" Power on...\n");
 		BP_WriteToPirate(fd,&i);
@@ -226,15 +212,12 @@ int main(int argc, char** argv)
 		// 3. Enable power, normal pin outputs
 		i=0x80;
 		i|=0x02;
-		//i|=0x04;
 		// w=hiZ/3.3v
 		i|=0x08;
 		printf(" Enabling  power, normal pin outputs..\n");
 		BP_WriteToPirate(fd,&i);
 
-		//
 		//Start self-test
-
 		// Set CS high
 		i=0x03;
 		printf(" CS High : 0x03....\n");
@@ -242,35 +225,36 @@ int main(int argc, char** argv)
 
 		// Set CS low
 		i=0x02;
-		printf(" CS Low : 0x02....\n\n");
+		printf(" CS Low : 0x02....\n");
 		BP_WriteToPirate(fd,&i);
 
 		//  Send 0x1A
 		printf(" Sending  0x1A....\n");
-		buffer[0]=0x11;//number of bytes
+		buffer[0]=0x11;	//number of bytes
 		buffer[1]=0x1a; //command to MMA7455
 		buffer[2]=0xff; //read one byte
 		serial_write(fd, buffer, 3);
 		Sleep(1);
 		// Read one byte
 		res = serial_read(fd, buffer, 3);
-		if (res!=0) {
+ 		if (res!=0) {
 			printf(" Got reply:  ");
 			printf("0X%02X ",buffer[2]);
 			printf(" \n\n");
-			if (buffer[2] !=0x1D)
+			if (buffer[2] !=0x1D) {
 				printf(" Self test status with MMA7455L breakout board: !!!! FAILED! !!!! \n\n");
-			else
+			}
+			else {
 				printf(" Self test status with MMA7455L breakout board: **** PASS! *****\n\n");
-		}else{
-			printf("FAIL! Got No Reply\n");
+		    }
 		}
-
+		else {
+			printf(" FAIL! Got No Reply\n");
+		}
 		// Set CS high
 		i=0x03;
 		printf(" CS High : 0x03....\n");
 		BP_WriteToPirate(fd,&i);
-
 		printf(" Exiting SPI mode/reseting Buspirate..\n");
 		i=0x00;
 		serial_write(fd, &i, 1);
@@ -278,7 +262,6 @@ int main(int argc, char** argv)
 		res = serial_read(fd, buffer, sizeof(buffer));
 
 		//  pause after the result
-
 		if (firsttime==0){    // run here once and don't say again the next time
 			printf(" Press any key to continue...\n");
 			firsttime=1;
@@ -290,14 +273,11 @@ int main(int argc, char** argv)
 				}
 			}
 		}
-
-		res = serial_write( fd, "\x00", 1);  //reset buspirate
-
+        // 00001111 - Reset Bus Pirate
+		res = serial_write( fd, "\x0F", 1);  //reset buspirate
 		//close port so they can attach the next Bus Pirate
 		serial_close(fd);
 
-
-		//TODO: Loop back to pause after this
 		printf("\n Connect another MMA7455L breakout board to the bus pirate \n  and press any key to start the self-test again \n");
 		printf(" Or hit ESC key to stop and end the test.\n");
 
@@ -308,10 +288,9 @@ int main(int argc, char** argv)
 			   if(c == 27){
 					printf("\n Esc key hit, stopping...\n");
 					printf(" (Bye for now!)\n");
-					exit(-1);
+					exit(0);
 				}else {//make space only
 					flag=1;  //flag to tell the other loop to bypass another keypress
-
 					break;
 				}
 			}
