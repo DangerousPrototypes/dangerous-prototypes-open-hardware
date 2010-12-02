@@ -2,10 +2,10 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="6593" topLine="233" />
+		<Cursor position="6663" topLine="226" />
 	</File>
 	<File name="..\framework\buspirate.c" open="1" top="0" tabpos="3">
-		<Cursor position="1067" topLine="33" />
+		<Cursor position="1125" topLine="161" />
 	</File>
 	<File name="..\framework\buspirate.h" open="1" top="0" tabpos="2">
 		<Cursor position="0" topLine="0" />
