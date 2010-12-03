@@ -16,10 +16,10 @@ extern volatile u8 hal_pov_u8endflag;
 HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void);
 
 #define HAL_POV_PORT	PORTB
-
+void POVInterrupt(void);
 void hal_pov_setupTmr0(void);
 void hal_pov_setupTmr1(void);
 void hal_pov_SetState(HAL_ACL_DIRECTION state);
-
+void hal_pov_StartCycle(void);
 
 #endif
