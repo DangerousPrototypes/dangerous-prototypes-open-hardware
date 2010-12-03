@@ -70,7 +70,7 @@ HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void)
 {
 unsigned char c;
 c=hal_acl_read(ACL_DIRECTION);
-if(c&0b10000000)
+if((c&0b10000000))
 	{//negative
 	return ACL_REVERSE;
 	}

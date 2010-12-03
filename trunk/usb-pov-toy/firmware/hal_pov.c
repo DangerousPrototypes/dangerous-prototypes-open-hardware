@@ -30,18 +30,18 @@ static volatile u8 POV_HELLO[]={ //35
 	0b10000000,
 	0b00000000,
 	0b11111111,
-	0b10000000,
-	0b10000000,
-	0b10000000,
-	0b10000000,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
 	0b00000000,
 	0b00000000,
 	0b11111111,
-	0b10000000,
-	0b10000000,
-	0b10000000,
-	0b10000000,
-	0b10000000,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
+	0b00000001,
 	0b00000000,
 	0b11111111,
 	0b10000001,
@@ -58,6 +58,10 @@ void hal_pov_SetState(HAL_ACL_DIRECTION state)
 forward_reverse_state=state;
 }
 
+void hal_pov_StartCycle(void)
+{
+hal_pov_pixelctr=0;
+}
 
 void hal_pov_setupTmr0(void)
 {
@@ -73,7 +77,7 @@ T0CON=0;
 //010 = 1:8 Prescale value
 //001 = 1:4 Prescale value
 //000 = 1:2 Prescale value
-T0CON=0b111;
+T0CON=0b100;
 //T0CONbits.T08BIT=1; //16bit mode
 //internal clock
 //low to high
@@ -89,7 +93,13 @@ TM0ON=1;//enable the timer
 
 void hal_pov_setupTmr1(void)
 {
-T1CON=0b00110000;//8x prescaler
+
+//bit 5-4 T1CKPS<1:0>: Timer1 Input
+//11 = 1:8 Prescale value
+//10 = 1:4 Prescale value
+//01 = 1:2 Prescale value
+//00 = 1:1 Prescale value
+T1CON=0b00000000;//8x prescaler
 T1IF=0;
 T1IE=1;
 }
@@ -140,7 +150,7 @@ void hal_pov_checkButtonAndChangeBitmap(void)
 
 /////////////////////// INTERRUPT ROUTINE /////////////////////////////
 // TODO TO BE ADJUSTED, RENAMED and FILLED IN
-void POVInterrupt(void);
+
 
 #pragma interrupt POVInterrupt
 void POVInterrupt(void)
@@ -153,31 +163,20 @@ if(INTCONbits.TMR0IE&&INTCONbits.TMR0IF)
 if(PIE1bits.TMR1IE&&PIR1bits.TMR1IF)
 	{
 	//code here
-	if(forward_reverse_state==ACL_FORWARD)
-		{
 		hal_pov_pixelctr++;
 		if(hal_pov_pixelctr>=sizeof(POV_HELLO))
 			{
-			hal_pov_u8endflag=TRUE;
-			hal_pov_pixelctr=sizeof(POV_HELLO)-1; // put it in safe index (not to overflow or underflow the array)
+			hal_pov_pixelctr=0; //sizeof(POV_HELLO)-1; // put it in safe index (not to overflow or underflow the array)
+			HAL_POV_PORT=0x00;
+			T1ON=0;
+			}else{
+			HAL_POV_PORT=POV_HELLO[hal_pov_pixelctr];
 			}
-		}
-	else if(forward_reverse_state==ACL_REVERSE)
-		{
-		hal_pov_pixelctr--;
-		if(hal_pov_pixelctr>0xFA) // if it underflowed
-			{
-			hal_pov_u8endflag=TRUE;
-			hal_pov_pixelctr=0; // put it in safe index (not to overflow or underflow the array)
-			}
-		}
-
-	if(hal_pov_u8endflag==FALSE)
-		HAL_POV_PORT=POV_HELLO[hal_pov_pixelctr];
 
 	//end of code
 
 	PIR1bits.TMR1IF=0;
 	}
+INTCONbits.GIEH = 1;
 }
 

@@ -44,6 +44,7 @@ void UsageMode(void);
 void main(void){  
 	u8 i,cmd, param[9],c;
 	u16 temp; // TODO to be removed later on
+	long l;
 	//unsigned char t[]={"Hello World"};
 
     init();			//setup the crystal, pins
@@ -99,9 +100,9 @@ void main(void){
 
 
 
-	hal_acl_IntSetup();
+//	hal_acl_IntSetup();
 
-
+#if 0
 
     USBDeviceInit();//setup usb
 
@@ -205,12 +206,15 @@ void main(void){
 				break;
 			case 0x17:
 start_mode:
+#endif
 	hal_acl_config();
 	//i=ACL_INT1;
-	hal_pov_setupInt();
-   	//INTCONbits.GIEL = 1;//enable peripheral interrupts
-   	//INTCONbits.GIEH = 1;//enable interrupts
-	hal_pov_setupTmr1();
+	hal_pov_setupInt(); //set the interrupts
+	hal_pov_setupTmr1(); //setup timer 1
+T1ON=1;
+hal_pov_StartCycle();
+
+//while(1);
 
 	while(1){
 
@@ -235,7 +239,7 @@ start_mode:
 			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD)
 				{
 				hal_pov_setupTmr0();
-				hal_pov_SetState(ACL_FORWARD);
+				//hal_pov_SetState(ACL_FORWARD);
 				break;
 			}
 		}	
@@ -248,7 +252,7 @@ start_mode:
 				//TMR0H=0;//first set the high byte
 				//TMR0L=0;//set low byte copies high byte too
 				//TM0ON=0;//enable the timer
-				hal_pov_SetState(ACL_REVERSE);
+				//hal_pov_SetState(ACL_REVERSE);
 				hal_pov_disableTmr0();
 				break;
 			}
@@ -264,54 +268,59 @@ start_mode:
 	   //2^5=32
 	   //2^6=64
 	   //2^7=128
-
-		hal_pov_u8endflag=FALSE; //reset the flag
-		while(hal_pov_u8endflag==FALSE);//wait for last pixel to display on back stroke
-
-
+/*
+		//wait half the new period
+		l=(TMR0H<<8);
+		l|=TMR0L;
+		l=l>>1;//divide by two
+		l=0x10000-l;
+		TMR0H=((l&0xff00)>>8);
+		TMR0L=l;
+		TM0IF=0;
+		TM0ON=1;
+		while(TM0IF==0);
+*/
 		//to do: sanity checks, averaging 
-		//TMR1H=TMR0H;//setup pixel timer with measured value (TMR1 is only 1:8 prescale, so it is /32)
-		//TMR1L=TMR0L;
-		
-
-//////////////////////
-		//at the end of the current timer, replace the lead timer with the new timer value
-		while(hal_pov_u8endflag==0);
-		i=ACL_INT1; //immediately store the value
-
-		//debounce/delay
-		temp=2000; // adjust if needed
-		while(temp!=0){temp--;}
-
-		if(i==1){
-			//read and find direction
-			//if left to right, light LED
-
-			//if(hal_acl_IsItReverseOrForward()==1){
-			if(hal_acl_IsItReverseOrForward()==ACL_FORWARD)
-				{
-				PORTB=0xff;
-				}
-			else
-				{//else LED off
-				PORTB=0x00;
-				}
-			//setup change interrupt
+		T1ON=0;
+		l=(TMR0H<<8);
+		l|=TMR0L;
+		l=0x10000-l;
+		TMR1H=((l&0xff00)>>8);
+		TMR1L=l;
+		hal_pov_setupTmr1();
+		T1ON=1;//enable the timer
+		hal_pov_StartCycle();
+				//setup change interrupt
 			//clear interrupt (write 0b11 to 0x17)
 			//enable interrupt (write 0x00 to 0x17)
-			hal_acl_write(INT_LATCH_RST, 0b11);
-			hal_acl_write(INT_LATCH_RST, 0x00);
-		}
+			//hal_acl_write(INT_LATCH_RST, 0b11);
+			//hal_acl_write(INT_LATCH_RST, 0x00);
 
-		if(checkforbyte())break;
+//////////////////////
 	}
 	hal_acl_enable();
+
+
+
+
+
+
+
+
+
+
+
+
+
+#if 0
 break;
 			default: //error
 				break;
 		}
 	    CDCTxService();
+
 	}
+#endif
 
 }//end main
 
@@ -489,7 +498,7 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     return TRUE; 
 }
 
-/*
+
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -498,17 +507,17 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
 // but you could add your own code here
 #pragma interruptlow InterruptHandlerLow
 void InterruptHandlerLow(void){}
-
+/*
 //We didn't use the low priority interrupts, 
 // but you could add your own code here
 #pragma interrupthigh InterruptHandlerHigh
 void InterruptHandlerHigh(void){}
-
+*/
 //these statements remap the vector to our function
 //When the interrupt fires the PIC checks here for directions
 #pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
 void Remapped_High_ISR (void){
-     _asm goto InterruptHandlerHigh _endasm
+     _asm goto POVInterrupt _endasm
 }
 
 #pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
@@ -532,4 +541,4 @@ void Low_ISR (void){
      _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
 
-*/
+
