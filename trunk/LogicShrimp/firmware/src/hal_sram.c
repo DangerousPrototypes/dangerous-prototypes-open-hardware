@@ -1,6 +1,6 @@
 #include "globals.h"
 
-#define CS_PIN LATCbits.LATC0
+#define CS_PIN 	LATCbits.LATC0
 
 #define DO_0	LATAbits.LATA0
 #define DO_1	LATAbits.LATA1
@@ -20,15 +20,26 @@
 #define SCLK	LATCbits.LATC7
 
 
-
-#define set_CS0(x) CS_0=x;
-#define set_CS1(x) CS_1=x;
-#define set_CS2(x) CS_2=x;
-#define set_CS3(x) CS_3=x;
-
+////////////// CHIP SELECT FUNCTIONS ////////////////////
 #define set_all_cs(x) 	CS_0=x;CS_1=x;CS_2=x;CS_3=x;
 
+#define SET_CS0_FUNC(x) void set_CS ## x (u8 state){CS_ ## x   =state;}
 
+// create functions for Chip Selects
+SET_CS0_FUNC(0)
+SET_CS0_FUNC(1)
+SET_CS0_FUNC(2)
+SET_CS0_FUNC(3)
+
+// Static! Not Exposed Outside
+static void (*SetCS[])(u8 state)={set_CS0,set_CS1,set_CS2,set_CS3};
+/////////////////////////////////////////////////////////
+
+
+
+
+
+///////////////// SPI R/W Functions //////////////////////
 #define MY_SPI_MACRO(OUT,IN)   	OUT=0; \
 	if((c>>ctr)&0x01)  		\
 		OUT=1;  			\
@@ -45,10 +56,12 @@
 //		res|=(1<<ctr);
 //	SCLK=OFF;
 
+
+
 u8 spi_rw_0(u8 c)
 {
-static int ctr;
-static u8 res=0;
+int ctr;
+u8 res=0;
 
 for(ctr=0;ctr<8;ctr++)
 	{
@@ -59,8 +72,8 @@ for(ctr=0;ctr<8;ctr++)
 
 u8 spi_rw_1(u8 c)
 {
-static int ctr;
-static u8 res=0;
+int ctr;
+u8 res=0;
 
 for(ctr=0;ctr<8;ctr++)
 	{
@@ -71,8 +84,8 @@ for(ctr=0;ctr<8;ctr++)
 
 u8 spi_rw_2(u8 c)
 {
-static int ctr;
-static u8 res=0;
+int ctr;
+u8 res=0;
 
 for(ctr=0;ctr<8;ctr++)
 	{
@@ -80,10 +93,11 @@ for(ctr=0;ctr<8;ctr++)
 	}
 }
 
+
 u8 spi_rw_3(u8 c)
 {
-static int ctr;
-static u8 res=0;
+int ctr;
+u8 res=0;
 
 for(ctr=0;ctr<8;ctr++)
 	{
@@ -92,57 +106,53 @@ for(ctr=0;ctr<8;ctr++)
 }
 
 
+// Static! Not Exposed Outside
+static u8 (*SpiRWPtr[])(u8 c)={spi_rw_0,spi_rw_1,spi_rw_2,spi_rw_3};
+////////////////////////////////////////////////////////////////////////////
 
-void spi_init(void)
+
+
+
+
+
+
+
+//////////////////////////////// EXPOSED FUNCTIONS /////////////////////////
+void hal_spi_init(void)
 {
+// set Tristate Port and Logic Level
+
+// Data Out
+TRISA&=0xF0;
+
+// Data In
+TRISB|=0x0F;
+
+// Chip Select
+TRISAbits.TRISA5=0;
+TRISCbits.TRISC1=0;
+TRISCbits.TRISC2=0;
+TRISBbits.TRISB4=0;
+
+// Clock
+TRISCbits.TRISC0=0;
+
+SCLK=OFF;
 set_all_cs(ON);
-//OpenSPI(SPI_FOSC_4,MODE_01,SMPMID);
-//SSPCON1 |= SPI_FOSC_64;
 }
 
-////read-write
-//u8 spi_rw(u8 c)
-//{
-//SSP2BUF=c;
-//while(SSP2STATbits.BF==0);
-//c=SSP2BUF;
-//return c;
-//}
 
-//typedef enum
-//{
-//SPI_0=0,
-//SPI_1,
-//SPI_2,
-//SPI_3,
-//}SPI_GROUP;
 
 
 void hal_sram_init(SPI_GROUP s)
 {
-switch(s)
-	{
-	case SPI_0:
-		break;
-	case SPI_1:
-		break;
-	case SPI_2:
-		break;
-	case SPI_3:
-		break;
-	default:
-		break;
-	}
-}
+#define DEBUG_SRAM_INIT // uncomment this line to abort test
 
-
-#if 0
-void hal_sram_init()
-{
-
+#ifdef DEBUG_SRAM_INIT
 u8 temp;
+#endif
 
-spi_init();
+hal_spi_init();
 
 //SPI>[0x01 0b01000001]
 ///CS ENABLED
@@ -150,11 +160,11 @@ spi_init();
 //WRITE: 0x41<<<Config register value
 ///CS DISABLED
 //SPI>
+SetCS[s](OFF); // cs low
+SpiRWPtr[s](0x01);
+SpiRWPtr[s](0x41);
+SetCS[s](ON); // cs high
 
-cs_low();
-spi_rw(0x01);
-spi_rw(0x41);
-cs_high();
 
 //3WIRE>[5 r]
 ///CS ENABLED
@@ -162,20 +172,24 @@ cs_high();
 //READ: 0x41
 ///CS DISABLED
 //3WIRE>
+SetCS[s](OFF); // cs low
+SpiRWPtr[s](0x05);
+temp=SpiRWPtr[s](0xFF);
+SetCS[s](ON); // cs high
 
-cs_low();
-spi_rw(0x05);
-temp=spi_rw(0xFF);
-cs_high();
-
+#ifdef DEBUG_SRAM_INIT
 // FOR DEBUGGING PURPOSE ONLY!!
 if(temp!=0x41)
 	{
 	while(1){CS_PIN^=1;} // toggle indefinitely
 	}
-
-}
 #endif
+
+#undef DEBUG_SRAM_INIT
+}
+
+
+
 
 //Read data
 //
@@ -187,23 +201,22 @@ if(temp!=0x41)
 //READ: 0x05 0x06 0x07 0x08 0x09 0x0A 0x0B 0x0C 0x0D <<<data
 ///CS DISABLED
 //3WIRE>
-#if 0
-void hal_sram_read(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
+void hal_sram_read(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
-
 static int ctr;
-cs_low();
-spi_rw(0x03);
-spi_rw(AddrHi);
-spi_rw(AddrLo);
+SetCS[s](OFF); // cs low
+SpiRWPtr[s](0x03);
+SpiRWPtr[s](AddrHi);
+SpiRWPtr[s](AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
-	DataArray[ctr]=spi_rw(0xFF);
+	DataArray[ctr]=SpiRWPtr[s](0xFF);
 	}
-cs_high();
-
+SetCS[s](ON); // cs high
 }
-#endif
+
+
+
 
 
 //Write data
@@ -223,23 +236,19 @@ cs_high();
 //WRITE: 0x0D
 ///CS DISABLED
 //3WIRE>
-#if 0
-void hal_sram_write(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
+void hal_sram_write(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
-
 static int ctr;
-cs_low();
-spi_rw(0x02);
-spi_rw(AddrHi);
-spi_rw(AddrLo);
+SetCS[s](OFF); // cs low
+SpiRWPtr[s](0x02);
+SpiRWPtr[s](AddrHi);
+SpiRWPtr[s](AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
-	spi_rw(DataArray[ctr]);
+	SpiRWPtr[s](DataArray[ctr]);
 	}
-cs_high();
-
+SetCS[s](ON); // cs high
 }
-#endif
 
 
 ////////////////////////
