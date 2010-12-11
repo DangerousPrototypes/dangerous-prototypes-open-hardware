@@ -9,5 +9,6 @@ SPI_2,
 SPI_3
 }SPI_GROUP;
 
+u8 * hal_sram_ParallelRWByte(u8 data);
 
 #endif
