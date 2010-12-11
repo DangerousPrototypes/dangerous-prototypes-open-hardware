@@ -191,6 +191,54 @@ if(temp!=0x41)
 
 
 
+void hal_sram_parallelInit(void)
+{
+#define DEBUG_SRAM_INIT // uncomment this line to abort test
+
+#ifdef DEBUG_SRAM_INIT
+u8 * ptr_array;
+#endif
+
+hal_spi_init();
+
+//SPI>[0x01 0b01000001]
+///CS ENABLED
+//WRITE: 0x01<<<config update command
+//WRITE: 0x41<<<Config register value
+///CS DISABLED
+//SPI>
+
+set_all_cs(OFF);; // cs low
+hal_sram_ParallelRWByte(0x01);
+hal_sram_ParallelRWByte(0x41);
+set_all_cs(ON); // cs high
+
+
+//3WIRE>[5 r]
+///CS ENABLED
+//WRITE: 0x05
+//READ: 0x41
+///CS DISABLED
+//3WIRE>
+set_all_cs(OFF); // cs low
+hal_sram_ParallelRWByte(0x05);
+ptr_array=hal_sram_ParallelRWByte(0xFF);
+set_all_cs(ON); // cs high
+
+#ifdef DEBUG_SRAM_INIT
+// FOR DEBUGGING PURPOSE ONLY!!
+if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[3]!=0x41))
+	{
+	while(1){CS_PIN^=1;} // toggle indefinitely
+	}
+#endif
+
+#undef DEBUG_SRAM_INIT
+}
+
+
+
+
 //Read data
 //
 //3WIRE>[0x03 0 0 r:9]
@@ -216,6 +264,25 @@ SetCS[s](ON); // cs high
 }
 
 
+//TODO not yet done
+void hal_sram_parallelRead(u8 AddrHi,u8 AddrLo,u8 DataCount,u8 data[][4])
+{
+static int ctr;
+static u8 *dataptr;
+set_all_cs(OFF); // cs low
+hal_sram_ParallelRWByte(0x03);
+hal_sram_ParallelRWByte(AddrHi);
+hal_sram_ParallelRWByte(AddrLo);
+for(ctr=0;ctr<DataCount;ctr++)
+	{
+	dataptr=hal_sram_ParallelRWByte(0xFF);
+	data[ctr][0]=dataptr[0];
+	data[ctr][1]=dataptr[1];
+	data[ctr][2]=dataptr[2];
+	data[ctr][3]=dataptr[3];
+	}
+set_all_cs(ON); // cs high
+}
 
 
 
@@ -250,6 +317,74 @@ for(ctr=0;ctr<DataCount;ctr++)
 SetCS[s](ON); // cs high
 }
 
+
+
+void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
+{
+static int ctr;
+set_all_cs(OFF); // cs low
+hal_sram_ParallelRWByte(0x02);
+hal_sram_ParallelRWByte(AddrHi);
+hal_sram_ParallelRWByte(AddrLo);
+for(ctr=0;ctr<DataCount;ctr++)
+	{
+	hal_sram_ParallelRWByte(DataArray[ctr]);
+	}
+set_all_cs(ON); // cs high
+}
+
+
+// Return a pointer to an array of 4 bytes
+u8 * hal_sram_ParallelRWByte(u8 data)
+{
+static u8 array_byte[4];
+static u8 ctr,temp;
+
+array_byte[0]=0;
+array_byte[1]=0;
+array_byte[2]=0;
+array_byte[3]=0;
+
+for(ctr=0;ctr<8;ctr++)
+	{
+	if((data>>ctr)&0x01)
+		{
+		DO_0=1;
+		DO_1=1;
+		DO_2=1;
+		DO_3=1;
+		}
+	else
+		{
+		DO_0=0;
+		DO_1=0;
+		DO_2=0;
+		DO_3=0;
+		}
+
+	SCLK=ON;
+	temp=1<<ctr; // one-time computation for faster executions
+
+	if(DI_0)
+		{
+		array_byte[0]|=temp;
+		}
+	if(DI_1)
+		{
+		array_byte[1]|=temp;
+		}
+	if(DI_2)
+		{
+		array_byte[2]|=temp;
+		}
+	if(DI_3)
+		{
+		array_byte[3]|=temp;
+		}
+	SCLK=OFF;
+	}
+return array_byte;
+}
 
 ////////////////////////
 
