@@ -25,8 +25,8 @@ typedef unsigned int u16;
 #include "hal_sram.h"
 #include "hal_logicshrimp.h"
 
-#define ON 1
-#define OFF 0
+#define OEON 1
+#define OEOFF 0
 
 
 
