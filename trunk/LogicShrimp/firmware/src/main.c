@@ -14,18 +14,24 @@
 
 
 //commandset
+//commandset
 //http://www.sump.org/projects/analyzer/protocol/
-#define SUMP_RESET 0x00
+#define SUMP_RESET 	0x00
 #define SUMP_RUN	0x01
-#define SUMP_ID	0x02
+#define SUMP_ID		0x02
+#define SUMP_DESC	0x04
 #define SUMP_XON	0x11
-#define SUMP_XOFF 0x13
+#define SUMP_XOFF 	0x13
+#define SUMP_DIV 	0x80
+#define SUMP_CNT	0x81
+#define SUMP_FLAGS	0x82
+#define SUMP_TRIG	0xc0
+#define SUMP_TRIG_VALS 0xc1
 
 static enum _LAstate {
 	LA_IDLE = 0,
 	LA_ARMED,
-	LA_DUMP,
-	LA_RESET,
+
 } LAstate = LA_IDLE;
 
 volatile static struct {
@@ -56,6 +62,7 @@ unsigned char checkforbyte(void);
 void sendok(void);
 void send(unsigned char c);
 //unsigned char spi(unsigned char c);
+void usbservice();
 
 void UsageMode(void);
 
@@ -90,10 +97,6 @@ void main(void){
 		
 		switch(waitforbyte()){//switch on the command
 				case SUMP_RESET://reset
-	    			T2IE=0; //disable interrupts...
-					T2ON=0;//tmr2 off
-					IRRX_IE = 0;  //DISABLE RB port change interrupt
-					LAstate=LA_RESET;
 					break;
 				case SUMP_ID://SLA0 or 1 backwards: 1ALS
 		    		if( mUSBUSARTIsTxTrfReady() ){
@@ -106,10 +109,39 @@ void main(void){
 					}
 					break;
 				case SUMP_RUN://arm the triger
-					LED_LAT |= LED_PIN;//ARMED, turn on LED
-					LAstate=LA_ARMED;
-   					IRRX_IF = 0;    //Reset the RB Port Change Interrupt Flag bit   
-   					IRRX_IE = 1;  //Enables the RB port change interrupt
+					//LED_LAT |= LED_PIN;//ARMED, turn on LED
+					
+					//setup the SRAM for record
+					//turn PIC pin input
+					//enable the buffer
+					//start the clock source
+					//wait for interrupt, or just count for the desired time
+	
+					//read samples and dump them out USB
+					//write the SRAM command to read from the beginning
+					//loop untill all is read
+					while(1){
+						usbservice();
+					    if(USBUSARTIsTxTrfReady()){
+							USBWriteCount=0;
+							for(i=0; i<64; i++){
+								//read a byte from the parallel SRAM
+								irToy.usbOut[USBWriteCount]=hal_readbytefromsrams();
+			
+								USBWriteCount++;
+			
+								loga.sample--;
+								if(loga.sample==0){//send 64/128/512/1024 samples exactly! break at the end of samples
+									break;
+								}
+			
+							}
+							putUnsignedCharArrayUsbUsart(irToy.usbOut,USBWriteCount);
+						}
+						if(loga.sample==0){//send 64/128/512/1024 samples exactly! break at the end of samples
+							break;
+						}
+					}
 					break;
 				case SUMP_XON://resume send data
 				//	xflow=1;
@@ -124,7 +156,55 @@ void main(void){
 					sumpRX.command[3]=waitforbyte();
 					sumpRX.command[4]=waitforbyte();
 					switch(sumpRX.command[0]){
-						//TODO: handle long commands like trigger, etc
+		
+						case SUMP_TRIG: //set CN on these pins
+							//if(sumpRX.command[1] & 0b10000)	CNEN2|=0b1; //AUX
+							//if(sumpRX.command[1] & 0b1000)  CNEN2|=0b100000;
+							//if(sumpRX.command[1] & 0b100)   CNEN2|=0b1000000;
+							//if(sumpRX.command[1] & 0b10)  	CNEN2|=0b10000000;
+							//if(sumpRX.command[1] & 0b1) 	CNEN2|=0b100000000;
+		/*
+						case SUMP_FLAGS:
+							sumpPadBytes=0;//if user forgot to uncheck chan groups 2,3,4, we can send padding bytes
+							if(sumpRX.command[1] & 0b100000) sumpPadBytes++;
+							if(sumpRX.command[1] & 0b10000) sumpPadBytes++;
+							if(sumpRX.command[1] & 0b1000) sumpPadBytes++;
+							break;
+		*/
+						case SUMP_CNT:
+							sumpSamples=sumpRX.command[2];
+							sumpSamples<<=8;
+							sumpSamples|=sumpRX.command[1];
+							sumpSamples=(sumpSamples+1)*4;
+							//prevent buffer overruns
+							if(sumpSamples>LA_SAMPLE_SIZE) sumpSamples=LA_SAMPLE_SIZE;
+							break;
+						case SUMP_DIV:
+							l=sumpRX.command[3];
+							l<<=8;
+							l|=sumpRX.command[2];
+							l<<=8;
+							l|=sumpRX.command[1];
+
+							//setup clock source -
+							//20mhz direct from OSC
+							//0-Xmhz with PIC PWM
+		
+							//convert from SUMP 100MHz clock to our 12MIPs
+							//l=((l+1)*16)/100;
+							//l=((l+1)*4)/25; 
+		
+							//adjust downwards a bit
+							//if(l>0x10)
+							//	l-=0x10;
+							//else //fast as possible
+							//	l=1;
+		
+							//setup PR register
+							//PR5=(l>>16);//most significant word
+							//PR4=l;//least significant word
+							break;
+					}
 					}
 					break;
 		}
@@ -155,7 +235,10 @@ void sendok(void){
 	}	
 
 }
-
+void usbservice(){
+	USBDeviceTasks(); 
+	CDCTxService();
+}
 unsigned char waitforbyte(void){
 	unsigned char inbuf;
 
