@@ -9,6 +9,17 @@ typedef unsigned int u16;
 #include <p18cxxx.h>
 //#include <spi.h>
 
+// =================== GLOBAL HEADERS
+#include "HardwareProfile.h"
+#include "GenericTypeDefs.h"
+#include "Compiler.h"
+
+#include "usb_config.h"
+//USB stack
+#include "./USB/usb.h"
+#include "./USB/usb_function_cdc.h"
+#include "./USB/usb_device.h"
+
 
 // user definer headers
 #include "hal_sram.h"
