@@ -28,12 +28,6 @@
 #define SUMP_TRIG	0xc0
 #define SUMP_TRIG_VALS 0xc1
 
-static enum _LAstate {
-	LA_IDLE = 0,
-	LA_ARMED,
-
-} LAstate = LA_IDLE;
-
 volatile static struct {
 	unsigned int sample;
 	unsigned int ptr;
