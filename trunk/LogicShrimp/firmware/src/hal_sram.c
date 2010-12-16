@@ -1,23 +1,10 @@
 #include "globals.h"
 
-#define CS_PIN 	LATCbits.LATC0
 
-#define DO_0	LATAbits.LATA0
-#define DO_1	LATAbits.LATA1
-#define DO_2	LATAbits.LATA2
-#define DO_3	LATAbits.LATA3
 
-#define DI_0	PORTBbits.RB0
-#define DI_1	PORTBbits.RB1
-#define DI_2	PORTBbits.RB2
-#define DI_3	PORTBbits.RB3
 
-#define CS_0	LATAbits.LATA5
-#define CS_1	LATCbits.LATC1
-#define CS_2	LATCbits.LATC2
-#define CS_3	LATBbits.LATB4
 
-#define SCLK	LATCbits.LATC7
+static u8 * hal_sram_ParallelRWByte(u8 returnData);
 
 
 ////////////// CHIP SELECT FUNCTIONS ////////////////////
@@ -43,18 +30,18 @@ static void (*SetCS[])(u8 state)={set_CS0,set_CS1,set_CS2,set_CS3};
 #define MY_SPI_MACRO(OUT,IN)   	OUT=0; \
 	if((c>>ctr)&0x01)  		\
 		OUT=1;  			\
-	SCLK=ON;  				\
+	SCLK=PORT_ON;  				\
 	if(IN)  				\
 		res|=(1<<ctr); 		\
-	SCLK=OFF;
+	SCLK=PORT_OFF;
 
 //	DO_0=0;
 //	if((c>>ctr)&0x01)
 //		DO_0=1;
-//	SCLK=ON;
+//	SCLK=PORT_ON;
 //	if(DI_0)
 //		res|=(1<<ctr);
-//	SCLK=OFF;
+//	SCLK=PORT_OFF;
 
 
 
@@ -137,8 +124,8 @@ TRISBbits.TRISB4=0;
 // Clock
 TRISCbits.TRISC0=0;
 
-SCLK=OFF;
-set_all_cs(ON);
+SCLK=PORT_OFF;
+set_all_cs(PORT_ON);
 }
 
 
@@ -160,10 +147,10 @@ hal_spi_init();
 //WRITE: 0x41<<<Config register value
 ///CS DISABLED
 //SPI>
-SetCS[s](OFF); // cs low
-SpiRWPtr[s](0x01);
+SetCS[s](PORT_OFF); // cs low
+SpiRWPtr[s](SRAM_CMD_WRSR);
 SpiRWPtr[s](0x41);
-SetCS[s](ON); // cs high
+SetCS[s](PORT_ON); // cs high
 
 
 //3WIRE>[5 r]
@@ -172,10 +159,10 @@ SetCS[s](ON); // cs high
 //READ: 0x41
 ///CS DISABLED
 //3WIRE>
-SetCS[s](OFF); // cs low
-SpiRWPtr[s](0x05);
+SetCS[s](PORT_OFF); // cs low
+SpiRWPtr[s](SRAM_CMD_RDSR);
 temp=SpiRWPtr[s](0xFF);
-SetCS[s](ON); // cs high
+SetCS[s](PORT_ON); // cs high
 
 #ifdef DEBUG_SRAM_INIT
 // FOR DEBUGGING PURPOSE ONLY!!
@@ -208,10 +195,10 @@ hal_spi_init();
 ///CS DISABLED
 //SPI>
 
-set_all_cs(OFF);; // cs low
-hal_sram_ParallelRWByte(0x01);
+set_all_cs(PORT_OFF);; // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_WRSR);
 hal_sram_ParallelRWByte(0x41);
-set_all_cs(ON); // cs high
+set_all_cs(PORT_ON); // cs high
 
 
 //3WIRE>[5 r]
@@ -220,10 +207,10 @@ set_all_cs(ON); // cs high
 //READ: 0x41
 ///CS DISABLED
 //3WIRE>
-set_all_cs(OFF); // cs low
-hal_sram_ParallelRWByte(0x05);
+set_all_cs(PORT_OFF); // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_RDSR);
 ptr_array=hal_sram_ParallelRWByte(0xFF);
-set_all_cs(ON); // cs high
+set_all_cs(PORT_ON); // cs high
 
 #ifdef DEBUG_SRAM_INIT
 // FOR DEBUGGING PURPOSE ONLY!!
@@ -235,7 +222,6 @@ if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[
 
 #undef DEBUG_SRAM_INIT
 }
-
 
 
 
@@ -252,36 +238,39 @@ if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[
 void hal_sram_read(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
 static int ctr;
-SetCS[s](OFF); // cs low
-SpiRWPtr[s](0x03);
+SetCS[s](PORT_OFF); // cs low
+SpiRWPtr[s](SRAM_CMD_READ);
 SpiRWPtr[s](AddrHi);
 SpiRWPtr[s](AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	DataArray[ctr]=SpiRWPtr[s](0xFF);
 	}
-SetCS[s](ON); // cs high
+SetCS[s](PORT_ON); // cs high
 }
 
 
 //TODO not yet done
-void hal_sram_parallelRead(u8 AddrHi,u8 AddrLo,u8 DataCount,u8 data[][4])
+//pass by reference on returnData... all the read will be put into returnData
+//TODO: currently two dimensional array was used... once this is working, this should
+//be transformed back into to single dimensional array for efficiency.
+void hal_sram_parallelRead(u8 AddrHi,u8 AddrLo,u8 DataCount,u8 returnData[][4])
 {
 static int ctr;
 static u8 *dataptr;
-set_all_cs(OFF); // cs low
-hal_sram_ParallelRWByte(0x03);
+set_all_cs(PORT_OFF); // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_READ);
 hal_sram_ParallelRWByte(AddrHi);
 hal_sram_ParallelRWByte(AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	dataptr=hal_sram_ParallelRWByte(0xFF);
-	data[ctr][0]=dataptr[0];
-	data[ctr][1]=dataptr[1];
-	data[ctr][2]=dataptr[2];
-	data[ctr][3]=dataptr[3];
+	returnData[ctr][0]=dataptr[0];
+	returnData[ctr][1]=dataptr[1];
+	returnData[ctr][2]=dataptr[2];
+	returnData[ctr][3]=dataptr[3];
 	}
-set_all_cs(ON); // cs high
+set_all_cs(PORT_ON); // cs high
 }
 
 
@@ -306,15 +295,15 @@ set_all_cs(ON); // cs high
 void hal_sram_write(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
 static int ctr;
-SetCS[s](OFF); // cs low
-SpiRWPtr[s](0x02);
+SetCS[s](PORT_OFF); // cs low
+SpiRWPtr[s](SRAM_CMD_WRITE);
 SpiRWPtr[s](AddrHi);
 SpiRWPtr[s](AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	SpiRWPtr[s](DataArray[ctr]);
 	}
-SetCS[s](ON); // cs high
+SetCS[s](PORT_ON); // cs high
 }
 
 
@@ -322,20 +311,20 @@ SetCS[s](ON); // cs high
 void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
 static int ctr;
-set_all_cs(OFF); // cs low
-hal_sram_ParallelRWByte(0x02);
+set_all_cs(PORT_OFF); // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
 hal_sram_ParallelRWByte(AddrHi);
 hal_sram_ParallelRWByte(AddrLo);
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	hal_sram_ParallelRWByte(DataArray[ctr]);
 	}
-set_all_cs(ON); // cs high
+set_all_cs(PORT_ON); // cs high
 }
 
 
 // Return a pointer to an array of 4 bytes
-u8 * hal_sram_ParallelRWByte(u8 data)
+static u8 * hal_sram_ParallelRWByte(u8 returnData)
 {
 static u8 array_byte[4];
 static u8 ctr,temp;
@@ -347,7 +336,7 @@ array_byte[3]=0;
 
 for(ctr=0;ctr<8;ctr++)
 	{
-	if((data>>ctr)&0x01)
+	if((returnData>>ctr)&0x01)
 		{
 		DO_0=1;
 		DO_1=1;
@@ -362,7 +351,7 @@ for(ctr=0;ctr<8;ctr++)
 		DO_3=0;
 		}
 
-	SCLK=ON;
+	SCLK=PORT_ON;
 	temp=1<<ctr; // one-time computation for faster executions
 
 	if(DI_0)
@@ -381,7 +370,7 @@ for(ctr=0;ctr<8;ctr++)
 		{
 		array_byte[3]|=temp;
 		}
-	SCLK=OFF;
+	SCLK=PORT_OFF;
 	}
 return array_byte;
 }
