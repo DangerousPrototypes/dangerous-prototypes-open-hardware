@@ -8,6 +8,14 @@
 #define DO_2	LATAbits.LATA2
 #define DO_3	LATAbits.LATA3
 
+#define SRAM_DO_PORT PORTA //read from SRAM
+#define SRAM_DO_0 PORTAbits.RA0
+#define SRAM_DO_1 PORTAbits.RA1
+#define SRAM_DO_2 PORTAbits.RA2
+#define SRAM_DO_3 PORTAbits.RA3
+
+#define SRAM_DI_LAT LATB //write to SRAM
+
 #define DI_0	PORTBbits.RB0
 #define DI_1	PORTBbits.RB1
 #define DI_2	PORTBbits.RB2
@@ -41,5 +49,7 @@ SPI_3
 void hal_sram_parallelInit(void);
 void hal_sram_parallelRead(u8 AddrHi,u8 AddrLo,u8 DataCount,u8 returnData[][4]);
 void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray);
-
+void hal_sram_setup_capture(void);
+void hal_sram_end_capture(void);
+void hal_sram_setup_dump(void);
 #endif
