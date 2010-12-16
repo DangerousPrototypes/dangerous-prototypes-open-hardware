@@ -1,11 +1,6 @@
 #include "globals.h"
 
-
-
-
-
 static u8 * hal_sram_ParallelRWByte(u8 returnData);
-
 
 ////////////// CHIP SELECT FUNCTIONS ////////////////////
 #define set_all_cs(x) 	CS_0=x;CS_1=x;CS_2=x;CS_3=x;
@@ -109,74 +104,32 @@ void hal_spi_init(void)
 {
 // set Tristate Port and Logic Level
 
-// Data Out
-TRISA&=0xF0;
+//input buffer setup
+LATBbits.LATB5=1; //buffer output, high (disabled)
+TRISBbits.TRISB5=0; 
 
-// Data In
-TRISB|=0x0F;
+// SRAM Data Out (PIC input)
+TRISA|=0b1111;
+
+// SRAM data In (PIC output)
+TRISB&=(~0b1111);
 
 // Chip Select
+set_all_cs(PORT_ON);
 TRISAbits.TRISA5=0;
 TRISCbits.TRISC1=0;
 TRISCbits.TRISC2=0;
 TRISBbits.TRISB4=0;
 
-// Clock
-TRISCbits.TRISC0=0;
+// Clock buffer setup
+TRISCbits.TRISC0=0;//clock gate output
+LATCbits.LATC0=1;//disabled
 
-SCLK=PORT_OFF;
-set_all_cs(PORT_ON);
+//uC clock pin setup
+TRISCbits.TRISC7=0; //uC clock out to output
+SCLK=PORT_OFF; //low
+
 }
-
-
-
-
-void hal_sram_init(SPI_GROUP s)
-{
-#define DEBUG_SRAM_INIT // uncomment this line to abort test
-
-#ifdef DEBUG_SRAM_INIT
-u8 temp;
-#endif
-
-hal_spi_init();
-
-//SPI>[0x01 0b01000001]
-///CS ENABLED
-//WRITE: 0x01<<<config update command
-//WRITE: 0x41<<<Config register value
-///CS DISABLED
-//SPI>
-SetCS[s](PORT_OFF); // cs low
-SpiRWPtr[s](SRAM_CMD_WRSR);
-SpiRWPtr[s](0x41);
-SetCS[s](PORT_ON); // cs high
-
-
-//3WIRE>[5 r]
-///CS ENABLED
-//WRITE: 0x05
-//READ: 0x41
-///CS DISABLED
-//3WIRE>
-SetCS[s](PORT_OFF); // cs low
-SpiRWPtr[s](SRAM_CMD_RDSR);
-temp=SpiRWPtr[s](0xFF);
-SetCS[s](PORT_ON); // cs high
-
-#ifdef DEBUG_SRAM_INIT
-// FOR DEBUGGING PURPOSE ONLY!!
-if(temp!=0x41)
-	{
-	while(1){CS_PIN^=1;} // toggle indefinitely
-	}
-#endif
-
-#undef DEBUG_SRAM_INIT
-}
-
-
-
 
 void hal_sram_parallelInit(void)
 {
@@ -186,6 +139,7 @@ void hal_sram_parallelInit(void)
 u8 * ptr_array;
 #endif
 
+//setup for control and IO from uC
 hal_spi_init();
 
 //SPI>[0x01 0b01000001]
@@ -199,7 +153,6 @@ set_all_cs(PORT_OFF);; // cs low
 hal_sram_ParallelRWByte(SRAM_CMD_WRSR);
 hal_sram_ParallelRWByte(0x41);
 set_all_cs(PORT_ON); // cs high
-
 
 //3WIRE>[5 r]
 ///CS ENABLED
@@ -216,13 +169,47 @@ set_all_cs(PORT_ON); // cs high
 // FOR DEBUGGING PURPOSE ONLY!!
 if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[3]!=0x41))
 	{
-	while(1){CS_PIN^=1;} // toggle indefinitely
+	while(1){LATCbits.LATC6^=1;} // toggle indefinitely
 	}
 #endif
 
 #undef DEBUG_SRAM_INIT
 }
 
+//setup the SRAM to caputre input from the buffer
+void hal_sram_setup_capture(void){
+	//setup the SRAM to record
+	set_all_cs(PORT_OFF); // cs low
+	hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
+	hal_sram_ParallelRWByte(0x00);
+	hal_sram_ParallelRWByte(0x00);
+	
+	TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
+
+	//hal_logicshrimp_BufferEnable();//open up the buffer
+
+}
+
+//end the SRAM to caputre
+void hal_sram_end_capture(void){
+	//CS high to disable the SRAM write
+	set_all_cs(PORT_ON); // cs high
+	hal_logicshrimp_BufferDisable();//open up the buffer
+}
+
+//setup the SRAM to dump data from the SRAM
+void hal_sram_setup_dump(void){
+	//setup the SRAM to record
+	hal_logicshrimp_BufferDisable();//open up the buffer
+	TRISB&=(~0b1111);//SRAM in/PIC out pins to output
+	
+	set_all_cs(PORT_OFF); // cs low
+	hal_sram_ParallelRWByte(SRAM_CMD_READ);
+	hal_sram_ParallelRWByte(0x00); //address should be adjustable probably...
+	hal_sram_ParallelRWByte(0x00);
+
+	SRAM_DI_LAT|=0b1111; //output pins low
+}
 
 
 //Read data
@@ -235,21 +222,6 @@ if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[
 //READ: 0x05 0x06 0x07 0x08 0x09 0x0A 0x0B 0x0C 0x0D <<<data
 ///CS DISABLED
 //3WIRE>
-void hal_sram_read(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
-{
-static int ctr;
-SetCS[s](PORT_OFF); // cs low
-SpiRWPtr[s](SRAM_CMD_READ);
-SpiRWPtr[s](AddrHi);
-SpiRWPtr[s](AddrLo);
-for(ctr=0;ctr<DataCount;ctr++)
-	{
-	DataArray[ctr]=SpiRWPtr[s](0xFF);
-	}
-SetCS[s](PORT_ON); // cs high
-}
-
-
 //TODO not yet done
 //pass by reference on returnData... all the read will be put into returnData
 //TODO: currently two dimensional array was used... once this is working, this should
@@ -292,22 +264,6 @@ set_all_cs(PORT_ON); // cs high
 //WRITE: 0x0D
 ///CS DISABLED
 //3WIRE>
-void hal_sram_write(SPI_GROUP s,u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
-{
-static int ctr;
-SetCS[s](PORT_OFF); // cs low
-SpiRWPtr[s](SRAM_CMD_WRITE);
-SpiRWPtr[s](AddrHi);
-SpiRWPtr[s](AddrLo);
-for(ctr=0;ctr<DataCount;ctr++)
-	{
-	SpiRWPtr[s](DataArray[ctr]);
-	}
-SetCS[s](PORT_ON); // cs high
-}
-
-
-
 void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
 static int ctr;
@@ -321,61 +277,6 @@ for(ctr=0;ctr<DataCount;ctr++)
 	}
 set_all_cs(PORT_ON); // cs high
 }
-
-#if 0
-// Return a pointer to an array of 4 bytes
-static u8 * hal_sram_ParallelRWByte(u8 returnData)
-{
-static u8 array_byte[4];
-static u8 ctr,temp;
-
-array_byte[0]=0;
-array_byte[1]=0;
-array_byte[2]=0;
-array_byte[3]=0;
-
-for(ctr=0;ctr<8;ctr++)
-	{
-	if((returnData>>ctr)&0x01)
-		{
-		DO_0=1;
-		DO_1=1;
-		DO_2=1;
-		DO_3=1;
-		}
-	else
-		{
-		DO_0=0;
-		DO_1=0;
-		DO_2=0;
-		DO_3=0;
-		}
-
-	SCLK=PORT_ON;
-	temp=1<<ctr; // one-time computation for faster executions
-
-	if(DI_0)
-		{
-		array_byte[0]|=temp;
-		}
-	if(DI_1)
-		{
-		array_byte[1]|=temp;
-		}
-	if(DI_2)
-		{
-		array_byte[2]|=temp;
-		}
-	if(DI_3)
-		{
-		array_byte[3]|=temp;
-		}
-	SCLK=PORT_OFF;
-	}
-return array_byte;
-}
-#endif
-
 
 // Return a pointer to an array of 4 bytes
 static u8 * hal_sram_ParallelRWByte(u8 returnData)
@@ -393,35 +294,37 @@ while(ctr!=0xFF)
 	{
 	if((returnData>>ctr)&0x01)
 		{
-		DO_0=1;
-		DO_1=1;
-		DO_2=1;
-		DO_3=1;
+		//DI_0=1;
+		//DI_1=1;
+		//DI_2=1;
+		//DI_3=1;
+		SRAM_DI_LAT|=0b1111;
 		}
 	else
 		{
-		DO_0=0;
-		DO_1=0;
-		DO_2=0;
-		DO_3=0;
+	//	DI_0=0;
+		//DI_1=0;
+		//DI_2=0;
+		//DI_3=0;
+		SRAM_DI_LAT&=(~0b1111);
 		}
 
 	SCLK=PORT_ON;
 	temp=1<<ctr; // one-time computation for faster executions
 
-	if(DI_0)
+	if(SRAM_DO_0)
 		{
 		array_byte[0]|=temp;
 		}
-	if(DI_1)
+	if(SRAM_DO_1)
 		{
 		array_byte[1]|=temp;
 		}
-	if(DI_2)
+	if(SRAM_DO_2)
 		{
 		array_byte[2]|=temp;
 		}
-	if(DI_3)
+	if(SRAM_DO_3)
 		{
 		array_byte[3]|=temp;
 		}

@@ -8,16 +8,9 @@
 //4. That's it. You've got the latest source and we're compliant with the license.
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
-
-
-
-
 #include "globals.h"
 #include "config.h"
-//#include "MatrixOrbital.h"
 
-
-//commandset
 //commandset
 //http://www.sump.org/projects/analyzer/protocol/
 #define SUMP_RESET 	0x00
@@ -33,12 +26,6 @@
 #define SUMP_TRIG	0xc0
 #define SUMP_TRIG_VALS 0xc1
 
-volatile static struct {
-	unsigned int sample;
-	unsigned int ptr;
-	unsigned char btrack;
-}loga;
-
 #define LA_SAMPLE_SIZE  20
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
@@ -50,15 +37,6 @@ static struct _usbbuffer{
 	unsigned char rdptr;
 } ubuf;
 
-
-
-//USB output buffer
-/*
-#define USB_OUT_BUF 64
-unsigned char buf[USB_OUT_BUF];
-unsigned char uartincnt=0;
-*/
-
 static void init(void);
 void usbbufservice(void);
 void usbbufflush(void);
@@ -67,31 +45,12 @@ unsigned char waitforbyte(void);
 unsigned char checkforbyte(void);
 void sendok(void);
 void send(unsigned char c);
-//unsigned char spi(unsigned char c);
-void usbservice();
-
-void UsageMode(void);
-
-//unsigned char hal_Acl_Read(unsigned char r);
-//void hal_Acl_Enable(void);
-
-//#define SAMPLE_ARRAY_SIZE 0x0080 //0x0010
-//#define SAMPLE_ARRAY_SIZE 20 //0x0010
-//#define SAMPLE_SIZE 0x0400 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
-
-
-/*
-struct _irtoy{
-	unsigned char s[SAMPLE_ARRAY_SIZE];
-	unsigned char usbIn[2];
-	unsigned char usbOut[2];
-	unsigned char HardwareVersion;
-};
-struct _irtoy irToy;
-*/
+void usbservice(void);
 
 u8 UsbFifoBufferArray[66];
-
+static unsigned long samples, divider;
+u8 command[5], clock;
+u8 inByte;
 
 #if 1
 
@@ -100,21 +59,10 @@ void main(void)
 {
 u8 i;
 
-static u8 tmpDataPtr[20];
-//u8 i,cmd, param[9],c;
-//u16 temp; // TODO to be removed later on
-//long l;
-//unsigned char t[]={"Hello World"};
-
-//static struct _sumpRX {
-//unsigned char command[5];
-//unsigned char parameters;
-//unsigned char parCnt;
-//} sumpRX;
 
 init();			//setup the crystal, pins
+hal_sram_parallelInit(); //setup the SRAM, error if one doesn't reply
 usbbufflush();	//setup the USB byte buffer
-
 
 USBDeviceInit();//setup usb
 
@@ -125,8 +73,8 @@ while(1)
 
 	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 	usbbufservice();//load any USB data into byte buffer
-
-	switch(waitforbyte())
+	inByte=waitforbyte();
+	switch(inByte)
 		{//switch on the command
 		case SUMP_RESET://reset
 			break;
@@ -143,81 +91,123 @@ while(1)
 			break;
 		case SUMP_RUN://arm the triger
 
-			//LED_LAT |= LED_PIN;//ARMED, turn on LED
+//
+//
+//	CAPTURE SETUP
+//
+//
+			//ARMED, turn on LED
 			hal_logicshrimp_setLed(PORT_ON);
 
 			//setup the SRAM for record
 			hal_sram_parallelInit();
-
-			//turn PIC pin input
-			hal_logicshrimp_setInputs(); //TODO incomplete
+			hal_sram_setup_capture();//setup read, turn PIC->SRAM pins input
 
 			//enable the buffer
-			hal_logicshrimp_setBufferEnable(PORT_ON);
+			hal_logicshrimp_BufferEnable();
+
+			//ADDRESS TRACKING//
+			//Need to know where in the SRAM we are//
+			//TODO:setup a external counter on C7 to track the SRAM address (/8 prescaler)
+			//TODO:interrupt on samples number of ticks
 
 			//start the clock source
-			hal_logicshrimp_setClockGate(PORT_ON);
+			//this is the 20MHz external clock
+			//OR PWM from PIC pin RC7/RP18
+			#define EXTERNAL 0
+			clock=EXTERNAL;
+			if(clock==EXTERNAL){
+				TRISCbits.TRISC7=1;//disable PIC clock pin
+				hal_logicshrimp_ClockGateEnable();
+			}else{
+				//TODO:setup the PWM for the requested frequency
+				//we fake it for now....
+				i=250;
+				while(i--){
+					SCLK=PORT_ON;
+					Nop();
+					SCLK=PORT_OFF;
+				};
+			}
 
-			//wait for interrupt, or just count for the desired time TODO
-			//for now I will write first to the SRAM to check if writing is good..
-			//hal_sram_parallelWrite();
+			//this should come from the long command below
+			samples=128;
 
+//
+//
+//	TRIGGER (ignore for now)
+//
+//
+			//TODO: sample and trigger tracking section
+			//TODO: wait for change interrupt (if trigger used)
+			
+//
+//
+//	CAPTURE
+//
+//
 
-			#define TEST_SRAM_TEMP // comment this out to disable
-			#ifdef TEST_SRAM_TEMP
-			///////////////////////////////// JUST FOR TESTING ////////////////////////
-			tmpDataPtr[0]='D';
-			tmpDataPtr[1]='P';
-			tmpDataPtr[2]='.';
-			tmpDataPtr[3]='C';
-			tmpDataPtr[4]='O';
-			tmpDataPtr[5]='M';
+			//TODO: count the desired number of samples with a timer
+				i=250;
+				while(i--){
+					Nop();
+				};
 
-			// starting address 0x0007 - just a random number.. with 6 letters (DP.COM) as assigned above
-			hal_sram_parallelWrite(0,7,6,tmpDataPtr); // this will be read below and dumped via USB
-			//////////////////////////////////////////////////////////////////////////////
-			#endif
+			//raise CS to end write to SRAM
+			hal_sram_end_capture(); 
 
-			//read samples and dump them out USB
+//
+//
+//	CLEANUP
+//
+//
+
+			//stop the sample clock
+			hal_logicshrimp_ClockGateDisable();
+			
+			hal_logicshrimp_BufferDisable();
+	
+			//restore uC clock to output
+			LATCbits.LATC7=0; //clock start low
+			TRISCbits.TRISC7=0; //uC clock out to output
+
+			hal_logicshrimp_setLed(PORT_OFF);
+
+//
+//
+//			DUMP
+//
+//
+//			//read samples and dump them out USB
 			//write the SRAM command to read from the beginning
+			hal_sram_setup_dump();
+
 			//loop untill all is read
-			#if 1
 			while(1)
 				{
-				//usbservice();
+				usbservice();
 				if(USBUSARTIsTxTrfReady())
 					{
-					static u8 USBWriteCount;
-					static u8 ReadBuff[20][4];
-					USBWriteCount=0;
 
-					//read a byte from the parallel SRAM
-					hal_sram_parallelRead(0,0,64/4,ReadBuff); // 64/4 = 16 group read of the SRAM... 4 SRAM in each group
+					static u8 USBWriteCount;
+					USBWriteCount=0;
 
 					for(i=0; i<64; i++)
 						{
-						//irToy.usbOut[USBWriteCount]=hal_readbytefromsrams();
-
-						UsbFifoBufferArray[USBWriteCount]=ReadBuff[i/4][i%4];
-
+						SCLK=PORT_ON;
+						Nop();
+						UsbFifoBufferArray[USBWriteCount]= PORTA & 0b1111; //get the lower 4 bits of PORTA
+						SCLK=PORT_OFF;
+	
 						USBWriteCount++;
 
-						#if 0 // disable temporarily... SRAM test will be conducted first
-						loga.sample--;
-						if(loga.sample==0)
-							{//send 64/128/512/1024 samples exactly! break at the end of samples
-							break;
-							}
-						#endif
+						samples--;
+						if(samples==0) break;//send 64/128/512/1024 samples exactly! break at the end of samples
 						}
 					putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,USBWriteCount);
 					}
-				if(loga.sample==0)
-					{//send 64/128/512/1024 samples exactly! break at the end of samples
-					break;
-					}
+					if(samples==0)break; //send 64/128/512/1024 samples exactly! break at the end of samples
 				}
-			#endif
 			break;
 		case SUMP_XON://resume send data
 			//	xflow=1;
@@ -226,65 +216,63 @@ while(1)
 			//	xflow=0;
 			break;
 		default://long command
-			break;
-		#if 0
-		sumpRX.command[0]=inByte;//store first command byte
-		sumpRX.command[1]=waitforbyte();
-		sumpRX.command[2]=waitforbyte();
-		sumpRX.command[3]=waitforbyte();
-		sumpRX.command[4]=waitforbyte();
-		switch(sumpRX.command[0]){
-
-		case SUMP_TRIG: //set CN on these pins
-		//if(sumpRX.command[1] & 0b10000)	CNEN2|=0b1; //AUX
-		//if(sumpRX.command[1] & 0b1000)  CNEN2|=0b100000;
-		//if(sumpRX.command[1] & 0b100)   CNEN2|=0b1000000;
-		//if(sumpRX.command[1] & 0b10)  	CNEN2|=0b10000000;
-		//if(sumpRX.command[1] & 0b1) 	CNEN2|=0b100000000;
-		/*
-		case SUMP_FLAGS:
-		sumpPadBytes=0;//if user forgot to uncheck chan groups 2,3,4, we can send padding bytes
-		if(sumpRX.command[1] & 0b100000) sumpPadBytes++;
-		if(sumpRX.command[1] & 0b10000) sumpPadBytes++;
-		if(sumpRX.command[1] & 0b1000) sumpPadBytes++;
-		break;
-		*/
-		case SUMP_CNT:
-		sumpSamples=sumpRX.command[2];
-		sumpSamples<<=8;
-		sumpSamples|=sumpRX.command[1];
-		sumpSamples=(sumpSamples+1)*4;
-		//prevent buffer overruns
-		if(sumpSamples>LA_SAMPLE_SIZE) sumpSamples=LA_SAMPLE_SIZE;
-		break;
-		case SUMP_DIV:
-		l=sumpRX.command[3];
-		l<<=8;
-		l|=sumpRX.command[2];
-		l<<=8;
-		l|=sumpRX.command[1];
-
-		//setup clock source -
-		//20mhz direct from OSC
-		//0-Xmhz with PIC PWM
-
-		//convert from SUMP 100MHz clock to our 12MIPs
-		//l=((l+1)*16)/100;
-		//l=((l+1)*4)/25;
-
-		//adjust downwards a bit
-		//if(l>0x10)
-		//	l-=0x10;
-		//else //fast as possible
-		//	l=1;
-
-		//setup PR register
-		//PR5=(l>>16);//most significant word
-		//PR4=l;//least significant word
-
-		break;
-		}
-		#endif
+			command[0]=inByte;//store first command byte
+			command[1]=waitforbyte();
+			command[2]=waitforbyte();
+			command[3]=waitforbyte();
+			command[4]=waitforbyte();
+			switch(command[0]){
+		
+				case SUMP_TRIG: //set CN on these pins
+				//if(sumpRX.command[1] & 0b10000)	CNEN2|=0b1; //AUX
+				//if(sumpRX.command[1] & 0b1000)  CNEN2|=0b100000;
+				//if(sumpRX.command[1] & 0b100)   CNEN2|=0b1000000;
+				//if(sumpRX.command[1] & 0b10)  	CNEN2|=0b10000000;
+				//if(sumpRX.command[1] & 0b1) 	CNEN2|=0b100000000;
+				break;
+				case SUMP_FLAGS:
+				/*
+				sumpPadBytes=0;//if user forgot to uncheck chan groups 2,3,4, we can send padding bytes
+				if(sumpRX.command[1] & 0b100000) sumpPadBytes++;
+				if(sumpRX.command[1] & 0b10000) sumpPadBytes++;
+				if(sumpRX.command[1] & 0b1000) sumpPadBytes++;
+				break;
+				*/
+				case SUMP_CNT:
+				samples=command[2];
+				samples<<=8;
+				samples|=command[1];
+				samples=(samples+1)*4;
+				//constrain to 256K
+				if(samples>LA_SAMPLE_SIZE) samples=LA_SAMPLE_SIZE;
+				break;
+				case SUMP_DIV:
+				divider=command[3];
+				divider<<=8;
+				divider|=command[2];
+				divider<<=8;
+				divider|=command[1];
+		
+				//setup clock source -
+				//20mhz direct from OSC
+				//0-Xmhz with PIC PWM
+		
+				//convert from SUMP 100MHz clock to our 12MIPs
+				//l=((l+1)*16)/100;
+				//l=((l+1)*4)/25;
+		
+				//adjust downwards a bit
+				//if(l>0x10)
+				//	l-=0x10;
+				//else //fast as possible
+				//	l=1;
+		
+				//setup PR register
+				//PR5=(l>>16);//most significant word
+				//PR4=l;//least significant word
+		
+				break;
+			}
 		}
 	}
 CDCTxService();
@@ -362,6 +350,8 @@ static void init(void){
 	TRISA=0xff;
 	TRISB=0xff;
 	TRISC=0b11111111; 
+
+	hal_logicshrimp_pinsetup();
 
 	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
 	OSCTUNEbits.PLLEN = 1;  //enable PLL
