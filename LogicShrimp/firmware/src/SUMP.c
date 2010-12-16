@@ -15,6 +15,8 @@
 
 //extern struct _irtoy irToy;
 
+#if 0
+
 //commandset
 //http://www.sump.org/projects/analyzer/protocol/
 #define SUMP_RESET 0x00
@@ -203,3 +205,4 @@ void SUMPInterruptHandlerHigh (void){
 	}   
 }
 //#endif
+#endif

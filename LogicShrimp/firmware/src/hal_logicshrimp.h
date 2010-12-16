@@ -6,4 +6,8 @@
 #define hal_logicshrimp_setClockGate(x)				LATCbits.LATC0=x
 #define hal_logicshrimp_setBufferEnable(x)			LATBbits.LATB5=x
 
+#define hal_logicshrimp_setLed(x)			LATCbits.LATC6=x
+
+#define hal_logicshrimp_setInputs()			;; //TODO
+
 #endif
