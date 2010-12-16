@@ -322,7 +322,7 @@ for(ctr=0;ctr<DataCount;ctr++)
 set_all_cs(PORT_ON); // cs high
 }
 
-
+#if 0
 // Return a pointer to an array of 4 bytes
 static u8 * hal_sram_ParallelRWByte(u8 returnData)
 {
@@ -374,7 +374,65 @@ for(ctr=0;ctr<8;ctr++)
 	}
 return array_byte;
 }
+#endif
 
+
+// Return a pointer to an array of 4 bytes
+static u8 * hal_sram_ParallelRWByte(u8 returnData)
+{
+static u8 array_byte[4];
+static u8 ctr,temp;
+
+array_byte[0]=0;
+array_byte[1]=0;
+array_byte[2]=0;
+array_byte[3]=0;
+
+ctr=7;
+while(ctr!=0xFF)
+	{
+	if((returnData>>ctr)&0x01)
+		{
+		DO_0=1;
+		DO_1=1;
+		DO_2=1;
+		DO_3=1;
+		}
+	else
+		{
+		DO_0=0;
+		DO_1=0;
+		DO_2=0;
+		DO_3=0;
+		}
+
+	SCLK=PORT_ON;
+	temp=1<<ctr; // one-time computation for faster executions
+
+	if(DI_0)
+		{
+		array_byte[0]|=temp;
+		}
+	if(DI_1)
+		{
+		array_byte[1]|=temp;
+		}
+	if(DI_2)
+		{
+		array_byte[2]|=temp;
+		}
+	if(DI_3)
+		{
+		array_byte[3]|=temp;
+		}
+	SCLK=PORT_OFF;
+
+	ctr--;
+	}
+
+
+return array_byte;
+}
 ////////////////////////
 
 
