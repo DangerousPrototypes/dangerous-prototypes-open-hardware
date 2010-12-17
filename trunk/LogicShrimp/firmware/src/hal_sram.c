@@ -1,5 +1,7 @@
 #include "globals.h"
 
+
+
 static u8 * hal_sram_ParallelRWByte(u8 returnData);
 
 ////////////// CHIP SELECT FUNCTIONS ////////////////////
@@ -90,17 +92,11 @@ for(ctr=0;ctr<8;ctr++)
 
 // Static! Not Exposed Outside
 static u8 (*SpiRWPtr[])(u8 c)={spi_rw_0,spi_rw_1,spi_rw_2,spi_rw_3};
-////////////////////////////////////////////////////////////////////////////
 
 
 
 
-
-
-
-
-//////////////////////////////// EXPOSED FUNCTIONS /////////////////////////
-void hal_spi_init(void)
+static void hal_sram_spiInit(void)
 {
 // set Tristate Port and Logic Level
 
@@ -128,9 +124,72 @@ LATCbits.LATC0=1;//disabled
 //uC clock pin setup
 TRISCbits.TRISC7=0; //uC clock out to output
 SCLK=PORT_OFF; //low
+}
+////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+
+
+
+
+
+
+////////// ADDRESS TRACKERS /////////////
+static u16 u16SramAddressTracker[4]={0,0,0,0};
+
+
+void hal_sram_TrackingAddressSetAll(u16 value)
+{
+u16SramAddressTracker[0]=value;
+u16SramAddressTracker[1]=value;
+u16SramAddressTracker[2]=value;
+u16SramAddressTracker[3]=value;
 }
 
+
+
+// Reset Tracking Index
+void hal_sram_TrackingAddressReset(void)
+{
+hal_sram_TrackingAddressSetAll(0);
+}
+
+
+
+// Set Individual Tracking Index
+void hal_sram_TrackingAddressSet(SRAM_INDEX index,u16 value)
+{
+u16SramAddressTracker[index]=value;
+}
+
+
+// Increment Tracking Index
+void hal_sram_TrackingAddressIncrement(SRAM_INDEX index)
+{
+u16SramAddressTracker[index]++;
+}
+
+
+// Retreive Tracking Index
+u16 hal_sram_TrackingAddressGet(SRAM_INDEX index)
+{
+return u16SramAddressTracker[index];
+}
+////// END OF ADDRESS TRACKERS /////////
+
+
+
+
+
+
+
+
+
+//////////////////////////////// EXPOSED FUNCTIONS /////////////////////////
 void hal_sram_parallelInit(void)
 {
 #define DEBUG_SRAM_INIT // uncomment this line to abort test
@@ -140,7 +199,7 @@ u8 * ptr_array;
 #endif
 
 //setup for control and IO from uC
-hal_spi_init();
+hal_sram_spiInit();
 
 //SPI>[0x01 0b01000001]
 ///CS ENABLED
@@ -169,46 +228,56 @@ set_all_cs(PORT_ON); // cs high
 // FOR DEBUGGING PURPOSE ONLY!!
 if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[3]!=0x41))
 	{
-	while(1){LATCbits.LATC6^=1;} // toggle indefinitely
+	while(1){HAL_LOGICSHRIMP_LED_LAT^=1;} // toggle indefinitely
 	}
 #endif
 
 #undef DEBUG_SRAM_INIT
 }
 
+
+
+
 //setup the SRAM to caputre input from the buffer
-void hal_sram_setup_capture(void){
-	//setup the SRAM to record
-	set_all_cs(PORT_OFF); // cs low
-	hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
-	hal_sram_ParallelRWByte(0x00);
-	hal_sram_ParallelRWByte(0x00);
-	
-	TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
+void hal_sram_setup_capture(void)
+{
+//setup the SRAM to record
+set_all_cs(PORT_OFF); // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
+hal_sram_ParallelRWByte(0x00);
+hal_sram_ParallelRWByte(0x00);
 
-	//hal_logicshrimp_BufferEnable();//open up the buffer
+TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
 
+//hal_logicshrimp_BufferEnable();//open up the buffer
 }
+
+
 
 //end the SRAM to caputre
-void hal_sram_end_capture(void){
-	//CS high to disable the SRAM write
-	set_all_cs(PORT_ON); // cs high
-	hal_logicshrimp_BufferDisable();//open up the buffer
+void hal_sram_end_capture(void)
+{
+//CS high to disable the SRAM write
+set_all_cs(PORT_ON); // cs high
+hal_logicshrimp_BufferDisable();//open up the buffer
 }
 
-//setup the SRAM to dump data from the SRAM
-void hal_sram_setup_dump(void){
-	//setup the SRAM to record
-	hal_logicshrimp_BufferDisable();//open up the buffer
-	TRISB&=(~0b1111);//SRAM in/PIC out pins to output
-	
-	set_all_cs(PORT_OFF); // cs low
-	hal_sram_ParallelRWByte(SRAM_CMD_READ);
-	hal_sram_ParallelRWByte(0x00); //address should be adjustable probably...
-	hal_sram_ParallelRWByte(0x00);
 
-	SRAM_DI_LAT|=0b1111; //output pins low
+
+
+//setup the SRAM to dump data from the SRAM
+void hal_sram_setup_dump(void)
+{
+//setup the SRAM to record
+hal_logicshrimp_BufferDisable();//open up the buffer
+TRISB&=(~0b1111);//SRAM in/PIC out pins to output
+
+set_all_cs(PORT_OFF); // cs low
+hal_sram_ParallelRWByte(SRAM_CMD_READ);
+hal_sram_ParallelRWByte(0x00); //address should be adjustable probably...
+hal_sram_ParallelRWByte(0x00);
+
+SRAM_DI_LAT|=0b1111; //output pins low
 }
 
 
@@ -241,6 +310,8 @@ for(ctr=0;ctr<DataCount;ctr++)
 	returnData[ctr][1]=dataptr[1];
 	returnData[ctr][2]=dataptr[2];
 	returnData[ctr][3]=dataptr[3];
+
+
 	}
 set_all_cs(PORT_ON); // cs high
 }
@@ -266,14 +337,25 @@ set_all_cs(PORT_ON); // cs high
 //3WIRE>
 void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray)
 {
-static int ctr;
+static u16 ctr;
 set_all_cs(PORT_OFF); // cs low
 hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
 hal_sram_ParallelRWByte(AddrHi);
 hal_sram_ParallelRWByte(AddrLo);
+
+ctr=AddrHi;
+ctr=(ctr<<8)|AddrLo;
+hal_sram_TrackingAddressSetAll(ctr);
+
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	hal_sram_ParallelRWByte(DataArray[ctr]);
+
+	// will be optimized later on...  TODO
+	hal_sram_TrackingAddressIncrement(SRAM_0);
+	hal_sram_TrackingAddressIncrement(SRAM_1);
+	hal_sram_TrackingAddressIncrement(SRAM_2);
+	hal_sram_TrackingAddressIncrement(SRAM_3);
 	}
 set_all_cs(PORT_ON); // cs high
 }

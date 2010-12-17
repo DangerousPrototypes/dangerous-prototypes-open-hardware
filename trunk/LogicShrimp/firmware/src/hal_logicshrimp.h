@@ -7,10 +7,14 @@
 
 #define hal_logicshrimp_ClockGateEnable()				LATCbits.LATC0=0
 #define hal_logicshrimp_ClockGateDisable()				LATCbits.LATC0=1
-#define hal_logicshrimp_BufferEnable()			LATBbits.LATB5=0
-#define hal_logicshrimp_BufferDisable()			LATBbits.LATB5=1
+#define hal_logicshrimp_BufferEnable()					LATBbits.LATB5=0
+#define hal_logicshrimp_BufferDisable()					LATBbits.LATB5=1
 
-#define hal_logicshrimp_setLed(x)			LATCbits.LATC6=x
+#define HAL_LOGICSHRIMP_LED_LAT				LATCbits.LATC6
+#define HAL_LOGICSHRIMP_LED_TRIS			TRISCbits.TRISC6
+
+#define hal_logicshrimp_setLed(x)			HAL_LOGICSHRIMP_LED_LAT=x
+
 
 #define hal_logicshrimp_setInputs()			;; //TODO
 
