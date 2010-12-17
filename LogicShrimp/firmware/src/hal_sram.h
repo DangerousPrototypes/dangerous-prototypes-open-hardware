@@ -46,6 +46,14 @@ SPI_3
 }SPI_GROUP;
 
 
+typedef enum
+{
+SRAM_0=0,
+SRAM_1,
+SRAM_2,
+SRAM_3
+}SRAM_INDEX;
+
 void hal_sram_parallelInit(void);
 void hal_sram_parallelRead(u8 AddrHi,u8 AddrLo,u8 DataCount,u8 returnData[][4]);
 void hal_sram_parallelWrite(u8 AddrHi,u8 AddrLo,int DataCount, u8 *DataArray);
