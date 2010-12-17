@@ -121,6 +121,13 @@ while(1)
 				hal_logicshrimp_ClockGateEnable();
 			}else{
 				//TODO:setup the PWM for the requested frequency
+
+#define PERIOD 7
+#define DUTYCYCLE 7
+				OpenPWM1(PERIOD);
+				SetDCPWM1(DUTYCYCLE);
+				// documentation at  C:\MCC18\doc\periph-lib\PWM.htm
+
 				//we fake it for now....
 				i=250;
 				while(i--){
