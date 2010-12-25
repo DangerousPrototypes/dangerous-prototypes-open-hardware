@@ -17,5 +17,6 @@
 
 
 #define hal_logicshrimp_setInputs()			;; //TODO
+void hal_logicshrimp_configPPS(void);
 
 #endif

@@ -29,3 +29,26 @@ void hal_logicshrimp_capturemode(void){
 	TRISCbits.TRISC6=1; 
 	LATCbits.LATC6=0;
 }
+
+
+void hal_logicshrimp_configPPS(void)
+{
+// Do the unlocking procedure
+INTCONbits.GIE=0;
+EECON2=0x55;
+EECON2=0xAA;
+PPSCONbits.IOLOCK=0;
+
+// TODO: Setup Ports here
+RPINR6=11; // RP11   Timer3 External Clock Input T3CKI RPINR6 T3CKR<4:0>
+
+RPOR18= 14; // PWM A to RP18
+
+
+// Do the locking procedure
+INTCONbits.GIE=0;
+EECON2=0x55;
+EECON2=0xAA;
+PPSCONbits.IOLOCK=1;
+
+}
