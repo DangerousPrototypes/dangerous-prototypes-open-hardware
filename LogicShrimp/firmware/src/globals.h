@@ -21,17 +21,17 @@ typedef unsigned int u16;
 #include "./USB/usb_function_cdc.h"
 #include "./USB/usb_device.h"
 
-
-
-#define putUnsignedCharArrayUsbUsart(u8Array,Num) 	putUSBUSART((char*)(u8Array),(Num))
-#define getUnsignedCharArrayUsbUart(u8Array,Num)	getsUSBUSART((char*)(u8Array),(Num))
-
 // MCC18 built in header
 #include <pwm.h>
 
 // user definer headers
 #include "hal_sram.h"
 #include "hal_logicshrimp.h"
+
+#define putUnsignedCharArrayUsbUsart(u8Array,Num) 	putUSBUSART((char*)(u8Array),(Num))
+#define getUnsignedCharArrayUsbUart(u8Array,Num)	getsUSBUSART((char*)(u8Array),(Num))
+
+
 
 #define PORT_ON 1
 #define PORT_OFF 0

@@ -54,6 +54,15 @@ u8 inByte;
 
 #if 1
 
+
+
+
+
+
+
+
+
+
 #pragma code
 void main(void)
 {
@@ -99,6 +108,10 @@ while(1)
 			//ARMED, turn on LED
 			hal_logicshrimp_setLed(PORT_ON);
 
+
+			// PPS Setup
+			hal_logicshrimp_configPPS();
+
 			//setup the SRAM for record
 			hal_sram_parallelInit();
 			hal_sram_setup_capture();//setup read, turn PIC->SRAM pins input
@@ -122,11 +135,34 @@ while(1)
 			}else{
 				//TODO:setup the PWM for the requested frequency
 
-#define PERIOD 7
-#define DUTYCYCLE 7
-				OpenPWM1(PERIOD);
-				SetDCPWM1(DUTYCYCLE);
-				// documentation at  C:\MCC18\doc\periph-lib\PWM.htm
+
+
+// TODO Fill with values
+//				17.4.3 SETUP FOR PWM OPERATION
+//				The following steps should be taken when configuring
+//				the CCP module for PWM operation:
+//				1. Set the PWM period by writing to the PR2 (PR4)
+//				register.
+				CCP1CON=0x00;
+				PR2= 0x00;
+//				2. Set the PWM duty cycle by writing to the
+//				CCPRxL register and CCPxCON<5:4> bits.
+				CCPR1L= 0x00;
+				CCP1CONbits.DC1B1=0;
+				CCP1CONbits.DC1B0=0;
+//				3. Make the CCPx pin an output by clearing the
+//				appropriate TRIS bit.
+				TRISC&=0x01;
+//				4. Set the TMR2 (TMR4) prescale value, then
+//				enable Timer2 (Timer4) by writing to T2CON
+//				(T4CON).
+				T2CON=0x04;
+//				5. Configure the CCPx module for PWM operation.
+				CCP1CON|=0x0C;
+
+
+
+
 
 				//we fake it for now....
 				i=250;
@@ -154,11 +190,26 @@ while(1)
 //
 //
 
+			T3CON=0b10100101;
 			//TODO: count the desired number of samples with a timer
-				i=250;
-				while(i--){
-					Nop();
-				};
+
+			PIR1bits.TMR1IF=0;
+
+			i=0;
+			while(i!=250)
+				{
+				if(PIR1bits.TMR1IF)
+					{
+					i++;
+					PIR1bits.TMR1IF=0;
+					}
+				}
+
+
+//				i=250;
+//				while(i--){
+//					Nop();
+//				};
 
 			//raise CS to end write to SRAM
 			hal_sram_end_capture(); 

@@ -137,7 +137,7 @@ SCLK=PORT_OFF; //low
 
 
 
-
+#if 0
 ////////// ADDRESS TRACKERS /////////////
 static u16 u16SramAddressTracker[4]={0,0,0,0};
 
@@ -180,7 +180,7 @@ u16 hal_sram_TrackingAddressGet(SRAM_INDEX index)
 return u16SramAddressTracker[index];
 }
 ////// END OF ADDRESS TRACKERS /////////
-
+#endif
 
 
 
@@ -343,19 +343,19 @@ hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
 hal_sram_ParallelRWByte(AddrHi);
 hal_sram_ParallelRWByte(AddrLo);
 
-ctr=AddrHi;
-ctr=(ctr<<8)|AddrLo;
-hal_sram_TrackingAddressSetAll(ctr);
+//ctr=AddrHi;
+//ctr=(ctr<<8)|AddrLo;
+//hal_sram_TrackingAddressSetAll(ctr);
 
 for(ctr=0;ctr<DataCount;ctr++)
 	{
 	hal_sram_ParallelRWByte(DataArray[ctr]);
 
 	// will be optimized later on...  TODO
-	hal_sram_TrackingAddressIncrement(SRAM_0);
-	hal_sram_TrackingAddressIncrement(SRAM_1);
-	hal_sram_TrackingAddressIncrement(SRAM_2);
-	hal_sram_TrackingAddressIncrement(SRAM_3);
+//	hal_sram_TrackingAddressIncrement(SRAM_0);
+//	hal_sram_TrackingAddressIncrement(SRAM_1);
+//	hal_sram_TrackingAddressIncrement(SRAM_2);
+//	hal_sram_TrackingAddressIncrement(SRAM_3);
 	}
 set_all_cs(PORT_ON); // cs high
 }
