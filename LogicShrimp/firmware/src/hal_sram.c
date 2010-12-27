@@ -266,7 +266,7 @@ hal_logicshrimp_BufferDisable();//open up the buffer
 
 
 //setup the SRAM to dump data from the SRAM
-void hal_sram_setup_dump(void)
+void hal_sram_setup_dump(unsigned char addh, unsigned char addl)
 {
 //setup the SRAM to record
 hal_logicshrimp_BufferDisable();//open up the buffer
@@ -274,8 +274,8 @@ TRISB&=(~0b1111);//SRAM in/PIC out pins to output
 
 set_all_cs(PORT_OFF); // cs low
 hal_sram_ParallelRWByte(SRAM_CMD_READ);
-hal_sram_ParallelRWByte(0x00); //address should be adjustable probably...
-hal_sram_ParallelRWByte(0x00);
+hal_sram_ParallelRWByte(addh); //address should be adjustable probably...
+hal_sram_ParallelRWByte(addl);
 
 SRAM_DI_LAT|=0b1111; //output pins low
 }
