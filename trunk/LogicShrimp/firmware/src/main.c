@@ -26,7 +26,7 @@
 #define SUMP_TRIG	0xc0
 #define SUMP_TRIG_VALS 0xc1
 
-#define LA_SAMPLE_SIZE  20
+#define LA_SAMPLE_SIZE  32768
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
 #pragma udata
@@ -50,19 +50,10 @@ void usbservice(void);
 u8 UsbFifoBufferArray[66];
 static unsigned long samples, divider;
 u8 command[5], clock;
-u8 inByte;
+u8 inByte, addl, addh;
+unsigned int add16, j;
 
 #if 1
-
-
-
-
-
-
-
-
-
-
 #pragma code
 void main(void)
 {
@@ -108,9 +99,8 @@ while(1)
 			//ARMED, turn on LED
 			hal_logicshrimp_setLed(PORT_ON);
 
-
 			// PPS Setup
-			hal_logicshrimp_configPPS();
+			//hal_logicshrimp_configPPS();
 
 			//setup the SRAM for record
 			hal_sram_parallelInit();
@@ -119,11 +109,29 @@ while(1)
 			//enable the buffer
 			hal_logicshrimp_BufferEnable();
 
-			//ADDRESS TRACKING//
+			//ADDRESS TRACKING: TMR3 with async external input//
 			//Need to know where in the SRAM we are//
-			//TODO:setup a external counter on C7 to track the SRAM address (/8 prescaler)
-			//TODO:interrupt on samples number of ticks
+			//setup a external counter on C7 to track the SRAM address (/4 prescaler)
+			RPINR6=18; // RP18   Timer3 External Clock Input T3CKI RPINR6 T3CKR<4:0>
+			//setup T3
+			//16bit timer
+			// /4 prescaler
+			T3CON=0b10100100; //0b10 16 bit
+			//clear to sync to SRAM internal address
+			TMR3H=0;
+			TMR3L=0;
+			T3CON|=0b1;//enable the counter		
 
+			//SAMPLE COUNTER: TMR1 with async external input//	
+/*
+			RPINR4=18; //also on RP18 external clock input
+			T1CON=0b10000100;
+			//clear
+			TMR1H=0;
+			TMR1L=0;
+			//use CCP2 to compare to desired count and interrupt
+*/
+			//CLOCK SOURCE: PWM or 20MHz oscillator//
 			//start the clock source
 			//this is the 20MHz external clock
 			//OR PWM from PIC pin RC7/RP18
@@ -133,18 +141,14 @@ while(1)
 				TRISCbits.TRISC7=1;//disable PIC clock pin
 				hal_logicshrimp_ClockGateEnable();
 			}else{
-				//TODO:setup the PWM for the requested frequency
-
-
-
 // TODO Fill with values
 //				17.4.3 SETUP FOR PWM OPERATION
 //				The following steps should be taken when configuring
 //				the CCP module for PWM operation:
 //				1. Set the PWM period by writing to the PR2 (PR4)
 //				register.
-				CCP1CON=0x00;
-				PR2= 0x00;
+				CCP1CON=0xFF;
+				PR2= 128;
 //				2. Set the PWM duty cycle by writing to the
 //				CCPRxL register and CCPxCON<5:4> bits.
 				CCPR1L= 0x00;
@@ -160,22 +164,8 @@ while(1)
 //				5. Configure the CCPx module for PWM operation.
 				CCP1CON|=0x0C;
 
-
-
-
-
-				//we fake it for now....
-				i=250;
-				while(i--){
-					SCLK=PORT_ON;
-					Nop();
-					SCLK=PORT_OFF;
-				};
+				RPOR18= 14; // PWM A to RP11
 			}
-
-			//this should come from the long command below
-			samples=128;
-
 //
 //
 //	TRIGGER (ignore for now)
@@ -183,48 +173,47 @@ while(1)
 //
 			//TODO: sample and trigger tracking section
 			//TODO: wait for change interrupt (if trigger used)
+			//start sample counter
+			//T1CON|=0b1;
 			
 //
 //
 //	CAPTURE
 //
 //
+//eventually will setup preloaded timer3 that increments and interrupts after X samples
+/*			PIR1bits.TMR1IF=0;
 
-			T3CON=0b10100101;
-			//TODO: count the desired number of samples with a timer
-
-			PIR1bits.TMR1IF=0;
-
-			i=0;
-			while(i!=250)
+			while(1)
 				{
 				if(PIR1bits.TMR1IF)
 					{
-					i++;
 					PIR1bits.TMR1IF=0;
+					break;
 					}
 				}
+*/
 
-
-//				i=250;
-//				while(i--){
-//					Nop();
-//				};
+			for(j=0; j<samples; j++);			
 
 			//raise CS to end write to SRAM
 			hal_sram_end_capture(); 
 
+			//disable address tracking counter
+			T3CON&=(~0b1);
 //
 //
 //	CLEANUP
 //
 //
+			//PWM to input, if assigned
+			RPOR11= 0; // PWM A to RP11
 
 			//stop the sample clock
 			hal_logicshrimp_ClockGateDisable();
 			
 			hal_logicshrimp_BufferDisable();
-	
+
 			//restore uC clock to output
 			LATCbits.LATC7=0; //clock start low
 			TRISCbits.TRISC7=0; //uC clock out to output
@@ -236,9 +225,19 @@ while(1)
 //			DUMP
 //
 //
-//			//read samples and dump them out USB
+//			
+			//get the current SRAM address
+			addl=TMR3L;
+			addh=TMR3H;
+			//TODO: any manipulation (back X samples, 50% before/after, etc)
+			add16=addh;
+			add16=(add16<<8);
+			add16|=addl;
+			add16=add16-(samples*2);//this is a 4bit count, multiple samples by two to preserve roll over...
+			add16=add16>>1;//divide by 2
+			//read samples and dump them out USB
 			//write the SRAM command to read from the beginning
-			hal_sram_setup_dump();
+			hal_sram_setup_dump((add16>>8), (add16&0xff));
 
 			//loop untill all is read
 			while(1)
@@ -296,6 +295,7 @@ while(1)
 				if(sumpRX.command[1] & 0b1000) sumpPadBytes++;
 				break;
 				*/
+				break;
 				case SUMP_CNT:
 				samples=command[2];
 				samples<<=8;
