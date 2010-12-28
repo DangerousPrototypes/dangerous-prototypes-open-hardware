@@ -1,0 +1,33 @@
+Pin Freeze File:  version M.53d
+
+A2C32A44VQ XA2C32A-7-VQ44
+FT_DBGRQ S:PIN23
+FT_JTAG_BUF S:PIN34
+FT_TCK S:PIN22
+FT_TDI S:PIN21
+FT_TMS S:PIN20
+FT_nSRST_BUF S:PIN33
+FT_nSRST_OUT S:PIN19
+FT_nTRST S:PIN39
+RTCK S:PIN40
+TDO S:PIN41
+DBGRQ S:PIN38
+FT_RTCK S:PIN30
+FT_TDO S:PIN29
+FT_nSRST_IN S:PIN28
+TCK S:PIN37
+TDI S:PIN36
+TMS S:PIN32
+nSRST S:PIN31
+nTRST S:PIN27
+
+
+;The remaining section of the .gyd file is for documentation purposes only.
+;It shows where your internal equations were placed in the last successful fit.
+
+PARTITION FB1_1 DBGRQ TCK TDI
+PARTITION FB1_6 TMS nSRST FT_RTCK FT_TDO
+		 FT_nSRST_IN nTRST
+
+
+

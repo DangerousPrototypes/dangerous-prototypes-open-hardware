@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE ibis [
+<!ELEMENT ibis (part, pin+)>
+<!ELEMENT part EMPTY>
+<!ELEMENT pin EMPTY>
+<!ATTLIST part
+  arch   CDATA #REQUIRED
+  device CDATA #REQUIRED
+  spg    CDATA #REQUIRED
+  pkg    CDATA #REQUIRED>
+<!ATTLIST pin
+  nm     CDATA #REQUIRED
+  no     CDATA #REQUIRED
+  iostd  (LVTTL|SSTL3_I|LVCMOS33|LVCMOS25|SSTL2_I|LVCMOS18|LVCMOS15|HSTL_I|NA) "NA"
+  sr     (SLOW|FAST|slow|fast) "SLOW"
+  dir    (BIDIR|bidir|INPUT|input|OUTPUT|output) "BIDIR">
+]>
+<ibis><part arch="acr2" device="XA2C32A" pkg="VQ44" spg="-7"/><pin dir="input" iostd="LVCMOS18" nm="FT_DBGRQ" no="23"/><pin dir="input" iostd="LVCMOS18" nm="FT_JTAG_BUF" no="34"/><pin dir="input" iostd="LVCMOS18" nm="RTCK" no="40"/><pin dir="input" iostd="LVCMOS18" nm="FT_TCK" no="22"/><pin dir="input" iostd="LVCMOS18" nm="FT_TDI" no="21"/><pin dir="input" iostd="LVCMOS18" nm="TDO" no="41"/><pin dir="input" iostd="LVCMOS18" nm="FT_TMS" no="20"/><pin dir="input" iostd="LVCMOS18" nm="FT_nSRST_BUF" no="33"/><pin dir="input" iostd="LVCMOS18" nm="FT_nSRST_OUT" no="19"/><pin dir="input" iostd="LVCMOS18" nm="FT_nTRST" no="39"/><pin dir="output" iostd="LVCMOS18" nm="DBGRQ" no="38" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="FT_RTCK" no="30" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="FT_TDO" no="29" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="FT_nSRST_IN" no="28" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="TCK" no="37" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="TDI" no="36" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="TMS" no="32" sr="fast"/><pin dir="output" iostd="LVCMOS18" nm="nTRST" no="27" sr="fast"/><pin dir="bidir" iostd="LVCMOS18" nm="nSRST" no="31" sr="fast"/></ibis>

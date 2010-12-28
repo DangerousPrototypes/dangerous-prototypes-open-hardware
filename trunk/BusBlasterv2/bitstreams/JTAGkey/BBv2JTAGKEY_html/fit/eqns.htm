@@ -1,0 +1,155 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script src="paths.js"></script><script src="eqns.js"></script><script>
+      var design = "BBv2JTAGKEY";
+      var device = "XA2C32A";
+      signals = new Array("DBGRQ","FT_RTCK","FT_TDO","FT_nSRST_IN","TCK","TDI","TMS","nSRST","nTRST");
+      sigNegs = new Array("OFF","OFF","OFF","OFF","OFF","OFF","OFF","OFF","OFF");
+      sigTypes = new Array("","","","","","","","","");
+
+      
+           iostyle["DBGRQ"]=new Array("KPR");
+        
+           iostyle["TCK"]=new Array("KPR");
+        
+           iostyle["TDI"]=new Array("KPR");
+        
+           iostyle["FT_JTAG_BUF"]=new Array("KPR");
+        
+           iostyle["FT_nSRST_BUF"]=new Array("KPR");
+        
+           iostyle["TMS"]=new Array("KPR");
+        
+           iostyle["nSRST"]=new Array("KPR");
+        
+           iostyle["FT_DBGRQ"]=new Array("KPR");
+        
+           iostyle["FT_TCK"]=new Array("KPR");
+        
+           iostyle["FT_TDI"]=new Array("KPR");
+        
+           iostyle["FT_TMS"]=new Array("KPR");
+        
+           iostyle["FT_nSRST_OUT"]=new Array("KPR");
+        
+           iostyle["FT_nTRST"]=new Array("KPR");
+        
+           iostyle["RTCK"]=new Array("KPR");
+        
+           iostyle["TDO"]=new Array("KPR");
+        
+        specSig["nSRSTPIN_SPECSIG"]=new Array("nSRST.PIN");
+      
+        specSig["IO_SPECSIG"]=new Array("I/O");
+      
+            pterms["FB1_10"]=new Array("FT_DBGRQ");
+          
+            pterms["FB1_13"]=new Array("FT_TCK");
+          
+            pterms["FB1_16"]=new Array("FT_TDI");
+          
+            pterms["FB1_25"]=new Array("FT_TMS");
+          
+            pterms["FB1_28"]=new Array("FT_nSRST_OUT");
+          
+            pterms["FB1_31"]=new Array("RTCK");
+          
+            pterms["FB1_34"]=new Array("TDO");
+          
+            pterms["FB1_37"]=new Array("nSRSTPIN_SPECSIG");
+          
+            pterms["FB1_40"]=new Array("FT_nTRST");
+          
+          d1["DBGRQ"]=new Array("FB1_10");
+          trstNegs["DBGRQ"]=1;
+              gbltrst["DBGRQ"]=new Array("FT_JTAG_BUF");
+            
+          d1["TCK"]=new Array("FB1_13");
+          trstNegs["TCK"]=1;
+              gbltrst["TCK"]=new Array("FT_JTAG_BUF");
+            
+          d1["TDI"]=new Array("FB1_16");
+          trstNegs["TDI"]=1;
+              gbltrst["TDI"]=new Array("FT_JTAG_BUF");
+            
+          d1["TMS"]=new Array("FB1_25");
+          trstNegs["TMS"]=1;
+              gbltrst["TMS"]=new Array("FT_JTAG_BUF");
+            
+          d1["nSRST"]=new Array("FB1_28");
+          trstNegs["nSRST"]=1;
+              gbltrst["nSRST"]=new Array("FT_nSRST_BUF");
+            
+          d1["FT_RTCK"]=new Array("FB1_31");
+          
+          d1["FT_TDO"]=new Array("FB1_34");
+          
+          d1["FT_nSRST_IN"]=new Array("FB1_37");
+          
+          d1["nTRST"]=new Array("FB1_40");
+          
+
+      uimSignals = new Array();
+
+      uimSigNegs = new Array();
+
+      uimPterms = new Array();
+      
+
+      
+        function getEqnList() {
+          var str = "<html><head><link type='text/css' href='style.css' rel='stylesheet'></head><body class='pgBgnd'>";
+          str += "<center><h3>Equations</h3></center>";
+          str += "<table width='90%' align='center' border='1' cellpadding='0' cellspacing='0'>";
+          for (s=0; s<uimSignals.length; s++) {
+            str += "<tr><td>";
+            str += retUimEqn(uimSignals[s]);
+            str += "</td></tr>";
+          }
+          for (s=0; s<signals.length; s++) {
+            str += "<tr><td>";
+            str += retEqn(signals[s]);
+            str += "</td></tr>";
+          }
+
+          var legend = retLegend();
+		      if (legend != "") {
+		        str += "<tr><td>" + legend + "</td></tr>";
+		      }
+
+          str += "</table>";
+          str += "<form><span class='pgRef'>";
+
+          if (!parent.leftnav.IsNS()) {
+            str += "<table width='90%' align='center'>";
+            str += "<tr><td align='left'><input type='button' value='back to top' ";
+            str += "onclick='javascript:parent.leftnav.showEqnAll()' ";
+            str += "onmouseover=\"window.status='goto top of page'; return true;\" ";
+            str += "onmouseout=\"window.status=''\">";
+            str += "</td>";
+            str += "<td align='right'>";
+            str += "<input type='button' value='print page' ";
+            str += "onclick='javascript:window.print()' ";
+            str += "onmouseover=\"window.status='print page'; return true;\" ";
+            str += "onmouseout=\"window.status=''\">";
+            str += "</td>";
+            str += "</tr></table>";
+          }
+          else {
+            str += "<table width='90%' align='center'>";
+            str += "<tr><td align='left'><a href='javascript:parent.leftnav.showEqnAll()'>back to top</a>";
+            str += "</td>";
+            str += "<td align='right'>";
+            str += "<a href='javascript:window.print()'>";
+            str += "print page</a>";
+            str += "</td>";
+            str += "</tr></table>";
+          }
+
+          str += "</span></form>";
+          str += "</body></html>";
+          return str;
+        }
+      
+    </script>
+</head></html>
