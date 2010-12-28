@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2010-12-28T14:49:31</DateModified>
+  <DateModified>2010-12-28T15:55:04</DateModified>
   <ModuleName>BBv2JTAGKEY</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
   <SavedFilePath>E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/iseconfig/BBv2JTAGKEY.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey</ImplementationReportsDirectory>
-  <DateInitialized>2010-12-28T14:49:31</DateInitialized>
+  <ImplementationReportsDirectory>E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey\</ImplementationReportsDirectory>
+  <DateInitialized>2010-12-28T15:49:52</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
  <body>
