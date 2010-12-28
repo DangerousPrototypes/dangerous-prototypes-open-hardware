@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--This is an ISE project configuration file.-->
 <!--It holds project specific layout data for the projectmgr plugin.-->
 <!--Copyright (c) 1995-2009 Xilinx, Inc.  All rights reserved.-->
@@ -7,33 +7,35 @@
    <ItemView engineview="SynthesisOnly" guiview="Source" compilemode="AutoCompile" >
       <ClosedNodes/>
       <SelectedItems>
-         <SelectedItem>BBv2JTAGKEY.ucf (E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.ucf)</SelectedItem>
+         <SelectedItem>BBv2JTAGKEY (E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.sch)</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000202000000010000000100000064000000e6000000020000000000000000000000000000000064ffffffff000000810000000000000002000000e60000000100000000000000000000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >true</UserChangedColumnWidths>
-      <CurrentItem>BBv2JTAGKEY.ucf (E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.ucf)</CurrentItem>
+      <CurrentItem>BBv2JTAGKEY (E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.sch)</CurrentItem>
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="" guiview="Process" >
       <ClosedNodes/>
       <SelectedItems>
-         <SelectedItem>Update All Schematic Files</SelectedItem>
+         <SelectedItem>Add Existing Source</SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000f6000000010000000100000000000000000000000064ffffffff000000810000000000000001000000f60000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem>Update All Schematic Files</CurrentItem>
+      <CurrentItem>Add Existing Source</CurrentItem>
    </ItemView>
    <ItemView guiview="File" >
       <ClosedNodes/>
-      <SelectedItems/>
+      <SelectedItems>
+         <SelectedItem>BBv2JTAGKEY.ucf</SelectedItem>
+      </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
-      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000000000000010000000000000000000000000000000000000126000000040101000100000000000000000000000064ffffffff0000008100000000000000040000004200000001000000000000002400000001000000000000006600000001000000000000005a0000000100000000</ViewHeaderState>
+      <ViewHeaderState orientation="horizontal" >000000ff00000000000000010000000000000000010000000000000000000000000000000000000130000000040101000100000000000000000000000064ffffffff000000810000000000000004000000420000000100000000000000240000000100000000000000660000000100000000000000640000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem>BBv2JTAGKEY.sch</CurrentItem>
+      <CurrentItem>BBv2JTAGKEY.ucf</CurrentItem>
    </ItemView>
    <ItemView guiview="Library" >
       <ClosedNodes>
@@ -52,13 +54,13 @@
          <ClosedNode>Implement Design/Synthesize - XST</ClosedNode>
       </ClosedNodes>
       <SelectedItems>
-         <SelectedItem>Floorplan IO - Pre-Synthesis</SelectedItem>
+         <SelectedItem></SelectedItem>
       </SelectedItems>
       <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
       <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
       <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000e6000000010000000100000000000000000000000064ffffffff000000810000000000000001000000e60000000100000000</ViewHeaderState>
       <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
-      <CurrentItem>Floorplan IO - Pre-Synthesis</CurrentItem>
+      <CurrentItem></CurrentItem>
    </ItemView>
    <ItemView engineview="SynthesisOnly" sourcetype="DESUT_UCF" guiview="Process" >
       <ClosedNodes/>
@@ -73,4 +75,18 @@
    </ItemView>
    <SourceProcessView>000000ff00000000000000020000011b0000011b01000000040100000002</SourceProcessView>
    <CurrentView>Implementation</CurrentView>
+   <ItemView engineview="SynthesisOnly" sourcetype="DESUT_VHDL_ARCHITECTURE" guiview="Process" >
+      <ClosedNodes>
+         <ClosedNode>Implement Design/Optional Implementation Tools/XPower Analyzer</ClosedNode>
+         <ClosedNode>Implement Design/Synthesize - XST</ClosedNode>
+      </ClosedNodes>
+      <SelectedItems>
+         <SelectedItem></SelectedItem>
+      </SelectedItems>
+      <ScrollbarPosition orientation="vertical" >0</ScrollbarPosition>
+      <ScrollbarPosition orientation="horizontal" >0</ScrollbarPosition>
+      <ViewHeaderState orientation="horizontal" >000000ff000000000000000100000001000000000000000000000000000000000000000000000000e6000000010000000100000000000000000000000064ffffffff000000810000000000000001000000e60000000100000000</ViewHeaderState>
+      <UserChangedColumnWidths orientation="horizontal" >false</UserChangedColumnWidths>
+      <CurrentItem></CurrentItem>
+   </ItemView>
 </Project>

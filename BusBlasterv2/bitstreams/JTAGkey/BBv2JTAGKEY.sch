@@ -6,11 +6,6 @@
         <trait edittrait="all:0" />
     </attr>
     <netlist>
-        <signal name="XLXN_42" />
-        <signal name="XLXN_46" />
-        <signal name="XLXN_51" />
-        <signal name="XLXN_53" />
-        <signal name="XLXN_56" />
         <signal name="FT_nSRST_IN" />
         <signal name="FT_TDO" />
         <signal name="FT_RTCK" />
@@ -41,6 +36,10 @@
         <signal name="XLXN_52" />
         <signal name="XLXN_54" />
         <signal name="XLXN_55" />
+        <signal name="XLXN_57" />
+        <signal name="XLXN_59" />
+        <signal name="XLXN_61" />
+        <signal name="FT_nTRST_BUF" />
         <port polarity="Output" name="FT_nSRST_IN" />
         <port polarity="Output" name="FT_TDO" />
         <port polarity="Output" name="FT_RTCK" />
@@ -60,6 +59,7 @@
         <port polarity="Output" name="TCK" />
         <port polarity="Output" name="DBGRQ" />
         <port polarity="Output" name="TMS" />
+        <port polarity="Input" name="FT_nTRST_BUF" />
         <blockdef name="ibuf">
             <timestamp>2000-1-1T10:10:10</timestamp>
             <line x2="64" y1="0" y2="-64" x1="64" />
@@ -116,10 +116,6 @@
             <line x2="96" y1="-112" y2="-144" x1="96" />
             <line x2="96" y1="-48" y2="-80" x1="96" />
         </blockdef>
-        <block symbolname="obuf" name="XLXI_39">
-            <blockpin signalname="XLXN_52" name="I" />
-            <blockpin signalname="nTRST" name="O" />
-        </block>
         <block symbolname="ibuf" name="XLXI_41">
             <blockpin signalname="RTCK" name="I" />
             <blockpin signalname="XLXN_55" name="O" />
@@ -192,6 +188,15 @@
             <blockpin signalname="XLXN_55" name="I" />
             <blockpin signalname="FT_RTCK" name="O" />
         </block>
+        <block symbolname="obuft" name="XLXI_50">
+            <blockpin signalname="XLXN_52" name="I" />
+            <blockpin signalname="XLXN_61" name="T" />
+            <blockpin signalname="nTRST" name="O" />
+        </block>
+        <block symbolname="ibuf" name="XLXI_51">
+            <blockpin signalname="FT_nTRST_BUF" name="I" />
+            <blockpin signalname="XLXN_61" name="O" />
+        </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
         <branch name="FT_nSRST_IN">
@@ -223,10 +228,9 @@
             <wire x2="464" y1="576" y2="576" x1="288" />
         </branch>
         <branch name="FT_nTRST">
-            <wire x2="496" y1="768" y2="768" x1="288" />
-            <wire x2="512" y1="768" y2="768" x1="496" />
+            <wire x2="496" y1="848" y2="848" x1="272" />
+            <wire x2="512" y1="848" y2="848" x1="496" />
         </branch>
-        <instance x="768" y="800" name="XLXI_39" orien="R0" />
         <instance x="960" y="1024" name="XLXI_41" orien="R180" />
         <branch name="nSRST">
             <wire x2="960" y1="576" y2="576" x1="944" />
@@ -235,7 +239,7 @@
             <wire x2="960" y1="672" y2="672" x1="944" />
         </branch>
         <branch name="nTRST">
-            <wire x2="1024" y1="768" y2="768" x1="992" />
+            <wire x2="1104" y1="848" y2="848" x1="1024" />
         </branch>
         <branch name="TDO">
             <wire x2="976" y1="944" y2="944" x1="960" />
@@ -294,10 +298,6 @@
             <wire x2="720" y1="672" y2="672" x1="688" />
         </branch>
         <instance x="688" y="640" name="XLXI_7" orien="R180" />
-        <branch name="XLXN_52">
-            <wire x2="768" y1="768" y2="768" x1="736" />
-        </branch>
-        <instance x="512" y="800" name="XLXI_34" orien="R0" />
         <instance x="960" y="912" name="XLXI_40" orien="R180" />
         <branch name="XLXN_54">
             <wire x2="736" y1="944" y2="944" x1="704" />
@@ -308,7 +308,6 @@
         </branch>
         <instance x="704" y="1024" name="XLXI_11" orien="R180" />
         <iomarker fontsize="28" x="1024" y="576" name="nSRST" orien="R0" />
-        <iomarker fontsize="28" x="1024" y="768" name="nTRST" orien="R0" />
         <iomarker fontsize="28" x="992" y="944" name="TDO" orien="R0" />
         <iomarker fontsize="28" x="992" y="1056" name="RTCK" orien="R0" />
         <iomarker fontsize="28" x="960" y="192" name="TDI" orien="R0" />
@@ -323,8 +322,23 @@
         <iomarker fontsize="28" x="288" y="512" name="FT_nSRST_BUF" orien="R180" />
         <iomarker fontsize="28" x="288" y="576" name="FT_nSRST_OUT" orien="R180" />
         <iomarker fontsize="28" x="272" y="672" name="FT_nSRST_IN" orien="R180" />
-        <iomarker fontsize="28" x="288" y="768" name="FT_nTRST" orien="R180" />
         <iomarker fontsize="28" x="272" y="944" name="FT_TDO" orien="R180" />
         <iomarker fontsize="28" x="272" y="1056" name="FT_RTCK" orien="R180" />
+        <iomarker fontsize="28" x="1104" y="848" name="nTRST" orien="R0" />
+        <instance x="800" y="880" name="XLXI_50" orien="R0" />
+        <branch name="XLXN_52">
+            <wire x2="800" y1="848" y2="848" x1="736" />
+        </branch>
+        <instance x="512" y="880" name="XLXI_34" orien="R0" />
+        <iomarker fontsize="28" x="272" y="848" name="FT_nTRST" orien="R180" />
+        <branch name="XLXN_61">
+            <wire x2="800" y1="784" y2="784" x1="736" />
+        </branch>
+        <instance x="512" y="816" name="XLXI_51" orien="R0" />
+        <branch name="FT_nTRST_BUF">
+            <wire x2="496" y1="784" y2="784" x1="272" />
+            <wire x2="512" y1="784" y2="784" x1="496" />
+        </branch>
+        <iomarker fontsize="28" x="272" y="784" name="FT_nTRST_BUF" orien="R180" />
     </sheet>
 </drawing>
