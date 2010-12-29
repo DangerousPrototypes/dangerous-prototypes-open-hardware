@@ -47,6 +47,8 @@ void sendok(void);
 void send(unsigned char c);
 void usbservice(void);
 
+void high_intrpt(void); // interrupt routines
+
 u8 UsbFifoBufferArray[66];
 static unsigned long samples, divider;
 u8 command[5], clock;
@@ -175,7 +177,31 @@ while(1)
 			//TODO: wait for change interrupt (if trigger used)
 			//start sample counter
 			//T1CON|=0b1;
+			// INT0  - PPS Config not required
+			RPINR1=4; // INT1
+			RPINR2=5; // INT2
+			RPINR3=6; // INT3
 			
+			// TODO: select the edge
+			INTCON2bits.INTEDG0=0;
+			INTCON2bits.INTEDG1=0;
+			INTCON2bits.INTEDG2=0;
+			INTCON2bits.INTEDG3=0;
+
+			INTCONbits.INT0IF=0;
+			INTCONbits.INT0IE=1;
+
+			INTCON3bits.INT1IF=0;
+			INTCON3bits.INT1IE=0;
+
+			INTCON3bits.INT2IF=0;
+			INTCON3bits.INT2IE=0;
+
+			INTCON3bits.INT3IF=0;
+			INTCON3bits.INT3IE=0;
+
+
+
 //
 //
 //	CAPTURE
@@ -486,6 +512,37 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     }      
     return TRUE; 
 }
+
+
+
+
+
+
+#pragma interrupt high_intrpt
+void high_intrpt(void)
+{
+if(PIR1bits.TMR1IF && PIE1bits.TMR1IE)
+	{
+	PIR1bits.TMR1IF=0;
+	}
+else if (INTCONbits.INT0IF)
+	{
+	INTCONbits.INT0IF=0;
+	}
+else if (INTCON3bits.INT1IF)
+	{
+	INTCON3bits.INT1IF=0;
+	}
+else if (INTCON3bits.INT2IF)
+	{
+	INTCON3bits.INT2IF=0;
+	}
+else if (INTCON3bits.INT3IF)
+	{
+	INTCON3bits.INT3IF=0;
+	}
+}
+
 
 #if 0
 
