@@ -4,39 +4,40 @@
 ----------------------------------------
 0 Group(s)
 
-GTS0: 6=!FT_nSRST_BUF.p
-GTS1: 1=!FT_JTAG_BUF.p
 ----------------- B l o c k 0 ------------------
-PLApt(9/56), Fanin(9/38), Clk(0/3), Bct(0/4), Pin(16/16), Mcell(9/16)
-PLApts[9/41] () () () () () () () () () () 4 () () 3 () () 0 () () () () () () () () 2 () () 5 () () 10 () () 
-             9 () () 7 () () 8
-Fanins[ 9] FT_DBGRQ.p FT_TCK.p FT_TDI.p FT_TMS.p FT_nSRST_OUT.p FT_nTRST.p RTCK.p TDO.p nSRST.p
+PLApt(9/56), Fanin(9/38), Clk(0/3), Bct(1/4), Pin(9/16), Mcell(6/16)
+PLApts[9/32] () () () () () () () 1 () 8 7 () () 0 () () 2 () () 3 () () () () () () () 6 5 () () 4
+Fanins[ 9] FT_DBGRQ.p FT_JTAG_BUF.p FT_TCK.p FT_TDI.p FT_TMS.p FT_nSRST_BUF.p FT_nSRST_OUT.p FT_nTRST.p 
+           FT_nTRST_BUF.p
 clk[0] 
 CTC: 
 CTR: 
 CTS: 
-CTE: 
+CTE: (pt=1) FT_JTAG_BUF' ;
 vref: [0]
-Signal[16] [DBGRQ(45),DBGRQ(38)] [TCK(46),TCK(37)] [TDI(47),TDI(36)] [TMS(50),TMS(32)] [nSRST(51),nSRST(31)]  
-           [FT_RTCK(52),FT_RTCK(30)] [FT_TDO(53),FT_TDO(29)] [FT_nSRST_IN(54),FT_nSRST_IN(28)]  
-           [nTRST(55),nTRST(27)] [FT_DBGRQ(23)] [FT_JTAG_BUF(34)] [FT_TCK(22)] [FT_TDI(21)] [FT_TMS(20)]  
-           [FT_nSRST_BUF(33)] [FT_nSRST_OUT(19)] 
-Signal[16] [ 0: DBGRQ(45) DBGRQ(38)  ][ 1: TCK(46) TCK(37)  ][ 2: TDI(47) TDI(36)  ][ 3: FT_JTAG_BUF(34)  ] 
-           [ 4: FT_nSRST_BUF(33)  ][ 5: TMS(50) TMS(32)  ][ 6: nSRST(51) nSRST(31)  ][ 7: FT_RTCK(52)  
-           FT_RTCK(30)  ][ 8: FT_TDO(53) FT_TDO(29)  ][ 9: FT_nSRST_IN(54) FT_nSRST_IN(28)  ][ 10: nTRST(55)  
-           nTRST(27)  ][ 11: FT_DBGRQ(23)  ][ 12: FT_TCK(22)  ][ 13: FT_TDI(21)  ][ 14: FT_TMS(20)  ][ 15:  
-           FT_nSRST_OUT(19)  ]
+Signal[ 9] [DBGRQ(52),DBGRQ(30)] [TCK(48),TCK(34)] [TDI(46),TDI(37)] [TMS(47),TMS(36)] [nSRST(51),nSRST(31)]  
+           [nTRST(45),nTRST(38)] [DBGACK(29)] [RTCK(33)] [TDO(32)] 
+Signal[ 9] [ 0: nTRST(45) nTRST(38)  ][ 1: TDI(46) TDI(37)  ][ 2: TMS(47) TMS(36)  ][ 3: TCK(48) TCK(34)  ] 
+           [ 4: RTCK(33)  ][ 5: TDO(32)  ][ 6: nSRST(51) nSRST(31)  ][ 7: DBGRQ(52) DBGRQ(30)  ][ 8:  
+           DBGACK(29)  ][ 9: (28)  ][ 10: (27)  ][ 11: (23)  ][ 12: (22)  ][ 13: (21)  ][ 14: (20)  ][ 15:  
+           (19)  ]
 ----------------- B l o c k 1 ------------------
-PLApt(0/56), Fanin(0/38), Clk(0/3), Bct(0/4), Pin(3/16), Mcell(0/16)
-PLApts[0/0]
-Fanins[ 0]
+PLApt(5/56), Fanin(5/38), Clk(0/3), Bct(0/4), Pin(14/16), Mcell(5/16)
+PLApts[5/50] () () () () () () () () () () () () () () () () 13 () () () () () () () () () () () () () () () 
+             () () 11 () () 9 () () 12 () () () () () () () () 10
+Fanins[ 5] DBGACK.p RTCK.p TARGET_PRESENT.p TDO.p nSRST.p
 clk[0] 
 CTC: 
 CTR: 
 CTS: 
 CTE: 
 vref: [0]
-Signal[ 3] [FT_nTRST(39)] [RTCK(40)] [TDO(41)] 
-Signal[ 3] [ 0: FT_nTRST(39)  ][ 1: RTCK(40)  ][ 2: TDO(41)  ][ 3: (42)  ][ 4: (43)  ][ 5: (44)  ][ 6: (1)  ] 
-           [ 7: (2)  ][ 8: (3)  ][ 9: (5)  ][ 10: (6)  ][ 11: (8)  ][ 12: (12)  ][ 13: (13)  ][ 14: (14)  ] 
-           [ 15: (16)  ]
+Signal[14] [FT_DBGACK(63),FT_DBGACK(41)] [FT_RTCK(69),FT_RTCK(3)]  
+           [FT_TARGET_PRESENT(71),FT_TARGET_PRESENT(6)] [FT_TDO(74),FT_TDO(13)]  
+           [FT_nSRST_IN(70),FT_nSRST_IN(5)] [FT_DBGRQ(42)] [FT_JTAG_BUF(8)] [FT_TCK(16)] [FT_TDI(14)]  
+           [FT_TMS(12)] [FT_nSRST_BUF(43)] [FT_nSRST_OUT(1)] [FT_nTRST(2)] [FT_nTRST_BUF(44)] 
+Signal[14] [ 0: (39)  ][ 1: (40)  ][ 2: FT_DBGACK(63) FT_DBGACK(41)  ][ 3: FT_DBGRQ(42)  ][ 4:  
+           FT_nSRST_BUF(43)  ][ 5: FT_nTRST_BUF(44)  ][ 6: FT_nSRST_OUT(1)  ][ 7: FT_nTRST(2)  ][ 8:  
+           FT_RTCK(69) FT_RTCK(3)  ][ 9: FT_nSRST_IN(70) FT_nSRST_IN(5)  ][ 10: FT_TARGET_PRESENT(71)  
+           FT_TARGET_PRESENT(6)  ][ 11: FT_JTAG_BUF(8)  ][ 12: FT_TMS(12)  ][ 13: FT_TDO(74) FT_TDO(13)  ] 
+           [ 14: FT_TDI(14)  ][ 15: FT_TCK(16)  ]

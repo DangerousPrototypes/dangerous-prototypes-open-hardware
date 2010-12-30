@@ -36,10 +36,16 @@
         <signal name="XLXN_52" />
         <signal name="XLXN_54" />
         <signal name="XLXN_55" />
-        <signal name="XLXN_57" />
-        <signal name="XLXN_59" />
         <signal name="XLXN_61" />
         <signal name="FT_nTRST_BUF" />
+        <signal name="XLXN_62" />
+        <signal name="XLXN_63" />
+        <signal name="FT_DBGACK" />
+        <signal name="FT_TARGET_PRESENT" />
+        <signal name="DBGACK" />
+        <signal name="TARGET_PRESENT" />
+        <signal name="ACBUS6" />
+        <signal name="ACBUS7" />
         <port polarity="Output" name="FT_nSRST_IN" />
         <port polarity="Output" name="FT_TDO" />
         <port polarity="Output" name="FT_RTCK" />
@@ -60,6 +66,12 @@
         <port polarity="Output" name="DBGRQ" />
         <port polarity="Output" name="TMS" />
         <port polarity="Input" name="FT_nTRST_BUF" />
+        <port polarity="Output" name="FT_DBGACK" />
+        <port polarity="Output" name="FT_TARGET_PRESENT" />
+        <port polarity="Input" name="DBGACK" />
+        <port polarity="Input" name="TARGET_PRESENT" />
+        <port polarity="Input" name="ACBUS6" />
+        <port polarity="Input" name="ACBUS7" />
         <blockdef name="ibuf">
             <timestamp>2000-1-1T10:10:10</timestamp>
             <line x2="64" y1="0" y2="-64" x1="64" />
@@ -196,6 +208,30 @@
         <block symbolname="ibuf" name="XLXI_51">
             <blockpin signalname="FT_nTRST_BUF" name="I" />
             <blockpin signalname="XLXN_61" name="O" />
+        </block>
+        <block symbolname="obuf" name="XLXI_52">
+            <blockpin signalname="XLXN_63" name="I" />
+            <blockpin signalname="FT_DBGACK" name="O" />
+        </block>
+        <block symbolname="obuf" name="XLXI_53">
+            <blockpin signalname="XLXN_62" name="I" />
+            <blockpin signalname="FT_TARGET_PRESENT" name="O" />
+        </block>
+        <block symbolname="ibuf" name="XLXI_54">
+            <blockpin signalname="TARGET_PRESENT" name="I" />
+            <blockpin signalname="XLXN_62" name="O" />
+        </block>
+        <block symbolname="ibuf" name="XLXI_55">
+            <blockpin signalname="DBGACK" name="I" />
+            <blockpin signalname="XLXN_63" name="O" />
+        </block>
+        <block symbolname="ibuf" name="XLXI_56">
+            <blockpin signalname="ACBUS6" name="I" />
+            <blockpin name="O" />
+        </block>
+        <block symbolname="ibuf" name="XLXI_57">
+            <blockpin signalname="ACBUS7" name="I" />
+            <blockpin name="O" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
@@ -340,5 +376,41 @@
             <wire x2="512" y1="784" y2="784" x1="496" />
         </branch>
         <iomarker fontsize="28" x="272" y="784" name="FT_nTRST_BUF" orien="R180" />
+        <instance x="704" y="1120" name="XLXI_52" orien="R180" />
+        <instance x="704" y="1232" name="XLXI_53" orien="R180" />
+        <branch name="XLXN_62">
+            <wire x2="736" y1="1264" y2="1264" x1="704" />
+        </branch>
+        <instance x="960" y="1232" name="XLXI_54" orien="R180" />
+        <branch name="XLXN_63">
+            <wire x2="736" y1="1152" y2="1152" x1="704" />
+        </branch>
+        <instance x="960" y="1120" name="XLXI_55" orien="R180" />
+        <branch name="FT_DBGACK">
+            <wire x2="480" y1="1152" y2="1152" x1="448" />
+        </branch>
+        <iomarker fontsize="28" x="448" y="1152" name="FT_DBGACK" orien="R180" />
+        <branch name="FT_TARGET_PRESENT">
+            <wire x2="480" y1="1264" y2="1264" x1="448" />
+        </branch>
+        <iomarker fontsize="28" x="448" y="1264" name="FT_TARGET_PRESENT" orien="R180" />
+        <branch name="DBGACK">
+            <wire x2="992" y1="1152" y2="1152" x1="960" />
+        </branch>
+        <iomarker fontsize="28" x="992" y="1152" name="DBGACK" orien="R0" />
+        <branch name="TARGET_PRESENT">
+            <wire x2="992" y1="1264" y2="1264" x1="960" />
+        </branch>
+        <iomarker fontsize="28" x="992" y="1264" name="TARGET_PRESENT" orien="R0" />
+        <instance x="496" y="1568" name="XLXI_56" orien="R0" />
+        <instance x="496" y="1680" name="XLXI_57" orien="R0" />
+        <branch name="ACBUS6">
+            <wire x2="496" y1="1536" y2="1536" x1="464" />
+        </branch>
+        <iomarker fontsize="28" x="464" y="1536" name="ACBUS6" orien="R180" />
+        <branch name="ACBUS7">
+            <wire x2="496" y1="1648" y2="1648" x1="464" />
+        </branch>
+        <iomarker fontsize="28" x="464" y="1648" name="ACBUS7" orien="R180" />
     </sheet>
 </drawing>

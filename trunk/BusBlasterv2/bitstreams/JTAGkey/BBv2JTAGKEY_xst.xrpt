@@ -5,7 +5,7 @@
     The structure and the elements are likely to change over the next few releases.
     This means code written to parse this file will need to be revisited each subsequent release.-->
 
-  <application stringID="Xst" timeStamp="Tue Dec 28 15:22:00 2010">
+  <application stringID="Xst" timeStamp="Thu Dec 30 14:43:04 2010">
     <section stringID="User_Env">
       <table stringID="User_EnvVar">
         <column stringID="variable"/>
@@ -90,13 +90,13 @@
         <item stringID="XST_KEEP_HIERARCHY" value="YES"/>
       </section>
       <section stringID="XST_DESIGN_STATISTICS">
-        <item stringID="XST_IOS" value="19"/>
+        <item stringID="XST_IOS" value="26"/>
       </section>
       <section stringID="XST_CELL_USAGE">
-        <item dataType="int" stringID="XST_IO_BUFFERS" value="20">
-          <item dataType="int" stringID="XST_IBUF" value="11"/>
-          <item dataType="int" stringID="XST_OBUF" value="4"/>
-          <item dataType="int" stringID="XST_OBUFT" value="5"/>
+        <item dataType="int" stringID="XST_IO_BUFFERS" value="27">
+          <item dataType="int" stringID="XST_IBUF" value="16"/>
+          <item dataType="int" stringID="XST_OBUF" value="5"/>
+          <item dataType="int" stringID="XST_OBUFT" value="6"/>
         </item>
       </section>
     </section>
