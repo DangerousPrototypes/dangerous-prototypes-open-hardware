@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 12.1
 --  \   \         Application : sch2hdl
 --  /   /         Filename : BBv2JTAGKEY.vhf
--- /___/   /\     Timestamp : 12/28/2010 15:17:42
+-- /___/   /\     Timestamp : 12/30/2010 14:43:03
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -78,41 +78,51 @@ library UNISIM;
 use UNISIM.Vcomponents.ALL;
 
 entity BBv2JTAGKEY is
-   port ( FT_DBGRQ     : in    std_logic; 
-          FT_JTAG_BUF  : in    std_logic; 
-          FT_nSRST_BUF : in    std_logic; 
-          FT_nSRST_OUT : in    std_logic; 
-          FT_nTRST     : in    std_logic; 
-          FT_TCK       : in    std_logic; 
-          FT_TDI       : in    std_logic; 
-          FT_TMS       : in    std_logic; 
-          RTCK         : in    std_logic; 
-          TDO          : in    std_logic; 
-          DBGRQ        : out   std_logic; 
-          FT_nSRST_IN  : out   std_logic; 
-          FT_RTCK      : out   std_logic; 
-          FT_TDO       : out   std_logic; 
-          nTRST        : out   std_logic; 
-          TCK          : out   std_logic; 
-          TDI          : out   std_logic; 
-          TMS          : out   std_logic; 
-          nSRST        : inout std_logic);
+   port ( ACBUS6            : in    std_logic; 
+          ACBUS7            : in    std_logic; 
+          DBGACK            : in    std_logic; 
+          FT_DBGRQ          : in    std_logic; 
+          FT_JTAG_BUF       : in    std_logic; 
+          FT_nSRST_BUF      : in    std_logic; 
+          FT_nSRST_OUT      : in    std_logic; 
+          FT_nTRST          : in    std_logic; 
+          FT_nTRST_BUF      : in    std_logic; 
+          FT_TCK            : in    std_logic; 
+          FT_TDI            : in    std_logic; 
+          FT_TMS            : in    std_logic; 
+          RTCK              : in    std_logic; 
+          TARGET_PRESENT    : in    std_logic; 
+          TDO               : in    std_logic; 
+          DBGRQ             : out   std_logic; 
+          FT_DBGACK         : out   std_logic; 
+          FT_nSRST_IN       : out   std_logic; 
+          FT_RTCK           : out   std_logic; 
+          FT_TARGET_PRESENT : out   std_logic; 
+          FT_TDO            : out   std_logic; 
+          nTRST             : out   std_logic; 
+          TCK               : out   std_logic; 
+          TDI               : out   std_logic; 
+          TMS               : out   std_logic; 
+          nSRST             : inout std_logic);
 end BBv2JTAGKEY;
 
 architecture BEHAVIORAL of BBv2JTAGKEY is
    attribute BOX_TYPE   : string ;
    attribute HU_SET     : string ;
-   signal XLXN_39      : std_logic;
-   signal XLXN_41      : std_logic;
-   signal XLXN_43      : std_logic;
-   signal XLXN_44      : std_logic;
-   signal XLXN_45      : std_logic;
-   signal XLXN_47      : std_logic;
-   signal XLXN_48      : std_logic;
-   signal XLXN_50      : std_logic;
-   signal XLXN_52      : std_logic;
-   signal XLXN_54      : std_logic;
-   signal XLXN_55      : std_logic;
+   signal XLXN_39           : std_logic;
+   signal XLXN_41           : std_logic;
+   signal XLXN_43           : std_logic;
+   signal XLXN_44           : std_logic;
+   signal XLXN_45           : std_logic;
+   signal XLXN_47           : std_logic;
+   signal XLXN_48           : std_logic;
+   signal XLXN_50           : std_logic;
+   signal XLXN_52           : std_logic;
+   signal XLXN_54           : std_logic;
+   signal XLXN_55           : std_logic;
+   signal XLXN_61           : std_logic;
+   signal XLXN_62           : std_logic;
+   signal XLXN_63           : std_logic;
    component OBUF
       port ( I : in    std_logic; 
              O : out   std_logic);
@@ -190,10 +200,6 @@ begin
       port map (I=>FT_nTRST,
                 O=>XLXN_52);
    
-   XLXI_39 : OBUF
-      port map (I=>XLXN_52,
-                O=>nTRST);
-   
    XLXI_40 : IBUF
       port map (I=>TDO,
                 O=>XLXN_54);
@@ -221,6 +227,39 @@ begin
    XLXI_49 : IBUF
       port map (I=>nSRST,
                 O=>XLXN_50);
+   
+   XLXI_50 : OBUFT
+      port map (I=>XLXN_52,
+                T=>XLXN_61,
+                O=>nTRST);
+   
+   XLXI_51 : IBUF
+      port map (I=>FT_nTRST_BUF,
+                O=>XLXN_61);
+   
+   XLXI_52 : OBUF
+      port map (I=>XLXN_63,
+                O=>FT_DBGACK);
+   
+   XLXI_53 : OBUF
+      port map (I=>XLXN_62,
+                O=>FT_TARGET_PRESENT);
+   
+   XLXI_54 : IBUF
+      port map (I=>TARGET_PRESENT,
+                O=>XLXN_62);
+   
+   XLXI_55 : IBUF
+      port map (I=>DBGACK,
+                O=>XLXN_63);
+   
+   XLXI_56 : IBUF
+      port map (I=>ACBUS6,
+                O=>open);
+   
+   XLXI_57 : IBUF
+      port map (I=>ACBUS7,
+                O=>open);
    
 end BEHAVIORAL;
 

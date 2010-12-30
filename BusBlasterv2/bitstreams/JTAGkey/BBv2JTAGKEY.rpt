@@ -1,7 +1,7 @@
  
 cpldfit:  version M.53d                             Xilinx Inc.
                                   Fitter Report
-Design Name: BBv2JTAGKEY                         Date: 12-28-2010,  3:22PM
+Design Name: BBv2JTAGKEY                         Date: 12-30-2010,  2:45PM
 Device Used: XA2C32A-7-VQ44
 Fitting Status: Successful
 
@@ -9,16 +9,16 @@ Fitting Status: Successful
 
 Macrocells     Product Terms    Function Block   Registers      Pins           
 Used/Tot       Used/Tot         Inps Used/Tot    Used/Tot       Used/Tot       
-9  /32  ( 28%) 9   /112  (  8%) 9   /80   ( 11%) 0  /32  (  0%) 19 /33  ( 58%)
+11 /32  ( 34%) 14  /112  ( 12%) 14  /80   ( 17%) 0  /32  (  0%) 24 /33  ( 73%)
 
 ** Function Block Resources **
 
 Function Mcells   FB Inps  Pterms   IO       CTC      CTR      CTS      CTE     
 Block    Used/Tot Used/Tot Used/Tot Used/Tot Used/Tot Used/Tot Used/Tot Used/Tot
-FB1       9/16      9/40     9/56     9/16    0/1      0/1      0/1      0/1
-FB2       0/16      0/40     0/56     0/16    0/1      0/1      0/1      0/1
+FB1       6/16      9/40     9/56     6/16    0/1      0/1      0/1      1/1*
+FB2       5/16      5/40     5/56     5/16    0/1      0/1      0/1      0/1
          -----    -------  -------   -----    ---      ---      ---      ---
-Total     9/32      9/80     9/112    9/32    0/2      0/2      0/2      0/2 
+Total    11/32     14/80    14/112   11/32    0/2      0/2      0/2      1/2 
 
 CTC - Control Term Clock
 CTR - Control Term Reset
@@ -31,61 +31,90 @@ CTE - Control Term Output Enable
 
 GCK         GSR         GTS         DGE         
 Used/Tot    Used/Tot    Used/Tot    Used/Tot    
-0/3         0/1         2/4         0/0
+0/3         0/1         0/4         0/0
 
-Signal 'FT_nSRST_BUF' mapped onto global output enable net GTS0.
-Signal 'FT_JTAG_BUF' mapped onto global output enable net GTS1.
 
 ** Pin Resources **
 
 Signal Type    Required     Mapped  |  Pin Type            Used    Total 
 ------------------------------------|------------------------------------
-                                    |  I                :     0      1
-Input         :    8           8    |  I/O              :    14     24
-Output        :    8           8    |  GCK/IO           :     0      3
+                                    |  I                :     1      1
+Input         :   13          13    |  I/O              :    15     24
+Output        :   10          10    |  GCK/IO           :     3      3
 Bidirectional :    1           1    |  GTS/IO           :     4      4
 GCK           :    0           0    |  GSR/IO           :     1      1
-GTS           :    2           2    |  
+GTS           :    0           0    |  
 GSR           :    0           0    |  
                  ----        ----
-        Total     19          19
+        Total     24          24
 
 End of Mapped Resource Summary
 **************************  Errors and Warnings  ***************************
 
 WARNING:Cpld - Unable to retrieve the path to the iSE Project Repository. Will
    use the default filename of 'BBv2JTAGKEY.ise'.
+INFO:Cpld - Inferring BUFG constraint for signal 'FT_nSRST_BUF' based upon the
+   LOC constraint 'P43'. It is recommended that you declare this BUFG
+   explicitedly in your design. Note that for certain device families the output
+   of a BUFG constraint can not drive a gated clock, and the BUFG constraint
+   will be ignored.
+INFO:Cpld - Inferring BUFG constraint for signal 'FT_nSRST_OUT' based upon the
+   LOC constraint 'P1'. It is recommended that you declare this BUFG
+   explicitedly in your design. Note that for certain device families the output
+   of a BUFG constraint can not drive a gated clock, and the BUFG constraint
+   will be ignored.
+INFO:Cpld - Inferring BUFG constraint for signal 'FT_nTRST_BUF' based upon the
+   LOC constraint 'P44'. It is recommended that you declare this BUFG
+   explicitedly in your design. Note that for certain device families the output
+   of a BUFG constraint can not drive a gated clock, and the BUFG constraint
+   will be ignored.
+WARNING:Cpld:945 - The component 'XLXI_56' has no outputs and will be deleted.
+WARNING:Cpld:945 - The component 'XLXI_57' has no outputs and will be deleted.
+WARNING:Cpld:1239 - The global clock designation (BUFG) on signal 'XLXN_61' is
+   ignored. Most likely the signal is gated and therefore cannot be used as a
+   global control signal.
+WARNING:Cpld:1239 - The global clock designation (BUFG) on signal 'XLXN_48' is
+   ignored. Most likely the signal is gated and therefore cannot be used as a
+   global control signal.
+WARNING:Cpld:1239 - The global clock designation (BUFG) on signal 'XLXN_47' is
+   ignored. Most likely the signal is gated and therefore cannot be used as a
+   global control signal.
 *************************  Summary of Mapped Logic  ************************
 
-** 9 Outputs **
+** 11 Outputs **
 
 Signal              Total Total Bank Loc     Pin   Pin       Pin     I/O      I/O       Slew Reg     Reg Init
 Name                Pts   Inps               No.   Type      Use     STD      Style     Rate Use     State
-DBGRQ               1     1     2    FB1_1   38    I/O       O       LVCMOS18 KPR       FAST         
-TCK                 1     1     2    FB1_2   37    I/O       O       LVCMOS18 KPR       FAST         
-TDI                 1     1     2    FB1_3   36    I/O       O       LVCMOS18 KPR       FAST         
-TMS                 1     1     2    FB1_6   32    GTS/I/O   O       LVCMOS18 KPR       FAST         
-nSRST               1     1     2    FB1_7   31    GTS/I/O   I/O     LVCMOS18 KPR       FAST         
-FT_RTCK             1     1     2    FB1_8   30    GSR/I/O   O       LVCMOS18           FAST         
-FT_TDO              1     1     2    FB1_9   29    I/O       O       LVCMOS18           FAST         
-FT_nSRST_IN         1     1     2    FB1_10  28    I/O       O       LVCMOS18           FAST         
-nTRST               1     1     2    FB1_11  27    I/O       O       LVCMOS18           FAST         
+nTRST               2     2     2    FB1_1   38    I/O       O       LVCMOS18 KPR       FAST         
+TDI                 2     2     2    FB1_2   37    I/O       O       LVCMOS18 KPR       FAST         
+TMS                 2     2     2    FB1_3   36    I/O       O       LVCMOS18 KPR       FAST         
+TCK                 2     2     2    FB1_4   34    GTS/I/O   O       LVCMOS18 KPR       FAST         
+nSRST               2     2     2    FB1_7   31    GTS/I/O   I/O     LVCMOS18 KPR       FAST         
+DBGRQ               2     2     2    FB1_8   30    GSR/I/O   O       LVCMOS18 KPR       FAST         
+FT_DBGACK           1     1     1    FB2_3   41    I/O       O       LVCMOS18           FAST         
+FT_RTCK             1     1     1    FB2_9   3     I/O       O       LVCMOS18           FAST         
+FT_nSRST_IN         1     1     1    FB2_10  5     I/O       O       LVCMOS18           FAST         
+FT_TARGET_PRESENT   1     1     1    FB2_11  6     I/O       O       LVCMOS18           FAST         
+FT_TDO              1     1     1    FB2_14  13    I/O       O       LVCMOS18           FAST         
 
-** 11 Inputs **
+** 14 Inputs **
 
 Signal              Bank Loc     Pin   Pin       Pin     I/O      I/O
 Name                             No.   Type      Use     STD      Style
-FT_JTAG_BUF         2    FB1_4   34    GTS/I/O   GTS     LVCMOS18 KPR
-FT_nSRST_BUF        2    FB1_5   33    GTS/I/O   GTS     LVCMOS18 KPR
+TARGET_PRESENT      2            18    I         I       LVCMOS18 KPR
+RTCK                2    FB1_5   33    GTS/I/O   I       LVCMOS18 KPR
+TDO                 2    FB1_6   32    GTS/I/O   I       LVCMOS18 KPR
 nSRST               2    FB1_7   31    GTS/I/O   I/O     LVCMOS18 KPR
-FT_DBGRQ            2    FB1_12  23    I/O       I       LVCMOS18 KPR
-FT_TCK              2    FB1_13  22    I/O       I       LVCMOS18 KPR
-FT_TDI              2    FB1_14  21    I/O       I       LVCMOS18 KPR
-FT_TMS              2    FB1_15  20    I/O       I       LVCMOS18 KPR
-FT_nSRST_OUT        2    FB1_16  19    I/O       I       LVCMOS18 KPR
-FT_nTRST            1    FB2_1   39    I/O       I       LVCMOS18 KPR
-RTCK                1    FB2_2   40    I/O       I       LVCMOS18 KPR
-TDO                 1    FB2_3   41    I/O       I       LVCMOS18 KPR
+DBGACK              2    FB1_9   29    I/O       I       LVCMOS18 KPR
+FT_DBGRQ            1    FB2_4   42    I/O       I       LVCMOS18 KPR
+FT_nSRST_BUF        1    FB2_5   43    GCK/I/O   I       LVCMOS18 KPR
+FT_nTRST_BUF        1    FB2_6   44    GCK/I/O   I       LVCMOS18 KPR
+FT_nSRST_OUT        1    FB2_7   1     GCK/I/O   I       LVCMOS18 KPR
+FT_nTRST            1    FB2_8   2     I/O       I       LVCMOS18 KPR
+FT_JTAG_BUF         1    FB2_12  8     I/O       I       LVCMOS18 KPR
+FT_TMS              1    FB2_13  12    I/O       I       LVCMOS18 KPR
+FT_TDI              1    FB2_15  14    I/O       I       LVCMOS18 KPR
+FT_TCK              1    FB2_16  16    I/O       I       LVCMOS18 KPR
 
 Legend:
 Pin No.   - ~     - User Assigned
@@ -114,78 +143,97 @@ Pin No.      - ~  - User Assigned
 *********************************** FB1  ***********************************
 This function block is part of I/O Bank number:               2
 Number of function block inputs used/remaining:               9/31
-Number of function block control terms used/remaining:        0/4
+Number of function block control terms used/remaining:        1/3
 Number of PLA product terms used/remaining:                   9/47
 Signal                        Total Loc     Pin  Pin     Pin   CTC CTR CTS CTE
 Name                          Pt            No.  Type    Use   
-DBGRQ                         1     FB1_1   38   I/O     O                 
-TCK                           1     FB1_2   37   I/O     O                 
-TDI                           1     FB1_3   36   I/O     O                 
-(unused)                      0     FB1_4   34   GTS/I/O GTS   
-(unused)                      0     FB1_5   33   GTS/I/O GTS   
-TMS                           1     FB1_6   32   GTS/I/O O                 
-nSRST                         1     FB1_7   31   GTS/I/O I/O               
-FT_RTCK                       1     FB1_8   30   GSR/I/O O                 
-FT_TDO                        1     FB1_9   29   I/O     O                 
-FT_nSRST_IN                   1     FB1_10  28   I/O     O                 
-nTRST                         1     FB1_11  27   I/O     O                 
-(unused)                      0     FB1_12  23   I/O     I     
-(unused)                      0     FB1_13  22   I/O     I     
-(unused)                      0     FB1_14  21   I/O     I     
-(unused)                      0     FB1_15  20   I/O     I     
-(unused)                      0     FB1_16  19   I/O     I     
+nTRST                         2     FB1_1   38   I/O     O                 
+TDI                           2     FB1_2   37   I/O     O                  +  
+TMS                           2     FB1_3   36   I/O     O                  +  
+TCK                           2     FB1_4   34   GTS/I/O O                  +  
+(unused)                      0     FB1_5   33   GTS/I/O I     
+(unused)                      0     FB1_6   32   GTS/I/O I     
+nSRST                         2     FB1_7   31   GTS/I/O I/O               
+DBGRQ                         2     FB1_8   30   GSR/I/O O                  +  
+(unused)                      0     FB1_9   29   I/O     I     
+(unused)                      0     FB1_10  28   I/O           
+(unused)                      0     FB1_11  27   I/O           
+(unused)                      0     FB1_12  23   I/O           
+(unused)                      0     FB1_13  22   I/O           
+(unused)                      0     FB1_14  21   I/O           
+(unused)                      0     FB1_15  20   I/O           
+(unused)                      0     FB1_16  19   I/O           
 
 Signals Used by Logic in Function Block
-  1: FT_DBGRQ           4: FT_TMS             7: RTCK 
-  2: FT_TCK             5: FT_nSRST_OUT       8: TDO 
-  3: FT_TDI             6: FT_nTRST           9: nSRST.PIN 
+  1: FT_DBGRQ           4: FT_TDI             7: FT_nSRST_OUT 
+  2: FT_JTAG_BUF        5: FT_TMS             8: FT_nTRST_BUF 
+  3: FT_TCK             6: FT_nSRST_BUF       9: FT_nTRST 
 
 Signal                     1         2         3         4 FB      
 Name             0----+----0----+----0----+----0----+----0 Inputs  
-DBGRQ             X....................................... 1       
-TCK               .X...................................... 1       
-TDI               ..X..................................... 1       
-TMS               ...X.................................... 1       
-nSRST             ....X................................... 1       
-FT_RTCK           ......X................................. 1       
-FT_TDO            .......X................................ 1       
-FT_nSRST_IN       ........X............................... 1       
-nTRST             .....X.................................. 1       
+nTRST             .......XX............................... 2       
+TDI               .X.X.................................... 2       
+TMS               .X..X................................... 2       
+TCK               .XX..................................... 2       
+nSRST             .....XX................................. 2       
+DBGRQ             XX...................................... 2       
                  0----+----1----+----2----+----3----+----4
                            0         0         0         0
 *********************************** FB2  ***********************************
 This function block is part of I/O Bank number:               1
-Number of function block inputs used/remaining:               0/40
+Number of function block inputs used/remaining:               5/35
 Number of function block control terms used/remaining:        0/4
-Number of PLA product terms used/remaining:                   0/56
+Number of PLA product terms used/remaining:                   5/51
 Signal                        Total Loc     Pin  Pin     Pin   CTC CTR CTS CTE
 Name                          Pt            No.  Type    Use   
-(unused)                      0     FB2_1   39   I/O     I     
-(unused)                      0     FB2_2   40   I/O     I     
-(unused)                      0     FB2_3   41   I/O     I     
-(unused)                      0     FB2_4   42   I/O           
-(unused)                      0     FB2_5   43   GCK/I/O       
-(unused)                      0     FB2_6   44   GCK/I/O       
-(unused)                      0     FB2_7   1    GCK/I/O       
-(unused)                      0     FB2_8   2    I/O           
-(unused)                      0     FB2_9   3    I/O           
-(unused)                      0     FB2_10  5    I/O           
-(unused)                      0     FB2_11  6    I/O           
-(unused)                      0     FB2_12  8    I/O           
-(unused)                      0     FB2_13  12   I/O           
-(unused)                      0     FB2_14  13   I/O           
-(unused)                      0     FB2_15  14   I/O           
-(unused)                      0     FB2_16  16   I/O           
+(unused)                      0     FB2_1   39   I/O           
+(unused)                      0     FB2_2   40   I/O           
+FT_DBGACK                     1     FB2_3   41   I/O     O                 
+(unused)                      0     FB2_4   42   I/O     I     
+(unused)                      0     FB2_5   43   GCK/I/O I     
+(unused)                      0     FB2_6   44   GCK/I/O I     
+(unused)                      0     FB2_7   1    GCK/I/O I     
+(unused)                      0     FB2_8   2    I/O     I     
+FT_RTCK                       1     FB2_9   3    I/O     O                 
+FT_nSRST_IN                   1     FB2_10  5    I/O     O                 
+FT_TARGET_PRESENT             1     FB2_11  6    I/O     O                 
+(unused)                      0     FB2_12  8    I/O     I     
+(unused)                      0     FB2_13  12   I/O     I     
+FT_TDO                        1     FB2_14  13   I/O     O                 
+(unused)                      0     FB2_15  14   I/O     I     
+(unused)                      0     FB2_16  16   I/O     I     
+
+Signals Used by Logic in Function Block
+  1: DBGACK             3: TARGET_PRESENT     5: nSRST.PIN 
+  2: RTCK               4: TDO              
+
+Signal                     1         2         3         4 FB      
+Name             0----+----0----+----0----+----0----+----0 Inputs  
+FT_DBGACK         X....................................... 1       
+FT_RTCK           .X...................................... 1       
+FT_nSRST_IN       ....X................................... 1       
+FT_TARGET_PRESENT 
+                  ..X..................................... 1       
+FT_TDO            ...X.................................... 1       
+                 0----+----1----+----2----+----3----+----4
+                           0         0         0         0
 *******************************  Equations  ********************************
 
 ********** Mapped Logic **********
 
 
 DBGRQ_I <= FT_DBGRQ;
-DBGRQ <= DBGRQ_I when FT_JTAG_BUF = '1' else 'Z';
+DBGRQ <= DBGRQ_I when DBGRQ_OE = '1' else 'Z';
+DBGRQ_OE <= NOT FT_JTAG_BUF;
+
+
+FT_DBGACK <= DBGACK;
 
 
 FT_RTCK <= RTCK;
+
+
+FT_TARGET_PRESENT <= TARGET_PRESENT;
 
 
 FT_TDO <= TDO;
@@ -195,22 +243,28 @@ FT_nSRST_IN <= nSRST.PIN;
 
 
 TCK_I <= FT_TCK;
-TCK <= TCK_I when FT_JTAG_BUF = '1' else 'Z';
+TCK <= TCK_I when TCK_OE = '1' else 'Z';
+TCK_OE <= NOT FT_JTAG_BUF;
 
 
 TDI_I <= FT_TDI;
-TDI <= TDI_I when FT_JTAG_BUF = '1' else 'Z';
+TDI <= TDI_I when TDI_OE = '1' else 'Z';
+TDI_OE <= NOT FT_JTAG_BUF;
 
 
 TMS_I <= FT_TMS;
-TMS <= TMS_I when FT_JTAG_BUF = '1' else 'Z';
+TMS <= TMS_I when TMS_OE = '1' else 'Z';
+TMS_OE <= NOT FT_JTAG_BUF;
 
 
 nSRST_I <= FT_nSRST_OUT;
-nSRST <= nSRST_I when FT_nSRST_BUF = '1' else 'Z';
+nSRST <= nSRST_I when nSRST_OE = '1' else 'Z';
+nSRST_OE <= NOT FT_nSRST_BUF;
 
 
-nTRST <= FT_nTRST;
+nTRST_I <= FT_nTRST;
+nTRST <= nTRST_I when nTRST_OE = '1' else 'Z';
+nTRST_OE <= NOT FT_nTRST_BUF;
 
 
 Register Legend:
@@ -244,28 +298,28 @@ Device : XA2C32A-7-VQ44
 
 Pin Signal                         Pin Signal                        
 No. Name                           No. Name                          
-  1 KPR                              23 FT_DBGRQ                      
-  2 KPR                              24 TDO                           
-  3 KPR                              25 GND                           
+  1 FT_nSRST_OUT                     23 KPR                           
+  2 FT_nTRST                         24 TDO                           
+  3 FT_RTCK                          25 GND                           
   4 GND                              26 VCCIO-1.8                     
-  5 KPR                              27 nTRST                         
-  6 KPR                              28 FT_nSRST_IN                   
-  7 VCCIO-1.8                        29 FT_TDO                        
-  8 KPR                              30 FT_RTCK                       
+  5 FT_nSRST_IN                      27 KPR                           
+  6 FT_TARGET_PRESENT                28 KPR                           
+  7 VCCIO-1.8                        29 DBGACK                        
+  8 FT_JTAG_BUF                      30 DBGRQ                         
   9 TDI                              31 nSRST                         
- 10 TMS                              32 TMS                           
- 11 TCK                              33 FT_nSRST_BUF                  
- 12 KPR                              34 FT_JTAG_BUF                   
- 13 KPR                              35 VCCAUX                        
- 14 KPR                              36 TDI                           
- 15 VCC                              37 TCK                           
- 16 KPR                              38 DBGRQ                         
- 17 GND                              39 FT_nTRST                      
- 18 KPR                              40 RTCK                          
- 19 FT_nSRST_OUT                     41 TDO                           
- 20 FT_TMS                           42 KPR                           
- 21 FT_TDI                           43 KPR                           
- 22 FT_TCK                           44 KPR                           
+ 10 TMS                              32 TDO                           
+ 11 TCK                              33 RTCK                          
+ 12 FT_TMS                           34 TCK                           
+ 13 FT_TDO                           35 VCCAUX                        
+ 14 FT_TDI                           36 TMS                           
+ 15 VCC                              37 TDI                           
+ 16 FT_TCK                           38 nTRST                         
+ 17 GND                              39 KPR                           
+ 18 TARGET_PRESENT                   40 KPR                           
+ 19 KPR                              41 FT_DBGACK                     
+ 20 KPR                              42 FT_DBGRQ                      
+ 21 KPR                              43 FT_nSRST_BUF                  
+ 22 KPR                              44 FT_nTRST_BUF                  
 
 
 Legend :  NC  = Not Connected, unbonded pin
