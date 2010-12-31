@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 12.1
 --  \   \         Application : sch2hdl
 --  /   /         Filename : BBv2JTAGKEY.vhf
--- /___/   /\     Timestamp : 12/30/2010 14:43:03
+-- /___/   /\     Timestamp : 12/31/2010 10:34:34
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
