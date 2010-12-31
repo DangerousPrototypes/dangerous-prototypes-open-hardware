@@ -4,13 +4,13 @@ Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.11 secs
+Total CPU time to Xst completion: 0.22 secs
  
 --> Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.11 secs
+Total CPU time to Xst completion: 0.22 secs
  
 --> Reading design: BBv2JTAGKEY.prj
 
@@ -77,27 +77,27 @@ wysiwyg                            : NO
 *                          HDL Compilation                              *
 =========================================================================
 Compiling vhdl file "E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.vhf" in Library work.
-Entity <obuft4_mxilinx_bbv2jtagkey> compiled.
-Entity <obuft4_mxilinx_bbv2jtagkey> (Architecture <behavioral>) compiled.
-Entity <bbv2jtagkey> compiled.
-Entity <bbv2jtagkey> (Architecture <behavioral>) compiled.
+Entity <OBUFT4_MXILINX_BBv2JTAGKEY> compiled.
+Entity <OBUFT4_MXILINX_BBv2JTAGKEY> (Architecture <BEHAVIORAL>) compiled.
+Entity <BBv2JTAGKEY> compiled.
+Entity <BBv2JTAGKEY> (Architecture <BEHAVIORAL>) compiled.
 
 =========================================================================
 *                     Design Hierarchy Analysis                         *
 =========================================================================
-Analyzing hierarchy for entity <BBv2JTAGKEY> in library <work> (architecture <behavioral>).
+Analyzing hierarchy for entity <BBv2JTAGKEY> in library <work> (architecture <BEHAVIORAL>).
 
-Analyzing hierarchy for entity <OBUFT4_MXILINX_BBv2JTAGKEY> in library <work> (architecture <behavioral>).
+Analyzing hierarchy for entity <OBUFT4_MXILINX_BBv2JTAGKEY> in library <work> (architecture <BEHAVIORAL>).
 
 
 =========================================================================
 *                            HDL Analysis                               *
 =========================================================================
-Analyzing Entity <BBv2JTAGKEY> in library <work> (Architecture <behavioral>).
+Analyzing Entity <BBv2JTAGKEY> in library <work> (Architecture <BEHAVIORAL>).
     Set user-defined property "HU_SET =  XLXI_46_0" for instance <XLXI_46> in unit <BBv2JTAGKEY>.
 Entity <BBv2JTAGKEY> analyzed. Unit <BBv2JTAGKEY> generated.
 
-Analyzing Entity <OBUFT4_MXILINX_BBv2JTAGKEY> in library <work> (Architecture <behavioral>).
+Analyzing Entity <OBUFT4_MXILINX_BBv2JTAGKEY> in library <work> (Architecture <BEHAVIORAL>).
 Entity <OBUFT4_MXILINX_BBv2JTAGKEY> analyzed. Unit <OBUFT4_MXILINX_BBv2JTAGKEY> generated.
 
 
@@ -179,8 +179,8 @@ Cell Usage :
 =========================================================================
 
 
-Total REAL time to Xst completion: 4.00 secs
-Total CPU time to Xst completion: 4.24 secs
+Total REAL time to Xst completion: 6.00 secs
+Total CPU time to Xst completion: 6.67 secs
  
 --> 
 
