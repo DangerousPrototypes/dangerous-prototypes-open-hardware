@@ -225,7 +225,7 @@ PT_THREAD(psock_generator_send(register struct psock *s,
 
   /* Call the generator function to generate the data in the
      uip_appdata buffer. */
-uip_log("Calling generator fn\n");
+uip_log("Calling generator fn");
   s->sendlen = generate(arg);
   s->sendptr = uip_appdata;
 
@@ -234,15 +234,15 @@ uip_log("Calling generator fn\n");
     /* Call the generator function again if we are called to perform a
        retransmission. */
     if(uip_rexmit()) {
-uip_log("rexmit:Calling generator fn\n");
+uip_log("rexmit:Calling generator fn");
       generate(arg);
     }
-sprintf(log_buf, "Waiting for data to be sent. sendlen=%d\r\n", s->sendlen);
+sprintf(log_buf, "Waiting for data to be sent. sendlen=%d", s->sendlen);
 uip_log(log_buf);
     /* Wait until all data is sent and acknowledged. */
     PT_WAIT_UNTIL(&s->psockpt, data_acked(s) & send_data(s));
   } while(s->sendlen > 0);
-  sprintf(log_buf, "Data sent. sendlen=%d\r\n", s->sendlen);
+  sprintf(log_buf, "Data sent. sendlen=%d", s->sendlen);
 	uip_log(log_buf);
   s->state = STATE_NONE;
   
@@ -314,7 +314,7 @@ PT_THREAD(psock_readbuf(register struct psock *psock))
   do {
     if(psock->readlen == 0) {
       PT_WAIT_UNTIL(&psock->psockpt, psock_newdata(psock));
-      uip_log("Waited for newdata\n");
+      uip_log("Waited for newdata");
       psock->state = STATE_READ;
       psock->readptr = (u8_t *)uip_appdata;
       psock->readlen = uip_datalen();
