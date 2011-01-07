@@ -65,11 +65,11 @@ void vUipTask( void *pvParameters )
 
     // init uIP
     uip_init();
-    uip_log("uip init\n");
+    uip_log("uip init");
 
     // init ARP cache
    	uip_arp_init();
-   	uip_log("arp init\n");
+   	uip_log("arp init");
 
 	dhcpc_init(&mac, 6);
 	//telnetd_init();
@@ -79,7 +79,7 @@ void vUipTask( void *pvParameters )
 		if (xSemaphoreTake(dmaSemaphore, 500 / portTICK_RATE_MS) == pdTRUE) {
             uip_len = uip_dma_rx_last_packet_length;
          	// packet received - buffer is already acquired
-			// uip_log("RX packet\r\n");
+			// uip_log("RX packet");
 		} else {
 		    uip_len = 0;
 		}
@@ -107,7 +107,7 @@ void vUipTask( void *pvParameters )
 					nic_rx_maybe();
 				}
 	   		} else {
-				uip_log("Unknown packet discarded\n");
+				uip_log("Unknown packet discarded");
 				nic_rx_maybe();
 			}
 	    } else if(timer_expired(&periodic_timer)) {
