@@ -23,8 +23,8 @@ Microchip offers an unique VID/PID for small quantities (max 10.000), non commer
 products.
 */
 
-#define USB_VID 0x04d8
-#define USB_PID 0xfb00
+#define USB_VID 0x0000
+#define USB_PID 0x0000
 #define USB_DEV 0x0002
 
 /* Power source setting
