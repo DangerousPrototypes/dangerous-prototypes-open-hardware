@@ -3,7 +3,7 @@
 #include "config.h"
 #include "globals.h"
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
 #include "delays.h"
 #endif
 
@@ -12,7 +12,7 @@ void init(void);		//hardware init
 #pragma udata
 char test;
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
 void main( void ) 
 #elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
 void _USB1Interrupt(void);
@@ -22,17 +22,19 @@ int main(void)
 	unsigned char i;
 
 	init();
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)  || defined(__18F14K50)
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 #endif
+
 	InitCDC();
 
 	while(1)
 	{	
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)  || defined(__18F14K50)
 		Delay1KTCYx(1);		// 10 ms
 #endif
 
@@ -44,7 +46,7 @@ int main(void)
 		}
 
 		i++;
-		if(i==0) LATB^=0xFF;
+		if(i==0) LATB^=0xFF; 
 
 	}
 }
@@ -52,7 +54,8 @@ int main(void)
 // hardware init
 void init(void)
 {	
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+// init of pic18 platforms
+
 	#if defined(__18F14K50)//
 		PORTA=0x00;
 		PORTB=0x00;		// init port
@@ -63,7 +66,7 @@ void init(void)
 		LATB=0xFF;
 	#endif
 	
-	#if defined(__18F2550) //IR Toy
+	#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 		//disable some defaults
 	    ADCON1 |= 0b1111;   	//all pins digital
 		CVRCON=0b00000000;	
@@ -87,14 +90,19 @@ void init(void)
 
 	#endif
 
+// pic18 interrupts
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+
 	//setup USB as interrupt service
 	PIE2bits.USBIE = 1;	// Enable USB interrupts
 	IPR2bits.USBIP = 0;	// USB interrupt low priority
 	
    	INTCONbits.GIEL = 1;//enable peripheral interrupts
    	//INTCONbits.GIEH = 1;//enable interrupts
+#endif
 
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+// pic24 inits
+#if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
     CLKDIV = 0x0000;    // Set PLL prescaler (1:1)
 	AD1PCFG = 0xFFFF;                 // Default all pins to digital
 	OSCCONbits.SOSCEN=0;	
@@ -103,7 +111,7 @@ void init(void)
 }
 
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
 
 #pragma code HIGH_INTERRUPT_VECTOR = 0x08
 void High_ISR (void)
@@ -117,8 +125,9 @@ void Low_ISR (void)
 		PIR2bits.USBIF = 0;
 	}
 }
+#endif
 
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+#if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
 #pragma interrupt _USB1Interrupt
 void __attribute__ ((interrupt,address(0xF00),no_auto_psv)) _USB1Interrupt(){
 

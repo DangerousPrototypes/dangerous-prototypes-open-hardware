@@ -66,8 +66,9 @@
 
 #endif
 
+// I assume they share the same config words :)
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) 
 
-#ifdef __18F2550
         #pragma config PLLDIV   = 5         
         #pragma config CPUDIV   = OSC1_PLL2   
         #pragma config USBDIV   = 2         
