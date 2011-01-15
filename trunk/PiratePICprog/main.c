@@ -357,6 +357,8 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
         }
 	}
 
+	picprog.iface->Deinit(&picprog);
+
 	free(buf_write);
 	free(buf_read);
 

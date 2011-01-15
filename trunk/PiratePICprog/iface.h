@@ -12,6 +12,7 @@ struct iface_t {
 	char *name;
 
 	uint32_t (*Init)(void *, char *, char *);
+	uint32_t (*Deinit)(void *);
 	uint32_t (*DataLow)(void *);
 	uint32_t (*DataHigh)(void *);
 
