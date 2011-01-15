@@ -11,6 +11,7 @@ const struct iface_t iface[] = {
 	{
 		.name = "buspirate",
 		.Init = BP_Init,
+		.Deinit = BP_Deinit,
 		.DataLow = BP_DataLow,
 		.DataHigh = BP_DataHigh,
 		.ClockLow = BP_ClockLow,
@@ -24,18 +25,17 @@ const struct iface_t iface[] = {
 		.PIC416Write = BP_PIC416Write,
 		.PIC424Read = BP_PIC424Read,
 		.PIC424Write = BP_PIC424Write,
-        .flush=BP_Flush,
-        .VPPHigh = BP_VPPHigh,
-        .VPPLow = BP_VPPLow,
-
+		.flush=BP_Flush,
+		.VPPHigh = BP_VPPHigh,
+		.VPPLow = BP_VPPLow,
 	}
 };
 
 struct iface_t *Iface_GetByName(char *name) {
 	int i;
-    //printf("%s\n", name);
+	//printf("%s\n", name);
 	for (i = 0; i < IFACE_CNT; i++) {
- 		if (strcmp(name, iface[i].name) == 0) {
+		if (strcmp(name, iface[i].name) == 0) {
 			return (struct iface_t *)&iface[i];
 		}
 	}

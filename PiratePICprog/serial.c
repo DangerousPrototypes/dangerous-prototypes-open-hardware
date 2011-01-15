@@ -14,100 +14,7 @@
 
 #include "serial.h"
 extern int disable_comport;
-/*
-#ifdef WIN32
-	int write(int fd, const void* buf, int len)
-	{
-		HANDLE hCom = (HANDLE)fd;
-		int res = 0;
-		unsigned long bwritten = 0;
 
-
-		res = WriteFile(hCom, buf, len, &bwritten, NULL);
-
-		if( res == FALSE ) {
-			return -1;
-		} else {
-			return bwritten;
-		}
-	}
-
-	int read(int fd, void* buf, int len)
-	{
-		HANDLE hCom = (HANDLE)fd;
-		int res = 0;
-		unsigned long bread = 0;
-
-		res = ReadFile(hCom, buf, len, &bread, NULL);
-
-		if( res == FALSE ) {
-			return -1;
-		} else {
-			return bread;
-		}
-	}
-
-	int close(int fd)
-	{
-		HANDLE hCom = (HANDLE)fd;
-
-		CloseHandle(hCom);
-		return 0;
-	}
-
-	int open(const char* path, unsigned long flags)
-	{
-		static char full_path[32] = {0};
-
-		HANDLE hCom = NULL;
-
-		if( path[0] != '\\' ) {
-			_snprintf(full_path, sizeof(full_path) - 1, "\\\\.\\%s", path);
-			path = full_path;
-		}
-
-		hCom = CreateFileA(path, GENERIC_WRITE | GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-
-		if( !hCom || hCom == INVALID_HANDLE_VALUE ) {
-			return -1;
-		} else {
-			return (int)hCom;
-		}
-	}
-
-	int __stdcall select(int nfds, fd_set* readfds, fd_set* writefds, fd_set* exceptfs, const struct timeval* timeout)
-	{
-		time_t maxtc = time(0) + (timeout->tv_sec);
-		COMSTAT cs = {0};
-		unsigned long dwErrors = 0;
-
-		if( readfds->fd_count != 1 ) {
-			return -1;
-		}
-
-		while( time(0) <= maxtc )
-		{ //only one file supported
-			if( ClearCommError( (HANDLE)readfds->fd_array[0], 0, &cs) != TRUE ){
-				return -1;
-			}
-
-			if( cs.cbInQue > 0 ) {
-				return 1;
-			}
-
-			Sleep(10);
-		}
-		return 0;
-	}
-	unsigned int sleep(unsigned int sec)
-	{
-		Sleep(sec * 1000);
-
-		return 0;
-	}
-#else
-#endif
-*/
 int serial_setup(int fd, speed_t speed)
 {
 #ifdef WIN32
@@ -211,7 +118,7 @@ int serial_read(int fd, char *buf, int size)
 	if( ret == FALSE || ret==-1 ) {
 		len= -1;
 	} else {
-		len=size;
+		len=bread;
 	}
 
 #else
