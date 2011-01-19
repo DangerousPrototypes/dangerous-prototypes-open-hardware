@@ -9,6 +9,12 @@ or send a letter to
 	California,
 	94105,
 	USA.
+
+Revision:
+7 01/11/2011
+	-	Commented USB_VID and USB_PID so that the #error on the
+		usb_stack.h will be triggered once this two have no values
+
 */
 
 #ifndef __USB_CONFIG_H__
@@ -23,8 +29,13 @@ Microchip offers an unique VID/PID for small quantities (max 10.000), non commer
 products.
 */
 
-#define USB_VID 0x
-#define USB_PID 0x
+
+
+// TODO: Uncomment and provide the necessary PID,VID
+//#define USB_VID 0x
+//#define USB_PID 0x
+
+
 #define USB_DEV 0x0002
 
 /* Power source setting
