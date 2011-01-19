@@ -1,7 +1,0 @@
-xst -intstyle ise -ifn "E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.xst" -ofn "E:/Work/dp-svn/trunk/BusBlasterv2/bitstreams/JTAGkey/BBv2JTAGKEY.syr" 
-ngdbuild -intstyle ise -dd _ngo -uc BBv2JTAGKEY.ucf -p xa2c32a-VQ44-7 BBv2JTAGKEY.ngc BBv2JTAGKEY.ngd  
-cpldfit -intstyle ise -p xa2c32a-7-VQ44 -ofmt vhdl -optimize density -htmlrpt -loc on -slew fast -init low -inputs 32 -pterms 28 -unused keeper -terminate keeper -iostd LVCMOS18 BBv2JTAGKEY.ngd 
-XSLTProcess BBv2JTAGKEY_build.xml 
-tsim -intstyle ise BBv2JTAGKEY BBv2JTAGKEY.nga 
-taengine -intstyle ise -f BBv2JTAGKEY -w --format html1 -l BBv2JTAGKEY_html/tim/timing_report.htm 
-hprep6 -s IEEE1149 -i BBv2JTAGKEY 
