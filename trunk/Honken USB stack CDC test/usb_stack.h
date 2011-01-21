@@ -94,9 +94,9 @@ or send a letter to
 #error "Must supply Product ID (USB_PID) in usb_config.h"
 #endif
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+#if defined(PIC_18F)
 #include "usb_p18f.h"
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+#elif defined(PIC_24F) 
 #include "usb_p24f.h"
 #endif
 

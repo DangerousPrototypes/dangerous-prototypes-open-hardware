@@ -3,7 +3,7 @@
 #include "config.h"
 #include "globals.h"
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+#if defined(PIC_18F)
 #include "delays.h"
 #endif
 
@@ -12,9 +12,9 @@ void init(void);		//hardware init
 #pragma udata
 char test;
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+#if defined(PIC_18F)
 void main( void ) 
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+#elif defined(PIC_24F) 
 void _USB1Interrupt(void);
 int main(void)
 #endif	
@@ -23,7 +23,7 @@ int main(void)
 
 	init();
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)  || defined(__18F14K50)
+#if defined(PIC_18F)
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
 	Delay10KTCYx(0);	// wait 1s to stabilize everything?
@@ -34,7 +34,7 @@ int main(void)
 
 	while(1)
 	{	
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)  || defined(__18F14K50)
+#if defined(PIC_18F)
 		Delay1KTCYx(1);		// 10 ms
 #endif
 
@@ -91,7 +91,7 @@ void init(void)
 	#endif
 
 // pic18 interrupts
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+#if defined(PIC_18F)
 
 	//setup USB as interrupt service
 	PIE2bits.USBIE = 1;	// Enable USB interrupts
@@ -111,7 +111,7 @@ void init(void)
 }
 
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50)
+#if defined(PIC_18F)
 
 #pragma code HIGH_INTERRUPT_VECTOR = 0x08
 void High_ISR (void)
@@ -127,7 +127,7 @@ void Low_ISR (void)
 }
 #endif
 
-#if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+#if defined(PIC_24F) 
 #pragma interrupt _USB1Interrupt
 void __attribute__ ((interrupt,address(0xF00),no_auto_psv)) _USB1Interrupt(){
 

@@ -13,9 +13,9 @@ or send a letter to
 Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 */
 
-#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined (__18F14K50)
+#if defined(PIC_18F)
 #include <p18cxxx.h>
-#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+#elif defined(PIC_24F) 
 #include <p24fxxxx.h>
 #endif
 #include <string.h>

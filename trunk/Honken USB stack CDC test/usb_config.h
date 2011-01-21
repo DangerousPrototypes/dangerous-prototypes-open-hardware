@@ -19,7 +19,11 @@ Revision:
 
 #ifndef __USB_CONFIG_H__
 #define __USB_CONFIG_H__
-
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F14K50) || defined(__18F24J50)
+	#define PIC_18F
+#elif defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
+	#define PIC_24F
+#endif
 /*
 You need to supply your own VID/PID here. The usb organisation demands every unique USB
 device has an unique VID/PID number. 

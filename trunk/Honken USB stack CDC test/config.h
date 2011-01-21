@@ -113,9 +113,9 @@
      #pragma config WDTEN = OFF       
 
     //#ifdef XTAL_20MHZ
-     //#pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
+     #pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
 	//#else
-     #pragma config PLLDIV = 4           //Divide by 4 (16 MHz oscillator input) 
+     //#pragma config PLLDIV = 4           //Divide by 4 (16 MHz oscillator input) 
 	//#endif
 
      #pragma config STVREN = ON         
