@@ -46,6 +46,7 @@
         <signal name="XLXN_44" />
         <signal name="XLXN_45" />
         <signal name="XLXN_39" />
+        <signal name="XLXN_64" />
         <port polarity="Input" name="ACBUS6" />
         <port polarity="Input" name="ACBUS7" />
         <port polarity="Output" name="FT_nSRST_IN" />
@@ -277,6 +278,7 @@
         <branch name="FT_nSRST_BUF">
             <wire x2="2096" y1="832" y2="832" x1="2000" />
             <wire x2="2176" y1="832" y2="832" x1="2096" />
+            <wire x2="2096" y1="752" y2="832" x1="2096" />
         </branch>
         <branch name="FT_nSRST_OUT">
             <wire x2="2176" y1="896" y2="896" x1="2000" />
@@ -323,14 +325,12 @@
         <instance x="2128" y="400" name="XLXI_51" orien="R0" />
         <branch name="FT_nTRST_BUF">
             <wire x2="2048" y1="368" y2="368" x1="1888" />
-            <wire x2="2112" y1="368" y2="368" x1="2048" />
-            <wire x2="2128" y1="368" y2="368" x1="2112" />
+            <wire x2="2128" y1="368" y2="368" x1="2048" />
+            <wire x2="2048" y1="256" y2="368" x1="2048" />
         </branch>
         <iomarker fontsize="28" x="2720" y="432" name="nTRST" orien="R0" />
         <iomarker fontsize="28" x="1888" y="432" name="FT_nTRST" orien="R180" />
         <iomarker fontsize="28" x="1888" y="368" name="FT_nTRST_BUF" orien="R180" />
-        <instance x="1984" y="368" name="XLXI_106" orien="R0" />
-        <instance x="2032" y="832" name="XLXI_107" orien="R0" />
         <instance x="944" y="896" name="XLXI_41" orien="R180" />
         <instance x="688" y="896" name="XLXI_11" orien="R180" />
         <instance x="688" y="992" name="XLXI_52" orien="R180" />
@@ -388,6 +388,7 @@
         <branch name="FT_JTAG_BUF">
             <wire x2="384" y1="288" y2="288" x1="320" />
             <wire x2="480" y1="288" y2="288" x1="384" />
+            <wire x2="384" y1="224" y2="288" x1="384" />
         </branch>
         <branch name="FT_TMS">
             <wire x2="480" y1="416" y2="416" x1="320" />
@@ -452,6 +453,8 @@
         <iomarker fontsize="28" x="320" y="416" name="FT_TMS" orien="R180" />
         <iomarker fontsize="28" x="320" y="480" name="FT_TCK" orien="R180" />
         <iomarker fontsize="28" x="320" y="544" name="FT_DBGRQ" orien="R180" />
-        <instance x="320" y="288" name="XLXI_172" orien="R0" />
+        <instance x="320" y="224" name="XLXI_172" orien="R0" />
+        <instance x="1984" y="256" name="XLXI_106" orien="R0" />
+        <instance x="2032" y="752" name="XLXI_107" orien="R0" />
     </sheet>
 </drawing>
