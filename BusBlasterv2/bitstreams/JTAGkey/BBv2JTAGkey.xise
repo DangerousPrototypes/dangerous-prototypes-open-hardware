@@ -79,7 +79,7 @@
     <property xil_pn:name="Include SIMPRIM Models in Verilog File" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Include sdf_annotate task in Verilog File" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Incremental Compilation" xil_pn:value="true" xil_pn:valueState="default"/>
-    <property xil_pn:name="Input and tristate I/O Termination Mode" xil_pn:value="Keeper" xil_pn:valueState="default"/>
+    <property xil_pn:name="Input and tristate I/O Termination Mode" xil_pn:value="Float" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Instantiation Template Target Language Xps" xil_pn:value="VHDL" xil_pn:valueState="default"/>
     <property xil_pn:name="Keep Hierarchy" xil_pn:value="No" xil_pn:valueState="default"/>
     <property xil_pn:name="Keep Hierarchy CPLD" xil_pn:value="Yes" xil_pn:valueState="default"/>
@@ -147,7 +147,7 @@
     <property xil_pn:name="Target UCF File Name" xil_pn:value="BBv2JTAGKEY.ucf" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Timing Report Format" xil_pn:value="Summary" xil_pn:valueState="default"/>
     <property xil_pn:name="Top-Level Source Type" xil_pn:value="Schematic" xil_pn:valueState="non-default"/>
-    <property xil_pn:name="Unused I/O Pad Termination Mode" xil_pn:value="Keeper" xil_pn:valueState="default"/>
+    <property xil_pn:name="Unused I/O Pad Termination Mode" xil_pn:value="Float" xil_pn:valueState="non-default"/>
     <property xil_pn:name="Use Custom Project File Behavioral" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Project File Fit" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Custom Simulation Command File Behavioral" xil_pn:value="false" xil_pn:valueState="default"/>

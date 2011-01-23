@@ -23,15 +23,6 @@
 <msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_57</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="0" delta="new" >PULLUP specified for net &apos;<arg fmt="%s" index="1">FT_JTAG_BUF</arg>&apos; conflicts with previous <arg fmt="%s" index="2">KEEPER</arg> specification.  PULLUP is ignored.
-</msg>
-
-<msg type="warning" file="Cpld" num="0" delta="new" >PULLUP specified for net &apos;<arg fmt="%s" index="1">FT_nSRST_BUF</arg>&apos; conflicts with previous <arg fmt="%s" index="2">KEEPER</arg> specification.  PULLUP is ignored.
-</msg>
-
-<msg type="warning" file="Cpld" num="0" delta="new" >PULLUP specified for net &apos;<arg fmt="%s" index="1">FT_nTRST_BUF</arg>&apos; conflicts with previous <arg fmt="%s" index="2">KEEPER</arg> specification.  PULLUP is ignored.
-</msg>
-
 <msg type="warning" file="Cpld" num="1239" delta="old" >The global <arg fmt="%s" index="1">clock</arg> designation (BUFG) on signal &apos;<arg fmt="%s" index="2">XLXN_61</arg>&apos; is ignored. Most likely the signal is gated and therefore cannot be used as a global control signal.
 </msg>
 
