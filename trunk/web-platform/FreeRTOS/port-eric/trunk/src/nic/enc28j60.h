@@ -242,7 +242,7 @@ typedef unsigned short u16;
 //#define RXSTART_INIT   	0x46
 //#define RXSTOP_INIT    	0x60
 
-#define	MAX_FRAMELEN	512	// maximum ethernet frame length; should match UIP Buffer size
+#define	MAX_FRAMELEN	1500	// maximum ethernet frame length; should match UIP Buffer size
 
 // Ethernet constants
 #define ETHERNET_MIN_PACKET_LENGTH	0x3C
