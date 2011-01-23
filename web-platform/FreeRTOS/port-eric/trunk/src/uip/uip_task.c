@@ -65,11 +65,11 @@ void vUipTask( void *pvParameters )
 
     // init uIP
     uip_init();
-    uip_log("uip init");
+    uip_log("uip init\n");
 
     // init ARP cache
    	uip_arp_init();
-   	uip_log("arp init");
+   	uip_log("arp init\n");
 
 	dhcpc_init(&mac, 6);
 	//telnetd_init();

@@ -107,7 +107,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_BUFFER_SIZE     512
+#define UIP_CONF_BUFFER_SIZE     1500
 
 #define UIP_CONF_EXTERNAL_BUFFER
 
@@ -132,7 +132,7 @@ typedef unsigned short uip_stats_t;
  * \hideinitializer
  */
 #define UIP_CONF_UDP             1
-
+#define UIP_CONF_BROADCAST            1
 /**
  * UDP checksums on or off
  *

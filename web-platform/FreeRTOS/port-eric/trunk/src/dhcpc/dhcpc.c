@@ -38,6 +38,7 @@
 #include "dhcpc.h"
 #include "../uip/timer.h"
 #include "../uip/pt.h"
+#include "../logger.h"
 
 #define STATE_INITIAL         0
 #define STATE_SENDING         1
@@ -177,6 +178,7 @@ send_discover(void)
   end = add_end(end);
 
   uip_send(uip_appdata, end - (u8_t *)uip_appdata);
+  uip_log(" dhcp sent discover\n");
 }
 /*---------------------------------------------------------------------------*/
 static void
@@ -193,6 +195,7 @@ send_request(void)
   end = add_end(end);
   
   uip_send(uip_appdata, end - (u8_t *)uip_appdata);
+  uip_log(" dhcp sent request\n");
 }
 /*---------------------------------------------------------------------------*/
 static u8_t
@@ -235,6 +238,7 @@ parse_msg(void)
 {
   struct dhcp_msg *m = (struct dhcp_msg *)uip_appdata;
   
+  log_message(" dhcp got packet type %d\n", m->op);
   if(m->op == DHCP_REPLY &&
      memcmp(m->xid, xid, sizeof(xid)) == 0 &&
      memcmp(m->chaddr, s.mac_addr, s.mac_len) == 0) {
