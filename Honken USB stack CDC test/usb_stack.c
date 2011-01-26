@@ -25,9 +25,9 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 //#undef DTSEN
 //#define DTSEN 0
 
-ROM const unsigned char *usb_device_descriptor;
-ROM const unsigned char *usb_config_descriptor;
-ROM const unsigned char *usb_string_descriptor;
+ROMPTR const unsigned char *usb_device_descriptor;
+ROMPTR const unsigned char *usb_config_descriptor;
+ROMPTR const unsigned char *usb_string_descriptor;
 int usb_num_string_descriptors;
 usb_handler_t sof_handler;
 usb_handler_t class_setup_handler, vendor_setup_handler;
@@ -47,7 +47,7 @@ usb_ep_t endpoints[16];
 #if defined(__18F14K50)
 BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
 #else
-BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+BDentry usb_bdt[32] __attribute__((aligned(512));			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
 #endif
 
 #pragma udata usb_data
@@ -88,9 +88,9 @@ void usb_RequestError( void );
 void usb_set_address( void );
 void usb_send_descriptor( void );
 
-void usb_init(	ROM const unsigned char *device_descriptor, 
-				ROM const unsigned char *config_descriptor, 
-				ROM const unsigned char *string_descriptor,
+void usb_init(	ROMPTR const unsigned char *device_descriptor, 
+				ROMPTR const unsigned char *config_descriptor, 
+				ROMPTR const unsigned char *string_descriptor,
 				int num_string_descriptors ) {
 	int i;
 
