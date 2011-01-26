@@ -188,9 +188,9 @@ typedef struct USB_DEVICE_REQUEST {
 extern usb_status_t trn_status;
 extern BDentry *bdp, *rbdp;
 
-extern void usb_init(	ROM const unsigned char *dev_descriptor, 
-						ROM const unsigned char *config_descriptor, 
-						ROM const unsigned char *string_descriptor, int num_string_descriptors );
+extern void usb_init(	ROMPTR const unsigned char *dev_descriptor, 
+						ROMPTR const unsigned char *config_descriptor, 
+						ROMPTR const unsigned char *string_descriptor, int num_string_descriptors );
 extern void usb_start( void );
 extern void usb_register_sof_handler( usb_handler_t handler );
 extern void usb_register_class_setup_handler( usb_handler_t handler );

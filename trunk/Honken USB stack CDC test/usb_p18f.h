@@ -183,6 +183,7 @@ typedef unsigned char usb_status_t;
 #define ConfigureUsbHardware()				do {UCFG = USB_UCFG_REGISTER_VALUE;} while(0)
 
 #define ROM far rom
+#define ROMPTR far rom
 #define ARCH_memcpy memcpypgm2ram
 
 #ifdef __DEBUG

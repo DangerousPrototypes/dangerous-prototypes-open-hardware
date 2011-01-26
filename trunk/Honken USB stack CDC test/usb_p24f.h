@@ -200,15 +200,15 @@ typedef unsigned char usb_status_t;
 #define ConfigureUsbHardware()		do { \
 										U1CNFG1 = 0x0040 | USB_PP_BUF_MODE; \
 										U1CNFG2 = USB_U1CNFG2_UTRDIS_VALUE; \
-										U1BDTP1 = (unsigned int) usb_bdt; \
-										EnableUsb(); \
+										U1BDTP1 = (unsigned int) usb_bdt/256; \										
 										U1PWRCbits.USBPWR = 1; \
 										U1OTGCON = USB_U1OTGCON_DPPULUP_VALUE | \
 												   USB_U1OTGCON_DMPULUP_VALUE; \
 									} while(0)
 //TODO: Remove magic OEMON = 0x0040
 
-#define ROM __attribute__((space(psv)))
+#define ROM __attribute__((space(auto_psv)))
+#define ROMPTR
 #define ARCH_memcpy memcpy
 
 #ifdef __DEBUG
