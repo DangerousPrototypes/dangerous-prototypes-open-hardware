@@ -47,7 +47,7 @@ usb_ep_t endpoints[16];
 #if defined(__18F14K50)
 BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
 #else
-BDentry usb_bdt[32] __attribute__((aligned(512));			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+BDentry usb_bdt[32] __attribute__((aligned(512)));			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
 #endif
 
 #pragma udata usb_data
@@ -201,9 +201,12 @@ void usb_handler( void ) {
 		/* Start-of-frame */
 		if (sof_handler) sof_handler();
 		ClearUsbInterruptFlag(USB_SOF);
-	} else if (USB_TRANSACTION_FLAG) {
+	} else {
+		//process all pending transactions
+		while(USB_TRANSACTION_FLAG) {
 		usb_handle_transaction();
-		ClearUsbInterruptFlag(USB_TRN);				// Side effect: advance USTAT Fifo
+		ClearUsbInterruptFlag(USB_TRN);	
+		}			// Side effect: advance USTAT Fifo
 	}
 }
 
