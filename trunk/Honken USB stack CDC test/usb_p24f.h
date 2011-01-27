@@ -83,10 +83,10 @@ typedef unsigned char usb_uep_t;
 #define UsbInterruptFlags()					(U1IR)
 #define UsbErrorInterruptFlags()			(U1EIR)
 
-#define ClearUsbInterruptFlag(x)			U1IR &= ~(x)
-#define ClearAllUsbInterruptFlags()			U1IR = 0
-#define ClearUsbErrorInterruptFlag(x)		U1EIR &= ~(x)
-#define ClearAllUsbErrorInterruptFlags()	U1EIR = 0
+#define ClearUsbInterruptFlag(x)			U1IR = x
+#define ClearAllUsbInterruptFlags()			U1IR = 0xFF
+#define ClearUsbErrorInterruptFlag(x)		U1EIR = x
+#define ClearAllUsbErrorInterruptFlags()	U1EIR = 0xFF
 #define DisableUsbInterrupts()				IEC5bits.USB1IE=0 //PIE2bits.USBIE = 0 /*FIX*/
 #define DisableUsbInterrupt(x)				U1IE &= ~(x)
 #define DisableAllUsbInterrupts()			U1IE = 0
