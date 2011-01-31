@@ -1,0 +1,4 @@
+sch2sym -intstyle ise -family xc9500 -refsym ROM_DECODE {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sch} {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sym} 
+sch2sym -intstyle ise -family xc9500 -refsym ROM_DECODE {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sch} {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sym} 
+sch2sym -intstyle ise -family xc9500 -refsym ROM_DECODE {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sch} {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sym} 
+sch2hdl -intstyle ise -family xc9500 -verilog ROM_DECODE_drc.vf -w {C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sch} 
