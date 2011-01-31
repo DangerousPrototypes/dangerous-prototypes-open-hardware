@@ -1,0 +1,2 @@
+sch2hdl,-intstyle,ise,-family,xc9500,-verilog,C:/Users/user/My Projects/XTide/XTideCPLD1/IDE_DECODE.vf,-w,C:/Users/user/My Projects/XTide/XTideCPLD1/IDE_DECODE.sch
+sch2hdl,-intstyle,ise,-family,xc9500,-verilog,C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.vf,-w,C:/Users/user/My Projects/XTide/XTideCPLD1/ROM_DECODE.sch

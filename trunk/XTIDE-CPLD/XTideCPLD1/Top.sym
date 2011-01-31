@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<symbol version="7" name="Top">
+    <symboltype>BLOCK</symboltype>
+    <timestamp>2010-9-14T11:38:39</timestamp>
+    <pin polarity="Input" x="0" y="-1440" name="MEMR" />
+    <pin polarity="Input" x="0" y="-1376" name="MEMW" />
+    <pin polarity="Input" x="0" y="-1312" name="RESDRV" />
+    <pin polarity="Input" x="0" y="-1248" name="IOW_ISA" />
+    <pin polarity="Input" x="0" y="-1184" name="IOR_ISA" />
+    <pin polarity="Input" x="0" y="-1120" name="AEN" />
+    <pin polarity="Input" x="0" y="-1056" name="A4" />
+    <pin polarity="Input" x="0" y="-992" name="A5" />
+    <pin polarity="Input" x="0" y="-928" name="A6" />
+    <pin polarity="Input" x="0" y="-864" name="A7" />
+    <pin polarity="Input" x="0" y="-800" name="A8" />
+    <pin polarity="Input" x="0" y="-736" name="A9" />
+    <pin polarity="Input" x="0" y="-672" name="A18" />
+    <pin polarity="Input" x="0" y="-608" name="A17" />
+    <pin polarity="Input" x="0" y="-544" name="A16" />
+    <pin polarity="Input" x="0" y="-480" name="A15" />
+    <pin polarity="Input" x="0" y="-416" name="A14" />
+    <pin polarity="Input" x="0" y="-352" name="A13" />
+    <pin polarity="Input" x="0" y="-288" name="A19" />
+    <pin polarity="Input" x="0" y="-224" name="A3" />
+    <pin polarity="Input" x="0" y="-160" name="A0_ISA" />
+    <pin polarity="Input" x="0" y="-96" name="A1_ISA" />
+    <pin polarity="Input" x="0" y="-32" name="A2_ISA" />
+    <pin polarity="Output" x="384" y="-1440" name="S1" />
+    <pin polarity="Output" x="384" y="-1328" name="S2" />
+    <pin polarity="Output" x="384" y="-1216" name="S3" />
+    <pin polarity="Output" x="384" y="-1104" name="S4" />
+    <pin polarity="Output" x="384" y="-992" name="S5" />
+    <pin polarity="Output" x="384" y="-880" name="CS3FX" />
+    <pin polarity="Output" x="384" y="-768" name="CS1FX" />
+    <pin polarity="Output" x="384" y="-656" name="A2_IDE" />
+    <pin polarity="Output" x="384" y="-544" name="A0_IDE" />
+    <pin polarity="Output" x="384" y="-432" name="A1_IDE" />
+    <pin polarity="Output" x="384" y="-320" name="IOR_IDE" />
+    <pin polarity="Output" x="384" y="-208" name="IOW_IDE" />
+    <pin polarity="Output" x="384" y="-96" name="RESET" />
+    <graph>
+        <rect width="256" x="64" y="-1472" height="1472" />
+        <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="192" y="-1480" type="symbol" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1440" type="pin MEMR" />
+        <line x2="0" y1="-1440" y2="-1440" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1376" type="pin MEMW" />
+        <line x2="0" y1="-1376" y2="-1376" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1312" type="pin RESDRV" />
+        <line x2="0" y1="-1312" y2="-1312" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1248" type="pin IOW_ISA" />
+        <line x2="0" y1="-1248" y2="-1248" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1184" type="pin IOR_ISA" />
+        <line x2="0" y1="-1184" y2="-1184" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1120" type="pin AEN" />
+        <line x2="0" y1="-1120" y2="-1120" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-1056" type="pin A4" />
+        <line x2="0" y1="-1056" y2="-1056" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-992" type="pin A5" />
+        <line x2="0" y1="-992" y2="-992" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-928" type="pin A6" />
+        <line x2="0" y1="-928" y2="-928" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-864" type="pin A7" />
+        <line x2="0" y1="-864" y2="-864" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-800" type="pin A8" />
+        <line x2="0" y1="-800" y2="-800" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-736" type="pin A9" />
+        <line x2="0" y1="-736" y2="-736" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-672" type="pin A18" />
+        <line x2="0" y1="-672" y2="-672" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-608" type="pin A17" />
+        <line x2="0" y1="-608" y2="-608" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-544" type="pin A16" />
+        <line x2="0" y1="-544" y2="-544" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-480" type="pin A15" />
+        <line x2="0" y1="-480" y2="-480" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-416" type="pin A14" />
+        <line x2="0" y1="-416" y2="-416" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-352" type="pin A13" />
+        <line x2="0" y1="-352" y2="-352" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-288" type="pin A19" />
+        <line x2="0" y1="-288" y2="-288" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-224" type="pin A3" />
+        <line x2="0" y1="-224" y2="-224" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-160" type="pin A0_ISA" />
+        <line x2="0" y1="-160" y2="-160" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-96" type="pin A1_ISA" />
+        <line x2="0" y1="-96" y2="-96" x1="64" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-32" type="pin A2_ISA" />
+        <line x2="0" y1="-32" y2="-32" x1="64" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-1440" type="pin S1" />
+        <line x2="384" y1="-1440" y2="-1440" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-1328" type="pin S2" />
+        <line x2="384" y1="-1328" y2="-1328" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-1216" type="pin S3" />
+        <line x2="384" y1="-1216" y2="-1216" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-1104" type="pin S4" />
+        <line x2="384" y1="-1104" y2="-1104" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-992" type="pin S5" />
+        <line x2="384" y1="-992" y2="-992" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-880" type="pin CS3FX" />
+        <line x2="384" y1="-880" y2="-880" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-768" type="pin CS1FX" />
+        <line x2="384" y1="-768" y2="-768" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-656" type="pin A2_IDE" />
+        <line x2="384" y1="-656" y2="-656" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-544" type="pin A0_IDE" />
+        <line x2="384" y1="-544" y2="-544" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-432" type="pin A1_IDE" />
+        <line x2="384" y1="-432" y2="-432" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-320" type="pin IOR_IDE" />
+        <line x2="384" y1="-320" y2="-320" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-208" type="pin IOW_IDE" />
+        <line x2="384" y1="-208" y2="-208" x1="320" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-96" type="pin RESET" />
+        <line x2="384" y1="-96" y2="-96" x1="320" />
+    </graph>
+</symbol>
