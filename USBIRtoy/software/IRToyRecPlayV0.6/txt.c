@@ -112,7 +112,8 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
 #ifdef _WIN32
 					  inkey=getch();
 #else
-					  inkey = fgetc(stdin);
+				inkey=getchar_unlocked();
+				//	  inkey = fgetc(stdin);
 #endif
 
 					 if ((inkey=='x') || (inkey=='X')) {

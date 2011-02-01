@@ -4,7 +4,9 @@
 	<termios.h>
 	<unistd.h>
 
-1290981017 
+1296555635 
+
+1296555635 
 
 1291045669 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.5\kbhit.h
 
@@ -46,7 +48,7 @@
 	<sys/types.h>
 	<sys/time.h>
 
-1290981017 h>
+1296555635 h>
 
 1290981017 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.5\txt.h
 	<stdio.h>
@@ -509,4 +511,241 @@
 
 1291154923 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.6\bin.c
 	"bin.h"
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\kbhit.c
+	"kbhit.h"
+	<termios.h>
+	<unistd.h>
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\kbhit.h
+	<stdio.h>
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\ols.c
+	"ols.h"
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\ols.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\queue.c
+	"queue.h"
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\queue.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\txt.c
+	"txt.h"
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\txt.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"kbhit.h"
+	"serial.h"
+
+1296555635 source:c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\bin.c
+	"bin.h"
+
+1296555635 c:\users\jamz\desktop\dangerous-prototypes-open-hardware\trunk\usbirtoy\software\irtoyrecplayv0.7\bin.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+	"kbhit.h"
+	"serial.h"
+
+1296573490 source:/home/jamz/Desktop/IRToyRecPlayV0.7/bin.c
+	"bin.h"
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/bin.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+	"kbhit.h"
+	"serial.h"
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/kbhit.h
+	<stdio.h>
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1296555635 source:/home/jamz/Desktop/IRToyRecPlayV0.7/kbhit.c
+	"kbhit.h"
+	<termios.h>
+	<unistd.h>
+
+1296573585 source:/home/jamz/Desktop/IRToyRecPlayV0.7/main.c
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+	"txt.h"
+	"ols.h"
+	"bin.h"
+	"queue.h"
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/txt.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"kbhit.h"
+	"serial.h"
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/ols.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+
+1296555635 /home/jamz/Desktop/IRToyRecPlayV0.7/queue.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+
+1296555635 source:/home/jamz/Desktop/IRToyRecPlayV0.7/ols.c
+	"ols.h"
+
+1296555635 source:/home/jamz/Desktop/IRToyRecPlayV0.7/queue.c
+	"queue.h"
+
+1296555635 source:/home/jamz/Desktop/IRToyRecPlayV0.7/serial.c
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1296562915 source:/home/jamz/Desktop/IRToyRecPlayV0.7/txt.c
+	"txt.h"
 

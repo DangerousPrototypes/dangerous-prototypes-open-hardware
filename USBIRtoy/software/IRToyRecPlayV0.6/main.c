@@ -46,21 +46,19 @@
 //        support for conversion to OLS format, via commandline option -o
 //
 
-//  version 0.06 added the experimental conversion for other resolution:
+//  version 0.06 added the experimental conversion (untested) for other resolution:
 
 //  ( newbytes*newresolution)=(irtoybytes*21.3333)
 //  (prontocodes*prontoresolution)=(irtoycodes*21.3333)
 //  prontocodes=(irtoycodes*21.3333)/protoresolution
 
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <stdio.h>
 
 #ifdef _WIN32
-
 #include <conio.h>
 #include <windef.h>
 #include <windows.h>
@@ -72,7 +70,7 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-//#define int BOOL
+// #define printf printw
 
 #endif
 
@@ -84,7 +82,7 @@
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.06"
+#define IRTOY_VERSION "v0.07"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -107,6 +105,7 @@ int print_usage(char * appname)
 		printf("           Where: -d device is port e.g.  COM1  \n");
 #else
 		printf("           Where: -d device is port e.g.  /dev/ttyS0  \n");
+		printf("           Where: -d device is port e.g.   /dev/ttyACM0  \n");
 #endif
 		printf("                  -s Speed is port Speed  default is 115200 \n");
 		printf("                  -f Output/input file is a base filename for recording/playing");
@@ -132,7 +131,7 @@ int print_usage(char * appname)
 		printf("           IRtoy.exe -d com3    - default used is: -s 115200, displays data from IRTOY\n");
 #else
 		printf("           IRtoy.exe -d /dev/ttyS2    - default used is: -s 115200, displays data from IRTOY\n");
-
+        printf("           IRtoy.exe -d /dev/ttyACM0   - default used is: -s 115200, displays data from IRTOY\n");
 #endif
 		printf("\n");
 		printf(" To record and play a text file test_000.txt, use \n");
@@ -147,7 +146,6 @@ int print_usage(char * appname)
 
 	    printf("-------------------------------------------------------------------------\n");
 
-
 		return 0;
 	}
 
@@ -156,7 +154,7 @@ int main(int argc, char** argv)
 {
 	int cnt, i,flag;
 	int opt;
-	char buffer[255] = {0};  //  1k buffer
+	char buffer[255] = {0};  //  255b buffer
 
 	int fd,fcounter;
 	int res,c;
@@ -169,10 +167,9 @@ int main(int argc, char** argv)
 
 	#ifndef _WIN32
 	typedef bool BOOL;
+
 	#endif
 	BOOL record=FALSE, play=FALSE, queue=FALSE, OLS =FALSE,textfile=FALSE;
-
-
 
 	printf("-------------------------------------------------------------------------\n");
 	printf("\n");
@@ -180,6 +177,7 @@ int main(int argc, char** argv)
 	printf(" http://dangerousprototypes.com\n");
 	printf("\n");
 	printf("-------------------------------------------------------------------------\n");
+
 	if (argc <= 1)  {
 
 			print_usage(argv[0]);
@@ -282,13 +280,44 @@ int main(int argc, char** argv)
     }
     resolution=atof(param_timer);
   	printf(" Opening IR Toy on %s at %sbps...\n", param_port, param_speed);
+
 	fd = serial_open(param_port);
 	if (fd < 0) {
-		fprintf(stderr, " Error opening serial port\n");
+		printf(" Error opening serial port\n");
 		return -1;
 	}
     serial_setup(fd,(speed_t) param_speed);
-    printf(" Current sample timer Resolution: %sus\n",param_timer);
+     // get the firmware version
+    cnt=0;
+    serial_write( fd, "\xFF", 1);
+    serial_write( fd, "\xFF", 1);
+     for (i=0;i<5;i++) {
+            //send 5x, just to make sure it exit the sump mode too
+            serial_write( fd, "\x00", 1);
+        }
+    while (1) {
+      serial_write( fd, "v", 1);
+      res= serial_read(fd, buffer, sizeof(buffer));  //get version
+      if (res > 0) {
+           printf(" IR Toy Firmware version: ");
+                for (i=0;i<res;i++)
+                    printf("%c",buffer[i]);
+                printf("\n");
+
+                break;
+      }
+      else {
+        cnt++;
+        if (cnt > 10) {
+          printf(" Cannot Read Firmware Version. \n");
+
+          break;
+        }
+
+
+      }
+     }
+
     cnt=0;
     while(1) {
         printf(" Entering IR sample mode .... ");
@@ -299,19 +328,30 @@ int main(int argc, char** argv)
         printf(" Done. \n");
 
         serial_write( fd, "S", 1);
-        res= serial_read(fd, buffer, sizeof(buffer));  //get version
+        res= serial_read(fd, buffer, sizeof(buffer));  //get protocol version
 
-        if (res==3){
-            printf(" IR Toy Protocol version: ");
-            for (i=0;i<res;i++)
-                printf(" %c ",buffer[i]);
-            printf("\n");
-            break;
+        if (res >= 3){
+            if (buffer[0]=='S') {
+                printf(" IR Toy Protocol version: ");
+                for (i=0;i<3;i++)
+                    printf("%c",buffer[i]);
+                printf("\n");
+
+                break;
+            }
+            else { //got garbage, retry again
+                for (i=0;i< 255; i++) {
+                    buffer[i]='\0';   // assigne null
+                }
+
+            }
+
         }
         else{
             cnt++;
-            if (cnt> 5){
-            fprintf(stderr," Error: IR Toy doesn't have a reply\n ");
+            if (cnt> 10){
+            printf(" Error: IR Toy doesn't have a reply\n ");
+
             exit(-1);
             }
             else{
@@ -319,13 +359,18 @@ int main(int argc, char** argv)
              serial_write( fd, "\xFF", 1);
             }
         }
+
     }
+
+    printf(" Current sample timer Resolution: %sus\n",param_timer);
+
     cnt=0;
     c=0;
     flag=0;
     fcounter=0;
     if(record==TRUE){ //open the file
-    printf(" Resolution= %f\n",resolution);
+    printf(" Recording at Resolution= %fus\n",resolution);
+
          if ( IRrecord(param_fname,fd,resolution)==-1) {
             FREE(param_port);
             FREE(param_speed);
@@ -365,5 +410,6 @@ int main(int argc, char** argv)
 	FREE(param_speed);
 	FREE(param_fname);
     printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
+
     return 0;
 }  //main
