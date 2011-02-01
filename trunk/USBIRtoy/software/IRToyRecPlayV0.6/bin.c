@@ -29,6 +29,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
 		printf(" Recording started.....\n");
         printf(" Press a button on the remote. \n");
         printf("\n Waiting..any key to exit..\n");
+
 		while (1) {
 
 			while ((res= serial_read(fd, buffer, sizeof(buffer))) > 0){
@@ -36,11 +37,11 @@ int IRrecord(char *param_fname,int fd,float resolution)
                 if (file_created==FALSE) {
                     sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
                     printf(" Creating file: %s\n",fnameseq);
+
                     fp=fopen(fnameseq,"wb");
                     if (fp==NULL) {
                         printf("Cannot open output file: %s \n",param_fname);
-
-                        exit(-1);
+                   exit(-1);
                     }
                     else {
                        file_created=TRUE;
@@ -48,6 +49,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
                 }
 
 				printf(" IR Toy said: \n");
+
 				for(c=0; c<res; c++){
                    IRCode= (uint8_t) buffer[c];
 
@@ -67,6 +69,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
                       printf(" %02X ",(uint8_t)buffer[c]);
                    else
                      printf(" %02X ",(uint8_t)IRCode);
+
                    if (cnt > 1) {    //close the file
                         buffer[0]=0xFF;
                         buffer[1]=0xFF;
@@ -79,7 +82,6 @@ int IRrecord(char *param_fname,int fd,float resolution)
                         fcounter++;
                         no_data_yet=TRUE;
                         printf("\n Waiting..  Any key to exit..");
-
                         break;
 
                    }
@@ -87,6 +89,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
 				}
 				fwrite(buffer, res, 1, fp);
 				printf("\n");
+
 				if( no_data_yet==TRUE) {
 
 				      break;
@@ -103,6 +106,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
         fclose(fp);
 
 	printf("\n Recording ends..\n\n");
+
 	return 0;
 }
 
@@ -123,8 +127,6 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
 	no_data_yet=TRUE;
 	char inkey;
 
-
-
         //check filename if exist
         printf(" Entering Player Mode \n");
         fcounter=0;
@@ -134,6 +136,7 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
 
 
         while (1) {
+
             sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
             fp=fopen(fnameseq,"rb");
             if (fp==NULL) {
@@ -148,7 +151,11 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
 				printf(" Press a key to start playing %s or X to exit \n",fnameseq);
 				while (1) {
 				  if(kbhit()) {
-					  inkey=getch();
+					#ifdef _WIN32
+                        inkey=getch();
+                    # else
+                        inkey=getchar_unlocked();
+                    # endif
 
 					 if ((inkey=='x') || (inkey=='X')) {
 						 break;
@@ -211,5 +218,5 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
            fclose(fp);
            fcounter++;
         }
-       printf("pass here \n");
+     //  printf("pass here \n");
 }
