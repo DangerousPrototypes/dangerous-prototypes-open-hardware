@@ -44,10 +44,16 @@ usb_ep_t endpoints[16];
 #pragma udata usb_bdt
 
 // pic18f14k50 only has max 8EPs
+#if defined(PIC_18F)
 #if defined(__18F14K50)
 BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
 #else
-BDentry usb_bdt[32] __attribute__((aligned(512)));			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+#endif
+#endif
+
+#if defined(PIC_24F)
+BDentry usb_bdt[32] __attribute__((aligned(512)));	
 #endif
 
 #pragma udata usb_data
