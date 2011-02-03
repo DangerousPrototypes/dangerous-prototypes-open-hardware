@@ -81,7 +81,7 @@ int osTaskCreate(void (*taskPtr)(void))
 {
     int i;
 
-    if (tasksSize < TASKS_SIZE - 1) {
+    if (tasksSize < TASKS_SIZE) {
         
         for ( i = 0; tasks[i].id > 0; i++ );
         tasks[i].id = i+1;
