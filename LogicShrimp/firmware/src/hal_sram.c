@@ -93,9 +93,6 @@ for(ctr=0;ctr<8;ctr++)
 // Static! Not Exposed Outside
 static u8 (*SpiRWPtr[])(u8 c)={spi_rw_0,spi_rw_1,spi_rw_2,spi_rw_3};
 
-
-
-
 static void hal_sram_spiInit(void)
 {
 // set Tristate Port and Logic Level
@@ -118,74 +115,14 @@ TRISCbits.TRISC2=0;
 TRISBbits.TRISB4=0;
 
 // Clock buffer setup
-TRISCbits.TRISC0=0;//clock gate output
-LATCbits.LATC0=1;//disabled
+TRISCbits.TRISC7=0;//clock gate output
+LATCbits.LATC7=1;//disabled
 
 //uC clock pin setup
-TRISCbits.TRISC7=0; //uC clock out to output
+TRISCbits.TRISC0=0; //uC clock out to output
 SCLK=PORT_OFF; //low
 }
 ////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-#if 0
-////////// ADDRESS TRACKERS /////////////
-static u16 u16SramAddressTracker[4]={0,0,0,0};
-
-
-void hal_sram_TrackingAddressSetAll(u16 value)
-{
-u16SramAddressTracker[0]=value;
-u16SramAddressTracker[1]=value;
-u16SramAddressTracker[2]=value;
-u16SramAddressTracker[3]=value;
-}
-
-
-
-// Reset Tracking Index
-void hal_sram_TrackingAddressReset(void)
-{
-hal_sram_TrackingAddressSetAll(0);
-}
-
-
-
-// Set Individual Tracking Index
-void hal_sram_TrackingAddressSet(SRAM_INDEX index,u16 value)
-{
-u16SramAddressTracker[index]=value;
-}
-
-
-// Increment Tracking Index
-void hal_sram_TrackingAddressIncrement(SRAM_INDEX index)
-{
-u16SramAddressTracker[index]++;
-}
-
-
-// Retreive Tracking Index
-u16 hal_sram_TrackingAddressGet(SRAM_INDEX index)
-{
-return u16SramAddressTracker[index];
-}
-////// END OF ADDRESS TRACKERS /////////
-#endif
-
-
-
-
-
 
 
 
@@ -247,9 +184,9 @@ hal_sram_ParallelRWByte(SRAM_CMD_WRITE);
 hal_sram_ParallelRWByte(0x00);
 hal_sram_ParallelRWByte(0x00);
 
-TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
+//TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
 
-//hal_logicshrimp_BufferEnable();//open up the buffer
+//hal_logicshrimp_BufferEnable();//open up the buffer (done in main for cleaner reading)
 }
 
 

@@ -16,7 +16,7 @@
 #define SUMP_RESET 	0x00
 #define SUMP_RUN	0x01
 #define SUMP_ID		0x02
-#define SUMP_DESC	0x04
+#define SUMP_META	0x04
 
 #define SUMP_XON	0x11
 #define SUMP_XOFF 	0x13
@@ -27,6 +27,11 @@
 #define SUMP_TRIG_VALS 0xc1
 
 #define LA_SAMPLE_SIZE  32768
+
+#define EXT_OSC 0
+#define INT_PWM 1
+#define TRUE 1
+#define FALE 0
 
 //this struct buffers the USB input because the stack doesn't like 1 byte reads
 #pragma udata
@@ -46,12 +51,12 @@ unsigned char checkforbyte(void);
 void sendok(void);
 void send(unsigned char c);
 void usbservice(void);
-
-void high_intrpt(void); // interrupt routines
+void InterruptHandlerHigh(void);
+void InterruptHandlerLow(void);
 
 u8 UsbFifoBufferArray[66];
-static unsigned long samples, divider;
-u8 command[5], clock;
+static unsigned long samples_read, samples_delay, divider;
+u8 command[5], clock=EXT_OSC, trigger=FALSE;
 u8 inByte, addl, addh;
 unsigned int add16, j;
 
@@ -75,10 +80,17 @@ while(1)
 
 	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 	usbbufservice();//load any USB data into byte buffer
+//goto test;
 	inByte=waitforbyte();
 	switch(inByte)
 		{//switch on the command
 		case SUMP_RESET://reset
+			break;
+		case SUMP_XON://resume send data
+			//	xflow=1;
+			break;
+		case SUMP_XOFF://pause send data
+			//	xflow=0;
 			break;
 		case SUMP_ID://SLA0 or 1 backwards: 1ALS
 			if( mUSBUSARTIsTxTrfReady() )
@@ -91,160 +103,155 @@ while(1)
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,4);
 				}
 			break;
+		case SUMP_META:
+			if( mUSBUSARTIsTxTrfReady() )
+				{
+				//putsUSBUSART("1ALS"); //doesn't work b/c of 0x00
+				UsbFifoBufferArray[0]=0x01;
+				UsbFifoBufferArray[1]='S';
+				UsbFifoBufferArray[2]='h';
+				UsbFifoBufferArray[3]='r';
+				UsbFifoBufferArray[4]='i';
+				UsbFifoBufferArray[5]='m';
+				UsbFifoBufferArray[6]='p';
+				UsbFifoBufferArray[7]='1';
+				UsbFifoBufferArray[8]='.';
+				UsbFifoBufferArray[9]='0';
+				UsbFifoBufferArray[10]=0x00;
+				UsbFifoBufferArray[11]=0x00;
+				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,12);
+				}			
+			break;
 		case SUMP_RUN://arm the triger
-
 //
 //
 //	CAPTURE SETUP
 //
 //
 			//ARMED, turn on LED
-			hal_logicshrimp_setLed(PORT_ON);
+			LATCbits.LATC6=1; //hal_logicshrimp_setLed(PORT_ON);
 
-			// PPS Setup
-			//hal_logicshrimp_configPPS();
+			//SRAM SETUP: setup the SRAM for record
+			hal_sram_parallelInit(); //unlocks, verifies settings
+			hal_sram_setup_capture();//setup write,
+			TRISB|=0b1111;//SRAM in/PIC out pins to input/hiz
 
-			//setup the SRAM for record
-			hal_sram_parallelInit();
-			hal_sram_setup_capture();//setup read, turn PIC->SRAM pins input
+			//ENABLE INPUT BUFFER: let the buffer drive the SRAM input pins
+			hal_logicshrimp_BufferEnable();//enable the input buffer
 
-			//enable the buffer
-			hal_logicshrimp_BufferEnable();
-
-			//ADDRESS TRACKING: TMR3 with async external input//
+			//SRAM ADDRESS TRACKING: follows the address in the SRAM, always on
+			//TMR3 with async external input//
 			//Need to know where in the SRAM we are//
-			//setup a external counter on C7 to track the SRAM address (/4 prescaler)
-			RPINR6=18; // RP18   Timer3 External Clock Input T3CKI RPINR6 T3CKR<4:0>
+			//setup a external counter on C0 to track the SRAM address (/4 prescaler)
+			RPINR6=11; // RP11   Timer3 External Clock Input T3CKI RPINR6 T3CKR<4:0>
 			//setup T3
 			//16bit timer
 			// /4 prescaler
-			T3CON=0b10100100; //0b10 16 bit
+			T3CON=0b10100100; //0b10 16 bit 4xprescaler
 			//clear to sync to SRAM internal address
 			TMR3H=0;
 			TMR3L=0;
 			T3CON|=0b1;//enable the counter		
 
-			//SAMPLE COUNTER: TMR1 with async external input//	
-/*
-			RPINR4=18; //also on RP18 external clock input
-			T1CON=0b10000100;
-			//clear
-			TMR1H=0;
-			TMR1L=0;
-			//use CCP2 to compare to desired count and interrupt
-*/
+			//SAMPLE COUNTER: counts samples after trigger, off until trigger
+			//TMR1 with async external input//	
+			//timer 1 is fixed on RP11/C0
+			T1CON=0b10100100; //4x prescaler
+			//preload timer1 to interrupts after samples_delay
+			samples_delay=0x10000-samples_delay;
+			TMR1H=((samples_delay>>8)&0xff);
+			TMR1L=(samples_delay&0xff);
+			//use CCP2 to compare to desired count and interrupt??
+
 			//CLOCK SOURCE: PWM or 20MHz oscillator//
 			//start the clock source
 			//this is the 20MHz external clock
-			//OR PWM from PIC pin RC7/RP18
-			#define EXTERNAL 0
-			clock=EXTERNAL;
-			if(clock==EXTERNAL){
-				TRISCbits.TRISC7=1;//disable PIC clock pin
-				hal_logicshrimp_ClockGateEnable();
-			}else{
-// TODO Fill with values
-//				17.4.3 SETUP FOR PWM OPERATION
-//				The following steps should be taken when configuring
-//				the CCP module for PWM operation:
-//				1. Set the PWM period by writing to the PR2 (PR4)
-//				register.
-				CCP1CON=0xFF;
-				PR2= 128;
-//				2. Set the PWM duty cycle by writing to the
-//				CCPRxL register and CCPxCON<5:4> bits.
-				CCPR1L= 0x00;
-				CCP1CONbits.DC1B1=0;
-				CCP1CONbits.DC1B0=0;
-//				3. Make the CCPx pin an output by clearing the
-//				appropriate TRIS bit.
-				TRISC&=0x01;
-//				4. Set the TMR2 (TMR4) prescale value, then
-//				enable Timer2 (Timer4) by writing to T2CON
-//				(T4CON).
-				T2CON=0x04;
-//				5. Configure the CCPx module for PWM operation.
-				CCP1CON|=0x0C;
-
-				RPOR18= 14; // PWM A to RP11
+			//OR PWM from PIC pin RC0/RP11
+			if(clock==EXT_OSC){//use 20MHz OSC
+				TRISC|=(0b1);//disable PIC->SRAM clock pin
+				LATC&=(~0b10000000); //lower OSC buffer OE, connect OSC to the SRAM clock pins
+			}else{//use PIC PWM (setup during configuration)
+				TRISC&=(~0b1); //PWM to output
+				LATC&=(~0b1); //PWM to ground
+				RPOR11= 14; // PWM A to RP11
+				T2CON|=0x04;//start PWM with settings
 			}
+
 //
 //
-//	TRIGGER (ignore for now)
+//	TRIGGER 
 //
 //
-			//TODO: sample and trigger tracking section
-			//TODO: wait for change interrupt (if trigger used)
-			//start sample counter
-			//T1CON|=0b1;
-			// INT0  - PPS Config not required
-			RPINR1=4; // INT1
-			RPINR2=5; // INT2
-			RPINR3=6; // INT3
-			
-			// TODO: select the edge
-			INTCON2bits.INTEDG0=0;
-			INTCON2bits.INTEDG1=0;
-			INTCON2bits.INTEDG2=0;
-			INTCON2bits.INTEDG3=0;
+			//service USB during trigger pause on timer 4 low priority interrupt
+			//IPR3bits.TMR4IP=0; //low priority
+			//PIE3bits.TMR4IE=1; //enable
+			//PIR3bits.TMR4IF=0; //clear the flag
+			//T4CON=0b00000110; //on with 16 prescaler
 
-			INTCONbits.INT0IF=0;
-			INTCONbits.INT0IE=1;
-
-			INTCON3bits.INT1IF=0;
-			INTCON3bits.INT1IE=0;
-
-			INTCON3bits.INT2IF=0;
-			INTCON3bits.INT2IE=0;
-
-			INTCON3bits.INT3IF=0;
-			INTCON3bits.INT3IE=0;
-
-
-
+			if(trigger==TRUE){
+				//clear pin interrupts and enable
+				//interrupt will start the sample counter
+	             INTCONbits.INT0IF=0;
+	             INTCON3bits.INT1IF=0;
+	             INTCON3bits.INT2IF=0;
+	             INTCON3bits.INT3IF=0;
+				INTCONbits.GIEL = 1;
+				INTCONbits.GIEH = 1;
+			}else{
+				//jump straight to starting the sample counter
+				trigger=TRUE;
+				INTCONbits.GIEL = 1;
+				INTCONbits.GIEH = 1;
+				//start sample counter
+				PIR1bits.TMR1IF=0;
+				PIE1bits.TMR1IE=1;
+				T1CON|=0b1;
+			}
+		
 //
 //
 //	CAPTURE
 //
 //
-//eventually will setup preloaded timer3 that increments and interrupts after X samples
-/*			PIR1bits.TMR1IF=0;
+			//wait for capture to finish
+			while(trigger){usbservice();}
 
-			while(1)
-				{
-				if(PIR1bits.TMR1IF)
-					{
-					PIR1bits.TMR1IF=0;
-					break;
-					}
-				}
-*/
-
-			for(j=0; j<samples; j++);			
-
-			//raise CS to end write to SRAM
-			hal_sram_end_capture(); 
-
+			//MOVED TO INTERRUPT
 			//disable address tracking counter
-			T3CON&=(~0b1);
+			//T3CON&=(~0b1);
+			//raise CS to end write to SRAM
+			//hal_sram_end_capture(); 
+
 //
 //
 //	CLEANUP
 //
 //
-			//PWM to input, if assigned
-			RPOR11= 0; // PWM A to RP11
 
-			//stop the sample clock
-			hal_logicshrimp_ClockGateDisable();
+			//end USB service interrupts
+			//T4CON=0b00000010; //turn off USB service timer4
+			//PIE3bits.TMR4IE=0;
+
+			//disable all interrupts
+			INTCONbits.GIEL = 0;
+			INTCONbits.GIEH = 0;
+
+			//disable external clock
+			LATCbits.LATC7=1; 	//disable EXT_OSC buffer
+
+			//disable PWM
+			T2CON&=(~0x04);		//disable PWM clock
+			RPOR11= 0; 			// RP11 to 0
 			
-			hal_logicshrimp_BufferDisable();
+			//buffer inputs disabled so the PIC an take charge		
+			LATBbits.LATB5=1; //hal_logicshrimp_BufferDisable();
 
 			//restore uC clock to output
-			LATCbits.LATC7=0; //clock start low
-			TRISCbits.TRISC7=0; //uC clock out to output
+			LATCbits.LATC0=0; //clock start low
+			TRISCbits.TRISC0=0; //uC clock out to output
 
-			hal_logicshrimp_setLed(PORT_OFF);
+			//ARM LED off
+			LATCbits.LATC6=0; //hal_logicshrimp_setLed(PORT_OFF);
 
 //
 //
@@ -255,48 +262,81 @@ while(1)
 			//get the current SRAM address
 			addl=TMR3L;
 			addh=TMR3H;
-			//TODO: any manipulation (back X samples, 50% before/after, etc)
+
+			//move to a 16bit variable
 			add16=addh;
 			add16=(add16<<8);
 			add16|=addl;
-			add16=add16-(samples*2);//this is a 4bit count, multiple samples by two to preserve roll over...
+
+			//find the start location to read back the desired number of samples
+			add16=add16-((samples_read));//samples_read is 4bit count, so is add16 (each bit is 4 samples)
+										//this preserves the rollover in counters and variables
+
+			//adjust the 4samples/bit of the timer to 8samples/byte address of the SRAM
 			add16=add16>>1;//divide by 2
-			//read samples and dump them out USB
+
 			//write the SRAM command to read from the beginning
 			hal_sram_setup_dump((add16>>8), (add16&0xff));
 
+			//adjust sample size to actual bits (the value given by SUMP is /4)
+			samples_read=(samples_read*4);//multiply by 4 to find actual number of samples to dump
+
 			//loop untill all is read
-			while(1)
-				{
+			while(1){
 				usbservice();
-				if(USBUSARTIsTxTrfReady())
-					{
+				if(USBUSARTIsTxTrfReady()){
 
 					static u8 USBWriteCount;
 					USBWriteCount=0;
 
-					for(i=0; i<64; i++)
-						{
-						SCLK=PORT_ON;
-						Nop();
-						UsbFifoBufferArray[USBWriteCount]= PORTA & 0b1111; //get the lower 4 bits of PORTA
-						SCLK=PORT_OFF;
-	
-						USBWriteCount++;
+					//each loop reads one sample from the four channels and places it in one byte
+					for(i=0; i<32; i++){
 
-						samples--;
-						if(samples==0) break;//send 64/128/512/1024 samples exactly! break at the end of samples
+						SCLK=PORT_ON; //clock up
+						Nop(); //delay
+
+						UsbFifoBufferArray[USBWriteCount]= PORTA & 0b1111; //get the lower 4 bits of PORTA
+
+						SCLK=PORT_OFF; //clock down
+	
+						USBWriteCount++;//increment byte counter
+
+						samples_read--;//decrement samples remaining
+						if(samples_read==0) break;//send 64/128/512/1024 samples exactly! break at the end of samples
 						}
-					putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,USBWriteCount);
+					putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,USBWriteCount);//send this load to USB
 					}
-					if(samples==0)break; //send 64/128/512/1024 samples exactly! break at the end of samples
+					if(samples_read==0)break; //send 64/128/512/1024 samples exactly! break at the end of samples
 				}
-			break;
-		case SUMP_XON://resume send data
-			//	xflow=1;
-			break;
-		case SUMP_XOFF://pause send data
-			//	xflow=0;
+
+				//set_all_cs(PORT_ON); // cs low
+				LATBbits.LATB4=1;//raise CS to end read
+				LATCbits.LATC2=1;//CS
+				LATCbits.LATC1=1;//CS
+				LATAbits.LATA5=1;//CS
+//
+//
+// CLEAR SRAM
+//
+//
+//this step is to help with debugging. It clears the contents of the SRAMs after a capture
+			//SRAM SETUP: setup the SRAM for record
+			hal_sram_parallelInit(); //unlocks, verifies settings
+			hal_sram_setup_capture();//setup write,
+
+			LATB|=0b0000;//fill SRAM with 0x00
+
+			TRISC|=(0b1);//disable PIC->SRAM clock pin
+			LATC&=(~0b10000000); //lower OSC buffer OE, connect OSC to the SRAM clock pins
+
+			for(add16=0; add16<16000; add16++){usbservice();} //pause
+			
+			//disable external clock
+			LATCbits.LATC7=1; 	//disable EXT_OSC buffer
+
+			//restore uC clock to output
+			LATCbits.LATC0=0; //clock start low
+			TRISCbits.TRISC0=0; //uC clock out to output
 			break;
 		default://long command
 			command[0]=inByte;//store first command byte
@@ -306,12 +346,47 @@ while(1)
 			command[4]=waitforbyte();
 			switch(command[0]){
 		
-				case SUMP_TRIG: //set CN on these pins
-				//if(sumpRX.command[1] & 0b10000)	CNEN2|=0b1; //AUX
-				//if(sumpRX.command[1] & 0b1000)  CNEN2|=0b100000;
-				//if(sumpRX.command[1] & 0b100)   CNEN2|=0b1000000;
-				//if(sumpRX.command[1] & 0b10)  	CNEN2|=0b10000000;
-				//if(sumpRX.command[1] & 0b1) 	CNEN2|=0b100000000;
+				case SUMP_TRIG: //setup edge interrupt for triggers
+                // INT0  - PPS Config not required
+                RPINR1=4; // INT1
+                RPINR2=5; // INT2
+                RPINR3=6; // INT3
+
+                INTCONbits.INT0IE=0;
+                INTCON3bits.INT1IE=0;
+                INTCON3bits.INT2IE=0;
+                INTCON3bits.INT3IE=0;
+				
+				if(command[1] & 0b1000) INTCON3bits.INT3IE=1;
+				if(command[1] & 0b100)  INTCON3bits.INT2IE=1;
+				if(command[1] & 0b10)  	INTCON3bits.INT1IE=1;
+				if(command[1] & 0b1) 	INTCONbits.INT0IE=1;
+
+	           INTCONbits.INT0IF=0;
+	           INTCON3bits.INT1IF=0;
+	           INTCON3bits.INT2IF=0;
+	           INTCON3bits.INT3IF=0;
+
+				command[1]&=(~0b11110000);
+				if(command[1]==0){
+					trigger=FALSE;
+				}else{
+					trigger=TRUE;
+				}
+				
+				break;
+				case SUMP_TRIG_VALS:
+                
+                //select the edge
+                INTCON2bits.INTEDG0=0;
+                INTCON2bits.INTEDG1=0;
+                INTCON2bits.INTEDG2=0;
+                INTCON2bits.INTEDG3=0;
+
+                if(command[1] & 0b1)INTCON2bits.INTEDG0=1;
+                if(command[1] & 0b10)INTCON2bits.INTEDG1=1;
+                if(command[1] & 0b100)INTCON2bits.INTEDG2=1;
+                if(command[1] & 0b1000)INTCON2bits.INTEDG3=1;
 				break;
 				case SUMP_FLAGS:
 				/*
@@ -323,12 +398,19 @@ while(1)
 				*/
 				break;
 				case SUMP_CNT:
-				samples=command[2];
-				samples<<=8;
-				samples|=command[1];
-				samples=(samples+1)*4;
+				samples_read=command[2];
+				samples_read<<=8;
+				samples_read|=command[1];
+				samples_read=(samples_read+1);
 				//constrain to 256K
-				if(samples>LA_SAMPLE_SIZE) samples=LA_SAMPLE_SIZE;
+				if(samples_read>LA_SAMPLE_SIZE) samples_read=LA_SAMPLE_SIZE;
+
+				samples_delay=command[4];
+				samples_delay<<=8;
+				samples_delay|=command[3];
+				samples_delay=(samples_delay+1);
+				//constrain to 256K
+				if(samples_delay>LA_SAMPLE_SIZE) samples_delay=LA_SAMPLE_SIZE;
 				break;
 				case SUMP_DIV:
 				divider=command[3];
@@ -336,10 +418,63 @@ while(1)
 				divider|=command[2];
 				divider<<=8;
 				divider|=command[1];
+				divider++;
 		
 				//setup clock source -
 				//20mhz direct from OSC
 				//0-Xmhz with PIC PWM
+				clock=INT_PWM;
+				if(divider<=5){
+					clock=EXT_OSC;
+				}else if(divider<=(100/12)){ //8.333=12mhz
+					PR2=0b00000000;
+					T2CON=0b00000100;
+					CCPR1L=0b00000000;
+					CCP1CON=0b00011100;
+				}else if(divider<=(100/6)){//16.66=6mhz
+					PR2=0b00000001;
+					T2CON=0b00000100;
+					CCPR1L=0b00000000;
+					CCP1CON=0b00111100;
+				}else if(divider<=(100/4)){
+					PR2=0b00000010;
+					T2CON=0b00000100;
+					CCPR1L=0b00000001;
+					CCP1CON=0b00011100;
+				}else if(divider<=(100/3)){
+					PR2=0b00000011;
+					T2CON=0b00000100;
+					CCPR1L=0b00000001;
+					CCP1CON=0b00111100;
+				}else if(divider<=(100/2)){
+					PR2=0b00000101;
+					T2CON=	0b00000100;
+					CCPR1L=0b00000010;
+					CCP1CON=0b00111100;
+				}else if(divider<=(100/1)){
+					PR2=0b00001011;
+					T2CON=0b00000100;
+					CCPR1L=0b00000101;
+					CCP1CON=0b00111100;
+				}else if(divider<=(200)){//500khz
+					PR2=0b00010111;
+					T2CON=0b00000100;
+					CCPR1L=0b00001011;
+					CCP1CON=0b00111100;
+				}else if(divider<=(500)){//200khz
+					PR2=0b00111011;
+					T2CON=0b00000100;
+					CCPR1L=0b00011101;
+					CCP1CON=0b00111100;
+				}else if(divider<=(1000)){//100khz
+					PR2=0b01110111;
+					T2CON=0b00000100;
+					CCPR1L=0b00111011;
+					CCP1CON=0b00111100;
+				}
+
+
+
 		
 				//convert from SUMP 100MHz clock to our 12MIPs
 				//l=((l+1)*16)/100;
@@ -359,7 +494,7 @@ while(1)
 			}
 		}
 	}
-CDCTxService();
+	CDCTxService();
 }
 
 //}//end main
@@ -436,6 +571,10 @@ static void init(void){
 	TRISC=0b11111111; 
 
 	hal_logicshrimp_pinsetup();
+
+	RCONbits.IPEN=1; //enable interrupt priority
+	INTCONbits.GIEL = 0;
+	INTCONbits.GIEH = 0;
 
 	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
 	OSCTUNEbits.PLLEN = 1;  //enable PLL
@@ -515,37 +654,6 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
 
 
 
-
-
-
-#pragma interrupt high_intrpt
-void high_intrpt(void)
-{
-if(PIR1bits.TMR1IF && PIE1bits.TMR1IE)
-	{
-	PIR1bits.TMR1IF=0;
-	}
-else if (INTCONbits.INT0IF)
-	{
-	INTCONbits.INT0IF=0;
-	}
-else if (INTCON3bits.INT1IF)
-	{
-	INTCON3bits.INT1IF=0;
-	}
-else if (INTCON3bits.INT2IF)
-	{
-	INTCON3bits.INT2IF=0;
-	}
-else if (INTCON3bits.INT3IF)
-	{
-	INTCON3bits.INT3IF=0;
-	}
-}
-
-
-#if 0
-
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -553,18 +661,65 @@ else if (INTCON3bits.INT3IF)
 //We didn't use the low priority interrupts, 
 // but you could add your own code here
 #pragma interruptlow InterruptHandlerLow
-void InterruptHandlerLow(void){}
-/*
+void InterruptHandlerLow(void){
+	if(PIR3bits.TMR4IF && PIE3bits.TMR4IE){
+		usbservice();
+		PIR3bits.TMR4IF=0;	
+	}
+	INTCONbits.GIEL = 1;
+}
+
 //We didn't use the low priority interrupts, 
 // but you could add your own code here
 #pragma interrupthigh InterruptHandlerHigh
-void InterruptHandlerHigh(void){}
-*/
+void InterruptHandlerHigh(void){
+
+	if(PIR1bits.TMR1IF && PIE1bits.TMR1IE){
+		//disable address tracking counter
+		T3CON&=(~0b1);
+		
+		//clean up pins from capture settings
+		//hal_sram_end_capture(); 
+		LATBbits.LATB4=1;//raise CS to end write to SRAM
+		LATCbits.LATC2=1;//CS
+		LATCbits.LATC1=1;//CS
+		LATAbits.LATA5=1;//CS
+
+		//turn off timer1
+		PIE1bits.TMR1IE=0;
+		PIR1bits.TMR1IF=0;
+		T1CON&=(~0b1);
+		
+		//clear trigger flag so main loop continues
+		trigger=FALSE;
+	}else {
+		//start sample counter
+		PIE1bits.TMR1IE=1;
+		PIR1bits.TMR1IF=0;
+		T1CON|=0b1;
+
+		//disable any change interrupts (combine 1-3...)
+        INTCONbits.INT0IE=0;
+        INTCON3bits.INT1IE=0;
+        INTCON3bits.INT2IE=0;
+        INTCON3bits.INT3IE=0;
+
+		//clear any change interrupt flags
+        INTCONbits.INT0IF=0;
+        INTCON3bits.INT1IF=0;
+        INTCON3bits.INT2IF=0;
+        INTCON3bits.INT3IF=0;
+	}
+
+	INTCONbits.GIEH = 1;
+
+}
+
 //these statements remap the vector to our function
 //When the interrupt fires the PIC checks here for directions
 #pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
 void Remapped_High_ISR (void){
-     _asm goto POVInterrupt _endasm
+     _asm goto InterruptHandlerHigh _endasm
 }
 
 #pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
@@ -589,4 +744,3 @@ void Low_ISR (void){
 }
 
 
-#endif
