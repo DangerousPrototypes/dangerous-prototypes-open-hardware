@@ -6,7 +6,7 @@
 void hal_logicshrimp_init(void)
 {
 hal_logicshrimp_pinsetup();
-hal_logicshrimp_ClockGateDisable();
+//hal_logicshrimp_ClockGateDisable();
 hal_logicshrimp_BufferDisable();
 }
 

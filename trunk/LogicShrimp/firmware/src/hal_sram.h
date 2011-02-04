@@ -1,7 +1,7 @@
 #ifndef HAL_SRAM_H
 #define HAL_SRAM_H
 
-#define CS_PIN 	LATCbits.LATC0
+//#define CS_PIN 	LATCbits.LATC0
 
 #define DO_0	LATAbits.LATA0
 #define DO_1	LATAbits.LATA1
@@ -26,7 +26,7 @@
 #define CS_2	LATCbits.LATC2
 #define CS_3	LATBbits.LATB4
 
-#define SCLK	LATCbits.LATC7
+#define SCLK	LATCbits.LATC0
 
 typedef enum
 {
