@@ -103,6 +103,7 @@ typedef unsigned char usb_uep_t;
 #define SingleEndedZeroIsSet()				(U1CONbits.SE0)
 #define EnablePacketTransfer()				U1CONbits.PKTDIS = 0
 #define EnableUsb()							U1CONbits.USBEN = 1
+#define DisableUsb()							U1CONbits.USBEN = 0
 #define SignalResume()						do {U1CONbits.RESUME = 1; delay_ms(10); U1CONbits.RESUME = 0;} while(0)
 #define SuspendUsb()						U1PWRCbits.USUSPND = 1
 #define WakeupUsb()							do {U1PWRCbits.USUSPND = 0; while(USB_ACTIVITY_FLAG){USB_ACTIVITY_FLAG = 0;}} while(0)
