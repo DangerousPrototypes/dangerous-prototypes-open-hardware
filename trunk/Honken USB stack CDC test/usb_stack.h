@@ -161,7 +161,7 @@ typedef struct BDENTRY {
 #define BC98	0x03
 
 
-extern BDentry usb_bdt[];
+extern volatile BDentry usb_bdt[32];
 
 #ifndef USB_EP0_BUFFER_SIZE
 #define USB_EP0_BUFFER_SIZE 8u
@@ -187,6 +187,20 @@ typedef struct USB_DEVICE_REQUEST {
 
 extern usb_status_t trn_status;
 extern BDentry *bdp, *rbdp;
+
+//device state
+#define USB_STATE_DETACHED 0x00
+#define USB_STATE_ATTACHED 0x01
+#define USB_STATE_POWERED 0x02
+#define USB_STATE_DEFAULT 0x04
+#define USB_STATE_ADDRESS 0x08
+#define USB_STATE_CONFIGURED 0x10
+#define USB_STATE_SUSPENDED 0x20
+
+extern volatile unsigned char usb_state;
+
+extern void ust_attach();
+extern void usb_detach();
 
 extern void usb_init(	ROMPTR const unsigned char *dev_descriptor, 
 						ROMPTR const unsigned char *config_descriptor, 

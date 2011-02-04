@@ -46,14 +46,14 @@ usb_ep_t endpoints[16];
 // pic18f14k50 only has max 8EPs
 #if defined(PIC_18F)
 #if defined(__18F14K50)
-BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
+volatile BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
 #else
-BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
+volatile BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
 #endif
 #endif
 
 #if defined(PIC_24F)
-BDentry usb_bdt[32] __attribute__((aligned(512)));	
+volatile BDentry usb_bdt[32] __attribute__((aligned(512)));	
 #endif
 
 #pragma udata usb_data
@@ -70,7 +70,7 @@ unsigned char usb_ep0_in_buf[USB_EP0_BUFFER_SIZE];
 unsigned int usb_device_status;
 unsigned int usb_configured;
 unsigned char usb_addr_pending;
-
+volatile unsigned char usb_state;
 usb_status_t trn_status;					// Global since it is needed everywere
 BDentry *bdp, *rbdp;						// Dito
 
@@ -93,6 +93,44 @@ void usb_RequestError( void );
 
 void usb_set_address( void );
 void usb_send_descriptor( void );
+
+//implemented only for pic24f for now
+
+//attach the device to the bus, enabling the D+ pull-up
+void usb_attach()
+{
+	#ifdef PIC_24F	
+	//should check for VBUS	
+	usb_state=USB_STATE_ATTACHED;	
+	DisableUsbInterrupts();
+	DisableAllUsbInterrupts();
+	//do we need to clear the interupt flags
+	ClearAllUsbInterruptFlags();
+	ClearAllUsbErrorInterruptFlags();	
+	EnableUsb();
+	while(SingleEndedZeroIsSet());	// wait for D+ voltage to stabilize, should find a way to do it asynchronously, maybe using idle interupt
+	usb_state=USB_STATE_POWERED;
+	EnableAllUsbInterrupts();
+	EnableUsbInterrupts();
+
+	
+	
+	
+	#endif
+};
+
+//detach the device from the bus, disabling the D+ pull-up
+void usb_detach()
+{
+	#ifdef PIC24f
+	DisableUsbInterrupts();
+	DisableAllUsbInterrupt();
+	ClearAllUsbInterruptFlags();
+	ClearAllErrorUsbInterruptFlags();
+	usb_state=USB_STATE_DETACHED;
+	DisableUsb();		
+	#endif	
+};
 
 void usb_init(	ROMPTR const unsigned char *device_descriptor, 
 				ROMPTR const unsigned char *config_descriptor, 
@@ -170,6 +208,7 @@ void usb_init(	ROMPTR const unsigned char *device_descriptor,
 
 void usb_start( void ) {
 	DPRINTF("Starting usb ");
+	DisableUsbInterrupts();
 	EnableUsb();					// Enable USB-hardware
 	while(SingleEndedZeroIsSet());	// Busywait for initial power-up
 	DPRINTF("sucessful\n");
@@ -284,6 +323,7 @@ void usb_handle_reset( void ) {
 	}
 	EnableAllUsbErrorInterrupts();
 	DPRINTF("Reset\n");
+	usb_state=USB_STATE_DEFAULT;
 }
 
 void usb_handle_transaction( void ) {
@@ -647,6 +687,7 @@ void usb_set_address( void ) {
 	if (0x00u < usb_addr_pending && 0x80u > usb_addr_pending) {
 		SetUsbAddress(usb_addr_pending);
 		usb_addr_pending = 0xFF;
+		usb_state=USB_STATE_ADDRESS;
 		DPRINTF("Address set 0x%02X\n", GetUsbAddress());
 	}
 	usb_unset_in_handler(0);								// Unregister handler
