@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -19,14 +21,14 @@ or send a letter to
 /* Bitmasks */
 #define USB_UEP_EPHSHK 		(0x01)
 #define USB_UEP_EPSTALL		(0x02)
-#define USB_UEP_EPINEN		(0x04)
-#define USB_UEP_EPOUTEN 	(0x08)
+#define USB_UEP_EPTXEN		(0x04)
+#define USB_UEP_EPRXEN 		(0x08)
 #define USB_UEP_EPCONDIS	(0x10)
 
-#define USB_EP_INOUT		(USB_UEP_EPHSHK | USB_UEP_EPINEN | USB_UEP_EPOUTEN | USB_UEP_EPCONDIS)
-#define USB_EP_CONTROL		(USB_UEP_EPHSHK | USB_UEP_EPINEN | USB_UEP_EPOUTEN)
-#define USB_EP_OUT			(USB_UEP_EPHSHK |                  USB_UEP_EPOUTEN | USB_UEP_EPCONDIS)
-#define USB_EP_IN			(USB_UEP_EPHSHK | USB_UEP_EPINEN                   | USB_UEP_EPCONDIS)
+#define USB_EP_INOUT		(USB_UEP_EPHSHK | USB_UEP_EPTXEN | USB_UEP_EPRXEN | USB_UEP_EPCONDIS)
+#define USB_EP_CONTROL		(USB_UEP_EPHSHK | USB_UEP_EPTXEN | USB_UEP_EPRXEN)
+#define USB_EP_OUT			(USB_UEP_EPHSHK |                  USB_UEP_EPRXEN | USB_UEP_EPCONDIS)
+#define USB_EP_IN			(USB_UEP_EPHSHK | USB_UEP_EPTXEN                  | USB_UEP_EPCONDIS)
 #define USB_EP_NONE			(0x00)
 
 #define USB_EP_INTERRUPT	(0)
@@ -87,12 +89,12 @@ typedef unsigned char usb_uep_t;
 #define ClearAllUsbInterruptFlags()			U1IR = 0xFF
 #define ClearUsbErrorInterruptFlag(x)		U1EIR = x
 #define ClearAllUsbErrorInterruptFlags()	U1EIR = 0xFF
-#define DisableUsbInterrupts()				IEC5bits.USB1IE=0 //PIE2bits.USBIE = 0 /*FIX*/
+#define DisableUsbInterrupts()				IEC5bits.USB1IE = 0
 #define DisableUsbInterrupt(x)				U1IE &= ~(x)
 #define DisableAllUsbInterrupts()			U1IE = 0
 #define DisableUsbErrorInterrupt(x)			U1EIE &= ~(x)
 #define DisableAllUsbErrorInterrupts()		U1EIE = 0	
-#define EnableUsbInterrupts()				IEC5bits.USB1IE=1 //PIE2bits.USBIE = 1 /*FIX*/
+#define EnableUsbInterrupts()				IEC5bits.USB1IE = 1
 #define EnableUsbInterrupt(x)				U1IE |= (x)
 #define EnableAllUsbInterrupts()			U1IE = 0x00FF
 #define EnableUsbErrorInterrupt(x)			U1EIE |= (x)
@@ -103,7 +105,7 @@ typedef unsigned char usb_uep_t;
 #define SingleEndedZeroIsSet()				(U1CONbits.SE0)
 #define EnablePacketTransfer()				U1CONbits.PKTDIS = 0
 #define EnableUsb()							U1CONbits.USBEN = 1
-#define DisableUsb()							U1CONbits.USBEN = 0
+#define DisableUsb()						U1CONbits.USBEN = 0
 #define SignalResume()						do {U1CONbits.RESUME = 1; delay_ms(10); U1CONbits.RESUME = 0;} while(0)
 #define SuspendUsb()						U1PWRCbits.USUSPND = 1
 #define WakeupUsb()							do {U1PWRCbits.USUSPND = 0; while(USB_ACTIVITY_FLAG){USB_ACTIVITY_FLAG = 0;}} while(0)
@@ -119,6 +121,22 @@ typedef unsigned char usb_status_t;
 #define USB_STAT2DIR(x)						((x>>2)&0x01)
 #define USB_STAT2ADDR(x)					((x>>2)&0x1F)
 #define USB_STAT2PPI(x)						((x>>1)&0x01)
+
+/* Buffer descriptors */
+typedef struct BDENTRY {
+	volatile unsigned char BDCNT;
+	volatile unsigned char BDSTAT;
+	unsigned char *BDADDR;
+} BDentry;
+
+/* BDSTAT Bitmasks */
+#define UOWN	0x80
+#define DTS		0x40
+#define KEN		0x20
+#define INCDIS	0x10
+#define DTSEN	0x08
+#define	BSTALL	0x04
+#define BC98	0x03
 
 /* Hardware implementations */
 
@@ -199,9 +217,9 @@ typedef unsigned char usb_status_t;
 #endif
 
 #define ConfigureUsbHardware()		do { \
-										U1CNFG1 = 0x0040 | USB_PP_BUF_MODE; \
+										U1CNFG1 = 0x0000 | USB_PP_BUF_MODE; \
 										U1CNFG2 = USB_U1CNFG2_UTRDIS_VALUE; \
-										U1BDTP1 = (unsigned int) usb_bdt/256; \										
+										U1BDTP1 = (unsigned int) usb_bdt/256; \
 										U1PWRCbits.USBPWR = 1; \
 										U1OTGCON = USB_U1OTGCON_DPPULUP_VALUE | \
 												   USB_U1OTGCON_DMPULUP_VALUE; \
@@ -211,14 +229,36 @@ typedef unsigned char usb_status_t;
 #define ROM __attribute__((space(auto_psv)))
 #define ROMPTR
 #define ARCH_memcpy memcpy
+#define USB_ARCH_NUM_EP			16
+#define USB_USTAT_FIFO_DEPTH	16
 
 #ifdef __DEBUG
 #include <stdio.h>
-#define DINIT()			/* TODO: Implement */
-#define DPRINTF(...)	
+#include <uart.h>
+#include <PPS.h>
+#define DINIT()			do { \
+								PPSUnLock; \
+								PPSInput(PPS_U2RX, PPS_RP22); \
+								PPSOutput(PPS_RP24, PPS_U2TX); \
+								PPSLock; \
+								U2MODE = 0x8010; \
+								U2BRG = 8; \
+								U2STA = 0x2480; \
+								__C30_UART = 2; \
+						} while(0)
+// UART 2 @ 115200-8-N-1 on RX=MISO, TX=MOSI
+
+#define DPRINTF(...)	fprintf(stderr, __VA_ARGS__)
 #else
 #define DINIT()
 #define DPRINTF(...)
 #endif
+
+// Compiler peculiars
+#define MAIN_T	int
+
+#define FCY 16000000
+#include <libpic30.h>
+#define Delay_ms(n)		__delay_ms( n )
 
 #endif//__USB_P24F_H__

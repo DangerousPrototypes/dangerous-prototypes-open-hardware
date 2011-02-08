@@ -5,11 +5,11 @@ device=PIC24FJ256GB106
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
-dir_bin=.\output
-dir_tmp=.\work
+dir_bin=
+dir_tmp=
 dir_sin=
-dir_inc=D:\the-bus-pirate\trunk\source;C:\Microchip Solutions\BPv4;..\microchip\include
-dir_lib=C:\Program Files\Microchip\MPLAB C30\lib
+dir_inc=C:\Program\Microchip\MPLAB C30\include
+dir_lib=C:\Program\Microchip\MPLAB C30\lib\PIC24F
 dir_lkr=
 [CAT_FILTERS]
 filter_src=*.s;*.c
@@ -78,14 +78,14 @@ file_008=usb_p18f.h
 file_009=usb_stack.h
 file_010=cdc.h
 file_011=usb_p24f.h
-file_012=C:\Program Files\Microchip\mplabc30\v3.25\support\PIC24F\gld\p24FJ256GB106.gld
+file_012=C:\Program\Microchip\MPLAB C30\support\PIC24F\gld\p24FJ256GB106.gld
 [SUITE_INFO]
 suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=
 [TOOL_SETTINGS]
 TS{7D9C6ECE-785D-44CB-BA22-17BF2E119622}=-g
 TS{25AC22BD-2378-4FDB-BFB6-7345A15512D3}=-g -Wall -mlarge-code -mlarge-data
-TS{7DAC9A1D-4C45-45D6-B25A-D117C74E8F5A}=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TS{7DAC9A1D-4C45-45D6-B25A-D117C74E8F5A}=--heap=100 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TS{509E5861-1E2A-483B-8B6B-CA8DB7F2DD78}=
 [INSTRUMENTED_TRACE]
 enable=0

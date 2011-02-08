@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -91,7 +93,8 @@ typedef unsigned char usb_uep_t;
 #define ResetPPbuffers()					do {UCONbits.PPBRST = 1; UCONbits.PPBRST=0;} while(0)
 #define SingleEndedZeroIsSet()				(UCONbits.SE0)
 #define EnablePacketTransfer()				UCONbits.PKTDIS = 0
-#define EnableUsb()							UCONbits.USBEN = 1
+#define	EnableUsb()							UCONbits.USBEN = 1
+#define	DisableUsb()						UCONbits.USBEN = 0
 #define SignalResume()						do {UCONbits.RESUME = 1; delay_ms(10); UCONbits.RESUME = 0;} while(0)
 #define SuspendUsb()						UCONbits.SUSPND = 1
 #define WakeupUsb()							do {UCONbits.SUSPND = 0; while(USB_ACTIVITY_FLAG){USB_ACTIVITY_FLAG = 0;}} while(0)
@@ -107,6 +110,32 @@ typedef unsigned char usb_status_t;
 #define USB_STAT2DIR(x)						((x>>2)&0x01)
 #define USB_STAT2ADDR(x)					((x>>2)&0x1F)
 #define USB_STAT2PPI(x)						((x>>1)&0x01)
+
+/* Buffer decriptors */
+typedef struct BDENTRY {
+	volatile unsigned char
+/*	struct {
+		unsigned BCH:2;
+		unsigned BSTALL:1;
+		unsigned DTSEN:1;
+		unsigned INCDIS:1;
+		unsigned KEN:1;
+		unsigned DTS:1;
+		unsigned UOWN:1;
+	}*/
+	BDSTAT;
+	volatile unsigned char BDCNT;
+	unsigned char *BDADDR;
+} BDentry;
+
+/* BDSTAT Bitmasks */
+#define UOWN	0x80
+#define DTS		0x40
+#define KEN		0x20
+#define INCDIS	0x10
+#define DTSEN	0x08
+#define	BSTALL	0x04
+#define BC98	0x03
 
 /* Hardware implementations */
 
@@ -186,21 +215,47 @@ typedef unsigned char usb_status_t;
 #define ROMPTR far rom
 #define ARCH_memcpy memcpypgm2ram
 
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550) || defined(__18F24J50)
+#define USB_ARCH_NUM_EP 	16
+#elif defined(__18F14K50)
+#define USB_ARCH_NUM_EP		8
+#endif
+#define USB_USTAT_FIFO_DEPTH	4
+
 #ifdef __DEBUG
 #include <stdio.h>
 #include <usart.h>
+
+#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 #define DINIT()			do {	OpenUSART(	USART_TX_INT_OFF & \
 											USART_RX_INT_OFF & \
 											USART_ASYNCH_MODE & \
 											USART_EIGHT_BIT & \
 											USART_CONT_RX & \
 											USART_BRGH_HIGH, \
-											25); /* 25 <==> 115200:8-n-1 @ 20MHz XTAL */\
+											25); /* 25 <==> 115200 @ 20MHz XTAL */\
 								stderr = _H_USART; } while(0)
+#elif defined(__18F24J50)
+#define DINIT()			do {	TRISCbits.TRISC7 = 1; \
+								TRISCbits.TRISC6 = 0; \
+								TXSTA1 = 0x24; \
+								RCSTA1 = 0x90; \
+								BAUDCON1 = 0x08; \
+								SPBRGH1 = 0;
+								SPBRG1 = 34; /* 34 <==> 114286 @ 16Mhz 0.8% error */ \
+								stderr = _H_USART; } while(0)
+#endif
+
 #define DPRINTF(...)	fprintf(stderr, (const ROM char *) __VA_ARGS__)
 #else
 #define DINIT()
 #define DPRINTF(...)
 #endif
+
+// Compiler peculiars
+#define MAIN_T	void
+
+#include "delays.h"
+#define Delay_ms(n)		Delay100TCYx( n )
 
 #endif//__USB_P18F_H__
