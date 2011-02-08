@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -56,6 +58,7 @@ or send a letter to
 #define USB_wIndexHigh			5
 #define USB_wLength				6
 #define	USB_wLengthHigh			7
+#define USB_bData				8
 
 #define USB_bmRequestType_PhaseMask		0b10000000
 #define USB_bmRequestType_H2D			0b00000000
@@ -122,6 +125,11 @@ typedef struct USB_EP_TYPE {
 #if USB_NUM_CONFIGURATIONS > 1
 #error "More than 1 configuration not supported yet"
 #endif
+
+#ifndef USB_NUM_INTERFACES
+#error "Number of interfaces not defined"
+#endif
+
 /*
 #if defined class_init
  #ifndef class_setup
@@ -135,33 +143,8 @@ typedef struct USB_EP_TYPE {
  #error "Niether Class nor Vendor initialization function defined"
 #endif
 */
-typedef struct BDENTRY {
-	volatile unsigned char
-/*	struct {
-		unsigned BCH:2;
-		unsigned BSTALL:1;
-		unsigned DTSEN:1;
-		unsigned INCDIS:1;
-		unsigned KEN:1;
-		unsigned DTS:1;
-		unsigned UOWN:1;
-	}*/
-	BDSTAT;
-	volatile unsigned char BDCNT;
-	unsigned char *BDADDR;
-} BDentry;
 
-/* BDSTAT Bitmasks */
-#define UOWN	0x80
-#define DTS		0x40
-#define KEN		0x20
-#define INCDIS	0x10
-#define DTSEN	0x08
-#define	BSTALL	0x04
-#define BC98	0x03
-
-
-extern volatile BDentry usb_bdt[32];
+extern volatile BDentry usb_bdt[2*USB_ARCH_NUM_EP];
 
 #ifndef USB_EP0_BUFFER_SIZE
 #define USB_EP0_BUFFER_SIZE 8u
@@ -186,7 +169,7 @@ typedef struct USB_DEVICE_REQUEST {
 } usb_device_request;
 
 extern usb_status_t trn_status;
-extern BDentry *bdp, *rbdp;
+extern volatile BDentry *bdp, *rbdp;
 
 //device state
 #define USB_STATE_DETACHED 0x00
@@ -199,15 +182,17 @@ extern BDentry *bdp, *rbdp;
 
 extern volatile unsigned char usb_state;
 
-extern void ust_attach();
+extern void usb_attach();
 extern void usb_detach();
 
 extern void usb_init(	ROMPTR const unsigned char *dev_descriptor, 
 						ROMPTR const unsigned char *config_descriptor, 
 						ROMPTR const unsigned char *string_descriptor, int num_string_descriptors );
 extern void usb_start( void );
+extern void usb_stop( void );
+extern void usb_register_reset_handler( usb_handler_t handler );
 extern void usb_register_sof_handler( usb_handler_t handler );
-extern void usb_register_class_setup_handler( usb_handler_t handler );
+extern void usb_register_class_setup_handler( unsigned char interface, usb_handler_t handler );
 extern void usb_register_vendor_setup_handler( usb_handler_t handler );
 extern void usb_register_endpoint(	unsigned int endpoint, usb_uep_t type,
 									unsigned int buffer_size, unsigned char *out_buffer, unsigned char *in_buffer, 
@@ -219,9 +204,9 @@ extern void usb_set_out_handler( int ep, usb_handler_t handler );
 
 extern void usb_handler( void );
 
-extern void usb_ack( BDentry * );
-extern void usb_ack_zero( BDentry * );
-extern void usb_ack_out( BDentry * );
+extern void usb_ack( volatile BDentry * );
+extern void usb_ack_zero( volatile BDentry * );
+extern void usb_ack_out( volatile BDentry * );
 extern void usb_RequestError( void );
 
 #endif /* USB_STACK_H */

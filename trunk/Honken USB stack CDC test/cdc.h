@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -47,7 +49,7 @@ void putsCDC( const char *str );
 void putaCDC( const char *array, unsigned int len );
 
 /* Write a string from program memory to the USART. */
-void putrsCDC( ROM const char *str );
+void putrsCDC( const char *str );
 
 /* Set the baud rate configuration bits for enhanced USART. */
 void baudCDC( unsigned char baudconfig );

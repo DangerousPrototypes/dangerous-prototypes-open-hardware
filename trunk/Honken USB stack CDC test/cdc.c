@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -106,7 +108,7 @@ struct cdc_ControlLineState {
 } cls;
 
 unsigned char *data, *data_end;
-BDentry *rxbdp, *txbdp;
+volatile BDentry *rxbdp, *txbdp;
 
 #pragma udata usb_data
 unsigned char cdc_acm_out_buffer[CDC_BUFFER_SIZE];
@@ -131,7 +133,7 @@ void InitCDC(void) {
 	usb_register_endpoint(1, USB_EP_INOUT, CDC_BUFFER_SIZE, cdc_acm_out_buffer, cdc_acm_in_buffer, cdc_acm_out, cdc_acm_in);
 	usb_register_endpoint(2, USB_EP_INOUT, CDC_BUFFER_SIZE, cdc_rx_buffer, cdc_tx_buffer, cdc_rx, cdc_tx);
 	usb_register_sof_handler(cdc_flush_tx);
-	usb_register_class_setup_handler(cdc_setup);
+	usb_register_class_setup_handler(0, cdc_setup);
 	usb_start();
 }
 
@@ -257,21 +259,21 @@ void cdc_acm_in( void ) {
 void cdc_rx( void ) {
 	data = rxbdp->BDADDR;
 	data_end = rxbdp->BDADDR + rxbdp->BDCNT;
-	DPRINTF("cdc_rx 0x%P bytes recv %u\t", rxbdp, rxbdp->BDCNT);
+	DPRINTF("cdc_rx 0x%p bytes recv %u\t", rxbdp, rxbdp->BDCNT);
 	DPRINTF("'%.*s'\n", (int) rxbdp->BDCNT, rxbdp->BDADDR);
 	if (0 == rxbdp->BDCNT)	usb_ack_out(rxbdp);
 }
 
 void cdc_tx( void ) {
-	DPRINTF("cdc_tx 0x%P 0x%02X bytes sent %u\n", bdp, txbdp->BDSTAT, bdp->BDCNT);
+	DPRINTF("cdc_tx 0x%p 0x%02X bytes sent %u\n", bdp, txbdp->BDSTAT, bdp->BDCNT);
 	txbdp->BDCNT = 0;
 	usb_register_sof_handler(cdc_flush_tx);
 }
 
 void cdc_flush_tx( void ) {
 	if (txbdp->BDCNT && !(txbdp->BDSTAT & UOWN)) {
-//		DPRINTF("Flush tx 0x%02X (0x%02X - ", txbdp->BDCNT, txbdp->BDSTAT);
 		usb_ack(txbdp);
+		DPRINTF("Flush  0x%p 0x%02X bytes to send %u\n", txbdp, txbdp->BDSTAT, txbdp->BDCNT);
 		usb_register_sof_handler(NULL);
 	}
 }
@@ -315,7 +317,7 @@ unsigned char getaCDC( char *buffer, unsigned char len ) {
 	if (pkt_len && data == data_end) usb_ack_out(rxbdp);	// Do not ack if we didn't recieve something in the first place
 	return pkt_len;
 }
-
+	
 /* Read a string from the CDC ACM. */
 void getsCDC( char *buffer, unsigned char len) {
 	unsigned char i;
@@ -324,15 +326,17 @@ void getsCDC( char *buffer, unsigned char len) {
 
 /* Write a byte to the USART. */
 void putcCDC( char c ) {
-	//DPRINTF("putcCDC txbdp 0x%P (0x%02X) ", txbdp, txbdp->BDSTAT);
-	// TODO: Implement thread (interrupt) safety
+	// DPRINTF("putc   0x%p 0x%02X bytes so far %u\n", txbdp, txbdp->BDSTAT, txbdp->BDCNT);
+	// TODO: Verify thread (interrupt) safety
 	while (txbdp->BDSTAT & UOWN);
 	DisableUsbInterrupts();
 	txbdp->BDADDR[txbdp->BDCNT++] = c;
 	//DPRINTF(" added '%c' bytes to send %u (0x%02X)\n", c, txbdp->BDCNT, txbdp->BDSTAT);
-	if (CDC_BUFFER_SIZE == txbdp->BDCNT)
+	if (CDC_BUFFER_SIZE == txbdp->BDCNT) {
 		DPRINTF("Buffer full ");
 		cdc_flush_tx();
+		// TODO: An extra packet of length zero needs to be sent to tell host no more data available.
+	}
 	EnableUsbInterrupts();
 }
 

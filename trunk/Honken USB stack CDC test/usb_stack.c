@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -18,43 +20,29 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 #elif defined(PIC_24F) 
 #include <p24fxxxx.h>
 #endif
-#include <string.h>
 
+#include <stddef.h>
 #include "usb_stack.h"
-
-//#undef DTSEN
-//#define DTSEN 0
 
 ROMPTR const unsigned char *usb_device_descriptor;
 ROMPTR const unsigned char *usb_config_descriptor;
 ROMPTR const unsigned char *usb_string_descriptor;
 int usb_num_string_descriptors;
+usb_handler_t reset_handler;
 usb_handler_t sof_handler;
-usb_handler_t class_setup_handler, vendor_setup_handler;
+usb_handler_t class_setup_handler[USB_NUM_INTERFACES];
+usb_handler_t vendor_setup_handler;
 
-// pic18f14k50 has only 8 endpoints
-#if defined(__18F14K50)
-usb_ep_t endpoints[8];
-#else
-usb_ep_t endpoints[16];
-#endif
+usb_ep_t endpoints[USB_ARCH_NUM_EP];
 
 /* Allocate buffers for buffer description table and the actual buffers */
 // CvD: linkscript puts it in the right memory location
 #pragma udata usb_bdt
-
-// pic18f14k50 only has max 8EPs
-#if defined(PIC_18F)
-#if defined(__18F14K50)
-volatile BDentry usb_bdt[16];		// only 8 endpoints are possible; waiting for the magic preprocessor counter :)
-#else
-volatile BDentry usb_bdt[32];			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
-#endif
-#endif
-
+volatile BDentry usb_bdt[2*USB_ARCH_NUM_EP]			// TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
 #if defined(PIC_24F)
-volatile BDentry usb_bdt[32] __attribute__((aligned(512)));	
+__attribute__((aligned(512)))
 #endif
+;
 
 #pragma udata usb_data
 /* Only claim buffer for ep 0 */
@@ -72,7 +60,7 @@ unsigned int usb_configured;
 unsigned char usb_addr_pending;
 volatile unsigned char usb_state;
 usb_status_t trn_status;					// Global since it is needed everywere
-BDentry *bdp, *rbdp;						// Dito
+volatile BDentry *bdp, *rbdp;				// Dito
 
 ROM const unsigned char *usb_desc_ptr;
 size_t usb_desc_len;
@@ -84,9 +72,9 @@ void usb_handle_transaction( void );
 void usb_handle_setup( void );
 void usb_handle_out( void );
 void usb_handle_in( void );
-void usb_handle_StandardDeviceRequest( BDentry* );
-void usb_handle_StandardInterfaceRequest( BDentry* );
-void usb_handle_StandardEndpointRequest( BDentry* );
+void usb_handle_StandardDeviceRequest( void );
+void usb_handle_StandardInterfaceRequest( void );
+void usb_handle_StandardEndpointRequest( void );
 //void usb_handle_ClassRequest( void );
 //void usb_handle_VendorRequest( void );
 void usb_RequestError( void );
@@ -94,8 +82,9 @@ void usb_RequestError( void );
 void usb_set_address( void );
 void usb_send_descriptor( void );
 
+// TODO: Make generic and move specifics into usb_p24f.h /Honken
+/*
 //implemented only for pic24f for now
-
 //attach the device to the bus, enabling the D+ pull-up
 void usb_attach()
 {
@@ -131,7 +120,7 @@ void usb_detach()
 	DisableUsb();		
 	#endif	
 };
-
+*/
 void usb_init(	ROMPTR const unsigned char *device_descriptor, 
 				ROMPTR const unsigned char *config_descriptor, 
 				ROMPTR const unsigned char *string_descriptor,
@@ -149,22 +138,18 @@ void usb_init(	ROMPTR const unsigned char *device_descriptor,
 
 	DisableUsbInterrupts();
 	DisableAllUsbInterrupts();
-	EnableAllUsbErrorInterrupts();				// Enable all errors to set flag in UIR
+	DisableAllUsbErrorInterrupts();
 
 	ClearAllUsbErrorInterruptFlags();
 	ClearAllUsbInterruptFlags();
 	
 	ConfigureUsbHardware();
 
+	reset_handler = usb_handle_reset;
 	sof_handler = NULL;
-	class_setup_handler = NULL;
 	vendor_setup_handler = NULL;
 
-#if defined(__18F14K50)					//14k50 has only 8 EPs
-	for (i=0; i<8; i++) {
-#else
-	for (i=0; i<16; i++) {
-#endif
+	for (i=0; i<USB_ARCH_NUM_EP; i++) {
 		endpoints[i].type = 0;
 		endpoints[i].buffer_size = 0;
 		endpoints[i].out_buffer = NULL;
@@ -176,11 +161,7 @@ void usb_init(	ROMPTR const unsigned char *device_descriptor,
 	usb_register_endpoint(0, USB_EP_CONTROL, USB_EP0_BUFFER_SIZE, usb_ep0_out_buf, usb_ep0_in_buf, NULL, NULL);		// Register ep0 - no handlers
 
 	/* Configure endpoints TODO: Only ep0 ? */
-#if defined(__18F14K50)					//14k50 has only 8 EPs
-	for (i=0; i<8; i++) {
-#else
-	for (i=0; i<16; i++) {
-#endif
+	for (i=0; i<USB_ARCH_NUM_EP; i++) {
 		/* Configure endpoints (USB_UEPn - registers) */
 		USB_UEP[i] = endpoints[i].type;
 		/* Configure buffer descriptors */
@@ -212,8 +193,16 @@ void usb_start( void ) {
 	EnableUsb();					// Enable USB-hardware
 	while(SingleEndedZeroIsSet());	// Busywait for initial power-up
 	DPRINTF("sucessful\n");
+	EnableAllUsbErrorInterrupts();	// Enable all errors to set flag in UIR
 	EnableUsbInterrupt(USB_STALL + USB_IDLE + USB_TRN + USB_ACTIV + USB_SOF + USB_UERR + USB_URST);
 	EnableUsbInterrupts();
+}
+
+void usb_stop( void ) {
+	DPRINTF("Stopping usb ");
+	DisableUsbInterrupts();
+	DisableUsb();
+	DPRINTF("detached\n");
 }
 
 void usb_handler( void ) {
@@ -221,7 +210,7 @@ void usb_handler( void ) {
 		usb_handle_error();
 		ClearUsbInterruptFlag(USB_UERR);
 	} else if (USB_RESET_FLAG) {
-		usb_handle_reset();
+		reset_handler();
 		ClearUsbInterruptFlag(USB_URST);
 	} else if (USB_ACTIVITY_FLAG) {
 		/* Activity - unsuspend */
@@ -249,9 +238,9 @@ void usb_handler( void ) {
 	} else {
 		//process all pending transactions
 		while(USB_TRANSACTION_FLAG) {
-		usb_handle_transaction();
-		ClearUsbInterruptFlag(USB_TRN);	
-		}			// Side effect: advance USTAT Fifo
+			usb_handle_transaction();
+			ClearUsbInterruptFlag(USB_TRN);		// Side effect: advance USTAT Fifo
+		}
 	}
 }
 
@@ -273,28 +262,11 @@ void usb_handle_reset( void ) {
 	usb_configured = 0x00;
 	usb_addr_pending = 0x00;
 
-	ClearUsbInterruptFlag(USB_TRN);		// Advance USTAT FIFO four times to clear
-	ClearUsbInterruptFlag(USB_TRN);
-	ClearUsbInterruptFlag(USB_TRN);
-	ClearUsbInterruptFlag(USB_TRN);
-	USB_UEP0 = 0;				// Disable all endpoints
-	USB_UEP1 = 0;
-	USB_UEP2 = 0;
-	USB_UEP3 = 0;
-	USB_UEP4 = 0;
-	USB_UEP5 = 0;
-	USB_UEP6 = 0;
-	USB_UEP7 = 0;
-#if !defined __18F14K50
-	USB_UEP8 = 0;
-	USB_UEP9 = 0;
-	USB_UEP10 = 0;
-	USB_UEP11 = 0;
-	USB_UEP12 = 0;
-	USB_UEP13 = 0;
-	USB_UEP14 = 0;
-	USB_UEP15 = 0;
-#endif
+	for (i=0; i<USB_USTAT_FIFO_DEPTH; i++)
+		ClearUsbInterruptFlag(USB_TRN);		// Advance USTAT FIFO to clear
+
+	for (i=0; i<USB_ARCH_NUM_EP; i++)
+		USB_UEP[i] = 0;				// Disable all endpoints
 
 	SetUsbAddress(0);			// After reset we don't have an address
 	ClearAllUsbInterruptFlags();
@@ -302,11 +274,7 @@ void usb_handle_reset( void ) {
 
 	// TODO: Only configure ep0 ?
 /* Configure endpoints (USB_UEPn - registers) */
-#if defined(__18F14K50)
-	for (i=0; i<8; i++) {
-#else
-	for (i=0; i<16; i++) {
-#endif
+	for (i=0; i<USB_ARCH_NUM_EP; i++) {
 		USB_UEP[i] = endpoints[i].type;
 		/* Configure buffer descriptors */
 #if USB_PP_BUF_MODE == 0
@@ -356,23 +324,29 @@ void usb_handle_setup( void ) {
 	case USB_bmRequestType_Standard:
 		switch (bdp->BDADDR[USB_bmRequestType] & USB_bmRequestType_RecipientMask) {
 		case USB_bmRequestType_Device:
-			usb_handle_StandardDeviceRequest( bdp );
+			usb_handle_StandardDeviceRequest();
 			break;
 		case USB_bmRequestType_Interface:
-			usb_handle_StandardInterfaceRequest( bdp );
+			usb_handle_StandardInterfaceRequest();
 			break;
 		case USB_bmRequestType_Endpoint:
-			usb_handle_StandardEndpointRequest( bdp );
+			usb_handle_StandardEndpointRequest();
 			break;
 		default:
 			usb_RequestError();
 		}
 		break;
 	case USB_bmRequestType_Class:
-		if (class_setup_handler) class_setup_handler();
+		if (USB_NUM_INTERFACES > bdp->BDADDR[USB_bInterface] && class_setup_handler[bdp->BDADDR[USB_bInterface]])
+			class_setup_handler[bdp->BDADDR[USB_bInterface]]();
+		else
+			usb_RequestError();
 		break;
 	case USB_bmRequestType_Vendor:
-		if (vendor_setup_handler) class_setup_handler();
+		if (vendor_setup_handler)
+			vendor_setup_handler();
+		else
+			usb_RequestError();
 		break;
 	default:
 		usb_RequestError();
@@ -384,7 +358,7 @@ void usb_handle_setup( void ) {
 	EnablePacketTransfer();
 }
 
-void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
+void usb_handle_StandardDeviceRequest( void ) {
 	unsigned char *packet = bdp->BDADDR;
 	int i;
 	switch(packet[USB_bRequest]) {
@@ -478,11 +452,7 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 		if (USB_NUM_CONFIGURATIONS >= packet[USB_wValue]) {
 			// TODO: Support multiple configurations
 			/* Configure endpoints (USB_UEPn - registers) */
-#if defined(__18F14K50)
-			for (i=0; i<8; i++) {
-#else
-			for (i=0; i<16; i++) {
-#endif
+			for (i=0; i<USB_ARCH_NUM_EP; i++) {
 				USB_UEP[i] = endpoints[i].type;
 				/* Configure buffer descriptors */
 #if USB_PP_BUF_MODE == 0
@@ -508,7 +478,7 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 	}
 }
 
-void usb_handle_StandardInterfaceRequest( BDentry *bdp ) {
+void usb_handle_StandardInterfaceRequest( void ) {
 	unsigned char *packet = bdp->BDADDR;
 
 	switch (packet[USB_bRequest]) {
@@ -545,11 +515,11 @@ void usb_handle_StandardInterfaceRequest( BDentry *bdp ) {
 	}
 }
 
-void usb_handle_StandardEndpointRequest( BDentry *bdp ) {
+void usb_handle_StandardEndpointRequest( void ) {
 	unsigned char *packet;
 	unsigned char epnum;
 	unsigned char dir;
-	BDentry	*epbd;
+	volatile BDentry	*epbd;
 
 	packet = bdp->BDADDR;
 
@@ -621,12 +591,21 @@ void usb_handle_out( void ) {
 	}
 }
 
+void usb_register_reset_handler( usb_handler_t handler ) {
+	if (handler)
+		reset_handler = handler;
+	else
+		reset_handler = &usb_handle_reset;
+}
+
 void usb_register_sof_handler( usb_handler_t handler ) {
 	sof_handler = handler;
 }
 
-void usb_register_class_setup_handler( usb_handler_t handler ) {
-	class_setup_handler = handler;
+void usb_register_class_setup_handler( unsigned char iface, usb_handler_t handler ) {
+	if (USB_NUM_INTERFACES > iface)
+		class_setup_handler[iface] = handler;
+	// Else silently ignore
 }
 
 void usb_register_vendor_setup_handler( usb_handler_t handler ) {
@@ -652,16 +631,16 @@ void usb_set_out_handler(int ep, usb_handler_t out_handler) {
 	endpoints[ep].out_handler = out_handler;
 }
 
-void usb_ack( BDentry *bd ) {
+void usb_ack( volatile BDentry *bd ) {
 	bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;		// TODO: Accomodate for >=256 byte buffers
 }
 
-void usb_ack_zero( BDentry *bd ) {
+void usb_ack_zero( volatile BDentry *bd ) {
 	bd->BDCNT = 0;
 	bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
 }
 
-void usb_ack_out( BDentry *bd ) {
+void usb_ack_out( volatile BDentry *bd ) {
 	bd->BDCNT = USB_MAX_BUFFER_SIZE;	// TODO: Fix correct size for current EP
 	bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
 }
@@ -695,12 +674,10 @@ void usb_set_address( void ) {
 
 void usb_send_descriptor( void ) {
 	unsigned int i;
-	BDentry *bd;
 	size_t packet_len;
 	if (usb_desc_len) {
 		packet_len = (usb_desc_len < USB_EP0_BUFFER_SIZE) ? usb_desc_len : USB_EP0_BUFFER_SIZE;		// Allways on EP0 so use MAX_BUFFER_SIZE
-		bd = &usb_bdt[USB_CALC_BD(0, USB_DIR_IN, 0x01 ^ ((trn_status & 0x02)>>1))];
-		DPRINTF("Send bd: 0x%p dst: 0x%p src: 0x%HP len: %u Data: ", rbdp, rbdp->BDADDR, usb_desc_ptr, packet_len);
+		DPRINTF("Send bd: 0x%p dst: 0x%p src: 0x%p len: %u Data: ", rbdp, rbdp->BDADDR, usb_desc_ptr, packet_len);
 		//ARCH_memcpy(rbdp->BDADDR, usb_desc_ptr, packet_len);
 		for (i=0; i<packet_len; i++) {
 			rbdp->BDADDR[i] = usb_desc_ptr[i];

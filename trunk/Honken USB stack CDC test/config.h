@@ -113,9 +113,9 @@
      #pragma config WDTEN = OFF       
 
     //#ifdef XTAL_20MHZ
-     #pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
+     //#pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
 	//#else
-     //#pragma config PLLDIV = 4           //Divide by 4 (16 MHz oscillator input) 
+     #pragma config PLLDIV = 4           //Divide by 4 (16 MHz oscillator input) 
 	//#endif
 
      #pragma config STVREN = ON         
@@ -145,7 +145,7 @@
 #if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
 	#include <p24fxxxx.h>
 	_CONFIG1( JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2) 
-	_CONFIG2( 0xF7FF & IESO_OFF & FCKSM_CSDCMD & POSCMOD_HS & FNOSC_PRIPLL & PLLDIV_DIV3 & IOL1WAY_ON & PLL_96MHZ_ON)
+	_CONFIG2( IESO_OFF & PLLDIV_DIV3 & PLL_96MHZ_ON & FNOSC_PRIPLL & FCKSM_CSDCMD & OSCIOFNC_OFF & IOL1WAY_OFF & POSCMOD_HS)
 #endif
 
 #endif

@@ -15,9 +15,12 @@ typedef unsigned long u32;
 */
 #define INVALID	0xFF
 
+#ifndef FALSE
 #define FALSE 	0
+#endif
+#ifndef TRUE
 #define TRUE	(!FALSE)
-
+#endif
 // =================== GLOBAL HEADERS
 #include <stdio.h>
 #include <stdlib.h>

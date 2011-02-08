@@ -1,4 +1,6 @@
 /*
+$Id$
+
 This work is licensed under the Creative Commons Attribution 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by/3.0/
 or send a letter to
@@ -12,7 +14,7 @@ or send a letter to
 
 Revision:
 7 01/11/2011
-	-	Commented USB_VID and USB_PID so that the #error on the
+	-	Commented USB_VID
 		usb_stack.h will be triggered once this two have no values
 
 */
@@ -36,11 +38,11 @@ products.
 
 
 // TODO: Uncomment and provide the necessary PID,VID
-//#define USB_VID 0x
-//#define USB_PID 0x
+#define USB_VID
+#define USB_PID
 
 
-#define USB_DEV 0x0002
+#define USB_DEV 0x0400
 
 /* Power source setting
  *  _BUS_  - MCU is powered from USB connector
