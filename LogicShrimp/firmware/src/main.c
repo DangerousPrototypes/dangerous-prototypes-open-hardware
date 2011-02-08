@@ -671,7 +671,7 @@ void InterruptHandlerLow(void){
 
 //We didn't use the low priority interrupts, 
 // but you could add your own code here
-#pragma interrupthigh InterruptHandlerHigh
+#pragma interrupt InterruptHandlerHigh
 void InterruptHandlerHigh(void){
 
 	if(PIR1bits.TMR1IF && PIE1bits.TMR1IE){

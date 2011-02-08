@@ -122,7 +122,7 @@ file_019=globals.h
 file_020=hal_sram.h
 file_021=SUMP.h
 file_022=hal_logicshrimp.h
-file_023=C:\Microchip Solutions\usb-pov-toy-interrupt\rm18f24j50_g.lkr
+file_023=rm18f24j50_g.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
 suite_state=
