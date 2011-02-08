@@ -379,9 +379,9 @@ unsigned char irsService(void){
 
 						CCPR1L =(DUTY>>1);//upper 8 bits of duty cycle, 50% of period by binary division
 						if((DUTY& 0b1)!=0)//if LSB is set, set bit 1 in CCP1CON
-							CCP1CON = 0b00101100 ; //5-4 two LSB of duty, 3-0 set PWM
+							CCP1CON |= 0b00100000 ; //5-4 two LSB of duty, 3-0 set PWM
 						else
-							CCP1CON = 0b00001100 ; //5-4 two LSB of duty, 3-0 set PWM
+							CCP1CON &=(~0b00100000) ; //5-4 two LSB of duty, 3-0 set PWM
 
 						T2CON = 0b00000101; //enable timer again, 4x prescaler				
 						break;
