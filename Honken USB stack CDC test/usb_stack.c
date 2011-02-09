@@ -144,6 +144,7 @@ void usb_init(	ROMPTR const unsigned char *device_descriptor,
 	ClearAllUsbInterruptFlags();
 	
 	ConfigureUsbHardware();
+	EnablePacketTransfer();
 
 	reset_handler = usb_handle_reset;
 	sof_handler = NULL;
@@ -220,8 +221,8 @@ void usb_handler( void ) {
 	} else if (USB_IDLE_FLAG) {
 		/* Idle - suspend */
 		SuspendUsb();
-		usb_low_power_request();
 		ClearUsbInterruptFlag(USB_IDLE);
+		usb_low_power_request();
 		DPRINTF("Idle\n");
 	} else if (USB_STALL_FLAG) {
 		/* Stall detected
@@ -298,7 +299,9 @@ void usb_handle_transaction( void ) {
 
 	trn_status = GetUsbTransaction();
 	bdp  = &usb_bdt[USB_USTAT2BD(trn_status)];
-	rbdp = &usb_bdt[USB_USTAT2BD(trn_status | 0x04)];		// All replies in IN direction
+	rbdp = &usb_bdt[USB_CALC_BD(USB_STAT2EP(trn_status),
+								USB_DIR_IN,
+								USB_PP_EVEN)];		// All replies in IN direction, TODO: Accomodate Ping Pong buffers
 
 //	DPRINTF("USTAT: 0x%02X PID 0x%02X DATA%c ", trn_status, bdp->BDSTAT % USB_TOKEN_Mask, (bdp->BDSTAT & 0x40)?'1':'0');
 	switch (bdp->BDSTAT & USB_TOKEN_Mask) {
@@ -361,6 +364,7 @@ void usb_handle_setup( void ) {
 void usb_handle_StandardDeviceRequest( void ) {
 	unsigned char *packet = bdp->BDADDR;
 	int i;
+	DPRINTF("0x%02X ", packet[USB_bRequest]);
 	switch(packet[USB_bRequest]) {
 	case USB_REQUEST_GET_STATUS:
 		rbdp->BDADDR[0] = usb_device_status & 0xFF;
@@ -373,7 +377,7 @@ void usb_handle_StandardDeviceRequest( void ) {
 		if (0x01u == packet[USB_wValue])	{	// TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
 			usb_device_status &= ~0x0002;
 			rbdp->BDCNT = 0;
-			rbdp->BDSTAT = 0xC8;
+			rbdp->BDSTAT = UOWN + DTS + DTSEN;
 			DPRINTF("DEV Clear_Feature 0x%02X\n", packet[USB_wValue]);
 		} else
 			usb_RequestError();
@@ -382,7 +386,7 @@ void usb_handle_StandardDeviceRequest( void ) {
 		if (0x01u == packet[USB_wValue])	{	// TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
 			usb_device_status |= 0x0002;
 			rbdp->BDCNT = 0;
-			rbdp->BDSTAT = 0xC8;
+			rbdp->BDSTAT = UOWN + DTS + DTSEN;
 			DPRINTF("DEV Set_Feature 0x%02X\n", packet[USB_wValue]);
 		} else
 			usb_RequestError();
@@ -391,13 +395,14 @@ void usb_handle_StandardDeviceRequest( void ) {
 		if (0x00u == packet[USB_wValueHigh] && 0x7Fu >= packet[USB_wValue]) {
 			usb_addr_pending = packet[USB_wValue];
 			rbdp->BDCNT = 0;
-			rbdp->BDSTAT = 0xC8;
+			rbdp->BDSTAT = UOWN + DTS + DTSEN;
 			usb_set_in_handler(0, usb_set_address);
 			DPRINTF("DEV Set address 0x%02X\n", usb_addr_pending);
 		} else
 			usb_RequestError();
 		break;
 	case USB_REQUEST_GET_DESCRIPTOR:
+		DPRINTF("0x%02X ", packet[USB_bDescriptorType]);
 		switch (packet[USB_bDescriptorType]) {
 		case USB_DEVICE_DESCRIPTOR_TYPE:
 			usb_desc_ptr = usb_device_descriptor;
@@ -486,7 +491,7 @@ void usb_handle_StandardInterfaceRequest( void ) {
 		rbdp->BDADDR[0] = 0x00;
 		rbdp->BDADDR[1] = 0x00;
 		rbdp->BDCNT = 2;
-		rbdp->BDSTAT = 0xC8;
+		rbdp->BDSTAT = UOWN + DTS + DTSEN;
 		DPRINTF("IF Get_Status\n");
 		break;
 	case USB_REQUEST_GET_INTERFACE:

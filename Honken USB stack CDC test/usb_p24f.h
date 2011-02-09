@@ -104,11 +104,11 @@ typedef unsigned char usb_uep_t;
 #define ResetPPbuffers()					do {U1CONbits.PPBRST = 1; U1CONbits.PPBRST=0;} while(0)
 #define SingleEndedZeroIsSet()				(U1CONbits.SE0)
 #define EnablePacketTransfer()				U1CONbits.PKTDIS = 0
-#define EnableUsb()							U1CONbits.USBEN = 1
+#define EnableUsb()							do {U1CONbits.USBEN = 1;} while(!U1CONbits.USBEN)
 #define DisableUsb()						U1CONbits.USBEN = 0
 #define SignalResume()						do {U1CONbits.RESUME = 1; delay_ms(10); U1CONbits.RESUME = 0;} while(0)
-#define SuspendUsb()						U1PWRCbits.USUSPND = 1
-#define WakeupUsb()							do {U1PWRCbits.USUSPND = 0; while(USB_ACTIVITY_FLAG){USB_ACTIVITY_FLAG = 0;}} while(0)
+#define SuspendUsb()						/* U1PWRCbits.USUSPND = 1 Silicon errata */
+#define WakeupUsb()							/* do {U1PWRCbits.USUSPND = 0; while(USB_ACTIVITY_FLAG){USB_ACTIVITY_FLAG = 0;}} while(0) silicon errata */
 
 /* UADDR */
 #define SetUsbAddress(x)					(U1ADDR = (x))
@@ -117,10 +117,10 @@ typedef unsigned char usb_uep_t;
 /* USTAT */
 typedef unsigned char usb_status_t;
 #define GetUsbTransaction()					(U1STAT)
-#define USB_STAT2EP(x)						((x>>3)&0x0F)
-#define USB_STAT2DIR(x)						((x>>2)&0x01)
+#define USB_STAT2EP(x)						((x>>4)&0x0F)
+#define USB_STAT2DIR(x)						((x>>3)&0x01)
 #define USB_STAT2ADDR(x)					((x>>2)&0x1F)
-#define USB_STAT2PPI(x)						((x>>1)&0x01)
+#define USB_STAT2PPI(x)						((x>>2)&0x01)
 
 /* Buffer descriptors */
 typedef struct BDENTRY {
@@ -178,7 +178,7 @@ typedef struct BDENTRY {
 #if defined USB_BUS_POWERED
 #ifndef usb_low_power_request
 /* Default low power mode is DUD */
-#define usb_low_power_request() Nop()
+#define usb_low_power_request() Nop() /* Sleep() */
 #endif
 #ifndef usb_low_power_resume
 #define usb_low_power_resume() Nop()
@@ -201,16 +201,16 @@ typedef struct BDENTRY {
 
 /* PingPong buffer descriptor table index calculations */
 #if USB_PP_BUF_MODE == 0
-#define USB_USTAT2BD(X)				( (X)/4 )
+#define USB_USTAT2BD(X)				( (X)>>3 )
 #define USB_CALC_BD(ep, dir, sync)	( 2*(ep)+(dir) )
 #elif USB_PP_BUF_MODE == 1
-#define USB_USTAT2BD(X)				( ((X)>2)? (X)/4+1 : (X)/2 )
+#define USB_USTAT2BD(X)				( ((X)>>3)? (X)>>3+1 : (X)>>2 )
 #define USB_CALC_BD(ep, dir, sync)	( ((ep)==0 && (dir)==0)? (sync) : 2*(ep)+(dir) )
 #elif USB_PP_BUF_MODE == 2
-#define USB_USTAT2BD(X)				( (X)/2 )
+#define USB_USTAT2BD(X)				( (X)>>2 )
 #define USB_CALC_BD(ep, dir, sync)	( 4*(ep)+2*(dir)+(sync) )
 #elif USB_PP_BUF_MODE == 3
-#define USB_USTAT2BD(X)				( ((X)>4)? (X)/2-2 : (X)/4 )
+#define USB_USTAT2BD(X)				( ((X)>>4)? (X)>>2-2 : (X)>>3 )
 #define USB_CALC_BD(ep, dir, sync)	( ((ep)==0)? (dir) : 4*(ep)+2*(dir)+(sync)-2 )
 #else
 #error "USB_PP_BUF_MODE outside scope."
@@ -219,7 +219,7 @@ typedef struct BDENTRY {
 #define ConfigureUsbHardware()		do { \
 										U1CNFG1 = 0x0000 | USB_PP_BUF_MODE; \
 										U1CNFG2 = USB_U1CNFG2_UTRDIS_VALUE; \
-										U1BDTP1 = (unsigned int) usb_bdt/256; \
+										U1BDTP1 = ((unsigned int) &usb_bdt)/256; \
 										U1PWRCbits.USBPWR = 1; \
 										U1OTGCON = USB_U1OTGCON_DPPULUP_VALUE | \
 												   USB_U1OTGCON_DMPULUP_VALUE; \

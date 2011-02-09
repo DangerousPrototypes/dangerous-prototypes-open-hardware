@@ -56,7 +56,8 @@ MAIN_T main( void )
 	init();				// Init the hardware platform
 	DINIT();			// Init debug messages on stderr (if debug build selected)
 	DPRINTF("\n\nCDC Echo test program\n");
-
+	DPRINTF("\tRCON 0x%04hX\n", RCON);
+	RCON = 0;
 	InitCDC();			// Init the CDC/ACM driver, which in turn start the usb stack
 	USB_LED(1);			// Turn on USB LED, if there is one :-)
 
@@ -126,12 +127,14 @@ void init(void)
 #if defined(__PIC24FJ256GB106__) || defined(__PIC24FJ256GB110__)
     CLKDIV = 0x0000;		// Set PLL prescaler (1:1) 32 Mhz Fcy
 	AD1PCFG = 0xFFFF;		// Default all pins to digital
-	OSCCONbits.SOSCEN=0;	// Disable secondary oscillator
+//	OSCCONbits.SOSCEN=0;	// Disable secondary oscillator
+	__builtin_write_OSCCONL(0x00);	// Disable secondary oscillator
 
 	TRISBbits.TRISB8 = 0;	// MODE LED on BPv4
 	TRISBbits.TRISB10 = 0;	// USB LED on BDv4
 
-	IPC21bits.USB1IP = 4;
+	IPC21bits.USB1IP = 7;
+	INTCON1bits.NSTDIS = 1;
 #endif
 
 }
