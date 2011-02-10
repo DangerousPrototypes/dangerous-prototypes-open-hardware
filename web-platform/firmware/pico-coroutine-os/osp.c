@@ -14,7 +14,7 @@
 
 
 typedef enum { 
-    Clear = 0x0000, Running = 0x0001, Ready = 0x0002, Block = 0x0004, 
+    Clear = 0x0000, Running = 0x0001, Ready = 0x0002, Block = 0x0004
 }os_tstate;
 
 typedef struct {
