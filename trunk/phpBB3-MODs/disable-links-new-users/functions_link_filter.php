@@ -3,6 +3,9 @@
 *
 * functions_link_filter.php
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* Modified by Ian Lesnet (http://dangerousprototypes.com)
+* Documentation and install info here: 
+*  http://dangerousprototypes.com/docs/PhpBB3_MOD:_Disable_links_for_new_users
 *
 */
 
