@@ -206,11 +206,15 @@ function link_filter_check()
 	return $this->filter_user;
 }
 
+/**
+* 	check for spammers who come back later and  try to post (sleeper agents, or aged accounts)
+* 
+*/
 function link_filter_sleeper_check(){
 	global $user;
 	
 	//check for spammers who come back later and  try to post (sleeper agents, or aged accounts)
-	if(($this->sleeper_check) && ($user->data['user_posts']==0) && ($user->data['user_regdate']<=((time())-(86400*$this->minimum_days)))){
+	if(($this->sleeper_check) && ($user->data['user_id']!=ANONYMOUS) && ($user->data['user_posts']==0) && ($user->data['user_regdate']<=((time())-(86400*$this->minimum_days)))){
 		$this->found_sleeper=$this->found_stuff=true;
 		
 		//If there isn't a phpbb3 sleeper agent message add one
@@ -368,7 +372,11 @@ function link_filter_test($no_link_message){
 }
 
 function link_filter_purge_zombies(){
-	global $db, $user;
+	global $db, $config;
+	
+	if($this->load_values_from_db){ //use MOD setting from database
+		$this->minimum_days=$config['links_after_num_days'];
+	}
 	
 	if($this->minimum_days<1) return; //don't delete if there is no days setting
 
@@ -398,18 +406,19 @@ function link_filter_purge_zombies(){
 	//this would be simpler with a SQL statment, but recycling the ppBB prune functon makes it more robust
 	while ($row = $db->sql_fetchrow($result))
 	{
+
 		// Do not prune bots and the user currently pruning.
-		if ($row['user_id'] != $user->data['user_id'] && !in_array($row['user_id'], $bot_ids))
+		if (!in_array($row['user_id'], $bot_ids))
 		{
-			//user_delete('remove', $row['user_id']);//delete the user and all posts (there should be none though)
-			user_delete('retain', $row['user_id'],$row['username']); //delete users but not posts, safer just in case
+			user_delete('remove', $row['user_id']);//delete the user and all posts (there should be none though)
+			//user_delete('retain', $row['user_id'],$row['username']); //delete users but not posts, safer just in case
 			$usernames[]=$row['username'];//keep the list for the log
 		}
 	}
 	$db->sql_freeresult($result);
 	
 	//add log message
-	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', implode(', ', $usernames));
+	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by Disable links for new users MOD:'.implode(', ', $usernames));
 
 }
 
