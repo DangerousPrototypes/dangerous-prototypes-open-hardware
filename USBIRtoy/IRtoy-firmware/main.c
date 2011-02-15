@@ -384,8 +384,8 @@ void SetupBoard(void){
 
 	//setup IR RX interrupt on RB32 or RB4 (see HardwareProfile.h)
 	IRRX_PULLUP=1; 	//disable port b pullups (0=enable)
-	IRRX_LAT=0;		//ground
-	IRRX_TRIS=0;	//output
+	IRRX_LAT&=(~0b11101001);		//ground unused port B pins
+	IRRX_TRIS&=(~0b11101001);	//output unused port B pins
 	IRRX_TRIS|=IRRX_PIN; //direction to input
 	IRRX_IF = 0;    //Reset the RB Port Change Interrupt Flag bit   
 	IRRX_IE = 0;  	//startup in IR_DECODER mode, enable IR RX interrupt
