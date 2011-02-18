@@ -24,7 +24,7 @@
 #ifdef	USE_LED
 #define LED				LATC
 #define LED_TRIS		TRISC
-#define LED_PIN			2
+#define LED_PIN			6
 #endif
 ;-----------------------------------------------------------------------------
 ; Jumpers
