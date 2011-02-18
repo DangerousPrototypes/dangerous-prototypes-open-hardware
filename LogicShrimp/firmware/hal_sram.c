@@ -127,13 +127,9 @@ SCLK=PORT_OFF; //low
 
 
 //////////////////////////////// EXPOSED FUNCTIONS /////////////////////////
-void hal_sram_parallelInit(void)
+unsigned char hal_sram_parallelInit(void)
 {
-#define DEBUG_SRAM_INIT // uncomment this line to abort test
-
-#ifdef DEBUG_SRAM_INIT
 u8 * ptr_array;
-#endif
 
 //setup for control and IO from uC
 hal_sram_spiInit();
@@ -161,15 +157,14 @@ hal_sram_ParallelRWByte(SRAM_CMD_RDSR);
 ptr_array=hal_sram_ParallelRWByte(0xFF);
 set_all_cs(PORT_ON); // cs high
 
-#ifdef DEBUG_SRAM_INIT
-// FOR DEBUGGING PURPOSE ONLY!!
 if((ptr_array[0]!=0x41)||(ptr_array[1]!=0x41)||(ptr_array[2]!=0x41)||(ptr_array[3]!=0x41))
 	{
-	while(1){HAL_LOGICSHRIMP_LED_LAT^=1;} // toggle indefinitely
+	return 1; //error, return 1
 	}
-#endif
 
-#undef DEBUG_SRAM_INIT
+//test ok
+return 0;
+
 }
 
 
