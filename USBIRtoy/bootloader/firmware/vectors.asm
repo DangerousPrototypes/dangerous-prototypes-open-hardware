@@ -53,9 +53,9 @@ pre_main
 ;-----------------------------------------------------------------------------
 ;--- BOOTLOADER External Entry Point                         
 	org	0x0016
- if USE_EEPROM_MARK 
+ #if USE_EEPROM_MARK 
 	bra	bootloader_soft_reset
- endif        
+ #endif        
         
         ;--- HIGH Interrupt Vector
 	org	0x0018
