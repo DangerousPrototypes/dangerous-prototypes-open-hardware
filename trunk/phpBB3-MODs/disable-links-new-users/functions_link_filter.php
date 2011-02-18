@@ -21,16 +21,11 @@ class link_filter{
 
 	//--settings variables--//
 	// An array of no-nos. Add whatever you need...
-   private $no_link_strings=array('http://', 'www.', '.com', '.net', '.org', '.uk', '.ly', '.me', '.ru', '.biz', '.info', 'dot com', 'dot net', 'dot org', 'dotcom', 'dotnet', 'dotorg', '_com', '_org', '_co_uk', '_ru', 'dot ru');
-
+	private $no_link_strings=array();//('http://', 'www.', '.com', '.net', '.org', '.uk', '.ly', '.me', '.ru', '.biz', '.info', 'dot com', 'dot net', 'dot org', 'dotcom', 'dotnet', 'dotorg', '_com', '_org', '_co_uk', '_ru', 'dot ru');
 
 	//a secondary spam words filter
-   private $no_word_strings=array('porn', 'xxx', 'interracial', 'sex','gangbang','slut', 'cum', 'penis','orgy', 'girlfriend', 
-							'vagina', 'cunt', 'bitch', 'fuck', 'dick', 'hottest','suck', 'pussy',
-							'viagra', 'casino', 'mortgage', 'debt','poker','games','vioxx', 'xanax','blackjack',
-							'all natural', 'buy direct', 'home business', 'premium', 'betting', 'players', 'gamble', 'gambling',
-							//'thanks for sharing',  'new member', 'nice web site', 'nice site',
-							);
+	private $no_word_strings=array();
+   
 	private $show_trigger_word=true; //show the user the word that triggered the error
 	
 	//URLS to ALLOW always. In additon to own-site urls
