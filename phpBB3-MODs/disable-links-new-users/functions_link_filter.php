@@ -61,6 +61,8 @@ class link_filter{
 	
 	private $sleeper_check=true; //users with 0 posts who try to post after minimum_days will be prohibited
 	
+	private $first_post_length=73;//a minimum characters for the first post. enter 0 to disable
+	
 	//-- Reporting variables--//
 	public $filter_user=false; //we decided to filter this user (they met our criteria)
 	
@@ -160,6 +162,15 @@ function link_filter_test_post($message, $subject){
 	
 	//do we need to check this user?
 	if(!$this->link_filter_check()) return false; //don't check, no error
+	
+	if(($user->data['user_posts']==0)&& (strlen($message)<$this->first_post_length)){//first post, check length
+		//If there isn't a phpbb3 message add one
+		if (empty($user->lang['NO_LINK_TOO_SHORT'])){
+			$user->lang['NO_LINK_TOO_SHORT']='Antispam: Sorry, your first post needs to be just a little longer.';
+		}
+		$this->error[]=$user->lang['NO_LINK_TOO_SHORT'].' '.$this->link_filter_add_help_link();
+		return true;
+	}
 	
 	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
 
