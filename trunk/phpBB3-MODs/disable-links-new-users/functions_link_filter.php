@@ -158,7 +158,7 @@ function link_filter_test_post($message, $subject){
 	//do we need to check this user?
 	if(!$this->link_filter_check()) return false; //don't check, no error
 	
-	if(($user->data['user_posts']==0)&& (strlen($message)<$this->first_post_length)){//first post, check length
+	if( (($user->data['user_posts']==0)||($user->data['user_type']==USER_IGNORE)||($user->data['user_id']==ANONYMOUS))&& (strlen($message)<$this->first_post_length)){//first post, check length
 		//If there isn't a phpbb3 message add one
 		if (empty($user->lang['NO_LINK_TOO_SHORT'])){
 			$user->lang['NO_LINK_TOO_SHORT']='Antispam: Sorry, your first post needs to be just a little longer.';
