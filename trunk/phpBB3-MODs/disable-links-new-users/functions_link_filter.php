@@ -93,10 +93,10 @@ function link_filter_test_profile(){
 }	
 
 /**
-*  Test a submitted signiture for links and words
+*  Test a submitted signature for links and words
 *  Returns true if bad things detected
 */
-function link_filter_test_signiture($signature){
+function link_filter_test_signature($signature){
 	global $user;
 
 	//do we need to check this user?
