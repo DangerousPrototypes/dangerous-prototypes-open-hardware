@@ -43,9 +43,9 @@
 ;-----------------------------------------------------------------------------
 ; Configuration Bits 
 ;-----------------------------------------------------------------------------
-	CONFIG	PLLDIV = 4			; OSC/4 for 16MHz, OSC/5 for 20MHz
+	CONFIG	PLLDIV = 5			; OSC/4 for 16MHz, OSC/5 for 20MHz
 	CONFIG  CPUDIV = OSC1	; CPU_clk = PLL/2
-	CONFIG 	OSC = HSPLL			; HS osc PLL
+	CONFIG 	OSC = ECPLL			; HS osc PLL
 	CONFIG  FCMEN = ON			; Fail Safe Clock Monitor
 	CONFIG  IESO = OFF			; Int/Ext switchover mode
 	CONFIG  WDTEN = OFF			; WatchDog Timer
@@ -119,8 +119,8 @@ main
 	rcall pinsetup ;analog pins, PROG_B low
 	; Check bootloader enable jumper
 #ifdef USE_JP_BOOTLOADER_EN
-	;clrf	PORTB		;PORTB low
-	;clrf	TRISB		;TRISB output
+	bcf		TRISB, 7 ;trisB7 to output
+	bcf 	LATB,7 ;latb7 to low, holds B6 low if jumper connected
 	bcf		INTCON2, RBPU ;clear RBPU to enable B pullups
 	bsf		TRISB, 6	;PGC to input
 	nop
