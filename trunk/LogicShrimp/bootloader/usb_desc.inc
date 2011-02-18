@@ -19,10 +19,10 @@
 #define USE_PROD_STRING		0	; 1 - Support for Product string descriptor
 ;-----------------------------------------------------------------------------
 #ifndef BOOTLOADER_VID
-#define	BOOTLOADER_VID	0x04D8  	; MUST BE VALID Vendor ID
+#define	BOOTLOADER_VID	0x0000  	; MUST BE VALID Vendor ID
 #endif
 #ifndef BOOTLOADER_PID
-#define	BOOTLOADER_PID	0xFA96 		; MUST BE VALID Product ID
+#define	BOOTLOADER_PID	0x0000 		; MUST BE VALID Product ID
 #endif
 
 #define DSC_DEV			0x01
