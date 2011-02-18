@@ -82,7 +82,7 @@ void main(void){
 					b[1]='1';
 					b[2]='F';
 					b[3]='0';//FIRMWARE_VERSION_L;
-					b[4]='0';//FIRMWARE_VERSION_L;
+					b[4]='1';//FIRMWARE_VERSION_L;
 					b[5]='B';//FIRMWARE_VERSION_L;
 					b[6]='F';//FIRMWARE_VERSION_L;
 					b[7]='F';//FIRMWARE_VERSION_L;
@@ -442,7 +442,7 @@ BOOL USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, WORD size){
     return TRUE; 
 }
 
-/*
+
 #define REMAPPED_RESET_VECTOR_ADDRESS			0x800
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
@@ -454,7 +454,7 @@ void InterruptHandlerLow(void){}
 
 //We didn't use the low priority interrupts, 
 // but you could add your own code here
-#pragma interrupthigh InterruptHandlerHigh
+#pragma interrupt InterruptHandlerHigh
 void InterruptHandlerHigh(void){}
 
 //these statements remap the vector to our function
@@ -484,5 +484,3 @@ void High_ISR (void){
 void Low_ISR (void){
      _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
-
-*/
