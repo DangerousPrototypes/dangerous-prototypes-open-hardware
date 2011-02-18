@@ -4,10 +4,13 @@
 //
 //1.Download and install the USB source. These files install to c:\Microchip Soultions\ by default.
 //2.Place the project folder in the Microchip source install directory (c:\Microchip Soultions\ by default)
-//3.Copy usb_config.h & usb_descriptors.c from \Microchip Solutions\USB Device - CDC - Basic Demo\CDC - Basic Demo - Firmware3\ to the project folder.
+//3.Copy usb_descriptors.c from \Microchip Solutions\USB Device - CDC - Basic Demo\CDC - Basic Demo - Firmware3\ to the project folder.
 //4. That's it. You've got the latest source and we're compliant with the license.
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
+// This work is licensed CC-BY-SA
+// Copyright Ian Lesnet 2011
+// DangerousPrototypes.com
 #include "globals.h"
 #include "config.h"
 
@@ -16,6 +19,7 @@
 #define SUMP_RESET 	0x00
 #define SUMP_RUN	0x01
 #define SUMP_ID		0x02
+#define SUMP_TEST	0x03
 #define SUMP_META	0x04
 
 #define SUMP_XON	0x11
@@ -68,7 +72,10 @@ u8 i;
 
 
 init();			//setup the crystal, pins
-hal_sram_parallelInit(); //setup the SRAM, error if one doesn't reply
+if(hal_sram_parallelInit()==1){
+	LATCbits.LATC6=1; //hal_logicshrimp_setLed(PORT_ON); //setup the SRAM, error if one doesn't reply
+	while(1);
+}
 usbbufflush();	//setup the USB byte buffer
 
 USBDeviceInit();//setup usb
@@ -118,9 +125,22 @@ while(1)
 				UsbFifoBufferArray[8]='.';
 				UsbFifoBufferArray[9]='0';
 				UsbFifoBufferArray[10]=0x00;
-				UsbFifoBufferArray[11]=0x00;
-				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,12);
+				UsbFifoBufferArray[11]=0x02;
+				UsbFifoBufferArray[12]='1';
+				UsbFifoBufferArray[13]='.';
+				UsbFifoBufferArray[14]='0';
+				UsbFifoBufferArray[15]=0x00;
+				UsbFifoBufferArray[16]=0x00;
+				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,17);
 				}			
+			break;
+		case SUMP_TEST:
+			LATCbits.LATC6=1; //hal_logicshrimp_setLed(PORT_ON); //setup the SRAM, error if one doesn't reply
+			UsbFifoBufferArray[0]=hal_sram_parallelInit();
+			if( mUSBUSARTIsTxTrfReady() )
+				{
+				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,1);
+				}
 			break;
 		case SUMP_RUN://arm the triger
 //
