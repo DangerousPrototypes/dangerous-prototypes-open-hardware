@@ -119,8 +119,8 @@ main
 	rcall pinsetup ;analog pins, PROG_B low
 	; Check bootloader enable jumper
 #ifdef USE_JP_BOOTLOADER_EN
-	clrf	PORTB		;PORTB low
-	clrf	TRISB		;TRISB output
+	;clrf	PORTB		;PORTB low
+	;clrf	TRISB		;TRISB output
 	bcf		INTCON2, RBPU ;clear RBPU to enable B pullups
 	bsf		TRISB, 6	;PGC to input
 	nop
@@ -165,8 +165,6 @@ pinsetup:
 	movlw	0x1f
 	movwf	ANCON1
 	movlb	0x00	;back to main bank
-	bcf		LATA, 3	;PROG_B to ground
-	bcf 	TRISA, 3 ;PROG_B output
 	return
 
 
