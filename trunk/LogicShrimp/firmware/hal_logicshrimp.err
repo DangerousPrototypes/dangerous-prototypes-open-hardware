@@ -1,0 +1,4 @@
+Error[1027] E:\Work\dp-svn\trunk\LogicShrimp\firmware\src\globals.h 15 : unable to locate 'Compiler.h'
+Error[1027] E:\Work\dp-svn\trunk\LogicShrimp\firmware\src\globals.h 19 : unable to locate './USB/usb.h'
+Error[1027] E:\Work\dp-svn\trunk\LogicShrimp\firmware\src\globals.h 20 : unable to locate './USB/usb_function_cdc.h'
+Error[1027] E:\Work\dp-svn\trunk\LogicShrimp\firmware\src\globals.h 21 : unable to locate './USB/usb_device.h'
