@@ -1,0 +1,359 @@
+#usage "Export partlist to html and wiki'\n"
+       "Export images to png\n"
+	   "Both Board and Schematic must be open\n"
+string cmdx=""; // debugging
+int YES= 1;
+int NO = 0;
+int found,n;
+string cmds = "";
+string temp="";
+int prevseq;
+int Resolution,len;
+string fileName1="";
+string fileName2;
+string workdir;
+string SourceFname;
+string leftopr,rightopr;
+string Ename[],Evalue[],Epackagename[];
+int Equantity[];
+string a[];
+int nrightopr,nlastseq;
+string srightopr,slastseq;
+int counter=0;
+int j,k,m,i=0;
+int Result=0;
+int startOfseq,dummy_written;
+string dummy,lasttoken;
+// default parameters in the dialog
+
+int dphtml=YES;
+int no_htmldups=YES;
+int dpwiki=YES;
+int no_wikidups=YES;
+int dpSchPng=YES;
+int schValue=150;
+int dpBoardPng=YES;
+int brdValue=300;
+            
+	
+void range_it()
+{
+	if(Equantity[j] > 5) {
+		startOfseq=YES;
+		dummy="";
+		dummy_written=NO;
+		n = strsplit(a, Ename[j], ','); 
+		if (n !=0) {
+			dummy+=a[0];
+			for (k=1;k < n;k++){
+				cmdx+=" Token: "+a[k]+" \n";
+				len=strlen(a[k]);
+				string temp=a[k];
+				for (m=0;m < len;m++) {  //find first occurance of a digit
+				
+					if(isdigit(temp[m])!=0) {									
+						break;
+					}										
+				}
+				// m got the first digit position
+				//split characters and numbers
+				leftopr= strsub(a[k], 0, m);
+				rightopr=strsub(a[k], m);
+				cmdx+="Debug: " +a[k]+ "   Leftopr: "+leftopr+"  rightopr: "+rightopr+";\n";
+				
+				nrightopr=strtol(rightopr);  //sequence 
+				
+				if (startOfseq==YES) {
+					if (dummy_written=NO) {
+						 if (strlen(dummy) !=0) {
+							dummy+="-";
+						 }
+						 dummy+=leftopr+rightopr;
+					} 
+					 cmdx+="Dummy start seq: "+dummy+"\n";
+					 prevseq=nrightopr;
+					 startOfseq=NO;
+				} else {
+					
+					if(nrightopr==prevseq+1) {  //got a sequence.
+					
+						nlastseq=nrightopr;   // store it for reference
+						slastseq=rightopr;  
+						prevseq=nrightopr;
+						lasttoken="-"+leftopr+slastseq;  // write at end of loop
+						
+						startOfseq=NO;	
+						cmdx+=" Lastseq: "+slastseq;
+						
+					 } else {  // not sequence, write the previous one
+						dummy+="-";
+						dummy+=leftopr+slastseq;     
+						startOfseq=YES;   //start the sequence again
+						lasttoken=","+leftopr+rightopr; 
+						dummy+=lasttoken;
+						dummy_written=YES; // dummy variables was written as last token
+						cmdx+= "dummy last seq: "+dummy+" \n";
+						   
+					 }
+					 
+				
+				} 								
+													
+			}
+		}
+		dummy+= lasttoken;
+		Ename[j]=dummy;
+		
+	}
+
+}	
+if (project.board) project.board(B) {
+	workdir=filedir(B.name);
+	SourceFname=filename(B.name);
+	// remove extension
+	string s = SourceFname;
+	char c = '.';
+    int pos = strrchr(s, c);
+    if (pos >= 0) {
+      s[pos]='\0';
+	  SourceFname=s;
+	 } 
+    	
+	Result = dlgDialog("DP Projects Exporter") {
+		dlgHBoxLayout {
+		dlgStretch(1);
+		dlgLabel("Dangerous Prototypes Projects Export");
+		dlgStretch(1);
+		}
+	  
+		dlgHBoxLayout {
+			dlgLabel("Enter output file&name without extension:");
+			dlgStringEdit(SourceFname);
+			dlgPushButton("Bro&wse") {
+			  SourceFname = dlgFileOpen("Select a file", SourceFname);
+			}
+		}
+   	   		
+		dlgHBoxLayout {
+			dlgGroup("Select Output") {
+				dlgHBoxLayout { 
+					dlgCheckBox("Create html           : "+SourceFname+".htm", dphtml);
+					dlgGroup("Group Duplicates") {
+					  dlgRadioButton("No", no_htmldups);
+					  dlgRadioButton("Yes", no_htmldups);
+					  } 
+				}
+				dlgHBoxLayout { 
+					dlgCheckBox("Create wiki            : "+SourceFname+".wik", dpwiki);
+					dlgGroup("Group Duplicates") {
+					  dlgRadioButton("No", no_wikidups);
+					  dlgRadioButton("Yes", no_wikidups);
+					  } 
+				}	
+				dlgHBoxLayout { 
+					dlgCheckBox("Create Schematic png: "+SourceFname+".sch.png", dpSchPng);	 		 
+					dlgLabel(" Resolution:  "); 				
+					dlgSpinBox(schValue, 50, 2400);	
+					dlgLabel(" DPI "); 
+				}
+				dlgHBoxLayout { 	
+					dlgCheckBox("Create Board  png      : "+SourceFname+".brd.png", dpBoardPng); 
+					dlgLabel(" Resolution:  "); 				
+					dlgSpinBox(brdValue, 50, 2400);
+					dlgLabel(" DPI "); 					
+				}
+		
+			}
+		}
+		dlgHBoxLayout {
+			dlgLabel("Enter output Directory:");
+			dlgStringEdit(workdir);
+			dlgPushButton("Bro&wse") {
+			  string dirName;
+			  dirName = dlgDirectory("Select a directory", workdir); 
+			  workdir=dirName;
+			}
+		}
+	  
+		dlgSpacing(10);
+		dlgHBoxLayout {
+			dlgStretch(1);
+			dlgPushButton("+OK")    dlgAccept();
+			dlgPushButton("Cancel") dlgReject();
+		}
+    }; 
+	if (Result==1){
+		string fileName1=workdir+"\\"+SourceFname;	
+		if (dphtml==1) { 
+			counter=0;
+			fileName1+=".htm"; 
+			output(fileName1) {
+				printf("<table>\n");
+				printf("<tr><td>Part</td><td>Quantity</td><td>Value</td><td>Package</td></tr>\n");
+				if (no_htmldups==NO){
+					B.elements(E) {
+						printf("<tr><td>%s</td><td>1</td><td>%s</td><td>%s</td></tr>\n", E.name,E.value,E.package.name);
+					}
+				}
+				else {
+			
+					B.elements(E) {
+						found=NO;
+						if (counter==0) {
+							Evalue[counter]=E.value;
+							Ename[counter]=E.name;
+							Epackagename[counter]=E.package.name;
+							Equantity[counter]=1;
+							counter++;
+						} else {
+									found=NO;
+									for (j=0; j< counter;j++) {
+									
+										if (E.package.name=="LED-805") {
+										       found=NO;
+										} else {
+											if ((Evalue[j]==E.value) && (Epackagename[j]==E.package.name) ) {
+												Ename[j]+=",";
+												Ename[j]+=E.name;
+												Equantity[j]=Equantity[j] + 1;
+												found=YES;
+												break;
+											} 
+										}
+										
+									}	
+									if (found==NO) {										
+										Evalue[counter]=E.value;
+										Ename[counter]=E.name;
+										Epackagename[counter]=E.package.name;
+										Equantity[counter]=1;
+										counter++;
+											
+									}	
+									
+								}			
+											
+					}
+					
+			
+					
+					for (j=0;j<counter;j++) {
+						range_it();
+						printf("<tr><td>%s</td><td>%d</td><td>%s</td><td>%s</td></tr>\n",  Ename[j],Equantity[j],Evalue[j],Epackagename[j]);
+					}
+				}
+				printf("</table>\n");
+
+			}
+		}
+		if(dpwiki==1) {
+			counter=0;
+			fileName1=workdir+"\\"+SourceFname;
+			fileName1+=".wik"; 
+			output(fileName1) {
+				printf("{| class=\"wikitable\" border=\"1\"\n");
+				printf("|+ %s\n", B.name);
+				printf("!Part!!Quantity!!Value!!Package\n");
+				if (no_wikidups==NO){
+					B.elements(E) {
+						printf("|-\n");
+						printf("|%s||1||%s||%s\n", E.name,E.value,E.package.name);
+					}	
+				} 
+				else {
+					B.elements(E) {
+						found=NO;
+						if (counter==0) {
+							Evalue[counter]=E.value;
+							Ename[counter]=E.name;
+							Epackagename[counter]=E.package.name;
+							Equantity[counter]=1;
+							counter++;
+						} else {
+									found=NO;
+									for (j=0; j< counter;j++) {
+										if (E.package.name=="LED-805") {
+										       found=NO;
+										} else {
+											if ((Evalue[j]==E.value) && (Epackagename[j]==E.package.name)) {
+												Ename[j]+=",";
+												Ename[j]+=E.name;
+												Equantity[j]=Equantity[j] + 1;
+												found=YES;
+												break;
+											} 
+										}
+										
+									}	
+									if (found==NO) {										
+										Evalue[counter]=E.value;
+										Ename[counter]=E.name;
+										Epackagename[counter]=E.package.name;
+										Equantity[counter]=1;
+										counter++;
+											
+									}	
+									
+								}						
+						
+					}
+					
+					
+					
+					for (j=0;j<counter;j++) {
+						range_it();
+						printf("|-\n");
+						printf("|%s||%d||%s||%s\n",Ename[j],Equantity[j],Evalue[j],Epackagename[j]);
+					}
+					
+				
+				}
+				printf("|}\n");
+			}
+		}
+		
+
+
+/*  from sjaak
+EXPORT PARTLIST project.parts
+EXPORT IMAGE project.sch.png 150
+BOARD
+EXPORT IMAGE project.brd.png 150
+*/
+		if(dpSchPng==1) {
+			fileName2=workdir+"\\"+SourceFname;
+			temp="";
+			sprintf(temp,"edit .sch;\n");
+			cmds+=temp;
+			Resolution=schValue;
+			sprintf(temp, "EXPORT IMAGE '%s%s%s' %d;\n",fileName2,".sch",".png", Resolution);
+			cmds+= temp;			
+			
+		}
+		if(dpBoardPng==1) {
+			fileName2=workdir+"\\"+SourceFname;
+			
+			sprintf(temp,"BOARD;\n");
+			cmds+= temp;
+			Resolution=brdValue;
+			sprintf(temp, "EXPORT IMAGE '%s%s%s' %d;\n",fileName2,".brd",".png", Resolution);
+			cmds+= temp;
+		}
+	}
+} else {
+
+ int ok= dlgMessageBox("!Board and Schematic must be both open\n Goto File->switch to [Board|Schematic] ", "&OK") ;    
+ cmds="";
+}
+// dlgMessageBox(cmds, "&OK") ;   
+// enable for debugging
+/*
+		Result = dlgDialog("DP Projects Exporter") {
+			dlgVBoxLayout {
+				dlgLabel("Debug result ");
+				dlgTextEdit(cmdx);
+			} 
+		};
+*/
+  exit(cmds);
+
