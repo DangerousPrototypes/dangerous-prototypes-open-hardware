@@ -202,6 +202,7 @@ int main(int argc, char** argv)
 
 		for (j=0;j<repeat_test;j++)
 		{
+			/*
 			printf(" Test no: %i of %i \n",j+1,repeat_test);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, LCD_RESET_INIT,1);            //reset command
@@ -220,6 +221,11 @@ int main(int argc, char** argv)
 			serial_write( fd, BLOCK_CURSER_ON,1);           // Block Cursor On
             Sleep(1);
             serial_write( fd,DISPLAY_TEXT,sizeof(DISPLAY_TEXT));  //Write to LCD the text
+             */
+             serial_write( fd, "\xfe\x00\xfe\x42\x00\xfe\x58\xfe\x48\xfe\x53",11);
+
+             serial_write( fd, "Backlight should be ON :)",25);
+
 
 		}
 		if (firsttime==0){    // run here once and don't say again the next time
