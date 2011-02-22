@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 {
 	int opt;
 	char buffer[256] = {0};
-	uint8_t STCode;
+//	uint8_t STCode;
 	int fd;
 	int res,c;
 	int flag=0,firsttime=0;
@@ -172,6 +172,7 @@ int main(int argc, char** argv)
 			Sleep(1);
 			res= serial_read(fd, buffer, sizeof(buffer));  // get reply
 			if (res >0){   //we have a replay
+				/*
 				printf(" Logic Shrimp Self Test Reply: ");
 				printf(" ");
 				for(c=0; c<res; c++){
@@ -179,11 +180,14 @@ int main(int argc, char** argv)
 					printf(" %02X", STCode);
 				}
 				printf("\n");
-
+                */
 				if (buffer[0]==0x00) {    // Test passed
-					printf("\n\n Self Test PASSED!  The POWER and ACT LED should LIT  :) \n\n");
+				    printf("\n Logic Shrimp Self Test Reply:   %02X **PASS** :)",(uint8_t) buffer[0]);
+
+					printf("\n\n\n The POWER and ACT led should be ON \n\n");
 				}else{
-					printf(" Error:  Test FAILED :( \n");
+					printf(" Logic Shrimp Self Test Reply:   %02X **FAIL** :(\n",(uint8_t) buffer[0]);
+
 				}
 			}else{ // if (res >0)
 				printf(" Logic Shrimp Selp Test did not reply anything.. Please check connections. \n");
