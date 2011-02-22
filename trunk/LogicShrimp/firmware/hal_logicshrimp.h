@@ -3,7 +3,7 @@
 
 //#define CLK_GATE	LATCbits.LATC0
 //pin setup: clock/buffer direction and initial state, LED direction, uC clock pin
-#define hal_logicshrimp_pinsetup() LATBbits.LATB5=1; TRISBbits.TRISB5=0; TRISCbits.TRISC6=0; LATCbits.LATC7=1; TRISCbits.TRISC7=0
+#define hal_logicshrimp_pinsetup() LATBbits.LATB5=1; TRISBbits.TRISB5=0; TRISCbits.TRISC6=0; LATCbits.LATC6=0; LATCbits.LATC7=1; TRISCbits.TRISC7=0
 
 //#define hal_logicshrimp_ClockGateEnable()				LATCbits.LATC0=0
 //#define hal_logicshrimp_ClockGateDisable()				LATCbits.LATC0=1

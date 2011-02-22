@@ -74,7 +74,7 @@ u8 i;
 init();			//setup the crystal, pins
 if(hal_sram_parallelInit()==1){
 	LATCbits.LATC6=1; //hal_logicshrimp_setLed(PORT_ON); //setup the SRAM, error if one doesn't reply
-	while(1);
+//while(1);
 }
 usbbufflush();	//setup the USB byte buffer
 
@@ -128,7 +128,7 @@ while(1)
 				UsbFifoBufferArray[11]=0x02;
 				UsbFifoBufferArray[12]='1';
 				UsbFifoBufferArray[13]='.';
-				UsbFifoBufferArray[14]='0';
+				UsbFifoBufferArray[14]='1';
 				UsbFifoBufferArray[15]=0x00;
 				UsbFifoBufferArray[16]=0x00;
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,17);
@@ -136,7 +136,61 @@ while(1)
 			break;
 		case SUMP_TEST:
 			LATCbits.LATC6=1; //hal_logicshrimp_setLed(PORT_ON); //setup the SRAM, error if one doesn't reply
+			
+			/*
+			*	Test SRAMs
+			*
+			*/
 			UsbFifoBufferArray[0]=hal_sram_parallelInit();
+
+			/*
+			*	Test buffer
+			*
+			*/
+			//setup counter
+			//SRAM ADDRESS TRACKING: follows the address in the SRAM, always on
+			//TMR3 with async external input//
+			//Need to know where in the SRAM we are//
+			//setup a external counter on C0 to track the SRAM address (/4 prescaler)
+			RPINR6=11; // RP11   Timer3 External Clock Input T3CKI RPINR6 T3CKR<4:0>
+			//setup T3
+			//16bit timer
+			// /4 prescaler
+			T3CON=0b10100100; //0b10 16 bit 4xprescaler
+			//clear to sync to SRAM internal address
+			TMR3H=0;
+			TMR3L=0;
+			T3CON|=0b1;//enable the counter		
+
+
+			//open buffer
+			TRISC|=(0b1);//disable PIC->SRAM clock pin
+			LATC&=(~0b10000000); //lower OSC buffer OE, connect OSC to the SRAM clock pins
+
+			//waste time
+			j=100;
+			while(j--);
+			
+			//close buffer
+			//disable external clock
+			LATCbits.LATC7=1; 	//disable EXT_OSC buffer
+			TRISC&=(~0b1);//enable PIC->SRAM clock pin
+
+			//is counter >0?
+			//get the current SRAM address
+			addl=TMR3L;
+			addh=TMR3H;
+
+			//move to a 16bit variable
+			add16=addh;
+			add16=(add16<<8);
+			add16|=addl;
+
+			if(add16<100)UsbFifoBufferArray[0]|=0b10; //add error bit
+
+UsbFifoBufferArray[0]|=0b10; //add error bit
+
+
 			if( mUSBUSARTIsTxTrfReady() )
 				{
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,1);
