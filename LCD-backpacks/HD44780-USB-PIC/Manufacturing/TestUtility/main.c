@@ -205,16 +205,20 @@ int main(int argc, char** argv)
 			printf(" Test no: %i of %i \n",j+1,repeat_test);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, LCD_RESET_INIT,1);            //reset command
+			Sleep(1);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, BACKLIGHT_ON,1);              // Backlight on
 			serial_write( fd, "\x00", 1);                   // time=00= forever
+			Sleep(1);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, CLEAR,1);                     //clear screen
+			Sleep(1);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, HOME,1);                      // Home
+			Sleep(1);
 			serial_write( fd, MATRIX_ORBITAL_COMMAND, 1);   // send Orbital command
 			serial_write( fd, BLOCK_CURSER_ON,1);           // Block Cursor On
-
+            Sleep(1);
             serial_write( fd,DISPLAY_TEXT,sizeof(DISPLAY_TEXT));  //Write to LCD the text
 
 		}
