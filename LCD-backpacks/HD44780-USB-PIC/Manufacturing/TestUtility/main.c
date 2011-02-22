@@ -225,6 +225,8 @@ int main(int argc, char** argv)
              serial_write( fd, "\xfe\x00\xfe\x42\x00\xfe\x58\xfe\x48\xfe\x53",11);
 
              serial_write( fd, "Backlight should be ON :)",25);
+             printf("\n You should see the text below displayed on the LCD: \n\n");
+             printf("\n  %s \n\n\n",DISPLAY_TEXT);
 
 
 		}
