@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r743
+* functions_link_filter.php version r744
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -78,7 +78,7 @@ class link_filter{
 	*/
 	function link_add_log($type,$no_link_message){
 		global $user;
-		$l='Checked '.$type.' for \''.$user->data['username'].'\' ';
+		$l='CHECKED '.$type.' of \''.$user->data['username'].'\'. ';
 		if($this->found_stuff){
 			$l.='DETECTED: ';
 			if($this->found_sleeper)$l.='sleeper agent, ';
@@ -92,7 +92,7 @@ class link_filter{
 		}else{
 			$l.='OK';
 		}
-		add_log('user', 'LOG_SPAM_HAMMER', $l);
+		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: '.$l);
 	}
 	
 /**
