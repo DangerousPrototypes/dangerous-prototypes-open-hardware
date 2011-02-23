@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r740
+* functions_link_filter.php version r742
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -92,7 +92,7 @@ class link_filter{
 		}else{
 			$l.='OK';
 		}
-		add_log('admin', 'LOG_SPAM_HAMMER', $l);
+		add_log('user', 'LOG_SPAM_HAMMER', $l);
 	}
 	
 /**
