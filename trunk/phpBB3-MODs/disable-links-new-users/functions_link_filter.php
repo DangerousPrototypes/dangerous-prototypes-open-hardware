@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r742
+* functions_link_filter.php version r743
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -449,7 +449,7 @@ function link_filter_purge_zombies(){
 	if($this->load_values_from_db){ //use MOD setting from database
 		if($config['links_delete_zombies']!='1'){
 			if($config['links_log_denials']=='1'){
-				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD: (disabled)');
+				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: Disabled!');
 			}
 			return; //honor ACP setting
 		}
@@ -459,7 +459,7 @@ function link_filter_purge_zombies(){
 	
 	if($this->minimum_days<1){
 		if($config['links_log_denials']=='1'){
-			add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD: ERROR - days set to 0!');
+			add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: ERROR - days set to 0!');
 		}
 		return; //don't delete if there is no days setting
 	}
@@ -502,7 +502,7 @@ function link_filter_purge_zombies(){
 	$db->sql_freeresult($result);
 	
 	//add log message
-	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD:'.implode(', ', $usernames));
+	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup:'.implode(', ', $usernames));
 
 }
 
