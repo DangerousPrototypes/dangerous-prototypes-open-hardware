@@ -80,6 +80,8 @@ function link_filter_test_profile(){
 	//do we need to check this user?
 	if(!$this->link_filter_check()) return false; //don't check, no error
 	
+	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
+	
 	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
 		
 	//If there isn't a phpbb3 no_link message add one
@@ -102,9 +104,9 @@ function link_filter_test_signature($signature){
 	//do we need to check this user?
 	if(!$this->link_filter_check()) return false; //don't check, no error
 	
-	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
-	
 	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
+	
+	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
 	
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU'])){
@@ -158,7 +160,12 @@ function link_filter_test_post($message, $subject){
 	//do we need to check this user?
 	if(!$this->link_filter_check()) return false; //don't check, no error
 	
+	//need to do this here or we don;t get the site's unique help URL
+	//better to do it here and then again below that do it for every user before the check
+	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
+	
 	if( (($user->data['user_posts']==0)||($user->data['user_type']==USER_IGNORE)||($user->data['user_id']==ANONYMOUS))&& (strlen($message)<$this->first_post_length)){//first post, check length
+		
 		//If there isn't a phpbb3 message add one
 		if (empty($user->lang['NO_LINK_TOO_SHORT'])){
 			$user->lang['NO_LINK_TOO_SHORT']='Antispam: Sorry, your first post needs to be just a little longer.';
@@ -168,8 +175,6 @@ function link_filter_test_post($message, $subject){
 	}
 	
 	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
-
-	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
 
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU'])){
