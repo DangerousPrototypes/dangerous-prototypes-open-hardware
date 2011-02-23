@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r744
+* functions_link_filter.php version r745
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -60,6 +60,8 @@ class link_filter{
 	
 	private $log_activity=false;//log entry for all activity (not recomended)
 	
+	private $extreme=false; //deletes accounts for profile abuse
+	
 	//-- Reporting variables--//
 	public $filter_user=false; //we decided to filter this user (they met our criteria)
 	
@@ -99,7 +101,7 @@ class link_filter{
 *  Test if user can have a profile yet
 *  returns false if they do NOT need to be filtered
 */
-function link_filter_test_profile(){
+function link_filter_test_profile($abuse=false){
 	global $user;
 	
 	//do we need to check this user?
@@ -108,21 +110,49 @@ function link_filter_test_profile(){
 	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
 	
 	if(!$this->link_filter_sleeper_check()){ //if it is a sleeper agent just return error, don;t do the check
-			
+		$this->found_stuff=$this->found_profile=true;			
 		//If there isn't a phpbb3 no_link message add one
 		if (empty($user->lang['NO_LINK_FOR_YOU'])){
 			$user->lang['NO_PROFILE_FOR_YOU']='Antispam: You can\'t have a profile yet. You need to post a few times first.';
+			//$user->lang['NO_PROFILE_FOR_YOU']='Antispam: DO NOT update the profile yet, you will be DELETED! You need to post a few times first.';
 		}
 		
 		$this->error[]=$user->lang['NO_PROFILE_FOR_YOU'].' '.$this->link_filter_add_help_link();
 	}
-	
-	$this->found_stuff=$this->found_profile=true;
-	
-	if($this->log_activity) $this->link_add_log('PROFILE','');
-	
+	if($abuse && $this->extreme && ($user->data['user_posts']==0)){
+		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: deleted '.$user->data['username'].' for profile abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: deleted '.$user->data['username'].' for profile abuse.');
+		$this->link_filter_delete_account($user->data['user_id']);
+		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior. New users are NOT allowed to post a profile.');
+	}else{
+		if($this->log_activity) $this->link_add_log('PROFILE','');
+	}	
 	return true;
 }	
+
+function link_filter_delete_account($id){
+		global $db;
+		
+		// Get bot ids
+		$sql = 'SELECT user_id
+			FROM ' . BOTS_TABLE;
+		$result = $db->sql_query($sql);
+
+		$bot_ids = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$bot_ids[] = $row['user_id'];
+		}
+		$db->sql_freeresult($result);
+
+		// Do not prune bots and the user currently pruning.
+		if (!in_array($id, $bot_ids))
+		{
+			user_delete('remove', $id);//delete the user and all posts (there should be none though)
+		}
+
+}
 
 /**
 *  Test a submitted signature for links and words
@@ -448,7 +478,7 @@ function link_filter_purge_zombies(){
 	
 	if($this->load_values_from_db){ //use MOD setting from database
 		if($config['links_delete_zombies']!='1'){
-			if($config['links_log_denials']=='1'){
+			if($config['links_log_activity']=='1'){
 				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: Disabled!');
 			}
 			return; //honor ACP setting
@@ -458,9 +488,7 @@ function link_filter_purge_zombies(){
 	}
 	
 	if($this->minimum_days<1){
-		if($config['links_log_denials']=='1'){
-			add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: ERROR - days set to 0!');
-		}
+		add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: ERROR - days set to 0!');
 		return; //don't delete if there is no days setting
 	}
 
