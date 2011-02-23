@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r745
+* functions_link_filter.php version r746
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -120,8 +120,8 @@ function link_filter_test_profile($abuse=false){
 		$this->error[]=$user->lang['NO_PROFILE_FOR_YOU'].' '.$this->link_filter_add_help_link();
 	}
 	if($abuse && $this->extreme && ($user->data['user_posts']==0)){
-		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: deleted '.$user->data['username'].' for profile abuse.');
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: deleted '.$user->data['username'].' for profile abuse.');
+		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for profile abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for profile abuse.');
 		$this->link_filter_delete_account($user->data['user_id']);
 		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior. New users are NOT allowed to post a profile.');
