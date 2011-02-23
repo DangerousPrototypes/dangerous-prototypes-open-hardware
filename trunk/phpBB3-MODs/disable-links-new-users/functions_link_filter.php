@@ -58,6 +58,8 @@ class link_filter{
 	
 	private $first_post_length=73;//a minimum characters for the first post. enter 0 to disable
 	
+	private $log_activity=false;//log entry for all activity (not recomended)
+	
 	//-- Reporting variables--//
 	public $filter_user=false; //we decided to filter this user (they met our criteria)
 	
@@ -65,10 +67,33 @@ class link_filter{
 	public $found_sleeper=false;//did we determine this user to be a sleeper agent?
 	public $found_links=false; //we found links
 	public $found_words=false;//we found bad words
-	public $found_unicode=false;
-	
+	public $found_minwords=false;//we found too few words
+	public $found_unicode=false;//found unicode
+	public $found_profile=false;//profiles not allow check positive (for log)
 	public $error=array(); //holds text error array
 
+	/*
+	*	Log filter actions
+	*
+	*/
+	function link_add_log($type,$no_link_message){
+		global $user;
+		$l='Checked '.$type.' for \''.$user->data['username'].'\' ';
+		if($this->found_stuff){
+			$l.='DETECTED: ';
+			if($this->found_sleeper)$l.='sleeper agent, ';
+			if($this->found_links)$l.='links, ';
+			if($this->found_words)$l.='bad words, ';
+			if($this->found_minwords)$l.='too few words, ';
+			if($this->found_unicode)$l.='unicode, ';
+			if($this->found_profile)$l.='profile disabled, ';
+			$l.='ERRORS: '.implode(', ', $this->error);
+			if(!empty($no_link_message)) $l.=' CONTENTS: '.$no_link_message;  
+		}else{
+			$l.='OK';
+		}
+		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer MOD: '.$l);
+	}
 	
 /**
 *  Test if user can have a profile yet
@@ -82,14 +107,19 @@ function link_filter_test_profile(){
 	
 	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
 	
-	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
+	if(!$this->link_filter_sleeper_check()){ //if it is a sleeper agent just return error, don;t do the check
+			
+		//If there isn't a phpbb3 no_link message add one
+		if (empty($user->lang['NO_LINK_FOR_YOU'])){
+			$user->lang['NO_PROFILE_FOR_YOU']='Antispam: You can\'t have a profile yet. You need to post a few times first.';
+		}
 		
-	//If there isn't a phpbb3 no_link message add one
-	if (empty($user->lang['NO_LINK_FOR_YOU'])){
-		$user->lang['NO_PROFILE_FOR_YOU']='Antispam: You can\'t have a profile yet. You need to post a few times first.';
+		$this->error[]=$user->lang['NO_PROFILE_FOR_YOU'].' '.$this->link_filter_add_help_link();
 	}
 	
-	$this->error[]=$user->lang['NO_PROFILE_FOR_YOU'].' '.$this->link_filter_add_help_link();
+	$this->found_stuff=$this->found_profile=true;
+	
+	if($this->log_activity) $this->link_add_log('PROFILE','');
 	
 	return true;
 }	
@@ -106,7 +136,10 @@ function link_filter_test_signature($signature){
 	
 	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
 	
-	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
+	if($this->link_filter_sleeper_check()){
+		if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
+		return true; //if it is a sleeper agent just return error, don;t do the check
+	}
 	
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU'])){
@@ -119,7 +152,11 @@ function link_filter_test_signature($signature){
 	
 	//make a version of the post and subject
 	//need the trailing space or it can hang forever in the while loop if only using a local URL
-	return $this->link_filter_test(' '.trim($signature).' ');
+	$res=$this->link_filter_test(' '.trim($signature).' ');
+	
+	if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
+	
+	return $res;
 	
 }
 
@@ -147,7 +184,12 @@ function link_filter_test_pm($message, $subject){
 	}
 	
 	//make a version of the post and subject
-	return $this->link_filter_test(' '.trim($message.' '.$subject).' ');
+	$res=$this->link_filter_test(' '.trim($message.' '.$subject).' ');
+	
+	if($this->log_activity) $this->link_add_log('PM',$subject.''.$message);
+	
+	return $res;	
+	
 }
 
 /**
@@ -171,10 +213,17 @@ function link_filter_test_post($message, $subject){
 			$user->lang['NO_LINK_TOO_SHORT']='Antispam: Sorry, your first post needs to be just a little longer.';
 		}
 		$this->error[]=$user->lang['NO_LINK_TOO_SHORT'].' '.$this->link_filter_add_help_link();
+		$this->found_stuff=$this->found_minwords=true; //flag the error
+		
+		if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
+		
 		return true;
 	}
 	
-	if($this->link_filter_sleeper_check()) return true; //if it is a sleeper agent just return error, don;t do the check
+	if($this->link_filter_sleeper_check()){
+		if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
+		return true; //if it is a sleeper agent just return error, don;t do the check
+	}
 
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU'])){
@@ -186,7 +235,11 @@ function link_filter_test_post($message, $subject){
 	}
 	
 	//make a version of the post and subject
-	return $this->link_filter_test(' '.trim($message.' '.$subject).' ');
+	$res=$this->link_filter_test(' '.trim($message.' '.$subject).' ');
+	
+	if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
+	
+	return $res;	
 }
 
 /**
@@ -269,6 +322,12 @@ function link_filter_load_list_from_db(){
 	$this->unicode_filter=$config['links_unicode_filter'];
 	$this->minimum_nonunicode_text=(float)$config['links_nonunicode_percent'];
 	$this->help_url = $config['links_help_url'];
+	$this->first_post_length=$config['links_first_post_words'];
+	if($config['links_log_activity']=='1'){
+		$this->log_activity=true;
+	}else{
+		$this->log_activity=false;		
+	}
 }
 
 /**
@@ -381,15 +440,29 @@ function link_filter_test($no_link_message){
 	return $this->found_stuff;
 
 }
+	//add log message	
 
+	//add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by Disable links for new users MOD:'.implode(', ', $usernames));
 function link_filter_purge_zombies(){
 	global $db, $config;
 	
 	if($this->load_values_from_db){ //use MOD setting from database
-		$this->minimum_days=$config['links_after_num_days'];
+		if($config['links_delete_zombies']!='1'){
+			if($config['links_log_denials']=='1'){
+				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD: (disabled)');
+			}
+			return; //honor ACP setting
+		}
+		
+		$this->minimum_days=$config['links_delete_zombies_days']; //$config['links_after_num_days'];
 	}
 	
-	if($this->minimum_days<1) return; //don't delete if there is no days setting
+	if($this->minimum_days<1){
+		if($config['links_log_denials']=='1'){
+			add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD: ERROR - days set to 0!');
+		}
+		return; //don't delete if there is no days setting
+	}
 
 	// Get bot ids
 	$sql = 'SELECT user_id
@@ -429,7 +502,7 @@ function link_filter_purge_zombies(){
 	$db->sql_freeresult($result);
 	
 	//add log message
-	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by Disable links for new users MOD:'.implode(', ', $usernames));
+	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by spam hammer MOD:'.implode(', ', $usernames));
 
 }
 
