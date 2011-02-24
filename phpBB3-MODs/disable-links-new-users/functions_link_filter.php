@@ -60,8 +60,9 @@ class link_filter{
 	
 	private $log_activity=false;//log entry for all activity (not recomended)
 	
-	private $extreme=false; //deletes accounts for profile abuse
-	
+	private $extreme=true; //deletes accounts for profile abuse
+	private $extreme_links_delete=9;
+	private $killed=false;
 	//-- Reporting variables--//
 	public $filter_user=false; //we decided to filter this user (they met our criteria)
 	
@@ -80,6 +81,7 @@ class link_filter{
 	*/
 	function link_add_log($type,$no_link_message){
 		global $user;
+		if($this->killed) return; //deleted user, logs won't work
 		$l='CHECKED '.$type.' of \''.$user->data['username'].'\'. ';
 		if($this->found_stuff){
 			$l.='DETECTED: ';
@@ -151,6 +153,8 @@ function link_filter_delete_account($id){
 		{
 			user_delete('remove', $id);//delete the user and all posts (there should be none though)
 		}
+		
+		$this->killed=true; //we deleted the user
 
 }
 
@@ -184,7 +188,15 @@ function link_filter_test_signature($signature){
 	//need the trailing space or it can hang forever in the while loop if only using a local URL
 	$res=$this->link_filter_test(' '.trim($signature).' ');
 	
-	if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
+	if($res && $this->extreme && ($user->data['user_posts']==0)){
+		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse.');
+		$this->link_filter_delete_account($user->data['user_id']);
+		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
+	}else{	
+		if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
+	}
 	
 	return $res;
 	
@@ -407,6 +419,14 @@ function link_filter_test($no_link_message){
 		if (stripos($no_link_message, $this->no_link_strings[$x])){
 			
 			$this->found_links=$this->found_stuff=true;
+			
+			if($this->extreme && ($user->data['user_posts']==0) && (substr_count($no_link_message, 'http://')>$this->extreme_links_delete)){
+				add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
+				add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
+				$this->link_filter_delete_account($user->data['user_id']);
+				$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+				//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior. New users are NOT allowed to post a profile.');
+			}
 						
 			$this->error[]=$user->lang['NO_LINK_FOR_YOU'].' '.$this->link_filter_add_help_link();
 			
@@ -444,6 +464,14 @@ function link_filter_test($no_link_message){
 		if(preg_match($this->unicode_filter, $no_link_message, $m)==1){ //test for unicode character ranged defined by user
 		
 			$this->found_unicode=$this->found_stuff=true;
+			
+			if($this->extreme && ($user->data['user_posts']==0)){
+				add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for unicode.');
+				add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for unicode.');
+				$this->link_filter_delete_account($user->data['user_id']);
+				$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+				//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior. New users are NOT allowed to post a profile.');
+			}
 
 			$this->error[]=$user->lang['NO_WORD_FOR_YOU'].' '.$this->link_filter_add_help_link();
 			
