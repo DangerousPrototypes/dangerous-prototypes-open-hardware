@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r746
+* functions_link_filter.php version r747
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -134,7 +134,9 @@ function link_filter_test_profile($abuse=false){
 }	
 
 function link_filter_delete_account($id){
-		global $db;
+		global $db, $user;
+		
+		if(($user->data['user_type']==USER_IGNORE)||($user->data['user_id']==ANONYMOUS)) return; //don't delete anon user
 		
 		// Get bot ids
 		$sql = 'SELECT user_id
