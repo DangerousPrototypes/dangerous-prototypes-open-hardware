@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r747
+* functions_link_filter.php version r751
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -285,7 +285,7 @@ function link_filter_test_post($message, $subject){
 			add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
 			add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
 			$this->link_filter_delete_account($user->data['user_id']);
-			this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+			$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		}
 	}	
 	return $res;	
@@ -396,18 +396,18 @@ function link_filter_test($no_link_message){
 	while (strpos($no_link_message, '  ')){
 		$no_link_message=str_replace('  ', ' ', $no_link_message);
 	}
-	
-	//remove any own-site references, these are ok
-	//first change http://mysite.com to mysite.com so we only have to look once below
-	$no_link_message=str_replace($config['server_protocol'].$config['server_name'], $config['server_name'], $no_link_message);
 
-	//whitelist other common domains too
+	//whitelist other common domains
 	//we do this by relacing them with our own domain so we only have to run the search once below
 	for ($x=0;$x<sizeof($this->whitelist_urls);$x++){
 		if(stripos($no_link_message, $this->whitelist_urls[$x])){
 			$no_link_message=str_ireplace($this->whitelist_urls[$x], $config['server_name'], $no_link_message);	
 		}
-	}
+	}	
+
+	//remove any own-site references, these are ok
+	//first change http://mysite.com to mysite.com so we only have to look once below
+	$no_link_message=str_replace($config['server_protocol'].$config['server_name'], $config['server_name'], $no_link_message);
 	
 	//look at all instances of mysite.com
 	while ($ok_start=stripos($no_link_message, $config['server_name'])){ //start of mysite.com
