@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r751
+* functions_link_filter.php version r752
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -278,16 +278,19 @@ function link_filter_test_post($message, $subject){
 	//make a version of the post and subject
 	$res=$this->link_filter_test(' '.trim($message.' '.$subject).' ');
 	
-	if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
-	
+	//if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
+
 	if($res && $this->extreme && ($user->data['user_posts']==0)){//if extreme mode, delete the user
 		if($this->kill || $this->found_unicode){//only delete if more than max links or unicode
-			add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
-			add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for too many links.');
-			$this->link_filter_delete_account($user->data['user_id']);
+			add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse.');
+			add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse. CONTENT: '.$subject.''.$message);
+			//$this->link_filter_delete_account($user->data['user_id']);
 			$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+			//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
 		}
-	}	
+	}
+	if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
+	
 	return $res;	
 }
 
