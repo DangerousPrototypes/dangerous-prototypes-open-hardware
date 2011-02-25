@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r752
+* functions_link_filter.php version r753
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -60,7 +60,7 @@ class link_filter{
 	
 	private $log_activity=false;//log entry for all activity (not recomended)
 	
-	private $extreme=true; //deletes accounts for profile abuse
+	private $extreme=false; //deletes accounts for profile abuse
 	private $extreme_links_delete=9;
 	private $kill=false;
 	//-- Reporting variables--//
@@ -133,30 +133,6 @@ function link_filter_test_profile($abuse=false){
 	return true;
 }	
 
-function link_filter_delete_account($id){
-		global $db, $user;
-		
-		if(($user->data['user_type']==USER_IGNORE)||($user->data['user_id']==ANONYMOUS)) return; //don't delete anon user
-		
-		// Get bot ids
-		$sql = 'SELECT user_id
-			FROM ' . BOTS_TABLE;
-		$result = $db->sql_query($sql);
-
-		$bot_ids = array();
-		while ($row = $db->sql_fetchrow($result))
-		{
-			$bot_ids[] = $row['user_id'];
-		}
-		$db->sql_freeresult($result);
-
-		// Do not prune bots and the user currently pruning.
-		if (!in_array($id, $bot_ids))
-		{
-			user_delete('remove', $id);//delete the user and all posts (there should be none though)
-		}
-}
-
 /**
 *  Test a submitted signature for links and words
 *  Returns true if bad things detected
@@ -186,50 +162,18 @@ function link_filter_test_signature($signature){
 	//make a version of the post and subject
 	//need the trailing space or it can hang forever in the while loop if only using a local URL
 	$res=$this->link_filter_test(' '.trim($signature).' ');
-	
-	if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
-	
+
 	if($res && $this->extreme && ($user->data['user_posts']==0)){
 		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse.');
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse. CONTENTS:'.$signature);
 		$this->link_filter_delete_account($user->data['user_id']);
 		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
+	}else{
+		if($this->log_activity) $this->link_add_log('SIGNATURE',$signature);
 	}
 	
 	return $res;
-	
-}
-
-/**
-*  Test a submitted PM for links and words
-*  Returns true if bad things detected
-*/
-function link_filter_test_pm($message, $subject){
-	global $user;
-	
-	//do we need to check this user?
-	if(!$this->link_filter_check()) return false; //don't check, no error
-	
-	//if($this->found_sleeper) return true; //if it is a sleeper agent we still allow PMs to contact an admin, but we still filter them
-
-	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
-
-	//If there isn't a phpbb3 no_link message add one
-	if (empty($user->lang['NO_LINK_FOR_YOU'])){
-		$user->lang['NO_LINK_FOR_YOU']='Your message looks too spamy for a new user, please remove off-site URLs.';
-	}
-	//If there isn't a phpbb3 no_word message add one
-	if (empty($user->lang['NO_WORD_FOR_YOU'])){
-		$user->lang['NO_WORD_FOR_YOU']='Your message looks too spamy for a new user, please remove bad words or non-english text.';
-	}
-	
-	//make a version of the post and subject
-	$res=$this->link_filter_test(' '.trim($message.' '.$subject).' ');
-	
-	if($this->log_activity) $this->link_add_log('PM',$subject.''.$message);
-	
-	return $res;	
 	
 }
 
@@ -280,18 +224,51 @@ function link_filter_test_post($message, $subject){
 	
 	//if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
 
-	if($res && $this->extreme && ($user->data['user_posts']==0)){//if extreme mode, delete the user
-		if($this->kill || $this->found_unicode){//only delete if more than max links or unicode
+	if( ($res && $this->extreme && ($user->data['user_posts']==0)) && ($this->kill || $this->found_unicode) ){//if extreme mode, delete the user
+			global $phpbb_root_path,$phpEx;
 			add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse.');
 			add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse. CONTENT: '.$subject.''.$message);
-			//$this->link_filter_delete_account($user->data['user_id']);
+			include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			$this->link_filter_delete_account($user->data['user_id']);
 			$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 			//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
-		}
+	}else{
+		if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
 	}
-	if($this->log_activity) $this->link_add_log('POST',$subject.''.$message);
 	
 	return $res;	
+}
+
+/**
+*  Test a submitted PM for links and words
+*  Returns true if bad things detected
+*/
+function link_filter_test_pm($message, $subject){
+	global $user;
+	
+	//do we need to check this user?
+	if(!$this->link_filter_check()) return false; //don't check, no error
+	
+	//if($this->found_sleeper) return true; //if it is a sleeper agent we still allow PMs to contact an admin, but we still filter them
+
+	if($this->load_values_from_db) $this->link_filter_load_list_from_db(); //load list values from DB if configured	
+
+	//If there isn't a phpbb3 no_link message add one
+	if (empty($user->lang['NO_LINK_FOR_YOU'])){
+		$user->lang['NO_LINK_FOR_YOU']='Your message looks too spamy for a new user, please remove off-site URLs.';
+	}
+	//If there isn't a phpbb3 no_word message add one
+	if (empty($user->lang['NO_WORD_FOR_YOU'])){
+		$user->lang['NO_WORD_FOR_YOU']='Your message looks too spamy for a new user, please remove bad words or non-english text.';
+	}
+	
+	//make a version of the post and subject
+	$res=$this->link_filter_test(' '.trim($message.' '.$subject).' ');
+	
+	if($this->log_activity) $this->link_add_log('PM',$subject.''.$message);
+	
+	return $res;	
+	
 }
 
 /**
@@ -498,9 +475,33 @@ function link_filter_test($no_link_message){
 	return $this->found_stuff;
 
 }
-	//add log message	
 
-	//add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'Zombie registration cleanup by Disable links for new users MOD:'.implode(', ', $usernames));
+//deletes a single account based on user id
+function link_filter_delete_account($id){
+		global $db, $user;
+		
+		if(($user->data['user_type']==USER_IGNORE)||($user->data['user_id']==ANONYMOUS)) return; //don't delete anon user
+		
+		// Get bot ids
+		$sql = 'SELECT user_id
+			FROM ' . BOTS_TABLE;
+		$result = $db->sql_query($sql);
+
+		$bot_ids = array();
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$bot_ids[] = $row['user_id'];
+		}
+		$db->sql_freeresult($result);
+
+		// Do not prune bots and the user currently pruning.
+		if (!in_array($id, $bot_ids))
+		{
+			user_delete('remove', $id);//delete the user and all posts (there should be none though)
+		}
+}
+
+//purges all accounts with 0 posts older than $config['links_delete_zombies_days']
 function link_filter_purge_zombies(){
 	global $db, $config;
 	
