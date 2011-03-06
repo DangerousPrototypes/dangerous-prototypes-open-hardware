@@ -30,7 +30,7 @@
 #define SUMP_TRIG	0xc0
 #define SUMP_TRIG_VALS 0xc1
 
-#define LA_SAMPLE_SIZE  32768
+#define LA_SAMPLE_SIZE  0XFFFF
 
 #define EXT_OSC 0
 #define INT_PWM 1
@@ -128,7 +128,7 @@ while(1)
 				UsbFifoBufferArray[11]=0x02;
 				UsbFifoBufferArray[12]='1';
 				UsbFifoBufferArray[13]='.';
-				UsbFifoBufferArray[14]='1';
+				UsbFifoBufferArray[14]='2';
 				UsbFifoBufferArray[15]=0x00;
 				UsbFifoBufferArray[16]=0x00;
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,17);
@@ -377,17 +377,18 @@ UsbFifoBufferArray[0]|=0b10; //add error bit
 
 						samples_read--;//decrement samples remaining
 						if(samples_read==0) break;//send 64/128/512/1024 samples exactly! break at the end of samples
-						}
-					putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,USBWriteCount);//send this load to USB
 					}
-					if(samples_read==0)break; //send 64/128/512/1024 samples exactly! break at the end of samples
+					
+					putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,USBWriteCount);//send this load to USB
 				}
+				if(samples_read==0)break; //send 64/128/512/1024 samples exactly! break at the end of samples
+			}
 
-				//set_all_cs(PORT_ON); // cs low
-				LATBbits.LATB4=1;//raise CS to end read
-				LATCbits.LATC2=1;//CS
-				LATCbits.LATC1=1;//CS
-				LATAbits.LATA5=1;//CS
+			//set_all_cs(PORT_ON); // cs low
+			LATBbits.LATB4=1;//raise CS to end read
+			LATCbits.LATC2=1;//CS
+			LATCbits.LATC1=1;//CS
+			LATAbits.LATA5=1;//CS
 //
 //
 // CLEAR SRAM
@@ -477,14 +478,14 @@ UsbFifoBufferArray[0]|=0b10; //add error bit
 				samples_read|=command[1];
 				samples_read=(samples_read+1);
 				//constrain to 256K
-				if(samples_read>LA_SAMPLE_SIZE) samples_read=LA_SAMPLE_SIZE;
+				//if(samples_read>LA_SAMPLE_SIZE) samples_read=LA_SAMPLE_SIZE;
 
 				samples_delay=command[4];
 				samples_delay<<=8;
 				samples_delay|=command[3];
 				samples_delay=(samples_delay+1);
 				//constrain to 256K
-				if(samples_delay>LA_SAMPLE_SIZE) samples_delay=LA_SAMPLE_SIZE;
+				//if(samples_delay>LA_SAMPLE_SIZE) samples_delay=LA_SAMPLE_SIZE;
 				break;
 				case SUMP_DIV:
 				divider=command[3];
