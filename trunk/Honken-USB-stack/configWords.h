@@ -28,7 +28,7 @@
     _CONFIG1(FWDTEN_OFF & ICS_PGx2 & GWRP_OFF & GCP_OFF & JTAGEN_OFF)
     _CONFIG2(POSCMOD_HS & IOL1WAY_ON & OSCIOFNC_ON & FCKSM_CSDCMD & FNOSC_PRIPLL & PLL96MHZ_ON & PLLDIV_DIV2 & IESO_OFF)
 
-#elif defined(IRtoy)
+#elif defined(IRTOY)
         #if defined(__18F2450) || defined(__18F2455) || defined(__18F2458) || defined(__18F2550) || defined(__18F2553)|| defined(__18F4450) || defined(__18F4455) || defined(__18F4458) || defined(__18F4550) || defined(__18F4553)
         
                 #pragma config PLLDIV   = 5         

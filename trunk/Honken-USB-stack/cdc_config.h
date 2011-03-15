@@ -48,11 +48,11 @@ Low power request macro
 #define __USB_CONFIG_H__
 
 //#define BPv4
-//#define IRtoy
+#define IRTOY
 //#define EA14k //Embedded adventures PIC18F14K50 module
 //#define JTR_PIC24GB002        // JTR's PIC24..GB002 mockup
 //#define Ians18FJ      //Ian's PIC18F24J50 test bed
-#define LPC14K  // Microchip low pin count demo board
+//#define LPC14K  // Microchip low pin count demo board
 //JTR_18FxxJ53 // JTR PIC18F27J53
 
 #if defined(BPv4)
@@ -116,6 +116,11 @@ Low power request macro
 
 #define MAX_EPNUM_USED                  2u
 
+#define USB_BUS_POWERED 1
+#define USB_INTERNAL_TRANSCIEVER 1
+#define USB_INTERNAL_PULLUPS 1
+#define USB_INTERNAL_VREG 1
+#define USB_FULL_SPEED_DEVICE 1
 
 /* PingPong Buffer Mode
  * Valid values
