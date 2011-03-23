@@ -128,7 +128,7 @@ while(1)
 				UsbFifoBufferArray[11]=0x02;
 				UsbFifoBufferArray[12]='1';
 				UsbFifoBufferArray[13]='.';
-				UsbFifoBufferArray[14]='2';
+				UsbFifoBufferArray[14]='3';
 				UsbFifoBufferArray[15]=0x00;
 				UsbFifoBufferArray[16]=0x00;
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,17);
@@ -188,13 +188,53 @@ while(1)
 
 			if(add16<100)UsbFifoBufferArray[0]|=0b10; //add error bit
 
-UsbFifoBufferArray[0]|=0b10; //add error bit
+			//Loopback test
+			//all SRAM CS high (off)
+			CS_0=1; //LATAbits.LATA5
+			CS_1=1;	//LATCbits.LATC1
+			CS_2=1;	//LATCbits.LATC2
+			CS_3=1;	//LATBbits.LATB4
 
+//swap from normal config, pic outputs through CH output pins, inputs through buffer
+			// SRAM Data Out (PIC input)
+			TRISA&=(~0b1111);
+			// SRAM data In (PIC output)
+			TRISB|=0b1111;
+			
+			//74LVC573 buffer open to see input
+			hal_logicshrimp_BufferEnable();//enable the input buffer
+			
+			//alternate pattern on data output pins
+			LATA&=(~0b1111);
+			LATA|=0b1010;
+			//waste time
+			j=4;
+			while(j--);
+			if((PORTB&0xF)!=0b1010) UsbFifoBufferArray[0]|=0b100; //add error bit
+			
+			LATA&=(~0b1111);
+			LATA|=0b0101;
+			//waste time
+			j=4;
+			while(j--);
+			if((PORTB&0xF)!=0b0101) UsbFifoBufferArray[0]|=0b100; //add error bit
+
+//cleanup
+			LATA&=(~0b1111);
+			
+			//close sample buffer
+			hal_logicshrimp_BufferDisable();//disable the input buffer
 
 			if( mUSBUSARTIsTxTrfReady() )
 				{
 				putUnsignedCharArrayUsbUsart(UsbFifoBufferArray,1);
 				}
+
+			// SRAM Data Out (PIC input)
+			TRISA|=0b1111;
+			// SRAM data In (PIC output)
+			TRISB&=(~0b1111);
+
 			break;
 		case SUMP_RUN://arm the triger
 //
