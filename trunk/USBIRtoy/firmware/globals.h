@@ -24,7 +24,7 @@ typedef unsigned long u32;
 #include "Compiler.h"
 #include "usb_config.h"
 
-#if 1
+#if 0
 #include "USBStack\usb.h"
 #include "USBStack\usb_device.h"
 #include "USBStack\usb_function_cdc.h"
