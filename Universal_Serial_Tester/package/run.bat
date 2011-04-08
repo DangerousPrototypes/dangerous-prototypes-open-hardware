@@ -1,1 +1,0 @@
-USDMT -f irtoy.ini
