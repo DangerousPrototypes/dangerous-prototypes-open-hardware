@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-02-17T14:03:41</DateModified>
+  <DateModified>2011-04-13T12:26:52</DateModified>
   <ModuleName>CPLDIntro3LEDinverse</ModuleName>
-  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/CPLDIntro3LEDinverse/iseconfig/CPLDIntro3LEDinverse.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/CPLDIntro3LEDinverse\</ImplementationReportsDirectory>
+  <SummaryTimeStamp>2011-04-13T12:25:31</SummaryTimeStamp>
+  <SavedFilePath>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Schematic-CPLDIntro3LEDinverse/iseconfig/CPLDIntro3LEDinverse.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Schematic-CPLDIntro3LEDinverse\</ImplementationReportsDirectory>
   <DateInitialized>2011-02-17T13:44:01</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
