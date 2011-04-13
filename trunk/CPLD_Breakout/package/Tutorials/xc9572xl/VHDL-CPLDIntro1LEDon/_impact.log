@@ -1,0 +1,64 @@
+iMPACT Version: 12.1
+
+iMPACT log file Started on Wed Apr 13 12:51:47 2011
+
+Welcome to iMPACT
+iMPACT Version: 12.1
+Project:E:\Work\dp\CPLD_Breakout\package\Tutorials\xc9572xl\VHDL-CPLDIntro1LEDon/\auto_project.ipf created.
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : setCable -port xsvf -file"E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/VHDL-CPLDIntro1LEDon/VHDL-CPLDIntro1LEDon.xsvf"
+// *** BATCH CMD : addDevice -p 1 -file"E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/VHDL-CPLDIntro1LEDon/light_LED.jed"
+'1': Loading file'E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/VHDL-CPLDIntro1LEDon/light_LED.jed' ...
+done.
+INFO:iMPACT:1777 - 
+   Reading E:/Xilinx/12.1/ISE_DS/ISE/xc9500xl/data/xc9572xl.bsd...
+INFO:iMPACT:501 - '1': Added Device xc9572xl successfully.
+----------------------------------------------------------------------
+Setting Target Device to Mode:BS, Device position 0.
+INFO:iMPACT - Current time: Wed Apr 13 12:52:17 2011
+WARNING:iMPACT - Warning: SVF Programming of 9500 series CPLDs is not supported   by every third-party boundary-scan tool provider. Please check for support   before using this SVF file to program a 9500 series device.
+// *** BATCH CMD : Program -p 1 -e -v 
+
+'1': Erasing device...
+'1': Erasure completed successfully.
+'1': Programming device...
+done.
+PROGRESS_START - Starting Operation.
+'1': Putting device in ISP mode...done.
+'1': Putting device in ISP mode...done.
+'1': Verifying device...done.
+'1': Verification completed successfully.
+'1': Putting device in ISP mode...done.
+'1': Programming completed successfully.
+PROGRESS_END - End Operation.
+Elapsed time =      0 sec.
+// *** BATCH CMD : setCable -port svf -file"E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/VHDL-CPLDIntro1LEDon/VHDL-CPLDIntro1LEDon.svf"
+INFO:iMPACT - Current time: Wed Apr 13 12:52:36 2011
+WARNING:iMPACT - Warning: SVF Programming of 9500 series CPLDs is not supported   by every third-party boundary-scan tool provider. Please check for support   before using this SVF file to program a 9500 series device.
+// *** BATCH CMD : Program -p 1 -e -v 
+
+'1': Erasing device...
+'1': Erasure completed successfully.
+'1': Programming device...
+done.
+'1': Putting device in ISP mode...done.
+'1': Putting device in ISP mode...done.
+'1': Verifying device...PROGRESS_START - Starting Operation.
+done.
+'1': Verification completed successfully.
+'1': Putting device in ISP mode...done.
+'1': Programming completed successfully.
+PROGRESS_END - End Operation.
+Elapsed time =      0 sec.
+Project:'E:\Work\dp\CPLD_Breakout\package\Tutorials\xc9572xl\VHDL-CPLDIntro1LEDon/\auto_project.ipf' created.
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : setMode -ss
+// *** BATCH CMD : setMode -sm
+// *** BATCH CMD : setMode -hw140
+// *** BATCH CMD : setMode -spi
+// *** BATCH CMD : setMode -acecf
+// *** BATCH CMD : setMode -acempm
+// *** BATCH CMD : setMode -pff
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : saveProjectFile -file"E:\Work\dp\CPLD_Breakout\package\Tutorials\xc9572xl\VHDL-CPLDIntro1LEDon/\auto_project.ipf"
+// *** BATCH CMD : deleteDevice -position 1
