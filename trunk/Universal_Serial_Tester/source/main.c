@@ -1,7 +1,7 @@
 /*
     Wiki page: http://dangerousprototypes.com/docs/Universal_Serial_Device_Manufacturing_Test
     Forum Page:
-
+    Date revised: april 13, 2011
 ******************************************************************************************************
 
  Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
@@ -31,6 +31,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 #include <unistd.h>
 #include <string.h>
 #include <windef.h>
+
 
 
 #include "serial.h"

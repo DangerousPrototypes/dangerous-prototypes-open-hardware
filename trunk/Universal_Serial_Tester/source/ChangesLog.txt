@@ -1,0 +1,6 @@
+14 April 2011
+   released version 0.1.0 of USDMT
+
+     Change log:
+        -Added: Autoversioning
+
