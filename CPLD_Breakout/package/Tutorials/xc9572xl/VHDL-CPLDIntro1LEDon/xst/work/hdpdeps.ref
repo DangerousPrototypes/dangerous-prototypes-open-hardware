@@ -1,0 +1,9 @@
+V3 3
+FL E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/vhdlledon/ledon.vhd 2011/03/08.10:50:47 M.53d
+EN work/light_LED 1299577849 \
+      FL E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/vhdlledon/ledon.vhd \
+      PB ieee/std_logic_1164 1270894585 PB ieee/std_logic_arith 1270894586 \
+      PB ieee/STD_LOGIC_UNSIGNED 1270894587
+AR work/light_LED/Behavioral 1299577850 \
+      FL E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/vhdlledon/ledon.vhd \
+      EN work/light_LED 1299577849

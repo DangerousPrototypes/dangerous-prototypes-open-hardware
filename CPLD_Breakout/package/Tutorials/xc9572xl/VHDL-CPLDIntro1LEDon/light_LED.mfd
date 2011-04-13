@@ -1,0 +1,11 @@
+MDF Database:  version 1.0
+MDF_INFO | light_LED | XC9572XL-10-VQ44
+MACROCELL | 0 | 1 | LED_pin_OBUF$BUF0
+ATTRIBUTES | 264962 | 0
+INPUTS | 1 | clock_in
+INPUTP | 1 | 83
+EQ | 1 | 
+   LED_pin = clock_in;
+
+PIN | clock_in | 64 | 0 | N/A | 83 | 1 | 0 | 1
+PIN | LED_pin | 536871040 | 0 | N/A | 11

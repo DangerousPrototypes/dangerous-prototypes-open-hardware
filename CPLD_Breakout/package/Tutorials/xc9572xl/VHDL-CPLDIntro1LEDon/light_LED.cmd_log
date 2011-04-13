@@ -1,0 +1,7 @@
+xst -intstyle ise -ifn "E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/vhdlledon/light_LED.xst" -ofn "E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/vhdlledon/light_LED.syr" 
+ngdbuild -intstyle ise -dd _ngo -i -p xc9572xl-VQ44-10 light_LED.ngc light_LED.ngd  
+cpldfit -intstyle ise -p xc9572xl-10-VQ44 -ofmt vhdl -optimize speed -htmlrpt -loc on -slew fast -init low -inputs 54 -pterms 25 -unused float -power std -terminate keeper light_LED.ngd 
+XSLTProcess light_LED_build.xml 
+tsim -intstyle ise light_LED light_LED.nga 
+taengine -intstyle ise -f light_LED -w --format html1 -l light_LED_html/tim/timing_report.htm 
+hprep6 -s IEEE1149 -n light_LED -i light_LED 

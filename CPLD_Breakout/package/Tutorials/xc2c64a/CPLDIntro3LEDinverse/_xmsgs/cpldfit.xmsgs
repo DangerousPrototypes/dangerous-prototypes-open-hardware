@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="Cpld" num="0" delta="new" >Unable to retrieve the path to the iSE Project Repository. Will use the default filename of &apos;<arg fmt="%s" index="1">CPLDIntro3LEDinverse.ise</arg>&apos;.
+</msg>
+
+<msg type="warning" file="Cpld" num="0" delta="new" >This package type has been discontinued and therefore should not be used for new designs. For more information on this, see Xilinx Customer Notification XCN07022.
+</msg>
+
+</messages>
+
