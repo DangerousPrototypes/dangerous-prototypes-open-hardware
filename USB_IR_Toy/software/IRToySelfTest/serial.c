@@ -3,17 +3,25 @@
  *
  * Written and maintained by the Bus Pirate project and http://dangerousprototypes.com
  *
- * To the extent possible under law, the project has
- * waived all copyright and related or neighboring rights to Bus Pirate. This
- * work is published from United States.
  *
- * For details see: http://creativecommons.org/publicdomain/zero/1.0/.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- */
+
+********************************************************************************************************************
+
+Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
+
+This work is free: you can redistribute it and/or modify it under the terms of Creative Commons Zero license v1.0
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the License for more details. You should have received a copy of the License along with this program.
+If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+
+Contact Details: http://www.DangerousPrototypes.com
+Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
+********************************************************************************************************************* */
+
 /*
+
  * OS independent serial interface
  *
  * Heavily based on Pirate-Loader:
