@@ -50,7 +50,7 @@
    <CurrentView>Implementation</CurrentView>
    <ItemView engineview="SynthesisOnly" sourcetype="DESUT_SCHEMATIC" guiview="Process" >
       <ClosedNodes>
-         <ClosedNode>Design Utilities</ClosedNode>
+         <ClosedNode>Design Utilities/Compile HDL Simulation Libraries</ClosedNode>
          <ClosedNode>Implement Design/Optional Implementation Tools</ClosedNode>
          <ClosedNode>Implement Design/Synthesize - XST</ClosedNode>
          <ClosedNode>User Constraints</ClosedNode>
