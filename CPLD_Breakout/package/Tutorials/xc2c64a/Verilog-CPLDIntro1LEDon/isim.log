@@ -1,0 +1,17 @@
+ISim log file
+Running: E:\Work\dp-svn\trunk\CPLD-breakout\demos\xc9572xl\Verilog-CPLDIntro1LEDon\CPLDintro1LEDon_isim_beh.exe -gui -tclbatch isim.cmd -wdb E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/Verilog-CPLDIntro1LEDon/CPLDintro1LEDon_isim_beh.wdb 
+ISim M.53d (signature 0xb869381d)
+WARNING: A WEBPACK license was found.
+WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
+WARNING: ISim will run in Lite mode. Please refer to the ISim documentation for more information on the differences between the Lite and the Full version.
+This is a Lite version of ISim.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Stopped at time : 0 fs : File "E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/Verilog-CPLDIntro1LEDon/CPLDintro1LEDon.v" Line 12
+# restart
+# run 1.00us
+Simulator is doing circuit initialization process.
+Stopped at time : 0 fs : File "E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/Verilog-CPLDIntro1LEDon/CPLDintro1LEDon.v" Line 12

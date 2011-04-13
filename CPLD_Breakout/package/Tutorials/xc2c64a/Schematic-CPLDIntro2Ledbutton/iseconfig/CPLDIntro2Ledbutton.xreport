@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-04-13T13:29:28</DateModified>
+  <DateModified>2011-04-13T14:21:16</DateModified>
   <ModuleName>CPLDIntro2Ledbutton</ModuleName>
-  <SummaryTimeStamp>2011-04-13T13:28:19</SummaryTimeStamp>
+  <SummaryTimeStamp>2011-04-13T14:19:50</SummaryTimeStamp>
   <SavedFilePath>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc2c64a/Schematic-CPLDIntro2Ledbutton/iseconfig/CPLDIntro2Ledbutton.xreport</SavedFilePath>
   <ImplementationReportsDirectory>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc2c64a/Schematic-CPLDIntro2Ledbutton\</ImplementationReportsDirectory>
   <DateInitialized>2011-02-17T14:05:20</DateInitialized>

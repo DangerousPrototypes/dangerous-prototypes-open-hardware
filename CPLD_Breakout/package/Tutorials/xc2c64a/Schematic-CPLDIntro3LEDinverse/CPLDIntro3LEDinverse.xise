@@ -37,9 +37,7 @@
     <property xil_pn:name="Case" xil_pn:value="Maintain" xil_pn:valueState="default"/>
     <property xil_pn:name="Case Implementation Style" xil_pn:value="None" xil_pn:valueState="default"/>
     <property xil_pn:name="Clock Enable" xil_pn:value="true" xil_pn:valueState="default"/>
-    <property xil_pn:name="Collapsing Input Limit (2-54)" xil_pn:value="54" xil_pn:valueState="default"/>
     <property xil_pn:name="Collapsing Input Limit (4-40)" xil_pn:value="32" xil_pn:valueState="default"/>
-    <property xil_pn:name="Collapsing Pterm Limit (1-90)" xil_pn:value="25" xil_pn:valueState="default"/>
     <property xil_pn:name="Collapsing Pterm Limit (3-56)" xil_pn:value="28" xil_pn:valueState="default"/>
     <property xil_pn:name="Compile CPLD Simulation Library" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Compile SIMPRIM (Timing) Simulation Library" xil_pn:value="true" xil_pn:valueState="default"/>
@@ -47,7 +45,6 @@
     <property xil_pn:name="Compile for HDL Debugging" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Compile uni9000 (Functional) Simulation Library" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Create IEEE 1532 Configuration File" xil_pn:value="false" xil_pn:valueState="default"/>
-    <property xil_pn:name="Create Programmable GND Pins on Unused I/O" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Default Powerup Value of Registers" xil_pn:value="Low" xil_pn:valueState="default"/>
     <property xil_pn:name="Delay Values To Be Read from SDF" xil_pn:value="Setup Time" xil_pn:valueState="default"/>
     <property xil_pn:name="Device" xil_pn:value="xc2c64a" xil_pn:valueState="non-default"/>
@@ -71,7 +68,6 @@
     <property xil_pn:name="Global Set/Reset Port Name" xil_pn:value="GSR_PORT" xil_pn:valueState="default"/>
     <property xil_pn:name="HDL Equations Style" xil_pn:value="Source" xil_pn:valueState="default"/>
     <property xil_pn:name="Hierarchy Separator" xil_pn:value="/" xil_pn:valueState="default"/>
-    <property xil_pn:name="I/O Pin Termination" xil_pn:value="Keeper" xil_pn:valueState="default"/>
     <property xil_pn:name="I/O Voltage Standard" xil_pn:value="LVCMOS33" xil_pn:valueState="non-default"/>
     <property xil_pn:name="ISim UUT Instance Name" xil_pn:value="UUT" xil_pn:valueState="default"/>
     <property xil_pn:name="Implementation Template" xil_pn:value="Optimize Density" xil_pn:valueState="default"/>
@@ -92,7 +88,6 @@
     <property xil_pn:name="Last Unlock Status" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Logic Optimization" xil_pn:value="Density" xil_pn:valueState="default"/>
     <property xil_pn:name="Macro Preserve" xil_pn:value="true" xil_pn:valueState="default"/>
-    <property xil_pn:name="Macrocell Power Setting" xil_pn:value="Std" xil_pn:valueState="default"/>
     <property xil_pn:name="Manual Implementation Compile Order" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Maximum Number of Lines in Report" xil_pn:value="1000" xil_pn:valueState="default"/>
     <property xil_pn:name="Maximum Signal Name Length" xil_pn:value="20" xil_pn:valueState="default"/>
@@ -139,7 +134,6 @@
     <property xil_pn:name="Selected Simulation Root Source Node Post-Route" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Selected Simulation Source Node" xil_pn:value="UUT" xil_pn:valueState="default"/>
     <property xil_pn:name="Show All Models" xil_pn:value="false" xil_pn:valueState="default"/>
-    <property xil_pn:name="Signature /User Code" xil_pn:value="" xil_pn:valueState="default"/>
     <property xil_pn:name="Simulation Model Target" xil_pn:value="Verilog" xil_pn:valueState="default"/>
     <property xil_pn:name="Simulation Run Time ISim" xil_pn:value="1000 ns" xil_pn:valueState="default"/>
     <property xil_pn:name="Simulation Run Time Par" xil_pn:value="1000 ns" xil_pn:valueState="default"/>
@@ -170,7 +164,6 @@
     <property xil_pn:name="Use Synthesis Constraints File" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="Use Timing Constraints" xil_pn:value="true" xil_pn:valueState="default"/>
     <property xil_pn:name="User Browsed Strategy Files" xil_pn:value="" xil_pn:valueState="default"/>
-    <property xil_pn:name="VCCIO Reference Voltage" xil_pn:value="LVTTL" xil_pn:valueState="default"/>
     <property xil_pn:name="VHDL Source Analysis Standard" xil_pn:value="VHDL-93" xil_pn:valueState="default"/>
     <property xil_pn:name="Value Range Check" xil_pn:value="false" xil_pn:valueState="default"/>
     <property xil_pn:name="Verilog 2001 Xst" xil_pn:value="true" xil_pn:valueState="default"/>
