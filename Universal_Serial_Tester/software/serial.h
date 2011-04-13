@@ -1,4 +1,5 @@
 /*
+********************************************************************************************************
  * This file is part of the Bus Pirate project (http://code.google.com/p/the-bus-pirate/).
  *
  * Written and maintained by the Bus Pirate project and http://dangerousprototypes.com
@@ -12,8 +13,10 @@
  *    This program is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- */
-/*
+
+********************************************************************************************************
+
+
  * OS independent serial interface
  *
  * Heavily based on Pirate-Loader:
