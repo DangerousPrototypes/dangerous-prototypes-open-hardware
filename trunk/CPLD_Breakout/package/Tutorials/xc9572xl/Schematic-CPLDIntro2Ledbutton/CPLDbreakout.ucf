@@ -4,4 +4,3 @@
 #http://dangerousprototypes.com/docs/CoolRunner-II_CPLD_breakout_board
 NET "BUTTON"    	LOC =  "P18";
 NET "LED"        	LOC =  "P39";
-NET "LED_INV"    	LOC =  "P38";
