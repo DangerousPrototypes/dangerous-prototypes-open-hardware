@@ -1,0 +1,44 @@
+{| class="wikitable" border="1"
+|+ C:/Users/jamz/Desktop/dp/dangerous-prototypes-open-hardware/trunk/USB_IR_Toy/hardware/USBIRtoy.v1a.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C1,C2,C3||3||0.1uf||C0805
+|-
+|C4||1||0.2uF||C0805
+|-
+|C5,C6||2||27pf||C0805
+|-
+|D1||1||||SOD2514X100N
+|-
+|I||1||LED||CHIP-LED0805
+|-
+|IC1||1||PIC18F2550_28W||SO28W
+|-
+|ICSP||1||||1X05
+|-
+|J1||1||USB-SHIELD||USB-M-S1
+|-
+|Q1||1||20Mhz||HC49UP
+|-
+|R1||1||10k||R0805
+|-
+|R2||1||2K7||M0805
+|-
+|R3||1||390||M0805
+|-
+|R4||1||180R||M0805
+|-
+|R5||1||1K||M0805
+|-
+|S1||1||SMD_TACT_SMALL||TACT_SWITCH_SMALL
+|-
+|T1||1||NPN-800ma||SOT23
+|-
+|TSOP34838||1||TSOP34838||TSOP18XX
+|-
+|TX||1||940nm IR LED||LED5MM
+|-
+|U$1,U$2||2||||DP-LOGO
+|-
+|UART||1||||1X03
+|}
