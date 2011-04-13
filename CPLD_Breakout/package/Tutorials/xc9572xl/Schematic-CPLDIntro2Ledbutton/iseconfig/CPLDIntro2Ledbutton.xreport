@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-02-17T14:07:55</DateModified>
+  <DateModified>2011-04-13T12:22:26</DateModified>
   <ModuleName>CPLDIntro2Ledbutton</ModuleName>
-  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/CPLDIntro2Ledbutton/iseconfig/CPLDIntro2Ledbutton.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp-svn/trunk/CPLD-breakout/demos/xc9572xl/CPLDIntro2Ledbutton</ImplementationReportsDirectory>
+  <SummaryTimeStamp>2011-04-13T12:21:14</SummaryTimeStamp>
+  <SavedFilePath>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Schematic-CPLDIntro2Ledbutton/iseconfig/CPLDIntro2Ledbutton.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Schematic-CPLDIntro2Ledbutton\</ImplementationReportsDirectory>
   <DateInitialized>2011-02-17T14:05:20</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
