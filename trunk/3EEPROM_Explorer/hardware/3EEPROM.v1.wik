@@ -1,0 +1,26 @@
+{| class="wikitable" border="1"
+|+ C:/Users/jamz/Desktop/dp/dangerous-prototypes-open-hardware/trunk/3EEPROM_Explorer/hardware/3EEPROM.v1.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C1,C2,C3||3||0.1uF||C025-025X050
+|-
+|IC1||1||DS2431||TO92-
+|-
+|IC2,IC3||2||DS1822||TO92-
+|-
+|IC4||1||24AAxx||DIL8
+|-
+|IC5||1||25AAxx||DIL8
+|-
+|JP1||1||M01PTH||1X01
+|-
+|JP2||1||||1X02
+|-
+|JP3||1||||1X03
+|-
+|JP4||1||||1X04
+|-
+|R1||1||1K8||0204/5
+|-
+|U$1||1||||DP-LOGO-BOTTOM
+|}
