@@ -8,5 +8,8 @@
 <msg type="warning" file="Cpld" num="0" delta="new" >Unable to retrieve the path to the iSE Project Repository. Will use the default filename of &apos;<arg fmt="%s" index="1">light_LED.ise</arg>&apos;.
 </msg>
 
+<msg type="warning" file="Cpld" num="1006" delta="new" >Design &apos;<arg fmt="%s" index="1">light_LED</arg>&apos; has no inputs.
+</msg>
+
 </messages>
 
