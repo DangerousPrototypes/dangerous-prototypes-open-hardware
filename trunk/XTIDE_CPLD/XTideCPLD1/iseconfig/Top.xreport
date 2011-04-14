@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-01-31T09:42:11</DateModified>
+  <DateModified>2011-04-14T10:30:26</DateModified>
   <ModuleName>Top</ModuleName>
   <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>E:/Work/dp-svn/trunk/XTIDE-CPLD/XTideCPLD1/iseconfig/Top.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp-svn/trunk/XTIDE-CPLD/XTideCPLD1\</ImplementationReportsDirectory>
+  <SavedFilePath>E:/Work/dp/XTIDE_CPLD/XTideCPLD1/iseconfig/Top.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>E:/Work/dp/XTIDE_CPLD/XTideCPLD1\</ImplementationReportsDirectory>
   <DateInitialized>2010-09-14T16:58:01</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
