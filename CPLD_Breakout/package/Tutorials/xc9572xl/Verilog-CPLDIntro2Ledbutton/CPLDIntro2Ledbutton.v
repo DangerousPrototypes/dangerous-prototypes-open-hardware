@@ -17,7 +17,7 @@ module CPLDIntro2Ledbutton(
 	
 	wire BUTTON; //input button is a wire
 	
-	always //start of the action section
+	always @ (BUTTON) //start of the action section
 	begin
 		LED=BUTTON; //Set reg LED to the value of wire button
 		LED_INV=1'b0; //Hold LED D2 off (low)
