@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-04-13T12:40:18</DateModified>
+  <DateModified>2011-04-14T08:11:22</DateModified>
   <ModuleName>CPLDIntro3LEDinverse</ModuleName>
-  <SummaryTimeStamp>2011-03-01T16:47:59</SummaryTimeStamp>
+  <SummaryTimeStamp>2011-04-14T08:04:51</SummaryTimeStamp>
   <SavedFilePath>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Verilog-CPLDIntro3LEDinverse/iseconfig/CPLDIntro3LEDinverse.xreport</SavedFilePath>
   <ImplementationReportsDirectory>E:/Work/dp/CPLD_Breakout/package/Tutorials/xc9572xl/Verilog-CPLDIntro3LEDinverse\</ImplementationReportsDirectory>
   <DateInitialized>2011-03-01T16:50:21</DateInitialized>

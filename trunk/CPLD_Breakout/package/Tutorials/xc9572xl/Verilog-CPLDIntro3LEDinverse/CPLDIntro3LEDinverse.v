@@ -17,7 +17,7 @@ module CPLDIntro3LEDinverse(
    
     wire BUTTON; //input button is a wire
    
-    always //start of the action section
+    always @ (BUTTON) //start of the action section
     begin
         LED=BUTTON; //Set reg LED to the value of wire BUTTON
         LED_INV=!BUTTON; //Set reg LED_INV opposite of wire BUTTON
