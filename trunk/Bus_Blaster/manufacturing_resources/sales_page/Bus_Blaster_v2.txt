@@ -1,0 +1,29 @@
+Bus Blaster v2 JTAG debugger ($34.95)
+
+Bus Blaster v2 is an experimental, high-speed JTAG debugger from
+Dangerous Prototypes. Thanks to a reprogrammable buffer, a simple update
+over USB makes Bus Blaster v2 compatible with many different JTAG
+debugger types in the most popular open source software.
+
+* Based on FT2232H with high-speed USB 2.0
+* Buffered interface works with 3.3volt to 1.2volt targets
+* Reprogrammable buffer is compatible with multiple debugger types
+* Compatible with 'jtagkey', 'KT-link' programmer settings in OpenOCD,
+urJTAG, and more
+* ships with JTAGkey compatible buffer image pre-programmed
+* Should support Serial Wire Debug when available
+* Mini-CPLD development board: self programmable, extra CPLD pins to header
+* Open source (CC-BY-SA)
+
+Each unit is tested with a real JTAG target before it ships.
+
+Bus Blaster Manual http://dangerousprototypes.com/docs/Bus_Blaster
+Bus Blaster v2 design overview
+http://dangerousprototypes.com/docs/Bus_Blaster_v2_design_overview
+Bus Blaster v2 forum http://dangerousprototypes.com/forum/viewforum.php?f=37
+CPLD buffer logic overview
+http://dangerousprototypes.com/docs/Bus_Blaster_v2_buffer_logic
+
+This open source hardware and software is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
