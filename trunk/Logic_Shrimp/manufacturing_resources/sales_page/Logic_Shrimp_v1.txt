@@ -1,0 +1,24 @@
+Logic Shrimp v1 logic analyzer ($34.95)
+
+The Logic Shrimp is a medium speed, low-cost logic analyzer with a USB
+interface. It can capture up to 256K samples at 20MHz. Compatible with
+the open source SUMP logic analyzer client(http://www.lxtreme.nl/ols/).
+
+* 4 channels @ 256K samples per channel
+* 20/12/6/3/2/1MHz capture rates, and lower
+* Simple edge change triggers on all channels, adjustable pre/post
+trigger samples
+* SUMP protocol compatible
+* USB connection, USB upgradable
+* Open source (CC-BY-SA)
+
+Logic Shrimp manual
+http://dangerousprototypes.com/docs/Logic_Shrimp_logic_analyzer
+Logic Shrimp v2 design overview
+http://dangerousprototypes.com/docs/Logic_Shrimp_design_overview
+Logic Shrimp forum http://dangerousprototypes.com/forum/viewforum.php?f=58
+Logic analyzer client http://www.lxtreme.nl/ols/
+
+This open source hardware and software is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
