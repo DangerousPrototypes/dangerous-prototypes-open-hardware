@@ -69,6 +69,8 @@ class ComIRDevice:
         self.SendChar('v')
         try:
             retStr= str(self.__ser.Read(4,.1))
+            if len(retStr) == 0:
+                retStr = "No version string returned, Is the IR Toy not in the 'root' mode? Try sending five '00's to it, or '0xFF0xFF0x000x000x000x000x000x00'."
             return retStr
         except:
             return "No USB IR Toy Detected!"    

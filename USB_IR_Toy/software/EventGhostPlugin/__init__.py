@@ -32,6 +32,12 @@
 # - Added image
 # - Changed version check to > not ==
 
+# 00.08.03 (spanner888) 
+# - Updated transmit code from UIRT2 to match IRToy.
+# - Using the Sampling mode for transmission (same as the receive mode)
+# - So IRToy expects the FULL command specified in "Timing information format" at http://dangerousprototypes.com/docs/USB_IR_Toy:_Sampling_mode
+#   -  AND it is currently coded for maximum flexabilty so you ALSO need to send the start and transmit codes.
+#		ie 03datapairsFFFF. For example 03214534780f3bFFFF
 
 
 from __future__ import with_statement
@@ -42,7 +48,7 @@ eg.RegisterPlugin(
     #description=__doc__,
     url="http://www.eventghost.org/forum/viewtopic.php?t=915",
     author = "7, Ian (via Bitmonster)",
-    version = "00.08.02" ,
+    version = "00.08.03" ,
     kind = "remote",
     canMultiLoad = True,
     description = (
@@ -257,24 +263,9 @@ class UIRT2(eg.IrDecoderPlugin):
             if code == StopIteration:
                 return
             with self.serialThread as serial:
-                serial.Write(code)
+                self.MyComIrDevice.SendChar(unhexlify(code))
                 sleep(0.05)
 
-                USBIrToyFWVer=self.MyComIrDevice.GetVersion()
-                print "USB IR Toy Version",USBIrToyFWVer
-                
-                data = serial.Read(1)
-                if data != " ":
-                    self.PrintError("Error sending IR code to IR Toy")
-                data = ""
-                startTime = clock()
-                while data != "\x21":
-                    if (clock() - startTime) > 5.0:
-                        self.PrintError("Transmitting timed out")
-                        break
-                    serial.Write("\x21\xdf")
-                    sleep(0.05)
-                    data = serial.Read(1)
             event.set()
             
     
@@ -307,27 +298,8 @@ class TransmitIR(eg.ActionBase):
     
     def Configure(self, code="", waitUntilFinished=True):
         panel = eg.ConfigPanel()
-        code1 = ""
-        code2 = ""
-        repeatCount = 4
+        repeatCount = 1
         carrier = 0
-        if code:
-            code += (48 * "\x00") 
-            if code[0] == "\x36":
-                length = ord(code[1])
-                code1 = "R" + hexlify(code[2:length]).upper()
-                repeatCount = ord(code[length]) & 0x1F
-                carrier = ord(code[length]) >> 6
-            else:
-                repeatCount = ord(code[0]) & 0x1F
-                if repeatCount > 0:
-                    carrier = ord(code[0]) >> 6
-                    code1 = hexlify(code[1:26]).upper()
-                else:
-                    repeatCount = ord(code[26]) & 0x1F
-                    carrier = ord(code[0]) >> 6
-                    code1 = hexlify(code[1:26]).upper()
-                    code2 = hexlify(code[27:48]).upper()
         if carrier < 0:
             carrier = 0
         elif carrier > 3:
@@ -341,19 +313,11 @@ class TransmitIR(eg.ActionBase):
         
         sizer.Add(panel.StaticText("Code 1:"), 0, wx.ALIGN_CENTER_VERTICAL)
         code1Ctrl = panel.TextCtrl(
-            code1, 
+            code, 
             size=(325, -1),
             validator=HexValidator(allowRaw=True),
         )
         sizer.Add(code1Ctrl)
-        
-        sizer.Add(panel.StaticText("Code 2:"), 0, wx.ALIGN_CENTER_VERTICAL)
-        code2Ctrl = panel.TextCtrl(
-            code2, 
-            size=(275, -1), 
-            validator=HexValidator()
-        )
-        sizer.Add(code2Ctrl)
         
         sizer.Add(panel.StaticText("Repeat:"), 0, wx.ALIGN_CENTER_VERTICAL)
         repeatCtrl = eg.SpinIntCtrl(panel, -1, repeatCount, 1, 31)
@@ -376,30 +340,13 @@ class TransmitIR(eg.ActionBase):
         panel.sizer.Add(waitUntilFinishedCtrl)
 
         while panel.Affirmed():
-            code1 = code1Ctrl.GetValue()
-            if len(code1) == 0:
+            code = code1Ctrl.GetValue()
+            if len(code) == 0:
                 panel.SetResult("", waitUntilFinishedCtrl.GetValue())
                 continue
-            code2 = code2Ctrl.GetValue()
             repeatCount = repeatCtrl.GetValue()
             carrier = 3 - carrierCtrl.GetSelection()
-            if code1[0] == "R":
-                data = unhexlify(code1[1:])
-                bCmd = repeatCount | (carrier << 6)
-                code = "\x36" + chr(len(data) + 2) + data + chr(bCmd)
-            elif len(code2) == 0:
-                data = unhexlify(code1)
-                bCmd = repeatCount | (carrier << 6)
-                code = chr(bCmd) + data
-            else:
-                bCmd = 0 | (carrier << 6)
-                bCmd2 = repeatCount | (carrier << 6)
-                code = chr(bCmd) + unhexlify(code1) \
-                       + chr(bCmd2) + unhexlify(code2)
-            panel.SetResult(
-                code + CalcChecksum(code), 
-                waitUntilFinishedCtrl.GetValue()
-            )
+            panel.SetResult(code, waitUntilFinishedCtrl.GetValue())
 
 
 

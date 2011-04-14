@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<generated_project xmlns="http://www.xilinx.com/XMLSchema" xmlns:xil_pn="http://www.xilinx.com/XMLSchema">
+
+  <!--                                                          -->
+
+  <!--             For tool use only. Do not edit.              -->
+
+  <!--                                                          -->
+
+  <!-- ProjectNavigator created generated project file.         -->
+
+  <!-- For use in tracking generated file and other information -->
+
+  <!-- allowing preservation of process status.                 -->
+
+  <!--                                                          -->
+
+  <!-- Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved. -->
+
+  <version xmlns="http://www.xilinx.com/XMLSchema">11.1</version>
+
+  <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="BBv2JTAGkey.xise"/>
+
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGDBUILD_LOG" xil_pn:name="BBv2JTAGKEY.bld"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_CHK" xil_pn:name="BBv2JTAGKEY.chk"/>
+    <file xil_pn:fileType="FILE_CMD_LOG" xil_pn:name="BBv2JTAGKEY.cmd_log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_CXT" xil_pn:name="BBv2JTAGKEY.cxt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_GYD" xil_pn:name="BBv2JTAGKEY.gyd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_JEDEC" xil_pn:name="BBv2JTAGKEY.jed"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="BBv2JTAGKEY.log"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_LSO" xil_pn:name="BBv2JTAGKEY.lso"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_MFD" xil_pn:name="BBv2JTAGKEY.mfd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGA" xil_pn:name="BBv2JTAGKEY.nga"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGC" xil_pn:name="BBv2JTAGKEY.ngc"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGD" xil_pn:name="BBv2JTAGKEY.ngd"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_NGR" xil_pn:name="BBv2JTAGKEY.ngr"/>
+    <file xil_pn:fileType="FILE_PAD_MISC" xil_pn:name="BBv2JTAGKEY.pad"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_PNX" xil_pn:name="BBv2JTAGKEY.pnx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="BBv2JTAGKEY.prj"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="BBv2JTAGKEY.rpt"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_STX" xil_pn:name="BBv2JTAGKEY.stx"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_REPORT" xil_pn:name="BBv2JTAGKEY.syr"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_VHDL" xil_pn:name="BBv2JTAGKEY.vhf"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_VM6" xil_pn:name="BBv2JTAGKEY.vm6"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="BBv2JTAGKEY.xml"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST" xil_pn:name="BBv2JTAGKEY.xst"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="BBv2JTAGKEY_build.xml"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="BBv2JTAGKEY_html"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="BBv2JTAGKEY_ngdbuild.xrpt"/>
+    <file xil_pn:fileType="FILE_PAD_EXCEL_REPORT" xil_pn:name="BBv2JTAGKEY_pad.csv"/>
+    <file xil_pn:fileType="FILE_HTML" xil_pn:name="BBv2JTAGKEY_summary.html"/>
+    <file xil_pn:branch="Implementation" xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="BBv2JTAGKEY_vhdl.prj"/>
+    <file xil_pn:fileType="FILE_XRPT" xil_pn:name="BBv2JTAGKEY_xst.xrpt"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="_ngo"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+    <file xil_pn:fileType="FILE_XMSGS" xil_pn:name="_xmsgs/xst.xmsgs"/>
+    <file xil_pn:fileType="FILE_FITTER_REPORT" xil_pn:name="webtalk_pn.xml"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xlnx_auto_0_xdb"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="xst"/>
+  </files>
+
+  <transforms xmlns="http://www.xilinx.com/XMLSchema">
+    <transform xil_pn:end_ts="1295775688" xil_pn:in_ck="6144001044064500103" xil_pn:name="TRAN_schematicsToHdl" xil_pn:prop_ck="-2646484122144798724" xil_pn:start_ts="1295775686">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.vhf"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775697" xil_pn:in_ck="6144001044064503533" xil_pn:name="TRANEXT_xstsynthesize_xbr" xil_pn:prop_ck="-2102385370894975722" xil_pn:start_ts="1295775688">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.cmd_log"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.lso"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.ngc"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.ngr"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.prj"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.stx"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.syr"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.xst"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_summary.html"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_vhdl.prj"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_xst.xrpt"/>
+      <outfile xil_pn:name="_xmsgs/xst.xmsgs"/>
+      <outfile xil_pn:name="webtalk_pn.xml"/>
+      <outfile xil_pn:name="xst"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775698" xil_pn:in_ck="6144001044064502279" xil_pn:name="TRAN_compileBCD2" xil_pn:prop_ck="-5882887701159434627" xil_pn:start_ts="1295775697">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775703" xil_pn:in_ck="7159679597173077160" xil_pn:name="TRAN_ngdbuild" xil_pn:prop_ck="1177841269142227927" xil_pn:start_ts="1295775698">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <status xil_pn:value="OutOfDateForOutputs"/>
+      <status xil_pn:value="OutputChanged"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.bld"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.cmd_log"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.ngd"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_ngdbuild.xrpt"/>
+      <outfile xil_pn:name="_ngo"/>
+      <outfile xil_pn:name="_xmsgs/ngdbuild.xmsgs"/>
+      <outfile xil_pn:name="xlnx_auto_0_xdb"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775712" xil_pn:in_ck="6144001044064494786" xil_pn:name="TRANEXT_vm6File_xbr" xil_pn:prop_ck="2700148106829936840" xil_pn:start_ts="1295775703">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.chk"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.cxt"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.gyd"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.log"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.mfd"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.nga"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.pad"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.pnx"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.rpt"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.vm6"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.xml"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_build.xml"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_html"/>
+      <outfile xil_pn:name="BBv2JTAGKEY_pad.csv"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775713" xil_pn:in_ck="6144001044064503650" xil_pn:name="TRANEXT_crtProg_xbr" xil_pn:prop_ck="2365158574651375362" xil_pn:start_ts="1295775712">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="BBv2JTAGKEY.jed"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775805" xil_pn:in_ck="6144001044064490364" xil_pn:name="TRAN_impactProgrammingTool_CPLD" xil_pn:prop_ck="-173801707503314095" xil_pn:start_ts="1295775805">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1295775712" xil_pn:in_ck="6144001044064503650" xil_pn:name="TRAN_timRpt" xil_pn:prop_ck="111903974446" xil_pn:start_ts="1295775711">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="WarningsGenerated"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+  </transforms>
+
+</generated_project>
