@@ -1,8 +1,4 @@
-/*
-    Written and maintained by the IR TOY Project and http://dangerousprototypes.com
-    WIKI page:    http://dangerousprototypes.com/usb-ir-toy-manual/
-    Forum page:   http://dangerousprototypes.com/forum/viewforum.php?f=29&sid=cdcf3a3177044bc1382305a921585bca
-********************************************************************************************************************
+/********************************************************************************************************************
 
 Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
 
@@ -15,7 +11,11 @@ If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 
 Contact Details: http://www.DangerousPrototypes.com
 Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
-********************************************************************************************************************* */
+***********************************************************************************************************************
+    Written and maintained by http://dangerousprototypes.com
+    WIKI page:    http://dangerousprototypes.com/usb-ir-toy-manual/
+    Forum:   http://dangerousprototypes.com/forum/viewforum.php?f=29
+***********************************************************************************************************************/
 
 
 #include <stdio.h>
