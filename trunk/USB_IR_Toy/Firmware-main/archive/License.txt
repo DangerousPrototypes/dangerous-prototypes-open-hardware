@@ -1,0 +1,3 @@
+***Noncommercial use only***
+
+The compiled firmware contains a USB VID and PID licensed for limited use only. You may compile the source yourself with your own VID and PID and it will be CC-A-SA, but under no circumstances may you use these binaries commercially!
