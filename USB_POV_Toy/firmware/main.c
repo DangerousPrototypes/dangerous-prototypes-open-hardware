@@ -300,18 +300,6 @@ hal_pov_StartCycle();
 	}
 	hal_acl_enable();
 
-
-
-
-
-
-
-
-
-
-
-
-
 #if 0
 break;
 			default: //error
