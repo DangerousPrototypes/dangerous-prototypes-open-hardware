@@ -1,22 +1,20 @@
-USB Infrared Toy v2 ($34.95)
+Color LCD with USB control ($)
 
-Assembled USB infrared remote control receiver/transmitter v2[http://dangerousprototypes.com/docs/USB_IR_Toy_v2] designed by DangerousPrototypes.com. Use a remote control with your computer, view infrared signals on a logic analyzer, capture and replay remote control buttons, and play TV POWER codes.
+We took the inexpensive displays found in Nokia phones, and added simple USB control. Screen contrast and backlight brightness are adjustable from software. A small booster supplies 7volts for the backlight.
 
-    * NEW: 100mA constant current IR transmitter with improved range
-    * NEW: Infrared frequency measurement
-    * NEW: Pin breakout area
-    * Infrared remote control decoder (RC5)
-    * Infrared signal logic analyzer
-    * Capture and replay infrared signals
-    * USB connection, USB bootloader for easy updates
-    * Supported in WinLIRC
+    * Control inexpensive color LCDs over USB
+    * LCD included
+    * USB powered, boost converter supplies 7volts for the backlight
+    * Backlight is dimmable
+    * Minimum PCB size
+    * USB upgradable
     * Open source (CC-BY-SA) 
 
-The internal self-test is performed on each IR Toy before it ships.
+The internal self-test is performed on each backpack before it ships.
 
-Infrared Toy Manual http://dangerousprototypes.com/docs/USB_Infrared_Toy
-Infrared Toy v2 hardware design overview http://dangerousprototypes.com/docs/USB_IR_Toy_v2
-Infrared Toy forum http://dangerousprototypes.com/forum/index.php?board=23.0
+Color LCD backpack manual http://dangerousprototypes.com/docs/Nokia_color_LCD_backpack
+Hardware design overview http://dangerousprototypes.com/docs/Nokia_color_LCD_backpack_design_overview
+Forum
 
 This open source hardware and software is distributed in the hope that
 it will be useful, but WITHOUT ANY WARRANTY; without even the implied
