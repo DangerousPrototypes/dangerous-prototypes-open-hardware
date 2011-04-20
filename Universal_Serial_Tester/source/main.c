@@ -4,17 +4,15 @@
     Date revised: april 13, 2011
 ******************************************************************************************************
 
- Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
+Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
 
 This work is free: you can redistribute it and/or modify it under the terms of Creative Commons Zero license v1.0
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the License for more details. You should have received a copy of the License along with this program.
-If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+This work is licensed under the Creative Commons Zero 1.0 United States License. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
 
-Contact Details: http://www.DangerousPrototypes.com
-Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Contact: http://www.DangerousPrototypes.com
 
 ******************************************************************************************************
 
