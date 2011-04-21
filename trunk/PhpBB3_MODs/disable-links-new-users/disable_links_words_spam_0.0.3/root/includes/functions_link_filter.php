@@ -228,7 +228,7 @@ function link_filter_test_post($message, $subject){
 			global $phpbb_root_path,$phpEx;
 			add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse.');
 			add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse. CONTENT: '.$subject.''.$message);
-			include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 			$this->link_filter_delete_account($user->data['user_id']);
 			$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 			//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
