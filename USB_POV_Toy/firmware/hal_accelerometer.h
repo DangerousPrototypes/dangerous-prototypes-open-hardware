@@ -25,7 +25,6 @@ OUTPUT_Z_MSB_10BIT=0x05,
 OUTPUT_X_8BIT=0x06,
 OUTPUT_Y_8BIT=0x07,
 OUTPUT_Z_8BIT=0x08,
-
 STATUS_REG=0x09,
 
 DETECTION_SRC_REG=0x0A,
@@ -45,6 +44,8 @@ LVLTH=0x1A
 #define ACL_Z 0b100000
 #define CTL1_CFG ACL_Y | ACL_Z //disable unwanted interrupts
 #define ACL_DIRECTION 0x06
+
+
 
 HAL_ACL_DIRECTION hal_acl_IsItReverseOrForward(void);
 void hal_acl_config(void);
