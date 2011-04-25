@@ -8,8 +8,8 @@ dir_src=
 dir_bin=output
 dir_tmp=work
 dir_sin=
-dir_inc=C:\Program Files (x86)\Microchip\mplabc18\v3.37.01\h;.;c:\mcc18\h;..\microchip\include
-dir_lib=C:\Program Files (x86)\Microchip\mplabc18\v3.37.01\lib;C:\mcc18\lib
+dir_inc=.;c:\mcc18\h;..\microchip\include
+dir_lib=C:\Program Files\Microchip\mplabc18\v3.37.01\lib;C:\mcc18\lib
 dir_lkr=
 [CAT_FILTERS]
 filter_src=*.asm;*.c

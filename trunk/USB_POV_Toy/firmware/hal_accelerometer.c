@@ -77,10 +77,30 @@ if((c&0b10000000))
 return ACL_FORWARD;
 }
 
-
-
 #if 0
 void hal_acl_adjustInterruptLvl(u8 value)
 {
 }
 #endif
+
+void mma_wait_until_ready()
+{
+	while( ( hal_acl_read( STATUS_REG ) & 0b00000001 ) == 0 ) {};
+}
+
+void mma_get_average( u8 power_of_two, int * x, int * y, int * z )
+{
+    int accu_x = 0;
+    int accu_y = 0;
+    int accu_z = 0;
+    u8 i;
+    for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
+        mma_wait_until_ready();
+        accu_x += hal_acl_read( OUTPUT_X_8BIT );
+        accu_y += hal_acl_read( OUTPUT_Y_8BIT );
+        accu_z += hal_acl_read( OUTPUT_Z_8BIT );
+    }
+    *x = ( accu_x + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
+    *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
+    *z = ( accu_z + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
+}
