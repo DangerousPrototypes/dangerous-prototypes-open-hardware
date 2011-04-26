@@ -1,7 +1,7 @@
 <?php
 /**
 *
-* functions_link_filter.php version r753
+* functions_link_filter.php version r1072
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 * Modified by Ian Lesnet (http://dangerousprototypes.com)
 * Documentation and install info here: 
@@ -57,6 +57,8 @@ class link_filter{
 	private $sleeper_check=true; //users with 0 posts who try to post after minimum_days will be prohibited
 	
 	private $first_post_length=73;//a minimum characters for the first post. enter 0 to disable
+	
+	private $only_new_user_group=false; //only apply filter to the phpBB3 new user group
 	
 	private $log_activity=false;//log entry for all activity (not recomended)
 	
@@ -290,10 +292,13 @@ function link_filter_check()
 	}
 
 	//check if the user meets filter criteria
-	$this->filter_user=((!$user->data['session_admin']) && (($user->data['user_type']==USER_IGNORE) || ($user->data['user_id']==ANONYMOUS) || ($user->data['user_posts']<=($this->minimum_posts-1)) || ($user->data['user_regdate']>((time())-(86400*$this->minimum_days)))));
-
-	//this MIGHT be used in a bigger filter to only apply to new users.
-	//$this->filter_user=((!$user->data['session_admin']) && (($user->data['user_type']==USER_IGNORE) || ($user->data['user_id']==ANONYMOUS) || ($user->data['user_new']==1 &&(($user->data['user_posts']<=($this->minimum_posts-1)) || ($user->data['user_regdate']>((time())-(86400*$this->minimum_days)))))));
+	if($this->only_new_user_group==false){
+		//apply to everyone
+		$this->filter_user=((!$user->data['session_admin']) && (($user->data['user_type']==USER_IGNORE) || ($user->data['user_id']==ANONYMOUS) || ($user->data['user_posts']<=($this->minimum_posts-1)) || ($user->data['user_regdate']>((time())-(86400*$this->minimum_days)))));
+	}else{
+	//apply to new users only
+		$this->filter_user=((!$user->data['session_admin']) && (($user->data['user_type']==USER_IGNORE) || ($user->data['user_id']==ANONYMOUS) || ($user->data['user_new']==true &&(($user->data['user_posts']<=($this->minimum_posts-1)) || ($user->data['user_regdate']>((time())-(86400*$this->minimum_days)))))));
+	}
 	
 	//If you're not special, we filter you
 	return $this->filter_user;
