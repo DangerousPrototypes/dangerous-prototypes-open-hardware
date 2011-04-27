@@ -104,3 +104,44 @@ void mma_get_average( u8 power_of_two, int * x, int * y, int * z )
     *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
     *z = ( accu_z + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
+
+
+/*
+#define POWER_OF_TWO 5
+static volatile int16_t x_array[ 1 << POWER_OF_TWO ];
+static volatile int16_t y_array[ 1 << POWER_OF_TWO ];
+static volatile int16_t z_array[ 1 << POWER_OF_TWO ];
+static volatile int16_t x_moving_average;
+static volatile int16_t y_moving_average;
+static volatile int16_t z_moving_average;
+static volatile uint8_t i;
+
+#if defined(USE_INTERRUPT)
+ISR( INT0_vect )
+{
+    int16_t x = mma_read10( MMA_XOUT10 );
+    int16_t y = mma_read10( MMA_YOUT10 );
+    int16_t z = mma_read10( MMA_ZOUT10 );
+    x_moving_average -= x_array[ i ];
+    y_moving_average -= y_array[ i ];
+    z_moving_average -= z_array[ i ];
+    x_array[ i ] = x;
+    y_array[ i ] = y;
+    z_array[ i ] = z;
+    x_moving_average += x;
+    y_moving_average += y;
+    z_moving_average += z;
+    ++i;
+    if ( i >= ( 1 << POWER_OF_TWO ) ) {
+        i = 0;
+    }
+}
+
+void mma_get_moving_average( int16_t * x, int16_t * y, int16_t * z )
+{
+    *x = ( ( x_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
+    *y = ( ( y_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
+    *z = ( ( z_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
+}
+#endif
+*/
