@@ -101,8 +101,7 @@ void main(void){
 
 
 //	hal_acl_IntSetup();
-
-#if 1
+//#if 1
 
     USBDeviceInit();//setup usb
 
@@ -206,7 +205,7 @@ void main(void){
 				break;
 			case 0x17:
 start_mode:
-#endif
+//#endif
 	hal_acl_config();
 	//i=ACL_INT1;
 	hal_pov_setupInt(); //set the interrupts
@@ -312,7 +311,7 @@ hal_pov_StartCycle();
 
 
 
-#if 1
+//#if 0
 break;
 			default: //error
 				break;
@@ -320,7 +319,7 @@ break;
 	    CDCTxService();
 
 	}
-#endif
+//#endif
 
 }//end main
 
