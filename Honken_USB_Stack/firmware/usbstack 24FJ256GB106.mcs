@@ -41,6 +41,45 @@ ToolArgsString=-g -Wall -mlarge-code -mlarge-data
 TraceCmdString=
 DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_ICD2=1
 [File003]
+Location=E:\Work\dp\Honken_USB_Stack\firmware\usb_stack.o
+Folder=Intermediary
+DeviceName=PIC24FJ256GB106
+LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
+LanguageToolID={069BD372-6CA0-40D4-BF2F-5DC806D05083}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Program\Microchip\MPLAB C30\include||$(LIBDIR)|C:\Program\Microchip\MPLAB C30\lib\PIC24F||$(LKRDIR)||
+SOLK=<src>|usb_stack.c|cdc.c|main.c||<obj>||<lib>||<lkr>|C:\Program\Microchip\MPLAB C30\support\PIC24F\gld\p24FJ256GB106.gld||
+SuiteArgsString=
+ToolArgsString=-g -Wall -mlarge-code -mlarge-data
+TraceCmdString=
+DebugOptions=
+[File004]
+Location=E:\Work\dp\Honken_USB_Stack\firmware\cdc.o
+Folder=Intermediary
+DeviceName=PIC24FJ256GB106
+LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
+LanguageToolID={069BD372-6CA0-40D4-BF2F-5DC806D05083}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Program\Microchip\MPLAB C30\include||$(LIBDIR)|C:\Program\Microchip\MPLAB C30\lib\PIC24F||$(LKRDIR)||
+SOLK=<src>|usb_stack.c|cdc.c|main.c||<obj>||<lib>||<lkr>|C:\Program\Microchip\MPLAB C30\support\PIC24F\gld\p24FJ256GB106.gld||
+SuiteArgsString=
+ToolArgsString=-g -Wall -mlarge-code -mlarge-data
+TraceCmdString=
+DebugOptions=
+[File005]
+Location=E:\Work\dp\Honken_USB_Stack\firmware\main.o
+Folder=Intermediary
+DeviceName=PIC24FJ256GB106
+LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
+LanguageToolID={069BD372-6CA0-40D4-BF2F-5DC806D05083}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-gcc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Program\Microchip\MPLAB C30\include||$(LIBDIR)|C:\Program\Microchip\MPLAB C30\lib\PIC24F||$(LKRDIR)||
+SOLK=<src>|usb_stack.c|cdc.c|main.c||<obj>||<lib>||<lkr>|C:\Program\Microchip\MPLAB C30\support\PIC24F\gld\p24FJ256GB106.gld||
+SuiteArgsString=
+ToolArgsString=-g -Wall -mlarge-code -mlarge-data
+TraceCmdString=
+DebugOptions=
+[File006]
 Location=E:\Work\dp-svn\trunk\Honken USB stack CDC test\.\output\BusPirate-v4-USB.cof
 Folder=Output
 DeviceName=PIC24FJ256GB106
@@ -53,7 +92,7 @@ SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD2=1 --defsym=__ICD2RAM=1
-[File004]
+[File007]
 Location=E:\Work\dp-svn\trunk\Honken USB stack CDC test\.\output\BusPirate-v4-USB.hex
 Folder=Output
 DeviceName=PIC24FJ256GB106
@@ -66,7 +105,7 @@ SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD2=1 --defsym=__ICD2RAM=1
-[File005]
+[File008]
 Location=E:\Work\dp-svn\trunk\Honken USB stack CDC test\.\output\usbstack 24FJ256GB106.cof
 Folder=Output
 DeviceName=PIC24FJ256GB106
@@ -79,7 +118,7 @@ SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD2=1 --defsym=__ICD2RAM=1
-[File006]
+[File009]
 Location=E:\Work\dp-svn\trunk\Honken USB stack CDC test\.\output\usbstack 24FJ256GB106.hex
 Folder=Output
 DeviceName=PIC24FJ256GB106
@@ -92,6 +131,32 @@ SuiteArgsString=
 ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
 TraceCmdString=
 DebugOptions=--defsym=__MPLAB_DEBUG=1 --defsym=__MPLAB_DEBUGGER_ICD2=1 --defsym=__ICD2RAM=1
+[File010]
+Location=E:\Work\dp\Honken_USB_Stack\firmware\usbstack 24FJ256GB106.cof
+Folder=Output
+DeviceName=PIC24FJ256GB106
+LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
+LanguageToolID={433C3D55-811D-409D-A6BF-159CF9355B42}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Program\Microchip\MPLAB C30\include||$(LIBDIR)|C:\Program\Microchip\MPLAB C30\lib\PIC24F||$(LKRDIR)||
+SOLK=<src>|usb_stack.c|cdc.c|main.c||<obj>||<lib>||<lkr>|C:\Program Files\Microchip\mplabc30\v3.25\support\PIC24F\gld\p24FJ256GB106.gld||
+SuiteArgsString=
+ToolArgsString=--heap=100 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=
+[File011]
+Location=E:\Work\dp\Honken_USB_Stack\firmware\usbstack 24FJ256GB106.hex
+Folder=Output
+DeviceName=PIC24FJ256GB106
+LanguageToolSuiteID={479DDE59-4D56-455E-855E-FFF59A3DB57E}
+LanguageToolID={433C3D55-811D-409D-A6BF-159CF9355B42}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-ld.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)|C:\Program\Microchip\MPLAB C30\include||$(LIBDIR)|C:\Program\Microchip\MPLAB C30\lib\PIC24F||$(LKRDIR)||
+SOLK=<src>|usb_stack.c|cdc.c|main.c||<obj>||<lib>||<lkr>|C:\Program Files\Microchip\mplabc30\v3.25\support\PIC24F\gld\p24FJ256GB106.gld||
+SuiteArgsString=
+ToolArgsString=--heap=100 -Map="$(BINDIR_)$(TARGETBASE).map" --report-mem -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=
 [TOOL_LOC_STAMPS]
 tool_loc{069BD372-6CA0-40D4-BF2F-5DC806D05083}=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-gcc.exe
 tool_loc{433C3D55-811D-409D-A6BF-159CF9355B42}=C:\Program Files\Microchip\mplabc30\v3.25\bin\pic30-ld.exe
