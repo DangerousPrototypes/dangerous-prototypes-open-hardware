@@ -4,7 +4,7 @@ The FTd2xx.dll and the corresponding ftd2xx.h header should be downloaded from t
 
 http://www.ftdichip.com
 
-This is still under early development 
+This is still under early development and may not work
 
 Use VS2010 free version
 
