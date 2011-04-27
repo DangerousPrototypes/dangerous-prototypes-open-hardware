@@ -52,4 +52,6 @@ void hal_acl_config(void);
 u8 hal_acl_read(u8 r);
 void hal_acl_enable(void);
 void hal_acl_write(u8 r, u8 v);
+void mma_get_average(u8, int*, int*, int* );
+
 #endif
