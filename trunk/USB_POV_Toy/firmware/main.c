@@ -102,7 +102,7 @@ void main(void){
 
 //	hal_acl_IntSetup();
 
-#if 0
+#if 1
 
     USBDeviceInit();//setup usb
 
@@ -320,24 +320,20 @@ break;
 	    CDCTxService();
 
 	}
+
 #endif
-
 }//end main
-
-
-
 
 // TODO
 void UsageMode(void)
 {
 // Initialization Here
-
-while(1)
-	{
-
-
-	}
+	while(1)
+		{
+			;
+		}
 }
+
 
 //unsigned char hal_Acl_Read(unsigned char r){
 //	unsigned char c;
@@ -364,7 +360,6 @@ void send(unsigned char c){
 		b[0]=c;
 		putUnsignedCharArrayUsbUsart(b,1);
 	}	
-
 }
 
 void sendok(void){
@@ -374,7 +369,6 @@ void sendok(void){
 		b[0]='1';//answer OK
 		putUnsignedCharArrayUsbUsart(b,1);
 	}	
-
 }
 
 unsigned char waitforbyte(void){
