@@ -102,7 +102,7 @@ void main(void){
 
 //	hal_acl_IntSetup();
 
-#if 0
+#if 1
 
     USBDeviceInit();//setup usb
 
@@ -312,7 +312,7 @@ hal_pov_StartCycle();
 
 
 
-#if 0
+#if 1
 break;
 			default: //error
 				break;
