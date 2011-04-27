@@ -1,21 +1,18 @@
 /*
- * This file is part of the Bus Pirate project (http://code.google.com/p/the-bus-pirate/).
- *
- * Written and maintained by the Bus Pirate project and http://dangerousprototypes.com
- *
- * To the extent possible under law, the project has
- * waived all copyright and related or neighboring rights to Bus Pirate. This
- * work is published from United States.
- *
- * For details see: http://creativecommons.org/publicdomain/zero/1.0/.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-*/
+ Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
 
-/*
+This work is free: you can redistribute it and/or modify it under the terms of Creative Commons Zero license v1.0
 
+This work is licensed under the Creative Commons Zero 1.0 United States License. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Contact: http://www.DangerousPrototypes.com
+
+*******************************************************************************************************
+Wiki : http://dangerousprototypes.com/docs/PIC_LCD_Backpack_manufacturing_resources
+Forum
+**********************************************************************************************
 Here's another self-test we need:
 http://www.whereisian.com/files/j-lcd-backpack.swf
 http://www.whereisian.com/files/j-lcd-backpack_001.swf
