@@ -1,0 +1,42 @@
+ISim log file
+Running: E:\Work\dp\Bus_Blaster\buffer_logic\selftest\selftest_isim_beh.exe -gui -tclbatch isim.cmd -wdb E:/Work/dp/Bus_Blaster/buffer_logic/selftest/selftest_isim_beh.wdb 
+ISim M.53d (signature 0xb869381d)
+WARNING: A WEBPACK license was found.
+WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
+WARNING: ISim will run in Lite mode. Please refer to the ISim documentation for more information on the differences between the Lite and the Full version.
+This is a Lite version of ISim.
+Time resolution is 1 ps
+# onerror resume
+# wave add /
+# run 1000 ns
+Simulator is doing circuit initialization process.
+Finished circuit initialization process.
+# isim force add /selftest/ft_in 01010101 -radix bin
+# run 1ns
+# run 1ns
+# run 1ns
+# isim force remove /selftest/ft_in
+# isim force add /selftest/ft_in 01010111 -radix bin
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# isim force add /selftest/jtag_in 0101 -radix bin
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# run 1ns
+# isim force add /selftest/jtag_in 0000 -radix bin
+# run 1ns
+# isim force add /selftest/ft_in 01010101 -radix bin
+# isim force add /selftest/jtag_in 0101 -radix bin
+# run 1ns
+# run 1ns
+# run 1ns
+# isim force add /selftest/jtag_in 1101 -radix bin
+# run 1ns

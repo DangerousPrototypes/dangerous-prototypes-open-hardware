@@ -1,0 +1,61 @@
+
+#ADBUS[7:0] FT2232->CPLD
+NET "ADBUS[0]"         	LOC =  "P16";
+NET "ADBUS[1]"         	LOC =  "P14";
+NET "ADBUS[2]"         	LOC =  "P13";
+NET "ADBUS[3]"         	LOC =  "P12";
+NET "ADBUS[4]"    		LOC =  "P8";
+NET "ADBUS[5]"    		LOC =  "P6";
+NET "ADBUS[6]"    		LOC =  "P5";
+NET "ADBUS[7]"        	LOC =  "P3";
+
+#ACBUS[7:0] CPLD->FT2232
+NET "ACBUS[0]"       	LOC =  "P2";
+NET "ACBUS[1]"   			LOC =  "P1";
+NET "ACBUS[2]"    		LOC =  "P44";
+NET "ACBUS[3]"    		LOC =  "P43";
+NET "ACBUS[4]"    		LOC =  "P42";
+NET "ACBUS[5]"    		LOC =  "P41";
+NET "ACBUS[6]"    		LOC =  "P40";
+NET "ACBUS[7]"    		LOC= 	"P39";
+
+#jtag_out[3:0] jtag_out->jtag_in loopback
+#jtag_in[3:0] jtag_out->jtag_in loopback
+NET "jtag_out[0]" 	LOC="P38"; #NET "nTRST"          LOC =  "P38";
+NET "jtag_in[0]"            LOC =  "P37"; #NET "TDI"            LOC =  "P37";
+NET "jtag_out[1]"            LOC =  "P36";#NET "TMS"            LOC =  "P36";
+NET "jtag_in[1]"            LOC =  "P34";  #NET "TCK"            LOC =  "P34";
+NET "jtag_out[2]"           LOC =  "P33"; #NET "RTCK"           LOC =  "P33";
+NET "jtag_in[2]"            LOC =  "P32"; #NET "TDO"            LOC =  "P32";
+NET "jtag_out[3]"          LOC =  "P31"; #NET "nSRST"          LOC =  "P31";
+NET "jtag_in[3]"          LOC =  "P30"; #NET "DBGRQ"          LOC =  "P30";
+#NET "DBGACK"         LOC =  "P29";
+
+
+#NET "ACBUS0"       	LOC =  "P2";
+#NET "ACBUS1"   		LOC =  "P1";
+#NET "ACBUS2"    		LOC =  "P44";
+#NET "ACBUS3"    		LOC =  "P43";
+#NET "ACBUS4"    		LOC =  "P42";
+#NET "ACBUS5"    		LOC =  "P41";
+#NET "ACBUS6"    		LOC =  "P40";
+#NET "ACBUS7"    		LOC= 	"P39"
+#
+#NET "ADBUS0"         LOC =  "P16";
+#NET "ADBUS1"         LOC =  "P14";
+#NET "ADBUS2"         LOC =  "P13";
+#NET "ADBUS3"         LOC =  "P12";
+#NET "ADBUS4"    		LOC =  "P8";
+#NET "ADBUS5"    		LOC =  "P6";
+#NET "ADBUS6"    		LOC =  "P5";
+#NET "ADBUS7"        	LOC =  "P3";
+#
+#NET "nTRST"          LOC =  "P38";
+#NET "TDI"            LOC =  "P37";
+#NET "TMS"            LOC =  "P36";
+#NET "TCK"            LOC =  "P34";
+#NET "RTCK"           LOC =  "P33";
+#NET "TDO"            LOC =  "P32";
+#NET "nSRST"          LOC =  "P31";
+#NET "DBGRQ"          LOC =  "P30";
+#NET "DBGACK"         LOC =  "P29";
