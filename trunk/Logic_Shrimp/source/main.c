@@ -1,18 +1,20 @@
-/*
- * This file is part of the Bus Pirate project (http://code.google.com/p/the-bus-pirate/).
- *
- * Written and maintained by the Bus Pirate project and http://dangerousprototypes.com
- *
- * To the extent possible under law, the project has
- * waived all copyright and related or neighboring rights to Bus Pirate. This
- * work is published from United States.
- *
- * For details see: http://creativecommons.org/publicdomain/zero/1.0/.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- */
+/* ********************************************************************************************************************
+Released into the public domain, 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
+
+This work is free: you can redistribute it and/or modify it under the terms of Creative Commons Zero license v1.0
+
+This work is licensed under the Creative Commons Zero 1.0 United States License. To view a copy of this license, visit http://creativecommons.org/publicdomain/zero/1.0/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Contact: http://www.DangerousPrototypes.com
+
+Wiki: http://dangerousprototypes.com/docs/Logic_Shrimp_logic_analyzer
+Forum: http://dangerousprototypes.com/forum/viewforum.php?f=58
+
+************************************************************************************************************************** */
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,8 +69,10 @@ int main(int argc, char** argv)
 
 	printf("-------------------------------------------------------------------------\n");
 	printf("\n");
-	printf(" Logic Shrimp Manufacturing SelfTest utility v0.1 (CC-0)\n");
-	printf(" http://dangerousprototypes.com\n");
+	printf(" Logic Shrimp Manufacturing SelfTest utility v0.2\n");
+    printf(" Release Date: 04/28/2011 \n");
+    printf(" License: (CC-0)\n");
+	printf(" http://www.dangerousprototypes.com\n");
 	printf("\n");
 	printf("-------------------------------------------------------------------------\n");
 
