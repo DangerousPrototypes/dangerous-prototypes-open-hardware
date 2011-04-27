@@ -92,7 +92,7 @@
 
      #pragma config WDTEN = OFF       
 
-     #pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
+     #pragma config PLLDIV = 4           //Divide by 5 (20 MHz oscillator input) 
      #pragma config STVREN = ON         
      #pragma config XINST = OFF          
      #pragma config CPUDIV = OSC1        
@@ -179,7 +179,7 @@
      #pragma config OSC = HSPLL          //HS oscillator, PLL enabled, HSPLL used by USB
      #pragma config FCMEN = OFF          //Fail-Safe Clock Monitor disabled
      #pragma config IESO = OFF           //Two-Speed Start-up disabled
-     #prabma config SOSCSEL = LOW        // Low power timer1
+     #pragma config SOSCSEL = LOW        // Low power timer1
      #pragma config WDTPS = 32768        //1:32768
      #pragma config DSWDTOSC = INTOSCREF //DSWDT uses INTOSC/INTRC as clock
      #pragma config RTCOSC = T1OSCREF    //RTCC uses T1OSC/T1CKI as clock

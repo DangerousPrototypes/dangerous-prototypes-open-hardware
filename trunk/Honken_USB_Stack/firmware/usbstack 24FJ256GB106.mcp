@@ -36,7 +36,6 @@ file_008=.
 file_009=.
 file_010=.
 file_011=.
-file_012=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -50,7 +49,6 @@ file_008=no
 file_009=no
 file_010=no
 file_011=no
-file_012=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -64,21 +62,19 @@ file_008=no
 file_009=no
 file_010=no
 file_011=no
-file_012=no
 [FILE_INFO]
 file_000=usb_stack.c
 file_001=cdc.c
 file_002=main.c
-file_003=config.h
-file_004=descriptors.h
-file_005=globals.h
-file_006=usb_config.h
-file_007=usb_lang.h
-file_008=usb_p18f.h
-file_009=usb_stack.h
-file_010=cdc.h
-file_011=usb_p24f.h
-file_012=C:\Program\Microchip\MPLAB C30\support\PIC24F\gld\p24FJ256GB106.gld
+file_003=descriptors.h
+file_004=globals.h
+file_005=usb_lang.h
+file_006=usb_stack.h
+file_007=cdc.h
+file_008=cdc_config.h
+file_009=configWords.h
+file_010=PICUSB.h
+file_011=C:\Program Files\Microchip\mplabc30\v3.25\support\PIC24F\gld\p24FJ256GB106.gld
 [SUITE_INFO]
 suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=

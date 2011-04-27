@@ -47,8 +47,8 @@ Low power request macro
 #ifndef __USB_CONFIG_H__
 #define __USB_CONFIG_H__
 
-//#define BPv4
-#define IRTOY
+#define BPv4
+//#define IRTOY
 //#define EA14k //Embedded adventures PIC18F14K50 module
 //#define JTR_PIC24GB002        // JTR's PIC24..GB002 mockup
 //#define Ians18FJ      //Ian's PIC18F24J50 test bed
@@ -100,8 +100,7 @@ Low power request macro
 
 #elif defined(IRTOY)
 
-#define MODELED LATBbits.LATC1
-#define USBLED  LATBbits.LATC0 
+#define USBLED  LATAbits.LATA0 
 
 #define  USBLEDON()   USBLED = 1
 
@@ -141,6 +140,47 @@ Low power request macro
  * be drawn from bus i suspend mode */
 //#define usb_low_power_request() Nop()
 
+#elif defined(Ians18FJ)
+
+#define USBLED  LATCbits.LATC2 
+
+#define  USBLEDON()   USBLED = 1
+
+#define USB_VID (0x4d8)
+#define USB_PID (0x000A)
+#define USB_DEV 0x0002
+
+#define USB_NUM_CONFIGURATIONS          1u
+#define USB_NUM_INTERFACES              2u
+#define USB_NUM_ENDPOINTS               3u
+#define USB_NUM_STRINGS                 4u
+
+#define MAX_EPNUM_USED                  2u
+
+#define USB_BUS_POWERED 1
+#define USB_INTERNAL_TRANSCIEVER 1
+#define USB_INTERNAL_PULLUPS 1
+#define USB_INTERNAL_VREG 1
+#define USB_FULL_SPEED_DEVICE 1
+
+/* PingPong Buffer Mode
+ * Valid values
+ * 0 - No PingPong Buffers
+ * 1 - PingPong on EP0
+ * 2 - PingPong on all EP
+ * 3 - PingPong on all except EP0
+ */
+#define USB_PP_BUF_MODE 0
+#define USB_EP0_BUFFER_SIZE 8u
+#define CDC_BUFFER_SIZE 8u
+#define CDC_NOTICE_BUFFER_SIZE 10u
+
+/* Low Power Request
+ * Optional user supplied subroutine to set the circuit
+ * into low power mode during usb suspend.
+ * Probably needed when bus powered as only 2.5mA should
+ * be drawn from bus i suspend mode */
+//#define usb_low_power_request() Nop()
 #elif defined(EA14k)
 #define MODELED LATBbits.LATC1
 #define USBLED  LATBbits.LATC0
