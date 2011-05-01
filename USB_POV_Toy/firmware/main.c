@@ -186,14 +186,18 @@ void main(void){
 				}
 				break;
 			case 0x16:
-				while(1){
+				//while(1)
+				{
 					ACL_CS=0;
 					hal_spi_rw((0x06<<1));
-					param[0]=hal_spi_rw(0xff);
+					//param[0]=hal_spi_rw(0xff);
+					param[0]= 'J';//hal_acl_read( OUTPUT_X_8BIT );
 					param[1]='|';
-					param[2]=hal_spi_rw(0xff);
+					//param[2]=hal_spi_rw(0xff);
+					param[2]=hal_acl_read( OUTPUT_Y_8BIT );
 					param[3]=':';
-					param[4]=hal_spi_rw(0xff);
+					//param[4]=hal_spi_rw(0xff);
+					param[4]=hal_acl_read( OUTPUT_Z_8BIT );
 					param[5]=0x13;
 					param[6]=0x10;
 					ACL_CS=1;
