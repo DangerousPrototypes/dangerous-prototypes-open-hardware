@@ -107,7 +107,7 @@ void main(void){
 
     while(1){
 
-        USBDeviceTasks(); 
+		USBDeviceTasks(); 
 
     	if((USBDeviceState < CONFIGURED_STATE)||(USBSuspendControl==1)) continue;
 		usbbufservice();//load any USB data into byte buffer
