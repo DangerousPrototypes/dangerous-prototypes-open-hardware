@@ -1,3 +1,8 @@
+#twatch info: http://dangerousprototypes.com/docs/Twatch_networked_LCD
+
+Upgrade instructions: http://dangerousprototypes.com/docs/Network_firmware_update_procedure
+
+
 v0e 
 *Has a fix for the new Twitter feed URLs in April 2011. 
 *Backlight is enabled.
