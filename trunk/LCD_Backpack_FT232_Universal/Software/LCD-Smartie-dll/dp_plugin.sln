@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dp_plugin", "dp_plugin.vcxproj", "{3B64BCCB-D3FB-41FA-B844-AAA2D60078EB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3090DF4-DFD0-4156-87A6-40706C99F77C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B64BCCB-D3FB-41FA-B844-AAA2D60078EB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3B64BCCB-D3FB-41FA-B844-AAA2D60078EB}.Debug|Win32.Build.0 = Debug|Win32
+		{3B64BCCB-D3FB-41FA-B844-AAA2D60078EB}.Release|Win32.ActiveCfg = Release|Win32
+		{3B64BCCB-D3FB-41FA-B844-AAA2D60078EB}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+EndGlobal
