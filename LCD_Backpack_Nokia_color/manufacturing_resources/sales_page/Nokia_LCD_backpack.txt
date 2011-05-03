@@ -1,0 +1,21 @@
+Color LCD with USB control ($)
+
+We took the inexpensive displays found in Nokia phones, and added simple USB control. Screen contrast and backlight brightness are adjustable from software. A small booster supplies 7volts for the backlight.
+
+    * Control inexpensive color LCDs over USB
+    * LCD included
+    * USB powered, boost converter supplies 7volts for the backlight
+    * Backlight is dimmable
+    * Minimum PCB size
+    * USB upgradable
+    * Open source (CC-BY-SA) 
+
+The internal self-test is performed on each backpack before it ships.
+
+Color LCD backpack manual http://dangerousprototypes.com/docs/Nokia_color_LCD_backpack
+Hardware design overview http://dangerousprototypes.com/docs/Nokia_color_LCD_backpack_design_overview
+Forum
+
+This open source hardware and software is distributed in the hope that
+it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
