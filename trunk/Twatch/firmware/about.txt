@@ -1,0 +1,10 @@
+v0e 
+*Has a fix for the new Twitter feed URLs in April 2011. 
+*Backlight is enabled.
+
+v0b-dump
+*Combined v0b firmware and bootloader
+*Backlight is disabled by default
+
+v0b
+*v0b original firmware
