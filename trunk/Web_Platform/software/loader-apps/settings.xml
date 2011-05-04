@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ds30LoaderSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Debugmode>false</Debugmode>
+  <CheckVerStart>false</CheckVerStart>
+  <WindowOnTop>false</WindowOnTop>
+  <advancedMode>false</advancedMode>
+  <WindowWidth>399</WindowWidth>
+  <WindowHeight>448</WindowHeight>
+  <Filename />
+  <Portname>COM11</Portname>
+  <Baudrate>9600</Baudrate>
+  <Familyname>dsPIC33FJ</Familyname>
+  <Devicename>dsPIC33FJ128GP204</Devicename>
+  <WriteProgram>true</WriteProgram>
+  <WriteEEPROM>false</WriteEEPROM>
+  <WriteConfigs>false</WriteConfigs>
+  <NoGoto>false</NoGoto>
+  <ignoreBLOverwrite>false</ignoreBLOverwrite>
+  <Polltime>250</Polltime>
+  <Timeout>5000</Timeout>
+  <CommandReset>false</CommandReset>
+  <ResetCommand>a;0;ff;e0</ResetCommand>
+  <resetBaudrate>9600</resetBaudrate>
+  <DTRReset>false</DTRReset>
+  <ManualReset>true</ManualReset>
+  <RTSReset>false</RTSReset>
+  <ResetTime>250</ResetTime>
+  <ActivateDTR>false</ActivateDTR>
+  <ActivateRTS>false</ActivateRTS>
+  <termSwithTo>false</termSwithTo>
+  <termBaudrate>9600</termBaudrate>
+</ds30LoaderSettings>

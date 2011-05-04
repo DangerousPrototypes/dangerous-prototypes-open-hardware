@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ds30LoaderConsole", "ds30LoaderConsole\ds30LoaderConsole.csproj", "{A2E35ABD-A878-4137-965D-58B0E154E646}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ds30Loader", "..\..\ds30 Loader\current\ds30 Loader\ds30Loader.csproj", "{D7B00D8E-C7D8-4FA4-8440-C6BB109CC9FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2E35ABD-A878-4137-965D-58B0E154E646}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E35ABD-A878-4137-965D-58B0E154E646}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E35ABD-A878-4137-965D-58B0E154E646}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E35ABD-A878-4137-965D-58B0E154E646}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7B00D8E-C7D8-4FA4-8440-C6BB109CC9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7B00D8E-C7D8-4FA4-8440-C6BB109CC9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7B00D8E-C7D8-4FA4-8440-C6BB109CC9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7B00D8E-C7D8-4FA4-8440-C6BB109CC9FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

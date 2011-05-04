@@ -1,0 +1,2 @@
+#!/bin/sh
+mono ds30\ loader\ GUI.exe "$@"
