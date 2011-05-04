@@ -95,10 +95,7 @@ void main(void){
 	LATB=0;
 	TRISB=0;
 
-
 	hal_acl_enable();
-
-
 
 //	hal_acl_IntSetup();
 //#if 1
@@ -141,6 +138,7 @@ void main(void){
 
 				while(1){
 					//c=hal_acl_read(0x06);
+					mma_wait_until_ready();
 					c=hal_acl_read(OUTPUT_X_8BIT);
 
 					if(c&0b10000000){//negative
@@ -152,6 +150,7 @@ void main(void){
 				break;
 			case 0x07:
 				while(1){
+					mma_wait_until_ready();
 					c=hal_acl_read(OUTPUT_Y_8BIT);
 
 					if(c&0b10000000){//negative
@@ -163,6 +162,7 @@ void main(void){
 				break;
 			case 0x08:
 				while(1){
+					mma_wait_until_ready();
 					c=hal_acl_read(OUTPUT_Z_8BIT);
 
 					if(c&0b10000000){//negative
@@ -543,5 +543,3 @@ void High_ISR (void){
 void Low_ISR (void){
      _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
 }
-
-
