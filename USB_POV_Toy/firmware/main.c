@@ -1,3 +1,15 @@
+/* ***************************************************************************************************************************************************
+ Copyright (C) 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
+
+ This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 United States License. To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/us/ or send a letter to Creative Commons, 171 Second Street, Suite 300, San Francisco, California, 94105, USA.
+
+ This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the License for more details. You should have received a copy of the License along with this program. If not, see <http://creativecommons.org/licenses/by-sa/3.0/>.
+
+ Contact: http://www.DangerousPrototypes.com
+
+********************************************************************************************************************************************* */
+
+
 //Due to licensing issues, we can't redistribute the Microchip USB source. 
 //You can get it from the Microchip website for free: 
 //http://www.microchip.com/usb
@@ -8,6 +20,9 @@
 //4. That's it. You've got the latest source and we're compliant with the license.
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
+
+
+
 #include "globals.h"
 #include "config.h"
 //#include "MatrixOrbital.h"
