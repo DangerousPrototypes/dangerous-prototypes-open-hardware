@@ -1,2 +1,2 @@
-irtoyselftest -d COM4
+irtoyselftest -d COM5
 pause

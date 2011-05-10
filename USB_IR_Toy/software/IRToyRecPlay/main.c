@@ -83,7 +83,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.07.1"
+#define IRTOY_VERSION "v0.07.2"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -155,7 +155,7 @@ int main(int argc, char** argv)
 {
 	int cnt, i,flag;
 	int opt;
-	char buffer[255] = {0};  //  255b buffer
+	char buffer[4096] = {0};  // 4k buffer
 
 	int fd,fcounter;
 	int res,c;
@@ -287,7 +287,7 @@ int main(int argc, char** argv)
 		printf(" Error opening serial port\n");
 		return -1;
 	}
-    serial_setup(fd,(speed_t) param_speed);
+    serial_setup(fd, (speed_t) param_speed);
      // get the firmware version
     cnt=0;
     serial_write( fd, "\xFF", 1);
