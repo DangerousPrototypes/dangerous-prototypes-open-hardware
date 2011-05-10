@@ -136,7 +136,7 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
   #endif
 	int res;
 	int fcounter;
-    char buffer[255] = {0};  //   buffer
+    char buffer[32] = {0};  //   buffer
     char fnameseq[255];
 	FILE *fp=NULL;
 	int i;
@@ -198,26 +198,41 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
 #endif
             }
 
-
+            int retries;
+            int Error_flag=0;
             int comsresult = 0;
             serial_write( fd, "\x03", 1);
             while(!feof(fp)) {
                if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
-                    if (verbose){
-                        printf(" Sending %d Bytes to IRToy...\n", res);
-                        for(i=0;i<res;i++)
-                            printf(" %02X ",(uint8_t) buffer[i]);
-                        printf("\n");
+                    for (retries=0;retries <5;retries++) {
+                        if (verbose){
+                            printf(" Sending %d Bytes to IRToy...\n", res);
+                            for(i=0;i<res;i++)
+                                printf(" %02X ",(uint8_t) buffer[i]);
+                            printf("\n");
+                        }
+
+                            comsresult = serial_write( fd, buffer, res);
+                            printf(" checking comresult....");
+                            if (comsresult != res){
+                                printf(" \n## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
+                                serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
+                                serial_write( fd, "\x03", 1);
+                                printf("trying again...%i\n",retries+1);
+                                Error_flag=1;
+
+                            }
+                            else {
+                            printf(" ok\n");
+                            Error_flag=0;
+                            break;
+                            }
+                        }
+                    if (Error_flag==1){
+                       printf("error sending IR code, exiting..");
+                       exit(-1);
                     }
-                    comsresult = serial_write( fd, buffer, res);
-                    printf(" checking comresult....");
-                    if (comsresult != res){
-                        printf(" \n## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
-                       // serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
-                        exit(-1);
-                    }
-                    else
-                        printf(" ok\n");
+
                     comsresult = 0;
                     if (delay > 0) {
 
@@ -232,8 +247,10 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
                }
            }
            printf(" End of file reached: %s \n",fnameseq);
+
            fclose(fp);
            fcounter++;
         }
      //  printf("pass here \n");
+       //  serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy
 }

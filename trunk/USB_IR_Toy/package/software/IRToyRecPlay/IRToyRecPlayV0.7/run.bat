@@ -1,2 +1,2 @@
-irtoy -d COM9 -p -f test -r  -v
+irtoy -d COM10 -p -f tv  -v -r
 pause

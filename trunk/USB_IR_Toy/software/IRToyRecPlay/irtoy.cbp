@@ -7,21 +7,21 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows Debug">
-				<Option output="bin/Debug/irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="bin\Debug\irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d  COM9  -f  test -p  -v   -r" />
+				<Option parameters="-d  COM10  -f  test -p  -v   -r" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="windows Release">
-				<Option output="bin/Release/irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin\Release\irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d  COM9  -f  test -p  -v   -r" />
+				<Option parameters="-d  COM10  -f  sony -p  -v   -r &gt;v109.txt" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -30,8 +30,8 @@
 				</Linker>
 			</Target>
 			<Target title="Linux debug">
-				<Option output="bin/Debug/irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output="bin\Debug\irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-d  /dev/ttyACM0  -f  test -p  -v   -r" />
@@ -40,8 +40,8 @@
 				</Compiler>
 			</Target>
 			<Target title="Linux Release">
-				<Option output="bin/Release/irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output="bin\Release\irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-d  /dev/ttyACM0  -f  test -p  -v   -r" />
@@ -57,6 +57,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="bin.h" />
+		<Unit filename="config.h">
+			<Option target="Windows Debug" />
+			<Option target="windows Release" />
+		</Unit>
 		<Unit filename="kbhit.c">
 			<Option compilerVar="CC" />
 		</Unit>
