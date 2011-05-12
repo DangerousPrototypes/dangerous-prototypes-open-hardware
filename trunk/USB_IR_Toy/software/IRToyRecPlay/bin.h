@@ -40,6 +40,6 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 #include "serial.h"
 
 int IRrecord(	char *,int,float );
-void IRplay(	char *,int,char *);
+void IRplay(	char *,int,char *,char *);
 
 #endif // BIN_H_INCLUDED
