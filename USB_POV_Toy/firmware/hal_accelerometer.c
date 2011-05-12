@@ -24,6 +24,7 @@ ACL_CS=1;
 
 void hal_acl_enable(void){
 hal_acl_write(MODE_CTRL_REG,0b0001);
+hal_acl_write(0x0D,0b10000000); //i2C disable
 #if 0
 ACL_CS=0;
 hal_spi_rw((0x16<<1)|0b10000000);//write setup
