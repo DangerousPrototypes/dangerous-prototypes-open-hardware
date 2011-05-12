@@ -52,6 +52,11 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 //  ( newbytes*newresolution)=(irtoybytes*21.3333)
 //  (prontocodes*prontoresolution)=(irtoycodes*21.3333)
 //  prontocodes=(irtoycodes*21.3333)/protoresolution
+//
+// *** new in v0.8
+// added -b buffer parameter for playback, e.g -b 32 , to  finetune playback
+// added single playing file when an complete filename with extension .bin is specified
+// in recording mode, filename with extension bin is overwritten. (overwrites the same file in single mode)
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -83,7 +88,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.07.2"
+#define IRTOY_VERSION "v0.8"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -123,6 +128,8 @@ int print_usage(char * appname)
 		printf("                     each command.\n");
 		printf("                  -v Display verbose output, have to specify level 0, 1 etc,\n");
 		printf("                     although at present it is only on or off :).\n");
+		printf("                  -b buffersize. Sets the buffer size, default is 256. Use inputs in multiple of 16.\n ");
+		printf("                       e.g. 16,32,64, 128, 256 and so on. Use to finetune playback buffer size, ");
 		printf("                  -o Create OLS file based on the filename format \n");
 		printf("                     ext. \"ols\" (Requires -f)  \n");
 		printf("                  -t Create or Play text files based on the filename format\n");
@@ -164,6 +171,7 @@ int main(int argc, char** argv)
 	char *param_fname=NULL;
 	char *param_delay=NULL;
     char *param_timer=NULL;
+    char *param_buffin = NULL;
     float resolution;
 
 	#ifndef _WIN32
@@ -185,7 +193,7 @@ int main(int argc, char** argv)
 			exit(-1);
 		}
 
-	while ((opt = getopt(argc, argv, "torpqsvn:a:d:f:")) != -1) {
+	while ((opt = getopt(argc, argv, "torpqsvn:a:d:f:b:")) != -1) {
         // printf("%c  \n",opt);
 		switch (opt) {
 
@@ -221,6 +229,14 @@ int main(int argc, char** argv)
 					exit(-1);
 				}
 				param_fname = strdup(optarg);
+
+                break;
+            case 'b':  // device   eg. com1 com12 etc
+				if ( param_buffin != NULL){
+					printf(" Error: Buffer-In parameter error!\n");
+					exit(-1);
+				}
+				param_buffin = strdup(optarg);
 
                 break;
             case 'n':    //use to change sample timer: default is 21.3333us
@@ -263,6 +279,10 @@ int main(int argc, char** argv)
     }
     if (param_timer==NULL){
        param_timer=strdup("21.3333");
+    }
+
+    if (param_buffin==NULL){
+       param_buffin=strdup("256");  //default
     }
     if (param_speed==NULL)
 		param_speed=strdup("115200");
@@ -381,7 +401,7 @@ int main(int argc, char** argv)
 	}
 
     if (play==TRUE){
-        IRplay(	param_fname,fd,param_delay);
+        IRplay(	param_fname,fd,param_delay,param_buffin);
 
     } // play=true
     if (textfile==TRUE) {
@@ -390,7 +410,7 @@ int main(int argc, char** argv)
 
          }
 
-    if (play==TRUE){
+        if (play==TRUE){
            IRtxtplay(param_fname,fd,param_delay);
         }
 
@@ -410,6 +430,7 @@ int main(int argc, char** argv)
 	FREE(param_port);
 	FREE(param_speed);
 	FREE(param_fname);
+	FREE(param_buffin);
     printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
 
     return 0;

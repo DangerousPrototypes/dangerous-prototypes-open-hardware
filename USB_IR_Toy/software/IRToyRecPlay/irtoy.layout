@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="windows Release" />
+	<ActiveTarget name="Windows Debug" />
 	<File name="bin.c" open="1" top="1" tabpos="7">
-		<Cursor position="4453" topLine="133" />
+		<Cursor position="5569" topLine="163" />
 	</File>
 	<File name="bin.h" open="1" top="0" tabpos="5">
-		<Cursor position="1187" topLine="28" />
+		<Cursor position="1586" topLine="19" />
 	</File>
 	<File name="config.h" open="1" top="0" tabpos="13">
-		<Cursor position="113" topLine="0" />
+		<Cursor position="123" topLine="0" />
 	</File>
 	<File name="kbhit.c" open="1" top="0" tabpos="11">
 		<Cursor position="1187" topLine="48" />
@@ -17,7 +17,7 @@
 		<Cursor position="1187" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1">
-		<Cursor position="7148" topLine="344" />
+		<Cursor position="14005" topLine="390" />
 	</File>
 	<File name="ols.c" open="1" top="0" tabpos="3">
 		<Cursor position="5797" topLine="70" />
@@ -26,7 +26,7 @@
 		<Cursor position="1187" topLine="0" />
 	</File>
 	<File name="queue.c" open="1" top="0" tabpos="6">
-		<Cursor position="1187" topLine="0" />
+		<Cursor position="3674" topLine="11" />
 	</File>
 	<File name="serial.c" open="1" top="0" tabpos="2">
 		<Cursor position="2954" topLine="116" />

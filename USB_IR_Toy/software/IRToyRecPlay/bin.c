@@ -52,13 +52,22 @@ int IRrecord(char *param_fname,int fd,float resolution)
 			while ((res= serial_read(fd, buffer, sizeof(buffer))) > 0){
 			    no_data_yet=FALSE;
                 if (file_created==FALSE) {
+                    // check if fileextension is specified
+                    if((strcmpi(param_fname,".bin")) >= 0)
+                    {
+                        printf("file has bin ");
+                        sprintf(fnameseq,"%s",param_fname);
+                    }
+                    else {
                     sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
+                    }
+
                     printf(" Creating file: %s\n",fnameseq);
 
                     fp=fopen(fnameseq,"wb");
                     if (fp==NULL) {
                         printf("Cannot open output file: %s \n",param_fname);
-                   exit(-1);
+                        exit(-1);
                     }
                     else {
                        file_created=TRUE;
@@ -127,24 +136,30 @@ int IRrecord(char *param_fname,int fd,float resolution)
 	return 0;
 }
 
-void IRplay(	char *param_fname,int fd,char *param_delay)
+void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 {
   #ifndef _WIN32
-  	bool no_data_yet=TRUE, file_created=FALSE;
+  	bool no_data_yet=TRUE, file_created=FALSE, soloplay=FALSE;
   #else
-	BOOL no_data_yet=TRUE, file_created=FALSE;
+	BOOL no_data_yet=TRUE, file_created=FALSE,soloplay=FALSE;
   #endif
 	int res;
 	int fcounter;
-    char buffer[32] = {0};  //   buffer
     char fnameseq[255];
 	FILE *fp=NULL;
 	int i;
     file_created=FALSE;
 	no_data_yet=TRUE;
+	soloplay=FALSE;
 	char inkey;
+    char *buffer;
+	int pbuff=atoi(param_buff);
+    if ((buffer = (char *)malloc(pbuff * sizeof(char))) == NULL) {
+        printf("ERROR: Cannot allocate memory.");
+        free(buffer);
+        exit(-1);
+    }
 
-        //check filename if exist
         printf(" Entering Player Mode \n");
         fcounter=0;
         inkey=0;
@@ -153,17 +168,31 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
 
 
         while (1) {
+            // added for single file play.. check existence of file an run it
+            // try opening the file if succesful we have to play it singly
+            //check filename if exist
+              fp=fopen(param_fname,"rb");
+              if (fp==NULL) {
+                  //we got a sequence then
+                sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
+                fp=fopen(fnameseq,"rb");
+                if (fp==NULL) {
+                    if (fcounter > 0)
+                        printf(" No more file(s). \n");
+                    else
+                        printf(" Bin File does not exits. \n");
 
-            sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
-            fp=fopen(fnameseq,"rb");
-            if (fp==NULL) {
-                if (fcounter > 0)
-                    printf(" No more file(s). \n");
-                else
-                    printf(" Bin File does not exits. \n");
+                   break;
+                }
 
-               break;
-            }
+              } else {
+
+                 //got solo play
+                 strcpy(fnameseq,param_fname);
+                 printf("Playing single file %s\n",fnameseq);
+                 soloplay=TRUE;              }
+
+
             if (delay< 0){
 				printf(" Press a key to start playing %s or X to exit \n",fnameseq);
 				while (1) {
@@ -203,12 +232,12 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
             int comsresult = 0;
             serial_write( fd, "\x03", 1);
             while(!feof(fp)) {
-               if ((res=fread(&buffer,sizeof(unsigned char),sizeof(buffer),fp)) > 0) {
+               if ((res=fread(&buffer[0],sizeof(char),pbuff,fp)) > 0) {
                     for (retries=0;retries <5;retries++) {
                         if (verbose){
                             printf(" Sending %d Bytes to IRToy...\n", res);
                             for(i=0;i<res;i++)
-                                printf(" %02X ",(uint8_t) buffer[i]);
+                            printf(" %02X ",(uint8_t) buffer[i]);
                             printf("\n");
                         }
 
@@ -249,6 +278,9 @@ void IRplay(	char *param_fname,int fd,char *param_delay)
            printf(" End of file reached: %s \n",fnameseq);
 
            fclose(fp);
+           if (soloplay==TRUE) {
+               break;
+           }
            fcounter++;
         }
      //  printf("pass here \n");
