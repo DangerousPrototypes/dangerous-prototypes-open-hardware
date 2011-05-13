@@ -53,7 +53,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
 			    no_data_yet=FALSE;
                 if (file_created==FALSE) {
                     // check if fileextension is specified
-                    if((strcmpi(param_fname,".bin")) >= 0)
+                    if((strcmpi(param_fname,".bin")) <= 0)
                     {
                         printf("file has bin ");
                         sprintf(fnameseq,"%s",param_fname);
