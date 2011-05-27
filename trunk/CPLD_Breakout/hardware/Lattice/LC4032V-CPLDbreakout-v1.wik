@@ -1,0 +1,38 @@
+{| class="wikitable" border="1"
+|+ E:/Work/dp/CPLD_Breakout/hardware/Lattice/LC4032V-CPLDbreakout-v1.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C5,C6,C7,C8,C12||5||0.1uF||C603
+|-
+|C9,C10||2||3.3uF||SMC_A
+|-
+|C11||1||470pF||C603
+|-
+|CON1||1||HEADER_PRG_XILINX_JTAG6||HEADER_PRG_1X06
+|-
+|D1||1||Yellow LED||LED-805
+|-
+|D2||1||Yellow LED||LED-805
+|-
+|IC1||1||LC4032V-TQFP44||TQFP44
+|-
+|IO1,IO2||2||||1X20
+|-
+|JP1,JP2||2||||1X02-S
+|-
+|PB||1||SMD button small||TACT_SWITCH_SMALL
+|-
+|PWR||1||Yellow LED||LED-805
+|-
+|Q1||1||OSC-OSCILLATOR||OSCILLATOR_7X5_SMD
+|-
+|R1||1||10K||R603
+|-
+|R2,R3,R4||3||2K||R603
+|-
+|SJ1||1||||SJ
+|-
+|U$1||1||DP_LOGO||DP_LOGO
+|-
+|VR1||1||3.3 VREG||SOT-23-5
+|}
