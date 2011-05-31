@@ -1,0 +1,12 @@
+{| class="wikitable" border="1"
+|+ C:/Documents and Settings/ian/Desktop/New Folder/Si4707_WeatherBandRadioBoardv1.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C1||1||22nF||C603
+|-
+|C2,C3||2||22pF||C603
+|-
+|Q1||1||32.768KHz||86SMX
+|-
+|U1||1||SI4707||QFN-20
+|}
