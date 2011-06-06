@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="windows Release" />
-	<File name="bin.c" open="1" top="0" tabpos="7">
-		<Cursor position="10177" topLine="276" />
+	<File name="bin.c" open="1" top="1" tabpos="7">
+		<Cursor position="8624" topLine="276" />
 	</File>
 	<File name="bin.h" open="1" top="0" tabpos="5">
 		<Cursor position="1586" topLine="17" />
@@ -16,8 +16,8 @@
 	<File name="kbhit.h" open="1" top="0" tabpos="12">
 		<Cursor position="1187" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="3910" topLine="87" />
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="3881" topLine="156" />
 	</File>
 	<File name="ols.c" open="1" top="0" tabpos="3">
 		<Cursor position="5775" topLine="29" />
