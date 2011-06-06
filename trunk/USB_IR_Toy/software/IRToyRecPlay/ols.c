@@ -133,6 +133,7 @@ void create_ols( char *param_fname)
                }
 
            printf(" .. Done.\n");
+
            fclose(fp);
            fclose(fp_ols);
            fcounter++;

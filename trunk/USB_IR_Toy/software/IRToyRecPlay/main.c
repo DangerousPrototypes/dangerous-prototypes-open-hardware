@@ -58,6 +58,9 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 // added single playing file when an complete filename with extension .bin is specified
 // in recording mode, filename with extension bin is overwritten. (overwrites the same file in single mode)
 
+// 6/4/2011   (fix transmit problem)http://dangerousprototypes.com/forum/viewtopic.php?f=29&t=2363
+// 6/6/2011    added fix to other file format.
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
