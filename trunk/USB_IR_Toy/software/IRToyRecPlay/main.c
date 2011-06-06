@@ -91,7 +91,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.82"
+#define IRTOY_VERSION "v0.83"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM

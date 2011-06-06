@@ -886,7 +886,7 @@
 1307035100 c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\kbhit.h
 	<stdio.h>
 
-1307332195 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\main.c
+1307377402 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\main.c
 	<stdlib.h>
 	<unistd.h>
 	<string.h>
@@ -986,4 +986,26 @@
 	<stdbool.h>
 	<unistd.h>
 	"serial.h"
+
+1307332456 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\ols.c
+	"ols.h"
+
+1307035100 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\queue.c
+	"queue.h"
+
+1307035100 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\serial.c
+	"config.h"
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1307035100 c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\config.h
+
+1307332363 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\txt.c
+	"txt.h"
+
+1307380263 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\bin.c
+	"bin.h"
 

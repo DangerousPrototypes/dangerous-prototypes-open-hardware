@@ -155,161 +155,200 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 	char inkey;
     char *buffer;
 	int pbuff=atoi(param_buff);
+	pbuff=64;   // added for 0x07 transmit
     if ((buffer = (char *)malloc(pbuff * sizeof(char))) == NULL) {
         printf("ERROR: Cannot allocate memory.");
         free(buffer);
         exit(-1);
     }
 
-        printf(" Entering Player Mode \n");
-        fcounter=0;
-        inkey=0;
-        int delay = atoi(param_delay) ;
-        int firstfile = 0;
+	printf(" Entering Player Mode \n");
+	fcounter=0;
+	inkey=0;
+	int delay = atoi(param_delay) ;
+	int firstfile = 0;
 
 
-        while (1) {
-            // added for single file play.. check existence of file an run it
-            // try opening the file if succesful we have to play it singly
-            //check filename if exist
-              fp=fopen(param_fname,"rb");
-              if (fp==NULL) {
-                  //we got a sequence then
-                sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
-                fp=fopen(fnameseq,"rb");
-                if (fp==NULL) {
-                    if (fcounter > 0)
-                        printf(" No more file(s). \n");
-                    else
-                        printf(" Bin File does not exits. \n");
+	while (1) {
+		// added for single file play.. check existence of file an run it
+		// try opening the file if succesful we have to play it singly
+		//check filename if exist
+		  fp=fopen(param_fname,"rb");
+		  if (fp==NULL) {
+			  //we got a sequence then
+			sprintf(fnameseq,"%s_%03d.bin",param_fname,fcounter);
+			fp=fopen(fnameseq,"rb");
+			if (fp==NULL) {
+				if (fcounter > 0)
+					printf(" No more file(s). \n");
+				else
+					printf(" Bin File does not exits. \n");
 
-                   break;
-                }
-
-              } else {
-
-                 //got solo play
-                 strcpy(fnameseq,param_fname);
-                 printf("Playing single file %s\n",fnameseq);
-                 soloplay=TRUE;              }
-
-
-            if (delay< 0){
-				printf(" Press a key to start playing %s or X to exit \n",fnameseq);
-				while (1) {
-				  if(kbhit()) {
-					#ifdef _WIN32
-                        inkey=getch();
-                    # else
-                        inkey=getchar_unlocked();
-                    # endif
-
-					 if ((inkey=='x') || (inkey=='X')) {
-						 break;
-					 }
-					 else
-						break;
-
-				  }
-
-				}
-				if (inkey=='x'|| inkey=='X'){
-					  break;
-				}
+			   break;
 			}
-            if ((delay > 0) && (firstfile++ > 0)){
-                printf(" Auto playing %s with %d seconds delay. \n",fnameseq,atoi(param_delay));
+
+		  } else {
+
+			 //got solo play
+			 strcpy(fnameseq,param_fname);
+			 printf("Playing single file %s\n",fnameseq);
+			 soloplay=TRUE;              }
+
+
+		if (delay< 0){
+			printf(" Press a key to start playing %s or X to exit \n",fnameseq);
+			while (1) {
+			  if(kbhit()) {
+				#ifdef _WIN32
+					inkey=getch();
+				# else
+					inkey=getchar_unlocked();
+				# endif
+
+				 if ((inkey=='x') || (inkey=='X')) {
+					 break;
+				 }
+				 else
+					break;
+
+			  }
+
+			}
+			if (inkey=='x'|| inkey=='X'){
+				  break;
+			}
+		}
+		if ((delay > 0) && (firstfile++ > 0)){
+			printf(" Auto playing %s with %d seconds delay. \n",fnameseq,atoi(param_delay));
 
 #ifdef _WIN32
 
-                Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+			Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
-                sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+			sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #endif
-            }
+		}
+        char EOF_flag=0;  //flag for ffff
+		int retries;
+		int Error_flag=0;
+		int comsresult = 0;
+		serial_write( fd, "\x07", 1);     // was "\x03"
+		while(!feof(fp)) {
 
-            int retries;
-            int Error_flag=0;
-            int comsresult = 0;
-            serial_write( fd, "\x03", 1);
-            while(!feof(fp)) {
-               if ((res=fread(&buffer[0],sizeof(char),pbuff,fp)) > 0) {
-                    for (retries=0;retries <5;retries++) {
-                        if (verbose){
-                            printf(" Sending %d Bytes to IRToy...\n", res);
-                            for(i=0;i<res;i++)
-                            printf(" %02X ",(uint8_t) buffer[i]);
-                            printf("\n");
-                        }
+		   if ((res=fread(&buffer[0],sizeof(char),pbuff,fp)) > 0) {
+		        EOF_flag=0;
 
-                            comsresult = serial_write( fd, buffer, res);
-                            printf(" checking comresult....");
-                            if (comsresult != res){
-                                printf(" \n## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
-                                serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
-                                serial_write( fd, "\x03", 1);
-                                printf("trying again...%i\n",retries+1);
-                                Error_flag=1;
+		        if ((uint8_t) buffer[res-1]==255) {
+                     if ((uint8_t)buffer[res-2]==255){
+					       EOF_flag=1;    // set flag thag we have ff ff
+					      // printf("eof set\n");
+					   }
+		        }
+				for (retries=0;retries <5;retries++) {
+					if (verbose){
+						printf(" Sending %d Bytes to IRToy...\n", res);
+						for(i=0;i<res;i++)
+						printf(" %02X ",(uint8_t) buffer[i]);
+						printf("\n");
+					}
 
-                            }
-                            else {
-                            printf(" ok\n");
-                            Error_flag=0;
-                            break;
-                            }
-                        }
-                    if (Error_flag==1){
-                       printf("error sending IR code, exiting..");
-                       exit(-1);
-                    }
+					comsresult = serial_write( fd, buffer, res);
+					printf(" checking comresult....");
+					if (comsresult != res){
+						printf(" \n## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
+						serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
+						serial_write( fd, "\x03", 1);
+						printf("trying again...%i\n",retries+1);
+						Error_flag=1;
 
-                    comsresult = 0;
-                    if (delay > 0) {
+					}
+					else {
+						printf(" ok\n");
+						Error_flag=0;
+						// added here: bytes irtoy ready to recieve
+						// check for buffer[res] and buffer[res-1] == 0xff
+					   int timecounter=0;
+					   int bytesrx;
+					   char bufferrx[1];
+
+					   if (EOF_flag == 0) {
+							while(1){
+								   res= serial_read(fd, bufferrx, sizeof(bufferrx));
+								   if (res!=0) {
+										bytesrx=(bufferrx[0]);
+										printf(" IR Toy need more %d bytes \n", bytesrx);
+										break;
+									}
+									else {
+										   Sleep(1000);
+										   timecounter++;
+										   if (timecounter> 20) {
+											   printf(" IRtoy Got no reply...\n");
+											  break;
+											}
+									}
+							}
+						}
+						else{
+						  //   printf(" eof-- got 0xff \n");
+						}
+						break;
+					}
+
+				}
+				if (Error_flag==1){
+				   printf("error sending IR code, exiting..");
+				   exit(-1);
+				}
+
+				comsresult = 0;
+				if (delay > 0) {
 
 #ifdef _WIN32
-   // temporary disabled to alow to pass here.. in win64 param_delay with -1 seems to wait forever. --Need to confirm
-               Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+// temporary disabled to alow to pass here.. in win64 param_delay with -1 seems to wait forever. --Need to confirm
+		   Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
-       //         printf("Sleeping..\n");
-             sleep(atoi(param_delay));           //seconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+   //         printf("Sleeping..\n");
+		 sleep(atoi(param_delay));           //seconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #endif
-                    }
-               }
-           }
+				}
+		   }
+	   }
 
-            printf(" End of file reached: %s \n",fnameseq);
-           int timecounter=0;
-           while(1){
-               int bytestx;
-               res= serial_read(fd, buffer, sizeof(buffer));  //get protocol version
-               if (res >= 3){
-                   if(buffer[0]=='t'){
-                       bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
-                       printf(" IR Toy got: %d bytes", bytestx);
-                       //if(bytestx==totalbytes) ok else failed;
-                   }else{
-                       printf(" Bad reply:");
-                       for (i=0;i<3;i++)
-                           printf(" %02X ",(uint8_t)buffer[i]);
-                   }
-                   printf("\n");
+		printf(" End of file reached: %s \n",fnameseq);
+		int timecounter=0;
+		int bytestx;
+		while(1){
 
-                   break;
-               }
-               // max 30 secs
-               Sleep(1000);
-               timecounter++;
-               if (timecounter> 20) {
-                   printf(" IRtoy Got no reply...\n");
-               }
-           }
+		   res= serial_read(fd, buffer, sizeof(buffer));  //get protocol version
+		   if (res >= 3){
+			   if(buffer[0]=='t'){
+				   bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
+				   printf(" IR Toy got: %d bytes", bytestx);
+				   //if(bytestx==totalbytes) ok else failed;
+			   }else{
+				   printf(" Bad reply:");
+				   for (i=0;i<3;i++)
+					   printf(" %02X ",(uint8_t)buffer[i]);
+			   }
+			   printf("\n");
 
-           fclose(fp);
-           if (soloplay==TRUE) {
-               break;
-           }
-           fcounter++;
-        }
+			   break;
+		   }
+		   // max 30 secs
+		   Sleep(1000);
+		   timecounter++;
+		   if (timecounter> 20) {
+			   printf(" IRtoy Got no reply...\n");
+		   }
+	   }
+
+	   fclose(fp);
+	   if (soloplay==TRUE) {
+		   break;
+	   }
+	   fcounter++;
+	}
      //  printf("pass here \n");
        //  serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy
 }
