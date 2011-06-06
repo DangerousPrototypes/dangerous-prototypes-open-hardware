@@ -2,6 +2,7 @@
     Written and maintained by the IR TOY Project and http://dangerousprototypes.com
     WIKI page:    http://dangerousprototypes.com/usb-ir-toy-manual/
     Forum page:   http://dangerousprototypes.com/forum/viewforum.php?f=29&sid=cdcf3a3177044bc1382305a921585bca
+
 ********************************************************************************************************************
 
 Copyright (C) 2011 Where Labs, LLC (DangerousPrototypes.com/Ian Lesnet)
@@ -299,7 +300,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                Sleep(1000);
                timecounter++;
                if (timecounter> 20) {
-                   printf(" IRtoy Got no reply");
+                   printf(" IRtoy Got no reply...\n");
                }
            }
 

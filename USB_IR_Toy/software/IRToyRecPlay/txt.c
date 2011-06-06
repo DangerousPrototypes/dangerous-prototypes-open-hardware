@@ -203,6 +203,32 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
 
            printf("\n");
            printf(" Reached end of file: %s \n",fnameseq);
+               int timecounter=0;
+           while(1){
+               int bytestx;
+               res= serial_read(fd, buffer, sizeof(buffer));  //get protocol version
+               if (res >= 3){
+                   if(buffer[0]=='t'){
+                       bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
+                       printf(" IR Toy got: %d bytes", bytestx);
+                       //if(bytestx==totalbytes) ok else failed;
+                   }else{
+                       printf(" Bad reply:");
+                       for (i=0;i<3;i++)
+                           printf(" %02X ",(uint8_t)buffer[i]);
+                   }
+                   printf("\n");
+
+                   break;
+               }
+               // max 30 secs
+               Sleep(1000);
+               timecounter++;
+               if (timecounter> 20) {
+                   printf(" IRtoy Got no reply...\n");
+               }
+           }
+
            fclose(fp);
            fcounter++;
         }
