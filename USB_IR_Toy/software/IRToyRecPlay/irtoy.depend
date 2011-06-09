@@ -1009,3 +1009,134 @@
 1307380263 source:c:\users\jamz\desktop\dpx\dangerous-prototypes-open-hardware\trunk\usb_ir_toy\software\irtoyrecplay\bin.c
 	"bin.h"
 
+1307035100 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\kbhit.c
+	"kbhit.h"
+	<termios.h>
+	<unistd.h>
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\kbhit.h
+	<stdio.h>
+
+1307622491 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\main.c
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<stdio.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+	"txt.h"
+	"ols.h"
+	"bin.h"
+	"queue.h"
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\txt.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"kbhit.h"
+	"serial.h"
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\ols.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\bin.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+	"kbhit.h"
+	"serial.h"
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\queue.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+
+1307332456 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\ols.c
+	"ols.h"
+
+1307035100 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\queue.c
+	"queue.h"
+
+1307035100 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\serial.c
+	"config.h"
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1307035100 c:\users\jamz\desktop\for release irtoy\irtoyrecplay\config.h
+
+1307626874 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\txt.c
+	"txt.h"
+
+1307623065 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\bin.c
+	"bin.h"
+

@@ -56,7 +56,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
                     // check if fileextension is specified
                     if((strcmpi(param_fname,".bin")) <= 0)
                     {
-                        printf("file has bin ");
+                        printf(" file has bin ");
                         sprintf(fnameseq,"%s",param_fname);
                     }
                     else {
@@ -67,7 +67,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
 
                     fp=fopen(fnameseq,"wb");
                     if (fp==NULL) {
-                        printf("Cannot open output file: %s \n",param_fname);
+                        printf(" Cannot open output file: %s \n",param_fname);
                         exit(-1);
                     }
                     else {
@@ -101,7 +101,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
                         buffer[0]=0xFF;
                         buffer[1]=0xFF;
                         fwrite(buffer, 2, 1, fp);
-                        printf(" \nwriting %s\n",fnameseq);
+                        printf("\n writing %s\n",fnameseq);
                         fclose(fp);
                         file_created=FALSE;
                         cnt=0;
@@ -155,7 +155,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 	char inkey;
     char *buffer;
 	int pbuff=atoi(param_buff);
-	pbuff=64;   // added for 0x07 transmit
+	pbuff=64;   // added for 0x07 transmit 0x03 now obsolete
     if ((buffer = (char *)malloc(pbuff * sizeof(char))) == NULL) {
         printf("ERROR: Cannot allocate memory.");
         free(buffer);
@@ -246,24 +246,43 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 		        }
 				for (retries=0;retries <5;retries++) {
 					if (verbose){
-						printf(" Sending %d Bytes to IRToy...\n", res);
+						printf(" Sending %d Bytes to IRToy...\n\n", res);
 						for(i=0;i<res;i++)
 						printf(" %02X ",(uint8_t) buffer[i]);
 						printf("\n");
 					}
 
 					comsresult = serial_write( fd, buffer, res);
-					printf(" checking comresult....");
+					printf("\n Checking # of bytes sent....");
 					if (comsresult != res){
 						printf(" \n## comms error bytes sent %d <> bytes supposed to send %d\n", comsresult, res);
 						serial_write( fd, "\xFF\xFF\x00\x00\x00\x00\x00", 7);   //trying to 'reset' IR Toy after error
-						serial_write( fd, "\x03", 1);
-						printf("trying again...%i\n",retries+1);
-						Error_flag=1;
+						//close file and reopen again to start from begining
+						 fclose(fp);
+						 fp=fopen(param_fname,"rb");
+                         if (fp==NULL) {
+                            fp=fopen(fnameseq,"rb");
+                            if (fp==NULL) {
+                                printf(" Bin File gone.. \n");
+                                printf(" Opening next bin file....\n");
+                                retries=10;  // max out to exit loop
+                                break;
 
+                            } else{
+                                printf(" Trying to replay file %s again...%i\n",fnameseq,retries+1);
+                                Error_flag=1;
+
+                            }
+
+                        } else {
+                            printf(" Trying to replay file %s again...%i\n",param_fname,retries+1);
+                            Error_flag=1;
+                        }
+
+                        serial_write( fd, "\x07", 1);
 					}
 					else {
-						printf(" ok\n");
+						printf(" %i bytes....ok.\n",comsresult);
 						Error_flag=0;
 						// added here: bytes irtoy ready to recieve
 						// check for buffer[res] and buffer[res-1] == 0xff
@@ -291,6 +310,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 						}
 						else{
 						  //   printf(" eof-- got 0xff \n");
+						  printf("\n");
 						}
 						break;
 					}
