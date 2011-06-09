@@ -57,7 +57,7 @@ void IRtxtrecord( char *param_fname)
                break;
             }
 
-            printf("\n Creating txt file: %s \n",fnameseq_txt);
+            printf("\n Creating txt file: %s \n\n",fnameseq_txt);
             size=0;
             absolute=0;
             char temp[4];
@@ -68,14 +68,14 @@ void IRtxtrecord( char *param_fname)
                        sprintf(temp,"%04X",(uint16_t) txt_buffer[i]);
                        sprintf(s,"%c%c%c%c",temp[2],temp[3],temp[0],temp[1]);
                        if (verbose==TRUE)
-                            printf("%s ",s);
+                            printf(" %s",s);
                        fprintf(fp_txt,"%s ", s);
                    }
                 }
 
                }
 
-           printf(" .. Done.\n");
+           printf("\n .. Done.\n");
            fclose(fp);
            fclose(fp_txt);
            fcounter++;
@@ -161,7 +161,7 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
 
             serial_write( fd, "\x03", 1);
 
-            printf(" Sending IRCodes...\n");
+            printf(" Sending IRCodes...\n\n");
             int c=0;
             while(!feof(fp)) {
                for(i=0;i<sizeof(buffer);i++)
@@ -180,7 +180,7 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
                         buf[c++]=i;
 
                         if (verbose==TRUE)
-                            printf("%02X%02X ",buf[c-2],buf[c-1]);
+                            printf(" %02X%02X",buf[c-2],buf[c-1]);
 
 
                         token = strtok (NULL, " ");
@@ -201,34 +201,8 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
            }
           // serial_write( fd, "\xFF\xFF", 1);
 
-           printf("\n");
+           printf("\n\n");
            printf(" Reached end of file: %s \n",fnameseq);
-               int timecounter=0;
-           while(1){
-               int bytestx;
-               res= serial_read(fd, buffer, sizeof(buffer));  //get protocol version
-               if (res >= 3){
-                   if(buffer[0]=='t'){
-                       bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
-                       printf(" IR Toy got: %d bytes", bytestx);
-                       //if(bytestx==totalbytes) ok else failed;
-                   }else{
-                       printf(" Bad reply:");
-                       for (i=0;i<3;i++)
-                           printf(" %02X ",(uint8_t)buffer[i]);
-                   }
-                   printf("\n");
-
-                   break;
-               }
-               // max 30 secs
-               Sleep(1000);
-               timecounter++;
-               if (timecounter> 20) {
-                   printf(" IRtoy Got no reply...\n");
-               }
-           }
-
            fclose(fp);
            fcounter++;
         }

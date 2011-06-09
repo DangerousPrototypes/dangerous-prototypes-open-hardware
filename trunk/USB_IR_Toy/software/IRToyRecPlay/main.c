@@ -91,7 +91,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.83"
+#define IRTOY_VERSION "v0.85 rc1"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -182,7 +182,8 @@ int main(int argc, char** argv)
 
 	#endif
 	BOOL record=FALSE, play=FALSE, queue=FALSE, OLS =FALSE,textfile=FALSE;
-
+    char dummy[2];
+    int FIRMWARE_VERSION=0;
 	printf("-------------------------------------------------------------------------\n");
 	printf("\n");
 	printf(" IR TOY Recorder/Player utility %s (CC-0)\n", IRTOY_VERSION);
@@ -311,7 +312,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
     serial_setup(fd, (speed_t) param_speed);
-     // get the firmware version
+
     cnt=0;
     serial_write( fd, "\xFF", 1);
     serial_write( fd, "\xFF", 1);
@@ -323,11 +324,13 @@ int main(int argc, char** argv)
       serial_write( fd, "v", 1);
       res= serial_read(fd, buffer, sizeof(buffer));  //get version
       if (res > 0) {
-           printf(" IR Toy Firmware version: ");
-                for (i=0;i<res;i++)
-                    printf("%c",buffer[i]);
-                printf("\n");
 
+           printf(" IR Toy Firmware version: ");
+                for (i=0;i<res;i++) {
+                    printf("%c",buffer[i]);
+                }
+                buffer[i]='\0';
+                printf("\n");
                 break;
       }
       else {
@@ -341,6 +344,36 @@ int main(int argc, char** argv)
 
       }
      }
+
+     cnt=0;
+    // strict checking is needed because sometimes there are garbages.
+    if (res==4) {  //restric firmware to version greater than 14
+       for (i=2; i< res;i++) {
+         dummy[cnt++]=buffer[i];
+       }
+       dummy[cnt]='\0';
+       FIRMWARE_VERSION=atoi(dummy);
+    } else {
+      printf("\n");
+      printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      printf(" Found Garbage data when reading the firmware version.. \n");
+      printf(" Please re-start this utility again \n" );
+      printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      printf("\n");
+      return -1;
+    }
+
+
+    if (FIRMWARE_VERSION < 15) {
+      printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      printf(" This utility is for firmware version 15 and up.\n");
+      printf(" Please update your IRTOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
+      printf(" See documentation and firmware update procedures at \n");
+      printf(" http://dangerousprototypes.com/docs/USB_Infrared_Toy#Firmware\n");
+      printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+      return -1;
+
+    }
 
     cnt=0;
     while(1) {

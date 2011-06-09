@@ -11,7 +11,7 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d  COM6  -f  idetest -p  -v   -r -b 256" />
+				<Option parameters="-d  COM6  -f  idetest -p  -v   -b 256 -t -r" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d  COM6  -f  idetest -p  -v   -r -b 256" />
+				<Option parameters="-d  COM6  -f  idetest -p  -v   -b 256 -t -r" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
