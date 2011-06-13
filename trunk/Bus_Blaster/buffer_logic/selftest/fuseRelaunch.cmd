@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "uni9000_ver" -lib "aim_ver" -lib "cpld_ver" -lib "xilinxcorelib_ver" -o "E:/Work/dp/Bus_Blaster/buffer_logic/selftest/selftest_isim_beh.exe" -prj "E:/Work/dp/Bus_Blaster/buffer_logic/selftest/selftest_beh.prj" "work.selftest" "work.glbl" 
