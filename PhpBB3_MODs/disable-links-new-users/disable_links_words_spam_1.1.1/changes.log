@@ -1,0 +1,13 @@
+Change Log.
+
+Please refer to 
+http://www.phpbb.com/community/viewtopic.php?f=70&t=2127067&p=13005906#p13005822 for details.
+
+--changes was made to ensure to follow the coding guidelines required in this link:
+http://area51.phpbb.com/docs/30x/coding-guidelines.html#codelayout
+
+  -- add spaces between tokens
+  -- Used tabs between '=>' symbols
+  -- added brackets when needed especially on one liner ifs,
+  -- Change title to Disable links for new users
+  
