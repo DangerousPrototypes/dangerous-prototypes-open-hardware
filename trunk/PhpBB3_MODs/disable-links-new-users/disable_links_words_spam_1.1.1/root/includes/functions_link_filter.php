@@ -107,11 +107,11 @@ class link_filter{
 			}
 			if ($this->found_unicode)
 			{
-				$l.='unicode, ';
+				$l .= 'unicode, ';
 			}
 			if ($this->found_profile)
 			{
-				$l.='profile disabled, ';
+				$l .= 'profile disabled, ';
 			}
 			$l .= 'ERRORS: '.implode(', ', $this->error);
 			if (!empty($no_link_message))
