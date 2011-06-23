@@ -6,7 +6,7 @@
 	<header>
 		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
 		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license>
-		<title lang="en"><![CDATA[Disable links for new users]]></title>
+		<title lang="en"><![CDATA[phpBB Spam Hammer]]></title>
 		<description lang="en"><![CDATA[Disable external links, spam words, non English characters for new users. This mod stops spammers, by denying external links, spam words, or non English words, in any post, signature, or profile until a certain number of posts, or days membership has been reached.]]></description>
 		<author-notes lang="en"><![CDATA[See screenshots and configuration help: http://dangerousprototypes.com/docs/PhpBB3_MOD:_Disable_links_for_new_users  Test forum with all spam measures turned off: http://www.skidvd.co.uk/phpbb/index.php]]></author-notes>
 		<author-group>
@@ -82,13 +82,21 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
             break;
         }
 		//--phpBB spam hammer addition-------------------------------------------------------------//
-        //purge zombie registrations
-        include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-        require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
-        $f= new link_filter; //new link filter
-        $f->link_filter_purge_zombies();//run the check
-        unset($f);
-        //--phpBB spam hammer end-------------------------------------------------------------//
+		//purge zombie registrations
+		
+		if (!function_exists('user_delete')) 
+		{
+		     include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		}
+	
+		if(!class_exists('link_filter'))
+		{         
+			require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
+			$f= new link_filter; //new link filter
+			$f->link_filter_purge_zombies();//run the check
+			unset($f);
+		}
+		//--phpBB spam hammer end-------------------------------------------------------------//
         if(!method_exists($cache, 'tidy'))
         {
             break;
@@ -103,14 +111,18 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 	$post_data['post_subject']		= utf8_normalize_nfc(request_var('subject', '', true));
 	$message_parser->message		= utf8_normalize_nfc(request_var('message', '', true));]]></find>
 				<action type="after-add"><![CDATA[    //--phpBB spam hammer after-add-------------------------------------------------------------//
-    //check for URLs and bad words in new user post
-    require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
-    $f = new link_filter; //new link filter
-    if ($f->link_filter_test_post($message_parser->message, $post_data['post_subject'])) //run the check
-    {
-		$error = array_merge($error, $f->error); //add the errors to the error array, if any
-    }
-    unset($f);
+	//check for URLs and bad words in new user post	
+	if(!class_exists('link_filter'))
+	{         
+		require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
+		$f= new link_filter; //new link filter
+		if ($f->link_filter_test_post($message_parser->message, $post_data['post_subject'])) //run the check
+		{
+			$error = array_merge($error, $f->error); //add the errors to the error array, if any
+		}
+		unset($f);
+	}
+	    
     //--phpBB spam hammer end-------------------------------------------------------------//]]></action>
 			</edit>
 		</open>
@@ -148,13 +160,18 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 		$message_parser->message = utf8_normalize_nfc(request_var('message', '', true));]]></find>
 				<action type="after-add"><![CDATA[    //--phpBB spam hammer after-add-------------------------------------------------------------//
     //check for URLs and bad words in new user post
-    require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
-    $f = new link_filter; //new link filter
-    if ($f->link_filter_test_post($message_parser->message, $subject)) //run the check
-    {
-		$error = array_merge($error, $f->error); //add the errors to the error array, if any
-    }
-    unset($f);
+	
+	if(!class_exists('link_filter'))
+	{         
+		require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
+		$f= new link_filter; //new link filter
+		if ($f->link_filter_test_post($message_parser->message, $post_data['post_subject'])) //run the check
+		{
+			$error = array_merge($error, $f->error); //add the errors to the error array, if any
+		}
+		unset($f);
+	}
+	    
     //--phpBB spam hammer end-------------------------------------------------------------//]]></action>
 			</edit>
 		</open>
@@ -162,13 +179,18 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 			<edit>
 				<find><![CDATA[			case 'profile_info':]]></find>
 				<action type="after-add"><![CDATA[                //--phpBB spam hammer after-add-------------------------------------------------------------//
-                //display warning that new users can't have a profile
-                require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
-                $f = new link_filter; //new link filter
-                if ($f->link_filter_test_profile()) //run the check
-                {
-					$error = array_merge($error, $f->error); //add the errors to the error array, if any
-                }
+                //display warning that new users can't have a profile				
+				if(!class_exists('link_filter'))
+				{         
+					require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
+					$f= new link_filter; //new link filter
+					if ($f->link_filter_test_profile()) //run the check
+					{
+						$error = array_merge($error, $f->error); //add the errors to the error array, if any
+					}
+
+				}
+				                
                 //--phpBB spam hammer end-------------------------------------------------------------//]]></action>
 			</edit>
 			<edit>
@@ -180,13 +202,13 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
                 // don;t allow new users to update profile
                     if (sizeof($f->error)) //run the check
                     {
-						$error = array_merge($error, $f->error); //add the errors to the error array, if any
+			$error = array_merge($error, $f->error); //add the errors to the error array, if any
                     }
                 //--phpBB spam hammer end-----------------------------------------------------//]]></action>
 			</edit>
 			<edit>
 				<find><![CDATA[				$cp->generate_profile_fields('profile', $user->get_iso_lang_id());]]></find>
-				<action type="after-add"><![CDATA[              //--phpBB spam hammer after-add-----------------------------------------------------//   
+				<action type="after-add"><![CDATA[		//--phpBB spam hammer after-add-----------------------------------------------------//   
                 //unset f clear down here incase we want to do something more interesting with it later           
                 unset($f);
                 //--phpBB spam hammer end-----------------------------------------------------//]]></action>
@@ -196,16 +218,21 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 						{
 							$error[] = 'FORM_INVALID';
 						}]]></find>
-				<action type="after-add"><![CDATA[//--phpBB spam hammer after-add-------------------------------------------------------------//
-//check for URLs and bad words in new user signature
-require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
-$f = new link_filter; //new link filter
-if ($f->link_filter_test_signature($signature))//run the check
-{
-	$error = array_merge($error, $f->error); //add the errors to the error array, if any
-}
-unset($f);
-//--phpBB spam hammer end-------------------------------------------------------------//]]></action>
+				<action type="after-add"><![CDATA[					//--phpBB spam hammer after-add-------------------------------------------------------------//
+					//check for URLs and bad words in new user signature
+
+					if(!class_exists('link_filter'))
+					{         
+						require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
+						$f= new link_filter; //new link filter
+						if ($f->link_filter_test_signature($signature))//run the check
+						{
+							$error = array_merge($error, $f->error); //add the errors to the error array, if any
+						}
+						unset($f);
+					}
+
+					//--phpBB spam hammer end-------------------------------------------------------------//]]></action>
 			</edit>
 		</open>
 		<open src="/language/en/acp/board.php">
