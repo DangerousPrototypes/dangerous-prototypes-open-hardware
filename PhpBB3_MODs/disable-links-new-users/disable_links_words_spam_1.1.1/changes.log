@@ -11,3 +11,9 @@ http://area51.phpbb.com/docs/30x/coding-guidelines.html#codelayout
   -- added brackets when needed especially on one liner ifs,
   -- Change title to Disable links for new users
   
+
+6/24/2011
+
+   -- added check for the not existence of a function and added the php file when needed.
+   --  also same check was done in a class.
+   -- changed title to phpbb Spam Hammer  
