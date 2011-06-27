@@ -38,11 +38,13 @@ typedef unsigned long u32;
 // For portability purpose: adjusts itself accdg to the target processor
 #include <capture.h>
 #include <timers.h>
+#include <p18cxxx.h>
 
 
 #include "hal_accelerometer.h"
 #include "hal_spi.h"
 #include "hal_pov.h"
+#include "hal_eeprom.h"
 
 
 //register definitions

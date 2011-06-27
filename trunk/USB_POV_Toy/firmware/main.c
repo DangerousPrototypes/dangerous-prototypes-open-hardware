@@ -9,7 +9,6 @@
 
 ********************************************************************************************************************************************* */
 
-
 //Due to licensing issues, we can't redistribute the Microchip USB source. 
 //You can get it from the Microchip website for free: 
 //http://www.microchip.com/usb
@@ -20,8 +19,6 @@
 //4. That's it. You've got the latest source and we're compliant with the license.
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
-
-
 
 #include "globals.h"
 #include "config.h"
@@ -73,32 +70,34 @@ void main(void){
 	//C1 PR12 MOSI
 	//C2 RP13 CLK
 
-	LATAbits.LATA2=1;
-	TRISAbits.TRISA2=0;
+	LATAbits.LATA2=1;		//ACC CS
+	TRISAbits.TRISA2=0;		//ACC CS
 
-	LATCbits.LATC7=1;
-	TRISCbits.TRISC7=0;
+	LATCbits.LATC7=1;		//EEPROM CS
+	TRISCbits.TRISC7=0;		//EEPROM CS
 
 	//CS disabled
 	//PIN_FLASH_CS=1; //CS high
 	//TRIS_FLASH_CS=0; //CS output
-
 	//TRIS_FLASH_MISO=1;
-	RPINR21=11;//PPS input SPI2MISO=RP11
+	LATCbits.LATC0 = 1;
+	TRISCbits.TRISC1=1;
+	RPINR21=11;//PPS input SPI2MISO=RP11	//MISO
 
 	//TRIS_FLASH_MOSI=0;
 	//PIN_FLASH_MOSI=0;
-	LATCbits.LATC1=0;
-	TRISCbits.TRISC1=0;
+	LATCbits.LATC1=0;		//MOSI
+	TRISCbits.TRISC1=0;		//MOSI
 	RPOR12=9; //PPS output
 	
 	//TRIS_FLASH_SCK=0;
 	//PIN_FLASH_SCK=0;
-	LATCbits.LATC2=0;
-	TRISCbits.TRISC2=0;
+	LATCbits.LATC2=0;		//SCK
+	TRISCbits.TRISC2=0;		//SCK
 	RPOR13=10; //PPS output
 
-	SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
+	//SSP2CON1=0b00100000; //SSPEN/ FOSC/4 CP=0
+	SSP2CON1=0b00100010; //SSPEN/ FOSC/64 CP=0
 	SSP2STAT=0b01000000; //cke=1
 
 	//LEDs
@@ -206,7 +205,7 @@ void main(void){
 					ACL_CS=0;
 					hal_spi_rw((0x06<<1));
 					//param[0]=hal_spi_rw(0xff);
-					param[0]= 'J';//hal_acl_read( OUTPUT_X_8BIT );
+					hal_acl_read( OUTPUT_X_8BIT );
 					param[1]='|';
 					//param[2]=hal_spi_rw(0xff);
 					param[2]=hal_acl_read( OUTPUT_Y_8BIT );
@@ -317,18 +316,6 @@ hal_pov_StartCycle();
 //////////////////////
 	}
 	hal_acl_enable();
-
-
-
-
-
-
-
-
-
-
-
-
 
 //#if 0
 break;
