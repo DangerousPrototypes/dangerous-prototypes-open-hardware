@@ -3,10 +3,7 @@
 void hal_eeprom_wren(void)
 {
 	EEPROM_CS = 0;
-
-	SSP2BUF=EEPROM_WREN;
-	while(SSP2STATbits.BF==0);
-
+	hal_spi_rw(EEPROM_WREN);
 	EEPROM_CS = 1;
 }
 
@@ -16,59 +13,39 @@ void hal_eeprom_write(u16 add,u8 dat)
 	u8 low = add & 0x00FF;
 
 	EEPROM_CS = 0;
-
-	SSP2BUF=EEPROM_WRITE;
-	while(SSP2STATbits.BF==0);
-
-	SSP2BUF=high;
-	while(SSP2STATbits.BF==0);
-
-	SSP2BUF=low;
-	while(SSP2STATbits.BF==0);
-	
-	SSP2BUF=dat;
-	while(SSP2STATbits.BF==0);
-
+	hal_spi_rw(EEPROM_WRITE);
+	hal_spi_rw(high);
+	hal_spi_rw(low);
+	hal_spi_rw(dat);
 	EEPROM_CS = 1;
 }
 
 u8 hal_eeprom_read(u16 add)
 {
+	u8 c;
 	u8 high = add >> 8;
 	u8 low = add & 0x00FF;
 
 	EEPROM_CS = 0;
-
-	SSP2BUF=EEPROM_READ;
-	while(SSP2STATbits.BF==0);
-
-	SSP2BUF=high;
-	while(SSP2STATbits.BF==0);
-
-	SSP2BUF=low;
-	while(SSP2STATbits.BF==0);
-	
-	SSP2BUF=DUMMY;
-	while(SSP2STATbits.BF==0);
-
+	hal_spi_rw(EEPROM_READ);
+	hal_spi_rw(high);
+	hal_spi_rw(low);
+	c = hal_spi_rw(DUMMY);
 	EEPROM_CS = 1;
 
-	return SSP2BUF;
+	return c;
 }
 
 u8 hal_eeprom_rdsr(void)
 {
-	EEPROM_CS = 0;
-
-	SSP2BUF=EEPROM_RDSR;
-	while(SSP2STATbits.BF==0);
+	u8 c;
 	
-	SSP2BUF=DUMMY;
-	while(SSP2STATbits.BF==0);
-
+	EEPROM_CS = 0;
+	hal_spi_rw(EEPROM_RDSR);
+	c = hal_spi_rw(DUMMY);
 	EEPROM_CS = 1;
 
-	return SSP2BUF;
+	return c;
 }
 
 void hal_eeprom_wip_poll(void)
