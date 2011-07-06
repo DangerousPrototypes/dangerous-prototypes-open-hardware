@@ -1,0 +1,15 @@
+#Bus Blaster v2 picotap pin connections
+
+# ft2232h connection
+NET "FT_TDO"         LOC =  "P13";
+NET "FT_TCK"         LOC =  "P16";
+NET "FT_TDI"         LOC =  "P14";
+NET "FT_TMS"         LOC =  "P12";
+NET "FT_nTRST_OUT"   LOC =  "P8";
+
+# jtag io header
+NET "TDO"            LOC =  "P32";
+NET "TCK"            LOC =  "P34";
+NET "TDI"            LOC =  "P37";
+NET "TMS"            LOC =  "P36";
+NET "nTRST"          LOC =  "P38";
