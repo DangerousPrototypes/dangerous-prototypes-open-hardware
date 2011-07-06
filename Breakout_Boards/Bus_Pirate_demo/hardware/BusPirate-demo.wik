@@ -1,0 +1,46 @@
+{| class="wikitable" border="1"
+|+ E:/Work/dp/Breakout_Boards/Bus_Pirate_demo/hardware/BusPirate-demo.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C1-C5,C7-C11||10||0.1 uF||C805
+|-
+|C6||1||12.5pF||C805
+|-
+|IC1||1||DS2890||TO92-
+|-
+|IC2||1||DS2431||TO92-
+|-
+|IC3||1||DS1822||TO92-
+|-
+|IC4||1||24AA02P||DIL8
+|-
+|IC5||1||24AA02SN||SO-08
+|-
+|IC6||1||TC74||SOT-23-5
+|-
+|IC7||1||||SOT23-6
+|-
+|IC8||1||PCF8563/DS1307||SO8
+|-
+|IC9||1||MMA7455L||LGA-14
+|-
+|IC10||1||25AA080P||DIL8
+|-
+|IC11||1||25AA080SN||SO-08
+|-
+|JP1,JP2||2||||1X01
+|-
+|JP3-JP5,JP8-JP5,JP13,JP13||7||||1X02
+|-
+|JP6||1||||1X03
+|-
+|JP7,JP9,JP11,JP12||4||||1X04
+|-
+|Q1||1||32.768KHz||MM20SS
+|-
+|Q2||1||32.768KHz||TC26H
+|-
+|R1||1||||R805
+|-
+|U$1,U$2||2||||DP_LOGO
+|}
