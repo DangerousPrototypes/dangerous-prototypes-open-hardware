@@ -19,5 +19,9 @@ http://area51.phpbb.com/docs/30x/coding-guidelines.html#codelayout
    -- changed title to phpbb Spam Hammer  
 
 7/10/2011
+   -- Fix hardcoded messages
+   -- Created new language file in mods language\en\mods\link_filter.php
+   -- Move hardcoded strings to language\en\mods\link_filter.php
+   -- added user->setup('mods/link_filter') to call language file in files posting.php, ucp_pm_compose.php and ucd_profile.php
 
-   -- Move hardcoded strings to board.php	
+	

@@ -77,6 +77,8 @@ class link_filter{
 	public $found_profile = false; //profiles not allow check positive (for log)
 	public $error = array(); //holds text error array
 
+	
+
 	/*
 	*	Log filter actions
 	*
@@ -84,7 +86,7 @@ class link_filter{
 	function link_add_log($type, $no_link_message)
 	{
 		global $user;
-
+      
 		$l = 'CHECKED '.$type.' of \''.$user->data['username'].'\'. ';
 		if ($this->found_stuff)
 		{
@@ -147,9 +149,9 @@ function link_filter_test_profile($abuse = false)
 	{ 
 		$this->found_stuff = $this->found_profile = true;			
 		//If there isn't a phpbb3 no_link message add one
-		/* hardcoded strings moved to board:
-		NO_PROFILE_FOR_YOU
-		if (empty($user->lang['NO_LINK_FOR_YOU']))
+		/* hardcoded strings moved to mods\link_filter.php:
+		// NO_PROFILE_FOR_YOU
+		if (empty($user->lang['NO_PROFILE_FOR_YOU']))
 		{
 			//$user->lang['NO_PROFILE_FOR_YOU'] = 'Antispam: You can\'t have a profile yet. You need to post a few times first.';
 			//$user->lang['NO_PROFILE_FOR_YOU']='Antispam: DO NOT update the profile yet, you will be DELETED! You need to post a few times first.';
@@ -183,7 +185,7 @@ function link_filter_test_profile($abuse = false)
 function link_filter_test_signature($signature)
 {
 	global $user;
-
+   
 	//do we need to check this user?
 	if (!$this->link_filter_check()) 
 	{
@@ -203,19 +205,21 @@ function link_filter_test_signature($signature)
 	}
 	
 	//If there isn't a phpbb3 no_link message add one
-	/* hardcoded strings moved to board.php:
+	 //hardcoded strings moved to mods/link_filter.php:
 	// NO_LINK_FOR_YOU
 	// NO_WORD_FOR_YOU
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
 		// $user->lang['NO_LINK_FOR_YOU'] = 'Antispam: You can\'t have off-site URLs in your sig until you post a few times. ';
+		 $user->lang['NO_LINK_FOR_YOU'] = $user->lang['NO_LINK_FOR_YOU_SIG'];
 	}
 	//If there isn't a phpbb3 no_word message add one
 	if (empty($user->lang['NO_WORD_FOR_YOU']))
 	{
-		$user->lang['NO_WORD_FOR_YOU'] = 'Do you kiss your mom with that mouth? We don\'t want to read that! ';
+		//$user->lang['NO_WORD_FOR_YOU'] = 'Do you kiss your mom with that mouth? We don\'t want to read that! ';
+		$user->lang['NO_WORD_FOR_YOU'] = $user->lang['NO_WORD_FOR_YOU_MOUTH'];
 	}
-	*/
+	
 	
 	//make a version of the post and subject
 	//need the trailing space or it can hang forever in the while loop if only using a local URL
@@ -263,14 +267,16 @@ function link_filter_test_post($message, $subject)
 	if ((($user->data['user_posts'] == 0) || ($user->data['user_type'] == USER_IGNORE) || ($user->data['user_id'] == ANONYMOUS)) && (strlen($message) < $this->first_post_length))  //first post, check length
 	{	
 		//If there isn't a phpbb3 message add one
-		/* Hardcoded string Added to board.php: 'NO_LINK_TOO_SHORT'
-		if (empty($user->lang['NO_LINK_TOO_SHORT']))
-		{
+		// Hardcoded string Added to modes\link_filter.php: 'NO_LINK_TOO_SHORT'
+		//if (empty($user->lang['NO_LINK_TOO_SHORT']))
+		//{
 		//	$user->lang['NO_LINK_TOO_SHORT'] = 'Antispam: Sorry, your first post needs to be just a little longer.';
-		}
-	*/
+	    // echo " (empty($user->lang['NO_LINK_TOO_SHORT'])) is empty ";
+		//}
+	
 	
 		$this->error[] = $user->lang['NO_LINK_TOO_SHORT'].' '.$this->link_filter_add_help_link();
+		
 		$this->found_stuff = $this->found_minwords = true; //flag the error
 		
 		if ($this->log_activity)
@@ -288,22 +294,25 @@ function link_filter_test_post($message, $subject)
 		}
 		return true; //if it is a sleeper agent just return error, don;t do the check
 	}
-/*   Hardcoded strings, added to board.php:
-     'NO_LINK_FOR_YOU'
-	 'NO_WORD_FOR_YOU'
+     // Hardcoded strings, moved to mods\link_filter.php:
+     // 'NO_LINK_FOR_YOU'
+	 // 'NO_WORD_FOR_YOU'
 	
 	
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
 		// $user->lang['NO_LINK_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove off-site URLs.';
+		$user->lang['NO_LINK_FOR_YOU'] =$user->lang['NO_LINK_FOR_YOU_SPAMMY'] ;
 	}
+	
 	//If there isn't a phpbb3 no_word message add one
 	if (empty($user->lang['NO_WORD_FOR_YOU']))
 	{
 	//	$user->lang['NO_WORD_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove bad words or non-english text.';
+		$user->lang['NO_WORD_FOR_YOU'] = $user->lang['NO_WORD_FOR_YOU_SPAMMY'];
 	}
-*/ 	
+	
 	//make a version of the post and subject
 	$res = $this->link_filter_test(' '.trim($message.' '.$subject).' ');
 	
@@ -356,20 +365,24 @@ function link_filter_test_pm($message, $subject)
 		$this->link_filter_load_list_from_db(); //load list values from DB if configured	
 	}
 	//If there isn't a phpbb3 no_link message add one
-	/*  hardcoded strings added to board.php:
+	//  hardcoded strings added to board.php:
 	// NO_LINK_FOR_YOU
 	// NO_WORD_FOR_YOU
 	
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
-		$user->lang['NO_LINK_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove off-site URLs.';
+		$user->lang['NO_LINK_FOR_YOU'] = $user->lang['NO_LINK_FOR_YOU_SPAMMY'];
+	//	$user->lang['NO_LINK_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove off-site URLs.';
 	}
+  
 	//If there isn't a phpbb3 no_word message add one
+    
 	if (empty($user->lang['NO_WORD_FOR_YOU']))
 	{
-		$user->lang['NO_WORD_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove bad words or non-english text.';
+	//	$user->lang['NO_WORD_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove bad words or non-english text.';
+		$user->lang['NO_WORD_FOR_YOU'] = $user->lang['NO_WORD_FOR_YOU_SPAMMY'];
 	}
-	*/
+
 	//make a version of the post and subject
 	
 	$res = $this->link_filter_test(' '.trim($message.' '.$subject).' ');
@@ -389,7 +402,7 @@ function link_filter_test_pm($message, $subject)
 function link_filter_check()
 {
 	global $user, $config;
-
+    
 	if ($this->load_values_from_db)
 	{ //use MOD setting from database
 		$this->minimum_days = $config['links_after_num_days'];
@@ -433,14 +446,14 @@ function link_filter_sleeper_check()
 		$this->found_sleeper = $this->found_stuff = true;
 		
 		//If there isn't a phpbb3 sleeper agent message add one
-		/* hardcoded strings added to board.php
+		// hardcoded strings added to board.php
 		// NO_SLEEPER_SPAM_FOR_YOU
 		if (empty($user->lang['NO_SLEEPER_SPAM_FOR_YOU']))
 		{
-			$user->lang['NO_SLEEPER_SPAM_FOR_YOU'] = 'Antispam: account disabled, please contact an admin.';
+			//$user->lang['NO_SLEEPER_SPAM_FOR_YOU'] = 'Antispam: account disabled, please contact an admin.';
 			//could delete the user automatically here
 		}
-		*/
+		
 		$this->error[] = $user->lang['NO_SLEEPER_SPAM_FOR_YOU'].' '.$this->link_filter_add_help_link();
 		return true;
 	}
@@ -453,6 +466,7 @@ function link_filter_sleeper_check()
 */
 function link_filter_add_help_link()
 {
+   
 	if (!empty($this->help_url))
 	{
 	
@@ -475,6 +489,7 @@ function link_filter_add_help_link()
 function link_filter_load_list_from_db()
 {
 	global $config;
+	
 	//use MOD setting from database
 	$this->whitelist_urls = explode(",", $config['links_allow_always']);
 	$this->no_link_strings = explode(",", $config['links_link_strings']);
@@ -503,7 +518,8 @@ function link_filter_load_list_from_db()
 function link_filter_test($no_link_message)
 {
 	global $user, $config;
-
+  
+	 
 	//filter the looozers
 	//remove line feeds and stuff
 	$no_link_message = str_replace('\n', ' ',$no_link_message);
@@ -635,7 +651,7 @@ function link_filter_test($no_link_message)
 function link_filter_delete_account($id)
 {
 		global $db, $user;
-		
+	  
 		if (($user->data['user_type'] == USER_IGNORE) || ($user->data['user_id'] == ANONYMOUS) )
 		{
 			return; //don't delete anon user

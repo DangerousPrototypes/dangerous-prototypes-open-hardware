@@ -31,6 +31,16 @@
 		</installation>
 		<history>
 			<entry>
+				<date>2011-07-10</date>
+				<rev-version>1.1.1</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[Fix hardcoded messages]]></change>
+					<change><![CDATA[Created new language file in mods language\en\mods\link_filter.php]]></change>
+					<change><![CDATA[Move hardcoded strings to language\en\mods\link_filter.php]]></change>
+					<change><![CDATA[added user->setup('mods/link_filter') to call language file in files posting.php, ucp_pm_compose.php and ucd_profile.php]]></change>
+				</changelog>
+			</entry>
+			<entry>
 				<date>2011-06-15</date>
 				<rev-version>1.1.1</rev-version>
 				<changelog lang="en">
@@ -69,6 +79,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_delete_zombies_days', '0', '0');]]></sql>
 		<copy>
 			<file from="root/includes/functions_link_filter.php" to="includes/functions_link_filter.php"/>
+			<file from="root/language/en/mods/link_filter.php" to="language/en/mods/link_filter.php"/>
 		</copy>
 		<open src="cron.php">
 			<edit>
@@ -93,6 +104,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 		{         
 			require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
 			$f= new link_filter; //new link filter
+			$user->setup('mods/link_filter');
 			$f->link_filter_purge_zombies();//run the check
 			unset($f);
 		}
@@ -116,6 +128,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 	{         
 		require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
 		$f= new link_filter; //new link filter
+		$user->setup('mods/link_filter');
 		if ($f->link_filter_test_post($message_parser->message, $post_data['post_subject'])) //run the check
 		{
 			$error = array_merge($error, $f->error); //add the errors to the error array, if any
@@ -165,6 +178,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 	{         
 		require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
 		$f= new link_filter; //new link filter
+		$user->setup('mods/link_filter');
 		if ($f->link_filter_test_post($message_parser->message, $post_data['post_subject'])) //run the check
 		{
 			$error = array_merge($error, $f->error); //add the errors to the error array, if any
@@ -184,6 +198,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 				{         
 					require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
 					$f= new link_filter; //new link filter
+					$user->setup('mods/link_filter');
 					if ($f->link_filter_test_profile()) //run the check
 					{
 						$error = array_merge($error, $f->error); //add the errors to the error array, if any
@@ -225,6 +240,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
 					{         
 						require($phpbb_root_path . 'includes/functions_link_filter.' . $phpEx);
 						$f= new link_filter; //new link filter
+						$user->setup('mods/link_filter');
 						if ($f->link_filter_test_signature($signature))//run the check
 						{
 							$error = array_merge($error, $f->error); //add the errors to the error array, if any
@@ -267,16 +283,7 @@ INSERT INTO phpbb_config (config_name, config_value, is_dynamic) VALUES ('links_
     'LINKS_DELETE_ZOMBIES_EXPLAIN'	=>	'Purges users with 0 posts after the number of days set below.',
     'LINKS_DELETE_ZOMBIES_DAYS'	=>	'Days before zombie purge',
     'LINKS_DELETE_ZOMBIES_DAYS_EXPLAIN'	=>	'How many days before a zombie account with 0 posts is deleted.',
-    'NO_LINK_FOR_YOU'	=>	'Antispam: You can\'t have off-site URLs in your sig until you post a few times. ',
-     // 'NO_LINK_FOR_YOU'	=>	'Your post looks too spamy for a new user, please remove off-site URLs.',
-    'NO_PROFILE_FOR_YOU'	=> 'Antispam: You can\'t have a profile yet. You need to post a few times first.',
-    'NO_WORD_FOR_YOU'	=>  'Your post looks too spamy for a new user, please remove bad words or non-english text.',
-    'NO_LINK_TOO_SHORT'	=>	'Antispam: Sorry, your first post needs to be just a little longer.',
-    'NO_SLEEPER_SPAM_FOR_YOU'	=>	'Antispam: account disabled, please contact an admin.',
-    'HELP_LINK'	=>	'Click for help',
-    'SPAM_HAMMER_DELETE_ACCT'	=>	'Antispam: Sorry, this account was DELETED due to suspicious behavior.',
-    'LOG_PRUNE_USER_DEL_DEL'	=>	'spam hammer zombie cleanup: ',
-    'LOG_SPAM_HAMMER'	=>	'spam hammer: ',
+    
     //--phpBB spam hammer end---------------------------------------------------------]]></action>
 			</edit>
 		</open>
