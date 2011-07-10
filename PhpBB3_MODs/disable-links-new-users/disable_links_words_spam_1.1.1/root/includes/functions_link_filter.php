@@ -123,7 +123,7 @@ class link_filter{
 		{
 			$l .= 'OK';
 		}
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: '.$l);
+		add_log('user', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' '.$l);
 	}
 	
 /**
@@ -147,18 +147,21 @@ function link_filter_test_profile($abuse = false)
 	{ 
 		$this->found_stuff = $this->found_profile = true;			
 		//If there isn't a phpbb3 no_link message add one
+		/* hardcoded strings moved to board:
+		NO_PROFILE_FOR_YOU
 		if (empty($user->lang['NO_LINK_FOR_YOU']))
 		{
-			$user->lang['NO_PROFILE_FOR_YOU'] = 'Antispam: You can\'t have a profile yet. You need to post a few times first.';
+			//$user->lang['NO_PROFILE_FOR_YOU'] = 'Antispam: You can\'t have a profile yet. You need to post a few times first.';
 			//$user->lang['NO_PROFILE_FOR_YOU']='Antispam: DO NOT update the profile yet, you will be DELETED! You need to post a few times first.';
 		}
+		*/ 
 		
 		$this->error[] = $user->lang['NO_PROFILE_FOR_YOU'].' '.$this->link_filter_add_help_link();
 	}
 	if ($abuse && $this->extreme && ($user->data['user_posts']==0))
 	{
-		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for profile abuse.');
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for profile abuse.');
+		add_log('admin', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for profile abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for profile abuse.');
 		$this->link_filter_delete_account($user->data['user_id']);
 		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior. New users are NOT allowed to post a profile.');
@@ -200,15 +203,19 @@ function link_filter_test_signature($signature)
 	}
 	
 	//If there isn't a phpbb3 no_link message add one
+	/* hardcoded strings moved to board.php:
+	// NO_LINK_FOR_YOU
+	// NO_WORD_FOR_YOU
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
-		$user->lang['NO_LINK_FOR_YOU'] = 'Antispam: You can\'t have off-site URLs in your sig until you post a few times. ';
+		// $user->lang['NO_LINK_FOR_YOU'] = 'Antispam: You can\'t have off-site URLs in your sig until you post a few times. ';
 	}
 	//If there isn't a phpbb3 no_word message add one
 	if (empty($user->lang['NO_WORD_FOR_YOU']))
 	{
 		$user->lang['NO_WORD_FOR_YOU'] = 'Do you kiss your mom with that mouth? We don\'t want to read that! ';
 	}
+	*/
 	
 	//make a version of the post and subject
 	//need the trailing space or it can hang forever in the while loop if only using a local URL
@@ -216,8 +223,8 @@ function link_filter_test_signature($signature)
 
 	if ($res && $this->extreme && ($user->data['user_posts'] == 0))
 	{
-		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse.');
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for signature abuse. CONTENTS:'.$signature);
+		add_log('admin', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for signature abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for signature abuse. CONTENTS:'.$signature);
 		$this->link_filter_delete_account($user->data['user_id']);
 		//$this->error[]='Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
@@ -256,10 +263,13 @@ function link_filter_test_post($message, $subject)
 	if ((($user->data['user_posts'] == 0) || ($user->data['user_type'] == USER_IGNORE) || ($user->data['user_id'] == ANONYMOUS)) && (strlen($message) < $this->first_post_length))  //first post, check length
 	{	
 		//If there isn't a phpbb3 message add one
+		/* Hardcoded string Added to board.php: 'NO_LINK_TOO_SHORT'
 		if (empty($user->lang['NO_LINK_TOO_SHORT']))
 		{
-			$user->lang['NO_LINK_TOO_SHORT'] = 'Antispam: Sorry, your first post needs to be just a little longer.';
+		//	$user->lang['NO_LINK_TOO_SHORT'] = 'Antispam: Sorry, your first post needs to be just a little longer.';
 		}
+	*/
+	
 		$this->error[] = $user->lang['NO_LINK_TOO_SHORT'].' '.$this->link_filter_add_help_link();
 		$this->found_stuff = $this->found_minwords = true; //flag the error
 		
@@ -278,18 +288,22 @@ function link_filter_test_post($message, $subject)
 		}
 		return true; //if it is a sleeper agent just return error, don;t do the check
 	}
-
+/*   Hardcoded strings, added to board.php:
+     'NO_LINK_FOR_YOU'
+	 'NO_WORD_FOR_YOU'
+	
+	
 	//If there isn't a phpbb3 no_link message add one
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
-		$user->lang['NO_LINK_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove off-site URLs.';
+		// $user->lang['NO_LINK_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove off-site URLs.';
 	}
 	//If there isn't a phpbb3 no_word message add one
 	if (empty($user->lang['NO_WORD_FOR_YOU']))
 	{
-		$user->lang['NO_WORD_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove bad words or non-english text.';
+	//	$user->lang['NO_WORD_FOR_YOU'] = 'Your post looks too spamy for a new user, please remove bad words or non-english text.';
 	}
-	
+*/ 	
 	//make a version of the post and subject
 	$res = $this->link_filter_test(' '.trim($message.' '.$subject).' ');
 	
@@ -298,8 +312,8 @@ function link_filter_test_post($message, $subject)
 	if( ($res && $this->extreme && ($user->data['user_posts'] == 0)) && ($this->kill || $this->found_unicode) ) //if extreme mode, delete the user
 	{
 		global $phpbb_root_path, $phpEx;
-		add_log('admin', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse.');
-		add_log('user', 'LOG_SPAM_HAMMER', 'spam hammer: DELETED '.$user->data['username'].' for post abuse. CONTENT: '.$subject.''.$message);
+		add_log('admin', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for post abuse.');
+		add_log('user', 'LOG_SPAM_HAMMER', $user->lang['LOG_SPAM_HAMMER'].' DELETED '.$user->data['username'].' for post abuse. CONTENT: '.$subject.''.$message);
 		
 		if (!function_exists('user_delete')) 
 		{
@@ -307,7 +321,8 @@ function link_filter_test_post($message, $subject)
 		}
 		    		
 		$this->link_filter_delete_account($user->data['user_id']);
-		$this->error[] = 'Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
+		$this->error[] = $user->lang['SPAM_HAMMER_DELETE_ACCT'];
+		//$this->error[] = 'Antispam: Sorry, this account was DELETED due to suspicious behavior.'; 
 		//trigger_error('Antispam: Sorry, this account was DELETED due to suspicious behavior.');
 	}
 	else
@@ -341,6 +356,10 @@ function link_filter_test_pm($message, $subject)
 		$this->link_filter_load_list_from_db(); //load list values from DB if configured	
 	}
 	//If there isn't a phpbb3 no_link message add one
+	/*  hardcoded strings added to board.php:
+	// NO_LINK_FOR_YOU
+	// NO_WORD_FOR_YOU
+	
 	if (empty($user->lang['NO_LINK_FOR_YOU']))
 	{
 		$user->lang['NO_LINK_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove off-site URLs.';
@@ -350,8 +369,9 @@ function link_filter_test_pm($message, $subject)
 	{
 		$user->lang['NO_WORD_FOR_YOU'] = 'Your message looks too spamy for a new user, please remove bad words or non-english text.';
 	}
-	
+	*/
 	//make a version of the post and subject
+	
 	$res = $this->link_filter_test(' '.trim($message.' '.$subject).' ');
 	
 	if ($this->log_activity) 
@@ -413,11 +433,14 @@ function link_filter_sleeper_check()
 		$this->found_sleeper = $this->found_stuff = true;
 		
 		//If there isn't a phpbb3 sleeper agent message add one
+		/* hardcoded strings added to board.php
+		// NO_SLEEPER_SPAM_FOR_YOU
 		if (empty($user->lang['NO_SLEEPER_SPAM_FOR_YOU']))
 		{
 			$user->lang['NO_SLEEPER_SPAM_FOR_YOU'] = 'Antispam: account disabled, please contact an admin.';
 			//could delete the user automatically here
 		}
+		*/
 		$this->error[] = $user->lang['NO_SLEEPER_SPAM_FOR_YOU'].' '.$this->link_filter_add_help_link();
 		return true;
 	}
@@ -434,11 +457,13 @@ function link_filter_add_help_link()
 	{
 	
 		//If there isn't a phpbb3 message add one
+		/* hardcoded message added to board.php:
+		// HELP_LINK
 		if (empty($user->lang['HELP_LINK']))
 		{
 			$user->lang['HELP_LINK'] = 'Click for help';
 		}
-		
+		*/
 		return '<a href="'.$this->help_url.'">'.$user->lang['HELP_LINK'].'</a>.';
 	}
 }
@@ -645,7 +670,8 @@ function link_filter_purge_zombies()
 		{
 			if ($config['links_log_activity'] == '1')
 			{
-				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: Disabled!');
+			   // hardcoded strings was moved to board.php
+				add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', $user->lang['LOG_PRUNE_USER_DEL_DEL'].' Disabled!');
 			}
 			return; //honor ACP setting
 		}
@@ -655,7 +681,8 @@ function link_filter_purge_zombies()
 	
 	if ($this->minimum_days<1)
 	{
-		add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup: ERROR - days set to 0!');
+	     // hardcoded strings was moved to board.php
+		add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', $user->lang['LOG_PRUNE_USER_DEL_DEL'].' ERROR - days set to 0!');
 		return; //don't delete if there is no days setting
 	}
 
@@ -696,7 +723,7 @@ function link_filter_purge_zombies()
 	$db->sql_freeresult($result);
 	
 	//add log message
-	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', 'spam hammer zombie cleanup:'.implode(', ', $usernames));
+	add_log('admin', 'LOG_PRUNE_USER_DEL_DEL', $user->lang['LOG_PRUNE_USER_DEL_DEL'].implode(', ', $usernames));
 
 }
 
