@@ -91,58 +91,96 @@ void mma_wait_until_ready()
 
 void mma_get_average( u8 power_of_two, int * x, int * y, int * z )
 {
-    int accu_x = 0;
+    u8 c;
+	int accu_x = 0;
     int accu_y = 0;
     int accu_z = 0;
     u8 i;
     for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
         mma_wait_until_ready();
-        accu_x += hal_acl_read( OUTPUT_X_8BIT );
-        accu_y += hal_acl_read( OUTPUT_Y_8BIT );
-        accu_z += hal_acl_read( OUTPUT_Z_8BIT );
+       // accu_x += hal_acl_read( OUTPUT_X_8BIT );
+       // accu_y += hal_acl_read( OUTPUT_Y_8BIT );
+       // accu_z += hal_acl_read( OUTPUT_Z_8BIT );
+
+		c = hal_acl_read( OUTPUT_X_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_x += c;
+
+		c = hal_acl_read( OUTPUT_Y_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_y += c;
+
+		c = hal_acl_read( OUTPUT_Z_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_z += c;
     }
     *x = ( accu_x + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
     *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
     *z = ( accu_z + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
 
-
-/*
-#define POWER_OF_TWO 5
-static volatile int16_t x_array[ 1 << POWER_OF_TWO ];
-static volatile int16_t y_array[ 1 << POWER_OF_TWO ];
-static volatile int16_t z_array[ 1 << POWER_OF_TWO ];
-static volatile int16_t x_moving_average;
-static volatile int16_t y_moving_average;
-static volatile int16_t z_moving_average;
-static volatile uint8_t i;
-
-#if defined(USE_INTERRUPT)
-ISR( INT0_vect )
+void mma_get_x_average( u8 power_of_two, int * x)
 {
-    int16_t x = mma_read10( MMA_XOUT10 );
-    int16_t y = mma_read10( MMA_YOUT10 );
-    int16_t z = mma_read10( MMA_ZOUT10 );
-    x_moving_average -= x_array[ i ];
-    y_moving_average -= y_array[ i ];
-    z_moving_average -= z_array[ i ];
-    x_array[ i ] = x;
-    y_array[ i ] = y;
-    z_array[ i ] = z;
-    x_moving_average += x;
-    y_moving_average += y;
-    z_moving_average += z;
-    ++i;
-    if ( i >= ( 1 << POWER_OF_TWO ) ) {
-        i = 0;
+    u8 c;
+	int accu_x = 0;
+    u8 i;
+    for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
+        mma_wait_until_ready();
+        //accu_x += hal_acl_read( OUTPUT_X_8BIT );
+
+		c = hal_acl_read( OUTPUT_X_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_x += c;
     }
+    *x = ( accu_x + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
 
-void mma_get_moving_average( int16_t * x, int16_t * y, int16_t * z )
+void mma_get_y_average( u8 power_of_two, int * y)
 {
-    *x = ( ( x_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
-    *y = ( ( y_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
-    *z = ( ( z_moving_average + ( 1 << ( POWER_OF_TWO - 1 ) ) ) ) >> POWER_OF_TWO;
+    u8 c;
+	int accu_y = 0;
+    u8 i;
+    for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
+        mma_wait_until_ready();
+
+		c = hal_acl_read( OUTPUT_Y_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_y += c;
+
+        //accu_y += hal_acl_read( OUTPUT_Y_8BIT );
+    }
+    *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
-#endif
-*/
+
+void mma_get_z_average( u8 power_of_two, int * z)
+{
+    u8 c;
+	int accu_z = 0;
+    u8 i;
+    for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
+        mma_wait_until_ready();
+        
+		c = hal_acl_read( OUTPUT_Z_8BIT );
+		if(c&0b10000000){//negative
+			c^=0xff;
+		}
+		accu_z += c;
+
+		//accu_z += hal_acl_read( OUTPUT_Z_8BIT );
+    }
+    *z = ( accu_z + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
+}
+
+
+
+

@@ -56,6 +56,8 @@ void UsageMode(void);
 void main(void){  
 	u8 i,cmd, param[9],c;
 	u16 temp; // TODO to be removed later on
+	u16 x,y,z;
+	u8 pwr = 2;
 	long l;
 	//unsigned char t[]={"Hello World"};
 
@@ -151,36 +153,43 @@ void main(void){
 
 				while(1){
 					//c=hal_acl_read(0x06);
-					mma_wait_until_ready();
-					c=hal_acl_read(OUTPUT_X_8BIT);
+					//mma_wait_until_ready();
+					//c=hal_acl_read(OUTPUT_X_8BIT);
 
-					if(c&0b10000000){//negative
-						c^=0xff;
-					}
+					//if(c&0b10000000){//negative
+					//	c^=0xff;
+					//}
+					mma_get_x_average(pwr,&x);
+					c=x;
+					
 					LATB=c;
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x07:
 				while(1){
-					mma_wait_until_ready();
-					c=hal_acl_read(OUTPUT_Y_8BIT);
-
-					if(c&0b10000000){//negative
-						c^=0xff;
-					}
+					//mma_wait_until_ready();
+					//c=hal_acl_read(OUTPUT_Y_8BIT);
+	
+					//if(c&0b10000000){//negative
+					//	c^=0xff;
+					//}
+					mma_get_y_average(pwr,&y);
+					c=y;
 					LATB=c;
 					if(checkforbyte())break;
 				}
 				break;
 			case 0x08:
 				while(1){
-					mma_wait_until_ready();
-					c=hal_acl_read(OUTPUT_Z_8BIT);
+					//mma_wait_until_ready();
+					//c=hal_acl_read(OUTPUT_Z_8BIT);
 
-					if(c&0b10000000){//negative
-						c^=0xff;
-					}
+					//if(c&0b10000000){//negative
+					//	c^=0xff;
+					//}
+					mma_get_z_average(pwr,&z);
+					c=z;
 					LATB=c;
 					if(checkforbyte())break;
 				}
@@ -188,10 +197,21 @@ void main(void){
 			case 0x15: 
 				param[0]=0x00;//spi(0xff);
 				while(1){
-					ACL_CS=0;
+					//ACL_CS=0;
 					//hal_spi_rw((0x06<<1));
-					param[1]=hal_acl_read(OUTPUT_X_8BIT);
-					ACL_CS=1;
+					//param[1]=hal_acl_read(OUTPUT_X_8BIT);
+					//ACL_CS=1;
+
+
+				//	mma_get_x_average(pwr,&x);
+				//	param[1]=x;
+					mma_get_y_average(pwr,&y);
+					param[1]=y;
+				//	mma_get_z_average(pwr,&z);
+				//	param[1]=z;
+
+					LATB = param[1];
+	
 				  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 						putUnsignedCharArrayUsbUsart(param,2);
 					}
@@ -201,19 +221,30 @@ void main(void){
 			case 0x16:
 				//while(1)
 				{
-					ACL_CS=0;
-					hal_spi_rw((0x06<<1));
+					//ACL_CS=0;
+					//hal_spi_rw((0x06<<1));
 					//param[0]=hal_spi_rw(0xff);
-					hal_acl_read( OUTPUT_X_8BIT );
-					param[1]='|';
+					//hal_acl_read( OUTPUT_X_8BIT );
+					//param[1]='|';
 					//param[2]=hal_spi_rw(0xff);
-					param[2]=hal_acl_read( OUTPUT_Y_8BIT );
-					param[3]=':';
+					//param[2]=hal_acl_read( OUTPUT_Y_8BIT );
+					//param[3]=':';
 					//param[4]=hal_spi_rw(0xff);
-					param[4]=hal_acl_read( OUTPUT_Z_8BIT );
+					//param[4]=hal_acl_read( OUTPUT_Z_8BIT );
+					//param[5]=0x13;
+					//param[6]=0x10;
+					//ACL_CS=1;
+
+
+					mma_get_average(pwr,&x,&y,&z);
+					param[0] = x;
+					param[1] = '|';
+					param[2] = y;
+					param[3] = ':';
+					param[4] = z;
 					param[5]=0x13;
 					param[6]=0x10;
-					ACL_CS=1;
+					
 				  	if( mUSBUSARTIsTxTrfReady() ){ //it's always ready, but this could be done better
 						putUnsignedCharArrayUsbUsart(param,7);
 					}
