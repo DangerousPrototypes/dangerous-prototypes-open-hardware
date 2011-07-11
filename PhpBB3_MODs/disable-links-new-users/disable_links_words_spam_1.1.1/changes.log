@@ -24,4 +24,6 @@ http://area51.phpbb.com/docs/30x/coding-guidelines.html#codelayout
    -- Move hardcoded strings to language\en\mods\link_filter.php
    -- added user->setup('mods/link_filter') to call language file in files posting.php, ucp_pm_compose.php and ucd_profile.php
 
-	
+7/11/2011
+    --  revert code, remove separate language file, undo previous edits.
+    --  Need to solve hardcoded strings the other way  
