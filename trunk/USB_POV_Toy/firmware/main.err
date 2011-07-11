@@ -1,3 +1,7 @@
-Warning[2058] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 154 : call of function without prototype
-Warning[2058] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 166 : call of function without prototype
-Warning[2058] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 178 : call of function without prototype
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 162 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 177 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 191 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 208 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 239 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 239 : suspicious pointer conversion
+Warning[2054] C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c 239 : suspicious pointer conversion
