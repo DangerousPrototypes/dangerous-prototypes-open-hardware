@@ -1,5 +1,5 @@
 MPLINK 4.39, Linker
-Linker Map File - Created Tue Jul 12 00:54:22 2011
+Linker Map File - Created Tue Jul 12 07:58:40 2011
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -12,39 +12,39 @@ REMAPPED_HIGH_INTERRUPT_VECTOR       code   0x000808    program   0x000006
 REMAPPED_LOW_INTERRUPT_VECTOR       code   0x000818    program   0x000006
                    .cinit    romdata   0x00082a    program   0x00001a
        .code_usb_device.o       code   0x000844    program   0x0012cc
-             .code_main.o       code   0x001b10    program   0x00070c
-.code_hal_accelerometer.o       code   0x00221c    program   0x00055e
- .code_usb_function_cdc.o       code   0x00277a    program   0x00044e
-       .code_hal_eeprom.o       code   0x002bc8    program   0x00016c
-          .code_hal_pov.o       code   0x002d34    program   0x0000ce
-.romdata_usb_descriptors.o    romdata   0x002e02    program   0x0000c9
-         .romdata_c018i.o    romdata   0x002ecb    program   0x000000
-       .romdata_hal_pov.o    romdata   0x002ecb    program   0x000000
-.romdata_hal_accelerometer.o    romdata   0x002ecb    program   0x000000
-    .romdata_usb_device.o    romdata   0x002ecb    program   0x000000
-    .idata_usb_device.o_i    romdata   0x002ecb    program   0x000000
-.romdata_usb_function_cdc.o    romdata   0x002ecb    program   0x000000
-.idata_usb_function_cdc.o_i    romdata   0x002ecb    program   0x000000
-       .romdata_hal_spi.o    romdata   0x002ecb    program   0x000000
-    .romdata_hal_eeprom.o    romdata   0x002ecb    program   0x000000
-.idata_usb_descriptors.o_i    romdata   0x002ecb    program   0x000000
-        .romdata___init.o    romdata   0x002ecb    program   0x000000
-          .idata_main.o_i    romdata   0x002ecb    program   0x000001
-          .romdata_main.o    romdata   0x002ecb    program   0x000000
-               _cinit_scn       code   0x002ecc    program   0x00009e
-                   STRING       code   0x002f6a    program   0x000034
-          .code_hal_spi.o       code   0x002f9e    program   0x000026
-                    .code       code   0x002fc4    program   0x000020
-             _startup_scn       code   0x002fe4    program   0x00001c
-           .code___init.o       code   0x003000    program   0x000002
-       .idata_hal_spi.o_i    romdata   0x003002    program   0x000000
-       .idata_hal_pov.o_i    romdata   0x003002    program   0x000029
-    .idata_hal_eeprom.o_i    romdata   0x00302b    program   0x000000
-        .idata___init.o_i    romdata   0x00302b    program   0x000000
-.idata_hal_accelerometer.o_i    romdata   0x00302b    program   0x000000
-         .idata_c018i.o_i    romdata   0x00302b    program   0x000000
-  .code_usb_descriptors.o       code   0x00302c    program   0x000000
-            .code_c018i.o       code   0x00302c    program   0x000000
+             .code_main.o       code   0x001b10    program   0x000718
+.code_hal_accelerometer.o       code   0x002228    program   0x000546
+ .code_usb_function_cdc.o       code   0x00276e    program   0x00044e
+       .code_hal_eeprom.o       code   0x002bbc    program   0x00016c
+          .code_hal_pov.o       code   0x002d28    program   0x0000ce
+.romdata_usb_descriptors.o    romdata   0x002df6    program   0x0000c9
+         .romdata_c018i.o    romdata   0x002ebf    program   0x000000
+       .romdata_hal_pov.o    romdata   0x002ebf    program   0x000000
+.romdata_hal_accelerometer.o    romdata   0x002ebf    program   0x000000
+    .romdata_usb_device.o    romdata   0x002ebf    program   0x000000
+    .idata_usb_device.o_i    romdata   0x002ebf    program   0x000000
+.romdata_usb_function_cdc.o    romdata   0x002ebf    program   0x000000
+.idata_usb_function_cdc.o_i    romdata   0x002ebf    program   0x000000
+       .romdata_hal_spi.o    romdata   0x002ebf    program   0x000000
+    .romdata_hal_eeprom.o    romdata   0x002ebf    program   0x000000
+.idata_usb_descriptors.o_i    romdata   0x002ebf    program   0x000000
+        .romdata___init.o    romdata   0x002ebf    program   0x000000
+          .idata_main.o_i    romdata   0x002ebf    program   0x000001
+          .romdata_main.o    romdata   0x002ebf    program   0x000000
+               _cinit_scn       code   0x002ec0    program   0x00009e
+                   STRING       code   0x002f5e    program   0x000034
+          .code_hal_spi.o       code   0x002f92    program   0x000026
+                    .code       code   0x002fb8    program   0x000020
+             _startup_scn       code   0x002fd8    program   0x00001c
+           .code___init.o       code   0x002ff4    program   0x000002
+       .idata_hal_spi.o_i    romdata   0x002ff6    program   0x000000
+       .idata_hal_pov.o_i    romdata   0x002ff6    program   0x000029
+    .idata_hal_eeprom.o_i    romdata   0x00301f    program   0x000000
+        .idata___init.o_i    romdata   0x00301f    program   0x000000
+.idata_hal_accelerometer.o_i    romdata   0x00301f    program   0x000000
+         .idata_c018i.o_i    romdata   0x00301f    program   0x000000
+  .code_usb_descriptors.o       code   0x003020    program   0x000000
+            .code_c018i.o       code   0x003020    program   0x000000
       .config_3ff8_main.o    romdata   0x003ff8    program   0x000001
       .config_3ff9_main.o    romdata   0x003ff9    program   0x000001
       .config_3ffa_main.o    romdata   0x003ffa    program   0x000001
@@ -102,32 +102,32 @@ REMAPPED_LOW_INTERRUPT_VECTOR       code   0x000818    program   0x000006
                             0x000800    0x000805      
                             0x000808    0x00080d      
                             0x000818    0x00081d      
-                            0x00082a    0x00302a      
+                            0x00082a    0x00301e      
                             0x003ff8    0x003fff      
-            10285 out of 16386 program addresses used, program memory utilization is 62%
+            10273 out of 16386 program addresses used, program memory utilization is 62%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                CDCInitEP   0x00281c    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-             CDCTxService   0x002a7c    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+                CDCInitEP   0x002810    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+             CDCTxService   0x002a70    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
                  High_ISR   0x000008    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-      InterruptHandlerLow   0x0021f6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+      InterruptHandlerLow   0x002202    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                   Low_ISR   0x000018    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-             POVInterrupt   0x002d96    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+             POVInterrupt   0x002d8a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
         Remapped_High_ISR   0x000808    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
          Remapped_Low_ISR   0x000818    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       USBCBCheckOtherReq   0x002156    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-        USBCBErrorHandler   0x002154    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              USBCBInitEP   0x00215c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-    USBCBStdSetDscHandler   0x00215a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-             USBCBSuspend   0x00214e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-     USBCBWakeFromSuspend   0x002150    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-        USBCB_SOF_Handler   0x002152    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+       USBCBCheckOtherReq   0x002162    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+        USBCBErrorHandler   0x002160    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              USBCBInitEP   0x002168    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+    USBCBStdSetDscHandler   0x002166    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+             USBCBSuspend   0x00215a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+     USBCBWakeFromSuspend   0x00215c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+        USBCB_SOF_Handler   0x00215e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
               USBCancelIO   0x001a60    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
-       USBCheckCDCRequest   0x00277a    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+       USBCheckCDCRequest   0x00276e    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
        USBCheckStdRequest   0x000dd8    program     static C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
      USBConfigureEndpoint   0x001752    program     static C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
   USBCtrlEPAllowDataStage   0x0011b6    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
@@ -151,31 +151,31 @@ USBCtrlEPAllowStatusStage   0x001114    program     extern C:\Microchip Solution
                USBSuspend   0x000b48    program     static C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
      USBTransferOnePacket   0x00195a    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
        USBWakeFromSuspend   0x000b74    program     static C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
-               USB_CD_Ptr   0x002ec3    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-               USB_SD_Ptr   0x002ec5    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-USER_USB_CALLBACK_EVENT_HANDLER   0x002160    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                UsageMode   0x001f2e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              _2jContinue   0x002f8a    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-                   _3jEnd   0x002f94    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-     ___case_114_lbl00088   0x0021e4    program     static                          
-     ___case_115_lbl00084   0x0021d4    program     static                          
-     ___case_116_lbl00086   0x0021dc    program     static                          
-     ___case_117_lbl00085   0x0021d8    program     static                          
-       ___case_1_lbl00081   0x0021c8    program     static                          
-       ___case_2_lbl00082   0x0021cc    program     static                          
-   ___case_32767_lbl00087   0x0021e0    program     static                          
-       ___case_3_lbl00083   0x0021d0    program     static                          
-      ___default_lbl00089   0x0021e8    program     static                          
+               USB_CD_Ptr   0x002eb7    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+               USB_SD_Ptr   0x002eb9    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+USER_USB_CALLBACK_EVENT_HANDLER   0x00216c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                UsageMode   0x001f3a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              _2jContinue   0x002f7e    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+                   _3jEnd   0x002f88    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+     ___case_114_lbl00091   0x0021f0    program     static                          
+     ___case_115_lbl00087   0x0021e0    program     static                          
+     ___case_116_lbl00089   0x0021e8    program     static                          
+     ___case_117_lbl00088   0x0021e4    program     static                          
+       ___case_1_lbl00084   0x0021d4    program     static                          
+       ___case_2_lbl00085   0x0021d8    program     static                          
+   ___case_32767_lbl00090   0x0021ec    program     static                          
+       ___case_3_lbl00086   0x0021dc    program     static                          
+      ___default_lbl00092   0x0021f4    program     static                          
        ___return_lbl00000   0x000004    program     static                          
-       ___return_lbl00001   0x002ffe    program     static                          
-       ___return_lbl00002   0x002f68    program     static                          
-       ___return_lbl00079   0x0021ee    program     static                          
-       ___return_lbl00091   0x00080c    program     static                          
-       ___return_lbl00092   0x00081c    program     static                          
-       ___return_lbl00093   0x000804    program     static                          
-       ___return_lbl00094   0x00000c    program     static                          
-       ___return_lbl00095   0x00001c    program     static                          
-   ___switchexit_lbl00080   0x0021ea    program     static                          
+       ___return_lbl00001   0x002ff2    program     static                          
+       ___return_lbl00002   0x002f5c    program     static                          
+       ___return_lbl00082   0x0021fa    program     static                          
+       ___return_lbl00094   0x00080c    program     static                          
+       ___return_lbl00095   0x00081c    program     static                          
+       ___return_lbl00096   0x000804    program     static                          
+       ___return_lbl00097   0x00000c    program     static                          
+       ___return_lbl00098   0x00001c    program     static                          
+   ___switchexit_lbl00083   0x0021f6    program     static                          
                __config_0   0x003ff8    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_1   0x003ff9    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_2   0x003ffa    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
@@ -184,78 +184,78 @@ USER_USB_CALLBACK_EVENT_HANDLER   0x002160    program     extern C:\Microchip So
                __config_5   0x003ffd    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_6   0x003ffe    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_7   0x003fff    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                   __init   0x003000    program     extern C:\MCC18\src\traditional\stdclib\__init.c
-              __tmplbl_10   0x0021a6    program     static                          
-              __tmplbl_11   0x0021b0    program     static                          
-              __tmplbl_12   0x0021ba    program     static                          
-              __tmplbl_13   0x0021c4    program     static                          
-               __tmplbl_6   0x00217c    program     static                          
-               __tmplbl_7   0x002188    program     static                          
-               __tmplbl_8   0x002192    program     static                          
-               __tmplbl_9   0x00219c    program     static                          
-            __zero_memory   0x002fc4    program     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
-                _do_cinit   0x002ecc    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                   __init   0x002ff4    program     extern C:\MCC18\src\traditional\stdclib\__init.c
+              __tmplbl_10   0x0021b2    program     static                          
+              __tmplbl_11   0x0021bc    program     static                          
+              __tmplbl_12   0x0021c6    program     static                          
+              __tmplbl_13   0x0021d0    program     static                          
+               __tmplbl_6   0x002188    program     static                          
+               __tmplbl_7   0x002194    program     static                          
+               __tmplbl_8   0x00219e    program     static                          
+               __tmplbl_9   0x0021a8    program     static                          
+            __zero_memory   0x002fb8    program     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
+                _do_cinit   0x002ec0    program     extern C:\MCC18\src\traditional\startup\c018i.c
                    _entry   0x000000    program     extern C:\MCC18\src\traditional\startup\c018i.c
                    _reset   0x000800    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                 _startup   0x002fe4    program     extern C:\MCC18\src\traditional\startup\c018i.c
-             checkforbyte   0x002020    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                compare_l   0x002fda    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-        configDescriptor1   0x002e14    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                copy_loop   0x002f3e    program     static                          
-            copy_one_byte   0x002f44    program     static                          
-               device_dsc   0x002e02    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                     done   0x002f68    program     static                          
-             done_copying   0x002f52    program     static                          
-             getsUSBUSART   0x002882    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-hal_acl_IsItReverseOrForward   0x0022e4    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-           hal_acl_config   0x00229e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-           hal_acl_enable   0x002280    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-             hal_acl_read   0x00221c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-            hal_acl_write   0x002250    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-          hal_eeprom_rdsr   0x002ce6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-          hal_eeprom_read   0x002c5a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-      hal_eeprom_wip_poll   0x002d16    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-          hal_eeprom_wren   0x002bc8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-         hal_eeprom_write   0x002bd8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-   hal_pov_GetBitMapArray   0x002d6c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-  hal_pov_LoadBitmapCheck   0x002d78    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-         hal_pov_SetState   0x002d34    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-       hal_pov_StartCycle   0x002d4a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_adjustTimerRefresh   0x002d80    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_checkButtonAndChangeBitmap   0x002d94    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-    hal_pov_displayBitmap   0x002d92    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_loadBitmapFromEeToRam   0x002d82    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-        hal_pov_setupTmr0   0x002d50    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-        hal_pov_setupTmr1   0x002d64    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-             hal_spi_init   0x002f9e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
-               hal_spi_rw   0x002fa0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
-                     init   0x00208e    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                     jEnd   0x002f9c    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-                    jLoop   0x002f7e    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-                     loop   0x002ff4    program     static                          
-                   loop_h   0x002fd2    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-                   loop_l   0x002fdc    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                 _startup   0x002fd8    program     extern C:\MCC18\src\traditional\startup\c018i.c
+             checkforbyte   0x00202c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                compare_l   0x002fce    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+        configDescriptor1   0x002e08    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                copy_loop   0x002f32    program     static                          
+            copy_one_byte   0x002f38    program     static                          
+               device_dsc   0x002df6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                     done   0x002f5c    program     static                          
+             done_copying   0x002f46    program     static                          
+             getsUSBUSART   0x002876    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+hal_acl_IsItReverseOrForward   0x0022f0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+           hal_acl_config   0x0022aa    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+           hal_acl_enable   0x00228c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+             hal_acl_read   0x002228    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+            hal_acl_write   0x00225c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+          hal_eeprom_rdsr   0x002cda    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+          hal_eeprom_read   0x002c4e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+      hal_eeprom_wip_poll   0x002d0a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+          hal_eeprom_wren   0x002bbc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+         hal_eeprom_write   0x002bcc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+   hal_pov_GetBitMapArray   0x002d60    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+  hal_pov_LoadBitmapCheck   0x002d6c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+         hal_pov_SetState   0x002d28    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+       hal_pov_StartCycle   0x002d3e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_adjustTimerRefresh   0x002d74    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_checkButtonAndChangeBitmap   0x002d88    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+    hal_pov_displayBitmap   0x002d86    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_loadBitmapFromEeToRam   0x002d76    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+        hal_pov_setupTmr0   0x002d44    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+        hal_pov_setupTmr1   0x002d58    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+             hal_spi_init   0x002f92    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
+               hal_spi_rw   0x002f94    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
+                     init   0x00209a    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                     jEnd   0x002f90    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+                    jLoop   0x002f72    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+                     loop   0x002fe8    program     static                          
+                   loop_h   0x002fc6    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                   loop_l   0x002fd0    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
                      main   0x001b10    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                   memset   0x002f6a    program     extern C:\MCC18\src\traditional\stdclib\memset.asm
-          mma_get_average   0x00231e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_x_average   0x0024fe    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_y_average   0x0025d2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_z_average   0x0026a6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-     mma_wait_until_ready   0x00230e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-              putUSBUSART   0x002944    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-            putrsUSBUSART   0x0029f6    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-             putsUSBUSART   0x002972    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-                    sd000   0x002e57    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                    sd001   0x002e5b    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                    sd002   0x002e8f    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                     send   0x001f32    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                   sendok   0x001f74    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                     test   0x002ee6    program     static                          
-              usbbufflush   0x002146    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-            usbbufgetbyte   0x002100    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-            usbbufservice   0x0020dc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              waitforbyte   0x001fb4    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-               zero_block   0x002fd2    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                   memset   0x002f5e    program     extern C:\MCC18\src\traditional\stdclib\memset.asm
+          mma_get_average   0x00232a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_x_average   0x0024f2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_y_average   0x0025d6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_z_average   0x0026a2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+     mma_wait_until_ready   0x00231a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+              putUSBUSART   0x002938    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+            putrsUSBUSART   0x0029ea    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+             putsUSBUSART   0x002966    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+                    sd000   0x002e4b    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                    sd001   0x002e4f    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                    sd002   0x002e83    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                     send   0x001f3e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                   sendok   0x001f80    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                     test   0x002eda    program     static                          
+              usbbufflush   0x002152    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+            usbbufgetbyte   0x00210c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+            usbbufservice   0x0020e8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              waitforbyte   0x001fc0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+               zero_block   0x002fc6    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
                    ADCON0   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
                ADCON0bits   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
                    ADCON1   0x000fc1       data     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
@@ -722,15 +722,15 @@ dummy_encapsulated_cmd_response   0x0004e0       data     extern C:\Microchip So
                    _entry   0x000000    program     extern C:\MCC18\src\traditional\startup\c018i.c
        ___return_lbl00000   0x000004    program     static                          
                  High_ISR   0x000008    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       ___return_lbl00094   0x00000c    program     static                          
+       ___return_lbl00097   0x00000c    program     static                          
                   Low_ISR   0x000018    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       ___return_lbl00095   0x00001c    program     static                          
+       ___return_lbl00098   0x00001c    program     static                          
                    _reset   0x000800    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       ___return_lbl00093   0x000804    program     static                          
+       ___return_lbl00096   0x000804    program     static                          
         Remapped_High_ISR   0x000808    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       ___return_lbl00091   0x00080c    program     static                          
+       ___return_lbl00094   0x00080c    program     static                          
          Remapped_Low_ISR   0x000818    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       ___return_lbl00092   0x00081c    program     static                          
+       ___return_lbl00095   0x00081c    program     static                          
             USBDeviceInit   0x000844    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
            USBDeviceTasks   0x000964    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
           USBStallHandler   0x000b14    program     static C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
@@ -756,106 +756,106 @@ USBCtrlEPAllowStatusStage   0x001114    program     extern C:\Microchip Solution
      USBTransferOnePacket   0x00195a    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
               USBCancelIO   0x001a60    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\usb_device.c
                      main   0x001b10    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                UsageMode   0x001f2e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                     send   0x001f32    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                   sendok   0x001f74    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              waitforbyte   0x001fb4    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-             checkforbyte   0x002020    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-                     init   0x00208e    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-            usbbufservice   0x0020dc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-            usbbufgetbyte   0x002100    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              usbbufflush   0x002146    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-             USBCBSuspend   0x00214e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-     USBCBWakeFromSuspend   0x002150    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-        USBCB_SOF_Handler   0x002152    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-        USBCBErrorHandler   0x002154    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-       USBCBCheckOtherReq   0x002156    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-    USBCBStdSetDscHandler   0x00215a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-              USBCBInitEP   0x00215c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-USER_USB_CALLBACK_EVENT_HANDLER   0x002160    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-               __tmplbl_6   0x00217c    program     static                          
-               __tmplbl_7   0x002188    program     static                          
-               __tmplbl_8   0x002192    program     static                          
-               __tmplbl_9   0x00219c    program     static                          
-              __tmplbl_10   0x0021a6    program     static                          
-              __tmplbl_11   0x0021b0    program     static                          
-              __tmplbl_12   0x0021ba    program     static                          
-              __tmplbl_13   0x0021c4    program     static                          
-       ___case_1_lbl00081   0x0021c8    program     static                          
-       ___case_2_lbl00082   0x0021cc    program     static                          
-       ___case_3_lbl00083   0x0021d0    program     static                          
-     ___case_115_lbl00084   0x0021d4    program     static                          
-     ___case_117_lbl00085   0x0021d8    program     static                          
-     ___case_116_lbl00086   0x0021dc    program     static                          
-   ___case_32767_lbl00087   0x0021e0    program     static                          
-     ___case_114_lbl00088   0x0021e4    program     static                          
-      ___default_lbl00089   0x0021e8    program     static                          
-   ___switchexit_lbl00080   0x0021ea    program     static                          
-       ___return_lbl00079   0x0021ee    program     static                          
-      InterruptHandlerLow   0x0021f6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
-             hal_acl_read   0x00221c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-            hal_acl_write   0x002250    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-           hal_acl_enable   0x002280    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-           hal_acl_config   0x00229e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-hal_acl_IsItReverseOrForward   0x0022e4    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-     mma_wait_until_ready   0x00230e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-          mma_get_average   0x00231e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_x_average   0x0024fe    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_y_average   0x0025d2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-        mma_get_z_average   0x0026a6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
-       USBCheckCDCRequest   0x00277a    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-                CDCInitEP   0x00281c    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-             getsUSBUSART   0x002882    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-              putUSBUSART   0x002944    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-             putsUSBUSART   0x002972    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-            putrsUSBUSART   0x0029f6    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-             CDCTxService   0x002a7c    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
-          hal_eeprom_wren   0x002bc8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-         hal_eeprom_write   0x002bd8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-          hal_eeprom_read   0x002c5a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-          hal_eeprom_rdsr   0x002ce6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-      hal_eeprom_wip_poll   0x002d16    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
-         hal_pov_SetState   0x002d34    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-       hal_pov_StartCycle   0x002d4a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-        hal_pov_setupTmr0   0x002d50    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-        hal_pov_setupTmr1   0x002d64    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-   hal_pov_GetBitMapArray   0x002d6c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-  hal_pov_LoadBitmapCheck   0x002d78    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_adjustTimerRefresh   0x002d80    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_loadBitmapFromEeToRam   0x002d82    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-    hal_pov_displayBitmap   0x002d92    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-hal_pov_checkButtonAndChangeBitmap   0x002d94    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-             POVInterrupt   0x002d96    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
-               device_dsc   0x002e02    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-        configDescriptor1   0x002e14    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                    sd000   0x002e57    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                    sd001   0x002e5b    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                    sd002   0x002e8f    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-               USB_CD_Ptr   0x002ec3    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-               USB_SD_Ptr   0x002ec5    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
-                _do_cinit   0x002ecc    program     extern C:\MCC18\src\traditional\startup\c018i.c
-                     test   0x002ee6    program     static                          
-                copy_loop   0x002f3e    program     static                          
-            copy_one_byte   0x002f44    program     static                          
-             done_copying   0x002f52    program     static                          
-                     done   0x002f68    program     static                          
-       ___return_lbl00002   0x002f68    program     static                          
-                   memset   0x002f6a    program     extern C:\MCC18\src\traditional\stdclib\memset.asm
-                    jLoop   0x002f7e    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-              _2jContinue   0x002f8a    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-                   _3jEnd   0x002f94    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-                     jEnd   0x002f9c    program     static C:\MCC18\src\traditional\stdclib\memset.asm
-             hal_spi_init   0x002f9e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
-               hal_spi_rw   0x002fa0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
-            __zero_memory   0x002fc4    program     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
-               zero_block   0x002fd2    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-                   loop_h   0x002fd2    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-                compare_l   0x002fda    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-                   loop_l   0x002fdc    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
-                 _startup   0x002fe4    program     extern C:\MCC18\src\traditional\startup\c018i.c
-                     loop   0x002ff4    program     static                          
-       ___return_lbl00001   0x002ffe    program     static                          
-                   __init   0x003000    program     extern C:\MCC18\src\traditional\stdclib\__init.c
+                UsageMode   0x001f3a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                     send   0x001f3e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                   sendok   0x001f80    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              waitforbyte   0x001fc0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+             checkforbyte   0x00202c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+                     init   0x00209a    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+            usbbufservice   0x0020e8    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+            usbbufgetbyte   0x00210c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              usbbufflush   0x002152    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+             USBCBSuspend   0x00215a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+     USBCBWakeFromSuspend   0x00215c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+        USBCB_SOF_Handler   0x00215e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+        USBCBErrorHandler   0x002160    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+       USBCBCheckOtherReq   0x002162    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+    USBCBStdSetDscHandler   0x002166    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+              USBCBInitEP   0x002168    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+USER_USB_CALLBACK_EVENT_HANDLER   0x00216c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+               __tmplbl_6   0x002188    program     static                          
+               __tmplbl_7   0x002194    program     static                          
+               __tmplbl_8   0x00219e    program     static                          
+               __tmplbl_9   0x0021a8    program     static                          
+              __tmplbl_10   0x0021b2    program     static                          
+              __tmplbl_11   0x0021bc    program     static                          
+              __tmplbl_12   0x0021c6    program     static                          
+              __tmplbl_13   0x0021d0    program     static                          
+       ___case_1_lbl00084   0x0021d4    program     static                          
+       ___case_2_lbl00085   0x0021d8    program     static                          
+       ___case_3_lbl00086   0x0021dc    program     static                          
+     ___case_115_lbl00087   0x0021e0    program     static                          
+     ___case_117_lbl00088   0x0021e4    program     static                          
+     ___case_116_lbl00089   0x0021e8    program     static                          
+   ___case_32767_lbl00090   0x0021ec    program     static                          
+     ___case_114_lbl00091   0x0021f0    program     static                          
+      ___default_lbl00092   0x0021f4    program     static                          
+   ___switchexit_lbl00083   0x0021f6    program     static                          
+       ___return_lbl00082   0x0021fa    program     static                          
+      InterruptHandlerLow   0x002202    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
+             hal_acl_read   0x002228    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+            hal_acl_write   0x00225c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+           hal_acl_enable   0x00228c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+           hal_acl_config   0x0022aa    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+hal_acl_IsItReverseOrForward   0x0022f0    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+     mma_wait_until_ready   0x00231a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+          mma_get_average   0x00232a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_x_average   0x0024f2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_y_average   0x0025d6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+        mma_get_z_average   0x0026a2    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_accelerometer.c
+       USBCheckCDCRequest   0x00276e    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+                CDCInitEP   0x002810    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+             getsUSBUSART   0x002876    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+              putUSBUSART   0x002938    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+             putsUSBUSART   0x002966    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+            putrsUSBUSART   0x0029ea    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+             CDCTxService   0x002a70    program     extern C:\Microchip Solutions v2010-10-19\Microchip\Usb\CDC Device Driver\usb_function_cdc.c
+          hal_eeprom_wren   0x002bbc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+         hal_eeprom_write   0x002bcc    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+          hal_eeprom_read   0x002c4e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+          hal_eeprom_rdsr   0x002cda    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+      hal_eeprom_wip_poll   0x002d0a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_eeprom.c
+         hal_pov_SetState   0x002d28    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+       hal_pov_StartCycle   0x002d3e    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+        hal_pov_setupTmr0   0x002d44    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+        hal_pov_setupTmr1   0x002d58    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+   hal_pov_GetBitMapArray   0x002d60    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+  hal_pov_LoadBitmapCheck   0x002d6c    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_adjustTimerRefresh   0x002d74    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_loadBitmapFromEeToRam   0x002d76    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+    hal_pov_displayBitmap   0x002d86    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+hal_pov_checkButtonAndChangeBitmap   0x002d88    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+             POVInterrupt   0x002d8a    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_pov.c
+               device_dsc   0x002df6    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+        configDescriptor1   0x002e08    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                    sd000   0x002e4b    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                    sd001   0x002e4f    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                    sd002   0x002e83    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+               USB_CD_Ptr   0x002eb7    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+               USB_SD_Ptr   0x002eb9    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\usb_descriptors.c
+                _do_cinit   0x002ec0    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                     test   0x002eda    program     static                          
+                copy_loop   0x002f32    program     static                          
+            copy_one_byte   0x002f38    program     static                          
+             done_copying   0x002f46    program     static                          
+                     done   0x002f5c    program     static                          
+       ___return_lbl00002   0x002f5c    program     static                          
+                   memset   0x002f5e    program     extern C:\MCC18\src\traditional\stdclib\memset.asm
+                    jLoop   0x002f72    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+              _2jContinue   0x002f7e    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+                   _3jEnd   0x002f88    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+                     jEnd   0x002f90    program     static C:\MCC18\src\traditional\stdclib\memset.asm
+             hal_spi_init   0x002f92    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
+               hal_spi_rw   0x002f94    program     extern C:\Microchip Solutions v2010-10-19\USB_POV_Toy\hal_spi.c
+            __zero_memory   0x002fb8    program     extern C:\MCC18\src\traditional\proc\p18F24J50.asm
+               zero_block   0x002fc6    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                   loop_h   0x002fc6    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                compare_l   0x002fce    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                   loop_l   0x002fd0    program     static C:\MCC18\src\traditional\proc\p18F24J50.asm
+                 _startup   0x002fd8    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                     loop   0x002fe8    program     static                          
+       ___return_lbl00001   0x002ff2    program     static                          
+                   __init   0x002ff4    program     extern C:\MCC18\src\traditional\stdclib\__init.c
                __config_0   0x003ff8    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_1   0x003ff9    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
                __config_2   0x003ffa    program     static C:\Microchip Solutions v2010-10-19\USB_POV_Toy\main.c
