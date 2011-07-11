@@ -162,6 +162,10 @@ void main(void){
 					mma_get_x_average(pwr,&x);
 					c=x;
 					
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+					
 					LATB=c;
 					if(checkforbyte())break;
 				}
@@ -176,6 +180,11 @@ void main(void){
 					//}
 					mma_get_y_average(pwr,&y);
 					c=y;
+
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+
 					LATB=c;
 					if(checkforbyte())break;
 				}
@@ -190,6 +199,11 @@ void main(void){
 					//}
 					mma_get_z_average(pwr,&z);
 					c=z;
+					
+					if(c&0b10000000){//negative
+						c^=0xff;
+					}
+			
 					LATB=c;
 					if(checkforbyte())break;
 				}

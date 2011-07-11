@@ -98,27 +98,9 @@ void mma_get_average( u8 power_of_two, int * x, int * y, int * z )
     u8 i;
     for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
         mma_wait_until_ready();
-       // accu_x += hal_acl_read( OUTPUT_X_8BIT );
-       // accu_y += hal_acl_read( OUTPUT_Y_8BIT );
-       // accu_z += hal_acl_read( OUTPUT_Z_8BIT );
-
-		c = hal_acl_read( OUTPUT_X_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
-		accu_x += c;
-
-		c = hal_acl_read( OUTPUT_Y_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
-		accu_y += c;
-
-		c = hal_acl_read( OUTPUT_Z_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
-		accu_z += c;
+        accu_x += hal_acl_read( OUTPUT_X_8BIT );
+        accu_y += hal_acl_read( OUTPUT_Y_8BIT );
+        accu_z += hal_acl_read( OUTPUT_Z_8BIT );
     }
     *x = ( accu_x + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
     *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
@@ -132,12 +114,8 @@ void mma_get_x_average( u8 power_of_two, int * x)
     u8 i;
     for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
         mma_wait_until_ready();
-        //accu_x += hal_acl_read( OUTPUT_X_8BIT );
+        accu_x += hal_acl_read( OUTPUT_X_8BIT );
 
-		c = hal_acl_read( OUTPUT_X_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
 		accu_x += c;
     }
     *x = ( accu_x + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
@@ -151,13 +129,7 @@ void mma_get_y_average( u8 power_of_two, int * y)
     for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
         mma_wait_until_ready();
 
-		c = hal_acl_read( OUTPUT_Y_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
-		accu_y += c;
-
-        //accu_y += hal_acl_read( OUTPUT_Y_8BIT );
+        accu_y += hal_acl_read( OUTPUT_Y_8BIT );
     }
     *y = ( accu_y + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
@@ -169,14 +141,8 @@ void mma_get_z_average( u8 power_of_two, int * z)
     u8 i;
     for ( i = 0; i < ( 1 << power_of_two ); ++i ) {
         mma_wait_until_ready();
-        
-		c = hal_acl_read( OUTPUT_Z_8BIT );
-		if(c&0b10000000){//negative
-			c^=0xff;
-		}
-		accu_z += c;
 
-		//accu_z += hal_acl_read( OUTPUT_Z_8BIT );
+		accu_z += hal_acl_read( OUTPUT_Z_8BIT );
     }
     *z = ( accu_z + ( 1 << ( power_of_two - 1 ) ) ) >> power_of_two;
 }
