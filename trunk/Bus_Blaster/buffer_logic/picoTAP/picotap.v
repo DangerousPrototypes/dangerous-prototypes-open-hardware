@@ -12,6 +12,7 @@ module picotap(
            TCK ,
            TDI ,
            TMS ,
+			  nTRST
 			  );
 
 output wire FT_TDO;
@@ -28,7 +29,7 @@ output wire nTRST;
 	//outputs
 assign TDI = FT_TDI;
 assign 	TMS = FT_TMS;
-assign 	TCK = FT_TCK:;
+assign 	TCK = FT_TCK;
 assign 	nTRST = FT_nTRST_OUT; 
 
 	//inputs
