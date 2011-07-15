@@ -18,6 +18,8 @@ Automatically link user defined words or sentances to a URL. Only the first matc
 
 == Frequently Asked Questions ==
 
+See Docs at: http://dangerousprototypes.com/docs/Wordpress_plugin:_Word_Linker
+
 == Screenshots ==
 
 

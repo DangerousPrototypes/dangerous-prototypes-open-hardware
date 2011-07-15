@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Word Linker
+Documentation: http://dangerousprototypes.com/docs/Wordpress_plugin:_Word_Linker
 Plugin URI: http://dangerousprototypes.com/docs/Wordpress_Word_Link_plugin
 Description: Replace words with anchored links
 Author: Rob Holmes
