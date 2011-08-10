@@ -1,0 +1,64 @@
+iMPACT Version: 13.2
+
+iMPACT log file Started on Wed Aug 10 14:52:00 2011
+
+Welcome to iMPACT
+iMPACT Version: 13.2
+The setting has been saved, to change the settings, please go toEdit->Preferences.// *** BATCH CMD : setPreference -pref StartupClock:AUTO_CORRECTION
+// *** BATCH CMD : setPreference -pref AutoSignature:FALSE
+// *** BATCH CMD : setPreference -pref KeepSVF:FALSE
+// *** BATCH CMD : setPreference -pref ConcurrentMode:FALSE
+// *** BATCH CMD : setPreference -pref UseHighz:FALSE
+// *** BATCH CMD : setPreference -pref svfUseTime:FALSE
+// *** BATCH CMD : setPreference -pref SpiByteSwap:AUTO_CORRECTION
+// *** BATCH CMD : setPreference -pref AutoInfer:TRUE
+// *** BATCH CMD : setPreference -pref SvfPlayDisplayComments:FALSE
+Project: \auto_project.ipf created.
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : setCable -port xsvf -file"D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/XTideCPLD1_XC9536_5V_v1.xsvf"
+// *** BATCH CMD : addDevice -p 1 -file"D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/Top.jed"
+'1': Loading file 'D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/Top.jed' ...
+done.
+INFO:iMPACT:1777 - 
+   Reading D:/Xilinx/13.2/ISE_DS/ISE/xc9500/data/xc9536.bsd...
+INFO:iMPACT:501 - '1': Added Device xc9536 successfully.
+----------------------------------------------------------------------
+INFO:iMPACT - Current time: 10-8-2011 14:53:57
+WARNING:iMPACT - Warning: SVF Programming of 9500 series CPLDs is not supported   by every third-party boundary-scan tool provider. Please check for support   before using this SVF file to program a 9500 series device.
+// *** BATCH CMD : Program -p 1 -e -v 
+
+'1': Erasing device...
+'1': Erasure completed successfully.
+'1': Programming device...
+PROGRESS_START - Starting Operation.
+done.
+'1': Putting device in ISP mode...done
+'1': Verifying device...done.
+'1': Verification completed successfully.
+'1': Programming completed successfully.
+PROGRESS_END - End Operation.
+Elapsed time =      0 sec.
+Project: '\auto_project.ipf' created.
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : setMode -ss
+// *** BATCH CMD : setMode -sm
+// *** BATCH CMD : setMode -hw140
+// *** BATCH CMD : setMode -spi
+// *** BATCH CMD : setMode -acecf
+// *** BATCH CMD : setMode -acempm
+// *** BATCH CMD : setMode -pff
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : saveProjectFile -file "\auto_project.ipf"
+// *** BATCH CMD : setMode -bs
+INFO:iMPACT - Launching WebTalk, please refer to the webtalk log at /webtalk.log   for details.
+INFO:iMPACT - Running wbtc successfully.
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : deleteDevice -position 1
+// *** BATCH CMD : setMode -bs
+// *** BATCH CMD : setMode -ss
+// *** BATCH CMD : setMode -sm
+// *** BATCH CMD : setMode -hw140
+// *** BATCH CMD : setMode -spi
+// *** BATCH CMD : setMode -acecf
+// *** BATCH CMD : setMode -acempm
+// *** BATCH CMD : setMode -pff
