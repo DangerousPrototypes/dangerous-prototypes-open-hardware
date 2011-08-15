@@ -1,0 +1,110 @@
+<!-- INCLUDE ucp_header.html -->
+
+<hr />
+<br />
+
+<!-- DEFINE $S_SIGNATURE = 1 -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+<tr>
+	<td class="row1">{L_SIGNATURE_EXPLAIN}</td>
+</tr>
+</table>
+
+<!-- IF ERROR -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><span class="genmed error">{ERROR}</span></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+		<script type="text/javascript">
+		// <![CDATA[
+			var form_name = 'ucp';
+			var text_name = 'signature';
+		// ]]>
+		</script>
+		
+		<!-- INCLUDE posting_buttons.html -->
+
+<hr />
+<table cellspacing="0">
+		<tr>
+			<td class="row1"><textarea class="post" name="signature" rows="10" cols="70" style="width: 95%;" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);">{SIGNATURE}</textarea></td>
+		</tr>
+</table>
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_OPTIONS}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2">
+			<p class="gensmall">{BBCODE_STATUS}</p>
+			<p class="gensmall">{IMG_STATUS}</p>
+			<p class="gensmall">{FLASH_STATUS}</p>
+			<p class="gensmall">{URL_STATUS}</p></td>
+			<p class="gensmall">{SMILIES_STATUS}</p>
+
+		<!-- IF S_BBCODE_ALLOWED -->
+				<p class="gen"><input type="checkbox" class="radio" name="disable_bbcode"{S_BBCODE_CHECKED} /> {L_DISABLE_BBCODE}</p>
+		<!-- ENDIF -->
+
+		<!-- IF S_SMILIES_ALLOWED -->
+				<p class="gen"><input type="checkbox" class="radio" name="disable_smilies"{S_SMILIES_CHECKED} /> {L_DISABLE_SMILIES}</p>
+		<!-- ENDIF -->
+
+		<!-- IF S_LINKS_ALLOWED -->
+				<p class="gen"><input type="checkbox" class="radio" name="disable_magic_url"{S_MAGIC_URL_CHECKED} /> {L_DISABLE_MAGIC_URL}</p>
+		<!-- ENDIF -->
+		</td>
+	</tr>
+</table>
+
+<!-- IF SIGNATURE_PREVIEW -->
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th valign="middle">{L_SIGNATURE_PREVIEW}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row1"><div class="postbody" style="padding: 6px;">{SIGNATURE_PREVIEW}</div></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center">{S_HIDDEN_FIELDS}<input class="btnlite" type="submit" name="preview" value="{L_PREVIEW}" />&nbsp;&nbsp;<input class="btnmain" type="submit" name="submit" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" name="reset" /></td>
+	</tr>
+</table>
+
+<hr />
+<br />
+
+<!-- INCLUDE ucp_footer.html -->

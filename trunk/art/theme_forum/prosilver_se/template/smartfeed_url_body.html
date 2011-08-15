@@ -1,0 +1,788 @@
+<!-- INCLUDE overall_header.html -->
+
+<script type="text/javascript">
+// <![CDATA[
+
+// global variables
+var smartfeed_key = '{PWD}';
+var smartfeed_key_with_ip = '{PWD_WITH_IP}';
+var raw_result;
+var ajax_run = false;
+var there_are_required_forums = {REQUIRED_FORUMS};
+
+function unCheckSubscribedForums (checkbox) {
+	is_checked = checkbox.checked;
+ 
+	var element_name = new String();
+	
+	// Assume a HTML 4.0 compatible browser
+	var x = document.getElementById('div_0').getElementsByTagName("input");
+	for(i=0;i<x.length;i++) {
+		thisobject = x[i];
+		element_name = thisobject.id;
+		if(element_name != null) 
+		{
+			if(element_name.substr(0,4) == "elt_")
+			{
+				thisobject.checked = is_checked;
+			}
+		}
+	}
+	return true;
+}
+
+function unCheckAllForums () {
+
+	// Unchecks or checks the all forums checkbox
+	var news_id = document.getElementById('news');
+	any_unchecked = false;
+	
+	// Assume a HTML 4.0 compatible browser
+	var x = document.getElementById('div_0');
+	var y = x.getElementsByTagName("input");
+	for(i=0;((i<y.length) && (any_unchecked == false));i++) 
+	{
+		thisobject = y[i];
+		element_name = thisobject.name;
+		if(element_name != null) {
+			if(element_name.substr(0,4) == "elt_")
+			{
+				if (thisobject.checked == false)
+				{
+					news_id.all_forums.checked = false;
+					any_unchecked = true;
+				}
+			}
+		}
+	}
+	if (any_unchecked == false)
+	{
+		news_id.all_forums.checked = true;
+	}
+
+	return;
+}
+
+function check_word_size (field, max_items, allow_star)
+{
+	if ((allow_star) && (field.value == '*'))
+	{
+		return;
+	}
+	star_message = (allow_star) ? "{LA_SMARTFEED_STAR_MESSAGE}" : '';
+	
+	if (isNaN(field.value))
+	{
+		alert("{LA_SMARTFEED_SIZE_ERROR}" + ' ' + max_items + star_message);
+		field.value = field.defaultValue;
+		field.focus();
+		return;
+	}
+	size = parseInt(field.value);
+	if (size < 0)
+	{
+		alert("{LA_SMARTFEED_SIZE_ERROR}" + ' ' + max_items + star_message);
+		field.value = field.defaultValue;
+		field.focus();
+		return;
+	}
+	
+	if (field.defaultValue != '')
+	{
+		if (size > max_items) 
+		{
+			alert("{LA_SMARTFEED_SIZE_ERROR}" + ' ' + max_items + star_message);
+			field.value = field.defaultValue;
+			field.focus();
+		}
+	}
+}
+
+function check_word_size_min (field) 
+{
+	size = field.value;
+	if (size == '')
+	{
+		return;
+	}
+	if (isNaN(size))
+	{
+		alert("{LA_SMARTFEED_SIZE_ERROR_MIN}");
+		field.value = field.defaultValue;
+		field.focus();
+	}
+	else
+	{
+		size = parseInt(size);
+		if (size < 1) 
+		{
+			alert("{LA_SMARTFEED_SIZE_ERROR_MIN}");
+			field.value = field.defaultValue;
+			field.focus();
+		}
+		else
+		{
+			field.value = field.defaultValue;
+			field.value = size;
+		}
+	}
+}
+
+function disable_forums(disabled)
+{
+	var element_name = new String();
+	var news_id = document.getElementById('news');
+	
+	// Assume a HTML 4.0 compatible browser
+	var x = document.getElementById('div_0').getElementsByTagName("input");
+	for(i=0;i<x.length;i++) {
+		thisobject = x[i];
+		element_name = thisobject.id;
+		if(element_name != null) 
+		{
+			if(element_name.substr(0,4) == "elt_")
+			{
+				thisobject.disabled = disabled;
+			}
+		}
+	}
+	
+	news_id.all_forums.disabled = disabled;
+	return true;
+}
+
+
+function reset_url()
+{
+	var news_id = document.getElementById('news');
+	news_id.url.value = '';
+}
+
+
+function createURL() {
+
+	if (ajax_run)
+	{
+		tilde = raw_result.search('~');
+		if (tilde > 0)
+		{
+			smartfeed_key  = raw_result.substr(0,tilde);
+			smartfeed_key_with_ip = raw_result.substr(tilde+1);
+		}
+		else
+		{
+			// An error occurred if there is no tilde in the results
+			alert(raw_result);
+		}
+	}
+
+	// Creates a URL for display to be used by the newsreader to actually retrieve the newsfeed.
+	var news_id = document.getElementById('news');
+	var num_checked;
+	var forum_string = "";
+	<!-- IF S_IS_GUEST -->
+	var logged_in = 0;
+	<!-- ELSE -->
+	var logged_in = 1;
+	var bookmarks_id = document.getElementById('bookmarks');
+	var pms1_id = document.getElementById('pms1');
+	<!-- ENDIF -->
+	 
+	// Get # of checked forums
+	num_checked = 0;
+	var x = document.getElementById('div_0').getElementsByTagName('input');
+	for(i=0;i<x.length;i++)
+	{
+		thisobject = x[i];
+		element_name = thisobject.name;
+		if(element_name != null) 
+		{
+			if(element_name.substr(0,4) == "elt_") 
+			{
+				if (thisobject.checked == true) 
+				{
+					num_checked++;
+					underscore_loc = thisobject.id.indexOf('_',5); // Look for underscore past the "elt_", or first 4 characters
+					forum_string = forum_string + "&forum=" + element_name.substring(4,underscore_loc);
+				}
+			}
+		}
+	}
+	if ((there_are_required_forums) && (num_checked==0))
+	{
+		forum_string = forum_string + "&forum=-1"; // -1 means that no forums were selected but there are required forums
+		num_checked++;
+	}
+	<!-- IF not S_IS_GUEST -->
+	// If bookmarks are checked, then the forum string should be blank
+	if (bookmarks_id.checked)
+	{
+		forum_string = null;
+	}
+	<!-- ENDIF -->
+
+	// If no forums were checked there is no point in generating a URL. 
+	// Instead, give a Javascript warning and generate nothing.
+	create_url = false;
+
+	<!-- IF not S_IS_GUEST -->
+	if ((num_checked==0) && (news_id.all_forums.checked==false) && (bookmarks_id.checked==false) && (pms1_id.checked==false))
+	<!-- ELSE -->
+	if ((num_checked==0) && (news_id.all_forums.checked==false))
+	<!-- ENDIF -->
+	{
+		alert("{LA_SMARTFEED_NO_FORUMS_SELECTED}");
+	}
+	else
+	{
+		create_url = true;
+	}
+
+
+	// Forums are selected so let's go
+	if (create_url)
+	{
+		// Initialise the URL
+		url = "{UA_SITE_URL}smartfeed.{UA_PHPEXT}";
+		
+		// If user logged in, add the specific variables
+		if (logged_in)
+		{
+			// Add his user ID
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			url = url + append + "u={UA_USER_ID}";
+
+			// Add his password + if needed address IP
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			<!-- IF S_REQUIRED_IP_AUTHENTICATION -->
+			url = url + append + "e=" + smartfeed_key_with_ip;
+			<!-- ELSE -->
+			if (news_id.ip_auth[0].checked == true)
+			{
+				url = url + append + "e=" + smartfeed_key_with_ip;
+			}
+			else
+			{
+				url = url + append + "e=" + smartfeed_key;
+			}
+			<!-- ENDIF -->
+
+			// If checked, add to reset the last visit date
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			if (news_id.lastvisit1.checked == true)
+			{
+				url = url + append + "lastvisit=1";
+			}
+
+			// If checked, add to add his unread private messages
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			if (news_id.pms1.checked == true)
+			{
+				url = url + append + "pms=1";
+				if (news_id.mark_read.checked == true)
+				{
+					append = (url.indexOf('?') == -1) ? '?' : '&';
+					url = url + append + "mark=1";
+				}
+			}
+
+			// If checked, add to remove his posts
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			if (news_id.remove_yours1.checked == true)
+			{
+				url = url + append + "removemine=1";
+			}
+
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			// If checked, add to remove posts from his foes
+			if (news_id.filter_foes1.checked == true)
+			{
+				url = url + append + "filter_foes=1";
+			}
+
+			// If checked, add to select posts only from bookmarked topics, or from selected forums
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			if (news_id.bookmarks.checked == true)
+			{
+				url = url + append + "bookmarks=1";
+			}
+			else
+			{
+				if (news_id.all_forums.checked == false && num_checked > 0)
+				{
+					// Remove the 1st "&" of the string as it'll be the 1st variable of the url
+					url = url + append + forum_string.substring(1);
+				}
+			}
+		}
+		else
+		{
+			append = (url.indexOf('?') == -1) ? '?' : '&';
+			if (news_id.all_forums.checked == false && num_checked > 0)
+			{
+				// Add to select posts from selected forums
+				url = url + append + forum_string.substring(1);
+			}
+		}
+
+
+		// Add the type of posts
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		if (news_id.firstpostonly1.checked == true)
+		{
+			url = url + append + "firstpostonly=1";
+		}
+
+		// Add the time limit
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		url = url + append + "limit=" + news_id.post_limit.value;
+		
+		// Add the max number of posts
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		if (news_id.count_limit.value != '')
+		{
+			max_items = news_id.count_limit.value;
+		}
+		else
+		{
+			max_items = 0;
+		}
+		if (max_items > 0)
+		{
+			if (news_id.count_limit.value <= max_items)
+			{
+				url = url + append + "count_limit=" + news_id.count_limit.value;
+			}
+			else
+			{
+				alert("{LA_SMARTFEED_SIZE_ERROR}");
+				news_id.count_limit.focus();
+				return;
+			}
+		}
+
+		// Add the sort order
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		url = url + append + "sort_by=" + news_id.sort_by.value;
+
+		// Add to select posts with minimum words
+		if (news_id.min_word_size.value != '')
+		{
+			if (news_id.min_word_size.value > 0)
+			{
+				append = (url.indexOf('?') == -1) ? '?' : '&';
+				url = url + append + "min_word_size=" + news_id.min_word_size.value;
+			}
+			else
+			{
+				alert("{LA_SMARTFEED_SIZE_ERROR_MIN}");
+				news_id.min_word_size.focus();
+				return;
+			}
+		}
+
+		// Add the news norm
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		if (news_id.feed_type1.checked == true)
+		{
+			url = url + append + "feed_type=" + "{S_RSS_20_VALUE}";
+		}
+		else
+		{
+			if (news_id.feed_type2.checked == true)
+			{
+				url = url + append + "feed_type=" + "{S_RSS_10_VALUE}";
+			}
+			else
+			{
+				url = url + append + "feed_type=" + "{S_ATOM_10_VALUE}";
+			}
+		}
+
+		// Add the news format
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		if (news_id.style1.checked == true)
+		{
+			url = url + append + "feed_style=" + news_id.style1.value;
+		}
+		else
+		{
+			if (news_id.style2.checked == true)
+			{
+				url = url + append + "feed_style=" + news_id.style2.value;
+			}
+			else
+			{
+				if (news_id.style3.checked == true)
+				{
+					url = url + append + "feed_style=" + news_id.style3.value;
+				}
+				else
+				{
+					url = url + append + "feed_style=" + news_id.style4.value;
+				}
+			}
+		}
+
+
+		append = (url.indexOf('?') == -1) ? '?' : '&';
+		// Add the maximum words in news
+		if (news_id.max_word_size.value != '')
+		{
+			if (news_id.max_word_size.value > 0)
+			{
+				url = url + append + "max_word_size=" + news_id.max_word_size.value;
+			}
+			else
+			{
+				alert("{LA_SMARTFEED_SIZE_ERROR_MIN}");
+				news_id.max_word_size.focus();
+				return
+			}
+		}
+
+		
+		// Place the url in the field
+		news_id.url.value = encodeURI(url);
+		return true;
+	}
+	else
+	{
+		return false;	// Failed validation
+	}
+}	
+
+function run_it()
+{
+	var url = document.getElementById("url");
+	if (url.value.length > 0)
+	{
+		window.open(url.value);
+	}
+	return;
+}
+
+function create_new_key()
+{
+	var new_key = document.getElementById("new_key");
+	if (new_key.checked == true)
+	{
+		raw_result = ajax_request();
+	}
+}
+
+function change_ip()
+{
+	var change_ip_yes = document.getElementById("ip_auth1");
+	yes_no = confirm('{L_SMARTFEED_CHANGE_ENCRYPTION_KEY_CHECK}');
+	if (yes_no == true)
+	{
+		//raw_result = ajax_request();
+		raw_result = ajax_request();
+	}
+}
+
+function ajax_request()
+{
+
+	// This function issues an AJAX request to generate a new session key
+	// Of course since it is AJAX it runs in the background, so it is assumed the 
+	// fetch will complete before the user attempts to hit the Generate URL button
+	
+	var xmlHttp;	// Need an object to issue AJAX requests
+	
+	// Let's see if this browser can handle AJAX
+	try
+	{
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	}
+	catch (e)
+	{
+		// Internet Explorer
+		try
+		{
+			xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+		}
+		catch (e)
+		{
+			try
+			{
+				xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			catch (e)
+			{
+				alert('{LA_SMARTFEED_NO_AJAX_SUPPORT}');
+				return false;
+			}
+		}
+	}
+
+	// Assemble the IP. The last part of the IP can be from 0 to 255 since any IP in this range can be used. 
+	ip = document.getElementById('ip_1').value + '.' + document.getElementById('ip_2').value + '.' + document.getElementById('ip_3').value + '.0';
+	
+	// What is the state of the call (which gets made lower on). We only care about readyState = 4 and errors
+	xmlHttp.onreadystatechange=function()
+	{
+		switch(xmlHttp.readyState)
+		{
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				// The program smartfeed_url_new_key.php returns the "e" parameter needed for the string for both regular and 
+				// IP authentication. They are delimited with a tilde (~).
+				raw_result = xmlHttp.responseText;
+				break;
+			default:
+				alert('{LA_SMARTFEED_AJAX_ERROR}');
+				break;
+		}
+	}
+
+	url = encodeURI('{UA_SITE_URL}smartfeed_url_new_key.{UA_PHPEXT}?u={UA_USER_ID}&ip='+ip+'&sid={UA_SESSION_ID}');
+	xmlHttp.open("GET", url, true); // Set up the AJAX call
+	xmlHttp.send(null); // Send the AJAX call
+	ajax_run = true;
+
+	return raw_result;
+}
+
+// ]]>  
+</script>
+
+<!-- IF S_NO_FORUMS -->
+	<p style="text-align:center"><span class="gen">{L_SMARTFEED_NO_FORUMS_AVAILABLE}<br /><br /></span></p>
+<!-- ELSE -->
+	<h2>{S_SMARTFEED_TITLE}</h2>
+
+	<!-- IF S_IS_GUEST -->
+	<p>{L_SMARTFEED_NOT_LOGGED_IN}</p>
+	<!-- ENDIF -->
+
+	<p>{L_SMARTFEED_EXPLANATION}</p>
+
+	<form id="news" action="#">
+		<div class="panel">
+			<div class="inner"><span class="corners-top"><span></span></span>
+
+			<h3>{L_SMARTFEED_FORUM_SELECTION}</h3>
+
+			<fieldset>
+				<dl>
+					<dt><label for="all_forums">{L_SMARTFEED_SELECT_FORUMS}:</label><br /><span>{L_SMARTFEED_SELECT_FORUMS_EXPLAIN}</span></dt>
+					<dd>
+						<input type="checkbox" name="all_forums" id="all_forums" {ALL_BY_DEFAULT} onclick="unCheckSubscribedForums(this);" onchange="reset_url();"/> <label for="all_forums"><b>{L_SMARTFEED_ALL_FORUMS}</b></label><br /><br />
+						<div id="div_0">
+						<!-- BEGIN forums -->
+							<!-- IF not forums.S_PRINT and forums.S_DIV_OPEN -->
+							<div id="{forums.CAT_ID}" style="position:relative; left:20px;">
+							<!-- ENDIF -->
+							<!-- IF forums.S_PRINT -->
+								<!-- IF forums.S_IS_FORUM -->
+								<input type="checkbox" name="{forums.FORUM_NAME}" id="{forums.FORUM_NAME}" {forums.FORUM_CHECKED} {forums.FORUM_DISABLED} onclick="unCheckAllForums();" onchange="reset_url();"/>{forums.FORUM_PREFIX}<label for="{forums.FORUM_NAME}">{forums.FORUM_LABEL}</label>{forums.FORUM_SUFFIX}<br />
+								<!-- ELSE -->
+								<i>{forums.FORUM_LABEL}</i><br />
+								<!-- ENDIF -->
+							<!-- ENDIF -->
+							<!-- IF not forums.S_PRINT and not forums.S_DIV_OPEN -->
+							</div>
+							<!-- ENDIF -->
+						<!-- END forums -->
+						</div>
+					</dd>
+				</dl>
+			</fieldset>
+
+			<h3>{L_SMARTFEED_FILTER_CRITERIA}</h3>
+
+			<fieldset>
+				<dl>
+					<dt><label>{L_SMARTFEED_FIRST_POST_ONLY}:</label></dt>
+					<dd>
+						<input type="radio" name="firstpostonly" id="firstpostonly2" value="NO" onchange="reset_url();" onclick="disable_forums(0);" checked="checked" /><label for="firstpostonly2">{L_SMARTFEED_POSTS_TYPE_ANY}</label>
+						<input type="radio" name="firstpostonly" id="firstpostonly1" value="YES" onchange="reset_url();" onclick="disable_forums(0);" /><label for="firstpostonly1">{L_SMARTFEED_POSTS_TYPE_FIRST}</label> 
+						<!-- IF not S_IS_GUEST -->
+						<input type="radio" name="firstpostonly" id="bookmarks" value="BM" onchange="reset_url();" onclick="disable_forums(1);" /><label for="bookmarks">{L_SMARTFEED_USE_BOOKMARKS}</label> 
+						<!-- ENDIF -->
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_LIMIT}:</label><br /><span>{L_SMARTFEED_LIMIT_EXPLAIN} {L_SMARTFEED_LIMIT_SET_EXPLAIN}</span></dt>
+					<dd>
+						<select name="post_limit" id="post_limit" onchange="reset_url();">
+							<!-- IF not S_IS_GUEST -->
+							<option value="{L_LAST_FETCH_VALUE}">{L_SMARTFEED_SINCE_LAST_VISIT_TEXT}</option>
+							<!-- ENDIF -->
+							<option value="{L_NO_LIMIT_VALUE}">{L_SMARTFEED_NO_LIMIT}</option>
+							<option value="{L_QUARTER_VALUE}">{L_SMARTFEED_LAST_QUARTER}</option>
+							<option value="{L_MONTH_VALUE}">{L_SMARTFEED_LAST_MONTH}</option>
+							<option value="{L_TWO_WEEKS_VALUE}">{L_SMARTFEED_LAST_TWO_WEEKS}</option>
+							<option value="{L_WEEK_VALUE}">{L_SMARTFEED_LAST_WEEK}</option>
+							<option value="{L_DAY_VALUE}" {DAY_DEFAULT}>{L_SMARTFEED_LAST_DAY}</option>
+							<option value="{L_12_HRS_VALUE}">{L_SMARTFEED_LAST_12_HOURS}</option>
+							<option value="{L_6_HRS_VALUE}">{L_SMARTFEED_LAST_6_HOURS}</option>
+							<option value="{L_3_HRS_VALUE}">{L_SMARTFEED_LAST_3_HOURS}</option>
+							<option value="{L_1_HRS_VALUE}">{L_SMARTFEED_LAST_1_HOURS}</option>
+							<option value="{L_30_MIN_VALUE}">{L_SMARTFEED_LAST_30_MINUTES}</option>
+							<option value="{L_15_MIN_VALUE}">{L_SMARTFEED_LAST_15_MINUTES}</option>
+						</select>
+					</dd>
+				</dl>
+			  	<dl>
+					<dt><label for="count_limit">{L_SMARTFEED_COUNT_LIMIT}:</label><br /><span>{L_COUNT_LIMIT_EXPLAIN_MAX}</span></dt>
+						<dd><input type="text" class="inputbox autowidth" size="3" maxlength="3" name="count_limit" id="count_limit" value="{S_SMARTFEED_MAX_ITEMS}" onblur="check_word_size(this,{S_SMARTFEED_MAX_ITEMS},false);" onchange="reset_url();" />
+					</dd>
+				</dl>
+			  	<dl>
+					<dt><label for="min_word_size">{L_SMARTFEED_MIN_SIZE}:</label></dt>
+						<dd><input type="text" class="inputbox autowidth" size="4" maxlength="4" name="min_word_size" id="min_word_size" onblur="check_word_size_min(this);" onchange="reset_url();" />
+					</dd>
+				</dl>
+				<!-- IF not S_IS_GUEST -->
+				<dl>
+					<dt><label>{L_SMARTFEED_REMOVE_YOURS}:</label></dt>
+					<dd>
+						<label for="remove_yours1"><input type="radio" name="remove_yours" id="remove_yours1" value="YES" onchange="reset_url();" /> {L_YES}</label> 
+						<label for="remove_yours2"><input type="radio" name="remove_yours" id="remove_yours2" value="NO" onchange="reset_url();" checked="checked" /> {L_NO}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_FILTER_FOES}:</label></dt>
+					<dd>
+						<label for="filter_foes1"><input type="radio" name="filter_foes" id="filter_foes1" value="YES" onchange="reset_url();" /> {L_YES}</label> 
+						<label for="filter_foes2"><input type="radio" name="filter_foes" id="filter_foes2" value="NO" onchange="reset_url();" checked="checked" /> {L_NO}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+			</fieldset>
+
+			<h3>{L_SMARTFEED_ADDITIONAL_CRITERIA}</h3>
+
+			<fieldset>
+				<dl>
+					<dt><label for="sort_by">{L_SMARTFEED_SORT_BY}:</label><br /><span>{L_SMARTFEED_SORT_BY_EXPLAIN}</span></dt>
+					<dd>
+						<select name="sort_by" id="sort_by" onchange="reset_url();">
+							<!-- IF not S_IS_GUEST -->
+							<option value="{L_BOARD}">{L_SMARTFEED_SORT_USER_ORDER}</option>
+							<!-- ENDIF -->
+							<option value="{L_STANDARD}">{L_SMARTFEED_SORT_FORUM_TOPIC}</option>
+							<option value="{L_STANDARD_DESC}">{L_SMARTFEED_SORT_FORUM_TOPIC_DESC}</option>
+							<option value="{L_POSTDATE_ASCENDING}">{L_SMARTFEED_SORT_POST_DATE}</option>
+							<option value="{L_POSTDATE_DESCENDING}">{L_SMARTFEED_SORT_POST_DATE_DESC}</option>
+						</select>
+					</dd>
+				</dl>
+				<!-- IF not S_IS_GUEST -->
+				<dl>
+					<dt><label>{L_SMARTFEED_PRIVATE_MESSAGES_IN_FEED}:</label></dt>
+					<dd>
+						<label for="pms1"><input type="radio" name="pms" id="pms1" value="YES" onchange="reset_url();" /> {L_YES}</label> 
+						<label for="pms2"><input type="radio" name="pms" id="pms2" value="NO" onchange="reset_url();" checked="checked" /> {L_NO}</label> &nbsp;<input type="checkbox" name="mark_read" id="mark_read" /> <label for="mark_read">{L_SMARTFEED_MARK_READ}</label>
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+			  	<dl>
+					<dt><label for="max_word_size">{L_SMARTFEED_MAX_SIZE}:</label><br /><span>{L_SMARTFEED_MAX_SIZE_EXPLAIN}</span></dt>
+						<dd><input type="text" class="inputbox autowidth" size="4" maxlength="4" name="max_word_size" id="max_word_size" value="{S_SMARTFEED_MAX_SIZE}" onblur="check_word_size(this,{S_SMARTFEED_MAX_SIZE},false);" onchange="reset_url();" />
+					</dd>
+				</dl>
+			</fieldset>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+
+
+		<div class="panel bg2">
+			<div class="inner"><span class="corners-top"><span></span></span>
+
+			<h3>{L_SMARTFEED_FORMAT_AND_ACCESS}</h3>
+
+			<fieldset>
+				<dl>
+					<dt><label>{L_SMARTFEED_FEED_TYPE}:</label></dt>
+					<dd>
+						<label for="feed_type1"><input type="radio" name="feed_type" id="feed_type1" value="{S_RSS_20_VALUE}" onchange="reset_url();" checked="checked" /> <img src="{T_IMAGESET_PATH}/newsfeed_rss20.gif" alt="{L_SMARTFEED_RSS_20}" title="{L_SMARTFEED_RSS_20}" style="vertical-align:-3px" /></label> 
+						<label for="feed_type2"><input type="radio" name="feed_type" id="feed_type2" value="{S_RSS_10_VALUE}" onchange="reset_url();" /> <img src="{T_IMAGESET_PATH}/newsfeed_rss10.gif" alt="{L_SMARTFEED_RSS_10}" title="{L_SMARTFEED_RSS_10}" style="vertical-align:-3px" /></label>
+						<label for="feed_type3"><input type="radio" name="feed_type" id="feed_type3" value="{S_ATOM_10_VALUE}" onchange="reset_url();" /> <img src="{T_IMAGESET_PATH}/newsfeed_atom10.gif" alt="{L_SMARTFEED_ATOM_10}" title="{L_SMARTFEED_ATOM_10}" style="vertical-align:-3px" /></label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_FEED_STYLING}:</label><br /><span>{L_SMARTFEED_FEED_STYLING_EXPLAIN}</span></dt>
+					<dd>
+						<label for="style1" title="{L_SMARTFEED_STYLE_COMPACT_EXPLAIN}"><input type="radio" name="style" id="style1" value="{L_COMPACT_VALUE}" onchange="reset_url();" checked="checked" /> {L_SMARTFEED_STYLE_COMPACT}</label><br />
+						<label for="style2" title="{L_SMARTFEED_STYLE_BASIC_EXPLAIN}"><input type="radio" name="style" id="style2" style="margin-top: 3px;" value="{L_BASIC_VALUE}" onchange="reset_url();" /> {L_SMARTFEED_STYLE_BASIC}</label><br />
+						<label for="style3" title="{L_SMARTFEED_STYLE_HTML_SAFE_EXPLAIN}"><input type="radio" name="style" id="style3" style="margin-top: 3px;" value="{L_HTMLSAFE_VALUE}" onchange="reset_url();" /> {L_SMARTFEED_STYLE_HTML_SAFE}</label><br />
+						<label for="style4" title="{L_SMARTFEED_STYLE_HTML_EXPLAIN}"><input type="radio" name="style" id="style4" style="margin-top: 3px;" value="{L_HTML_VALUE}" checked="checked" onchange="reset_url();" /> {L_SMARTFEED_STYLE_HTML}</label>
+					</dd>
+				</dl>
+
+				<!-- IF not S_IS_GUEST -->
+			  	<dl>
+					<dt><label>{L_SMARTFEED_LASTVISIT_RESET}:</label></dt>
+					<dd>
+						<label for="lastvisit1"><input type="radio" name="lastvisit" id="lastvisit1" value="YES" onchange="reset_url();" checked="checked" /> {L_YES}</label> 
+						<label for="lastvisit2"><input type="radio" name="lastvisit" id="lastvisit2" value="NO" onchange="reset_url();" /> {L_NO}</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_NEW_KEY}:</label><br /><span>{L_SMARTFEED_NEW_KEY_EXPLAIN}</span></dt>
+					<dd>
+						<input type="checkbox" name="new_key" id="new_key" onclick="create_new_key();" onchange="reset_url();" />
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_IP_AUTH}:</label><br /><span>{L_SMARTFEED_IP_AUTHENTICATION_EXPLAIN}</span></dt>
+					<dd>
+					<!-- IF not S_REQUIRED_IP_AUTHENTICATION -->
+						<label for="ip_auth1"><input type="radio" name="ip_auth" id="ip_auth1" value="YES" onchange="change_ip();reset_url();" /> {L_YES}</label> 
+						<label for="ip_auth2"><input type="radio" name="ip_auth" id="ip_auth2" value="NO" onchange="reset_url();" checked="checked" /> {L_NO}</label><br />
+					<!-- ENDIF -->
+						{L_SMARTFEED_IP_RANGE_SET}: <input type="text" class="inputbox autowidth" size="3" maxlength="3" name="ip_1" id="ip_1" value="{S_IP_1}" onblur="check_word_size(this,255,false);" onchange="reset_url();" />.<input type="text" class="inputbox autowidth" size="3" maxlength="3" name="ip_2" id="ip_2" value="{S_IP_2}" onblur="check_word_size(this,255,false);" onchange="reset_url();" />.<input type="text" class="inputbox autowidth" size="3" maxlength="3" name="ip_3" id="ip_3" value="{S_IP_3}" onblur="check_word_size(this,255,true);change_ip();" onchange="reset_url();" />.*
+					</dd>
+				</dl>
+				<!-- ENDIF -->
+
+			</fieldset>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+
+
+		<div class="panel bg3">
+			<div class="inner"><span class="corners-top"><span></span></span>
+
+			<h3>{L_SMARTFEED_URL}</h3>
+
+			<fieldset>
+				<dl>
+					<dt><label>{L_SMARTFEED_GENERATE_BUTTON}:</label><br /><span>{L_SMARTFEED_GENERATE_BUTTON_EXPLAIN}</span></dt>
+					<dd>
+						<input type="button" value="{L_SMARTFEED_GENERATE_URL_TEXT}" class="button1" onclick="createURL();"/><br />
+						<input type="text" class="inputbox" name="url" id="url" style="margin-top: 3px;" maxlength="3000" onfocus="this.select();" alt="{L_SMARTFEED_URL_EXPLAIN}" />
+					</dd>
+				</dl>
+				<dl>
+					<dt><label>{L_SMARTFEED_TEST_BUTTON}:</label><br /><span>{L_SMARTFEED_TEST_BUTTON_EXPLAIN}</span></dt>
+					<dd>
+						<input type="button" name="runit" id="runit" value="{L_SMARTFEED_RUN_IT_NOW}" class="button1" onclick="run_it();"/><br />
+					</dd>
+				</dl>
+			</fieldset>
+
+			<span class="corners-bottom"><span></span></span></div>
+		</div>
+
+	</form>
+<!-- ENDIF -->
+
+<div class="copyright">
+	Powered by <a href="{S_SMARTFEED_PAGE_URL}" class="postlink" onclick="window.open(this.href);return false;">{S_SMARTFEED_TITLE}</a> {S_SMARTFEED_VERSION}<br />
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+<!-- INCLUDE overall_footer.html -->

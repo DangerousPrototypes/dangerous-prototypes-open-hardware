@@ -1,0 +1,92 @@
+<!-- INCLUDE mcp_header.html -->
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_POST}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row1">
+			<table cellspacing="1" cellpadding="2" border="0">
+			<tr>
+				<td class="gen" align="center"><!-- IF USER_COLOR --><b style="color: #{USER_COLOR}"><!-- ELSE --><b><!-- ENDIF -->{USERNAME}</b></td>
+			</tr>
+			<!-- IF RANK_TITLE -->
+				<tr>
+					<td class="postdetails" align="center">{RANK_TITLE}</td>
+				</tr>
+			<!-- ENDIF -->
+			<!-- IF RANK_IMG -->
+				<tr>
+					<td align="center">{RANK_IMG}</td>
+				</tr>
+			<!-- ENDIF -->
+			<tr>
+				<td align="center"><!-- IF AVATAR_IMG -->{AVATAR_IMG}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" alt="" /><!-- ENDIF --></td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><span class="gen">{POST}</span></td>
+	</tr>
+</table>
+
+<hr />
+<br clear="all" />
+
+<form method="post" name="mcp" action="{U_POST_ACTION}">
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_ADD_WARNING}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><textarea name="warning" rows="10" cols="76">{L_WARNING_POST_DEFAULT}</textarea></td>
+	</tr>
+</table>
+
+<!-- IF S_CAN_NOTIFY -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /></td>
+	</tr>
+</table>
+{S_FORM_TOKEN}
+</form>
+
+<hr />
+
+<!-- INCLUDE mcp_footer.html -->

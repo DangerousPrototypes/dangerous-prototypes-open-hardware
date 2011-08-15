@@ -1,0 +1,85 @@
+<!-- INCLUDE overall_header.html -->
+
+<hr />
+<br />
+
+<a name="faqtop"></a>
+
+<div id="pagecontent">
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_FAQ_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">
+		<!-- BEGIN faq_block -->
+			<span class="gen"><b>{faq_block.BLOCK_TITLE}</b></span><br />
+			<!-- BEGIN faq_row -->
+				<span class="gen"><a class="postlink" href="#f{faq_block.S_ROW_COUNT}{faq_block.faq_row.S_ROW_COUNT}">{faq_block.faq_row.FAQ_QUESTION}</a></span><br />
+			<!-- END faq_row -->
+<!-- IF not faq_block.S_LAST_ROW -->
+<br />
+<!-- ENDIF -->
+		<!-- END faq_block -->
+		</td>
+	</tr>
+</table>
+<hr />
+
+	<br clear="all" />
+
+	<!-- BEGIN faq_block -->
+<hr />
+<table cellspacing="0">
+		<tr> 
+			<th>{faq_block.BLOCK_TITLE}</th>
+		</tr>
+</table>
+
+		<!-- BEGIN faq_row --> 
+<hr />
+<table cellspacing="0">
+		<tr>
+			<!-- IF faq_block.faq_row.S_ROW_COUNT is even -->
+				<td class="row1" valign="top">
+			<!-- ELSE -->
+				<td class="row2" valign="top">
+			<!-- ENDIF -->
+				<div class="postbody"><a name="f{faq_block.S_ROW_COUNT}{faq_block.faq_row.S_ROW_COUNT}"></a><b>faq#{faq_block.S_ROW_COUNT}{faq_block.faq_row.S_ROW_COUNT} &raquo; {faq_block.faq_row.FAQ_QUESTION}</b></div>
+				<div class="postbody">{faq_block.faq_row.FAQ_ANSWER}</div>
+				<p class="gensmall"><a href="#faqtop">{L_BACK_TO_TOP}</a></p>
+			</td>
+		</tr>
+</table>
+<!-- IF not faq_block.S_LAST_ROW -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="spacer"></td>
+	</tr>
+</table>
+<!-- ELSE -->
+<hr />
+<!-- ENDIF -->
+
+		<!-- END faq_row -->
+
+		<br clear="all" />
+	<!-- END faq_block -->
+
+</div>
+
+<!-- INCLUDE breadcrumbs.html -->
+
+<hr/>
+<br clear="all" />
+
+<div align="center"><!-- INCLUDE jumpbox.html --></div>
+
+<!-- INCLUDE overall_footer.html -->

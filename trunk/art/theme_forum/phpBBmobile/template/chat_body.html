@@ -1,0 +1,241 @@
+<!-- IF S_GET_CHAT -->
+<!-- IF S_READ or S_ADD -->
+<!-- BEGIN chatrow -->
+<div id="p{chatrow.MESSAGE_ID}">
+<hr />
+<div class="spacer"></div>
+<hr />
+<table cellspacing="0">
+	<tr class="row{chatrow.CLASS}">
+		<td class="gensmall">
+			<!-- IF U_ACP or U_MCP --><a href="javascript:void({chatrow.MESSAGE_ID})" title="{L_DELETE_POST}" onclick="delete_post('{chatrow.MESSAGE_ID}')"><img src="{T_IMAGESET_LANG_PATH}/icon_post_delete.gif" alt="" /></a><!-- ENDIF -->
+			<b class="postauthor">{chatrow.USERNAME_FULL}</b> « {chatrow.TIME}<br /><span class="postbody">{chatrow.MESSAGE}</span>
+		</td>
+	</tr>
+</table>
+</div>
+<!-- END chatrow -->---{LAST_ID}
+
+<!-- IF S_WHOISONLINE -->--- {L_ONLINE_LIST}: &nbsp; 
+	<!-- BEGIN whoisrow -->
+		<img src="{T_IMAGESET_PATH}/{whoisrow.USER_STATUS}.png" class="online_img" alt="" /> {whoisrow.USERNAME_FULL} &nbsp; 
+	<!-- END whoisrow -->---{LAST_TIME}---{DELAY}---{LAST_POST}
+<!-- ENDIF -->
+<!-- ENDIF -->
+<!-- ELSE -->
+<!-- IF S_CHAT -->
+<!-- INCLUDE overall_header.html -->
+
+<!-- ENDIF -->
+	<script type="text/javascript">
+	<!--
+	var fieldname = 'chat';
+	var last_time = 0;
+	var xmlHttp = http_object();
+	var last_id = {LAST_ID};
+	var type = 'receive';
+	var post_time = {TIME};
+	var read_interval = 15000;
+	var interval = setInterval('handle_send("read", last_id);', read_interval);
+
+	function handle_send(mode, f)
+	{
+		if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0)
+		{
+			indicator_switch('on');
+			type = 'receive';
+			param = 'mode=' + mode;	
+			param += '&last_id=' + last_id;
+			param += '&last_time=' + last_time;			
+			param += '&last_post=' + post_time;			
+			param += '&read_interval=' + read_interval;			
+	
+			if (mode == 'add' && document.text.message.value != '')
+			{
+				type = 'send';
+				for(var i = 0; i < f.elements.length; i++)
+				{ 
+					elem = f.elements[i]; 
+					param += '&' + elem.name + '=' + encodeURIComponent(elem.value); 
+				}
+				document.text.message.value = '';
+			}
+			else if (mode == 'delete')
+			{
+				type = 'delete';
+				param += '&chat_id=' + f;
+			}
+			xmlHttp.open("POST", '{FILENAME}', true);
+			xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			xmlHttp.onreadystatechange = handle_return;
+			xmlHttp.send(param);
+		}
+	}
+	
+	function handle_return()
+	{
+		if (xmlHttp.readyState == 4)
+		{
+			if (type != 'delete')
+			{
+				results = xmlHttp.responseText.split('---');
+				if (results[1])
+				{
+					if (last_id == 0)
+					{
+						document.getElementById(fieldname).innerHTML = results[0];
+					}
+					else
+					{
+						document.getElementById(fieldname).innerHTML = results[0] + document.getElementById(fieldname).innerHTML;
+					}
+					last_id = results[1];
+					if (results[2])
+					{
+						document.getElementById('whois_online').innerHTML = results[2];
+						last_time = results[3];
+						if (results[4] != read_interval * 1000)
+						{
+							window.clearInterval(interval);
+							read_interval = results[4] * 1000;
+							interval = setInterval('handle_send("read", last_id);', read_interval);
+							document.getElementById('update_seconds').innerHTML = results[4];
+						}
+						post_time = results[5];
+					}
+				}
+			}
+			indicator_switch('off');
+		}
+	}
+	
+	function delete_post(chatid)
+	{
+		document.getElementById('p' + chatid).style.display = 'none';
+		handle_send('delete', chatid);
+	}
+	
+	function indicator_switch(mode)
+	{
+		if(document.getElementById("act_indicator"))
+		{
+			var img = document.getElementById("act_indicator");	
+			if(img.style.visibility == "hidden" && mode == 'on') 
+			{
+				img.style.visibility = "visible";
+			}
+			else if (mode == 'off')
+			{
+				img.style.visibility = "hidden"
+			}	
+		}
+	}
+	
+	function http_object()
+	{
+		if (window.XMLHttpRequest)
+		{
+			return new XMLHttpRequest();
+		}
+		else if(window.ActiveXObject)
+		{
+			return new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		else
+		{
+			document.getElementById('p_status').innerHTML = 'Status: Cound not create XmlHttpRequest Object.  Consider upgrading your browser.';
+		}
+	}
+	-->
+	</script>
+
+<hr />
+<br />
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>STG {L_CHAT_EXPLAIN}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr class="row2">
+		<td class="nav" align="center" width="100%">
+<!-- IF S_USER_LOGGED_IN -->
+			<form name="text" id="text" method="post" action="javascript:void(0);" onsubmit="handle_send('add', this)" autocomplete="off">{L_MESSAGE}:  
+			<input type="text" tabindex="1" name="message" id="message" class="inputbox" size="16" />
+			<input class="button1" type="submit" name="submit" value="{L_SUBMIT}" />
+			</form>
+<!-- ELSE -->
+			You must be logged in to chat.
+<!-- ENDIF -->
+		</td>
+	</tr>
+</table>
+
+<div id="chat">
+<hr />
+<!-- BEGIN chatrow -->
+<div id="p{chatrow.MESSAGE_ID}">
+<div class="spacer"></div>
+<hr />
+<table cellspacing="0">
+	<tr class="row{chatrow.CLASS}">
+		<td class="gensmall">
+			<!-- IF U_ACP or U_MCP --><a href="javascript:void({chatrow.MESSAGE_ID})" title="{L_DELETE_POST}" onclick="delete_post('{chatrow.MESSAGE_ID}')"><img src="{T_IMAGESET_LANG_PATH}/icon_post_delete.gif" alt="" /></a><!-- ENDIF -->
+			<b class="postauthor">{chatrow.USERNAME_FULL}</b> « {chatrow.TIME}<br /><span class="postbody">{chatrow.MESSAGE}</span>
+		</td>
+	</tr>
+</table>
+</div>
+<hr />
+<!-- END chatrow -->
+<div class="spacer"></div>
+
+<hr />
+<table cellspacing="0">
+	<tr class="row2">
+		<td class="nav" width="100%">
+			<div id="whois_online">{L_ONLINE_LIST}: &nbsp; 
+			<!-- BEGIN whoisrow -->
+				<img src="{T_IMAGESET_PATH}/{whoisrow.USER_STATUS}.png" class="online_img" alt="" /> {whoisrow.USERNAME_FULL} &nbsp; 
+			<!-- END whoisrow -->
+			</div>
+		</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat gensmall" align="center">{L_DETAILS}</td>
+	</tr>
+</table>
+
+<!-- IF S_CHAT -->
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th><!-- IF U_VIEWONLINE --><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --></th>
+	</tr>
+</table>
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1" class="genmed">{TOTAL_USERS_ONLINE}<br />{LOGGED_IN_USER_LIST}</td>
+	</tr>
+</table>
+<hr />
+<br />
+
+<!-- INCLUDE breadcrumbs.html -->
+<hr />
+
+<!-- INCLUDE overall_footer.html -->
+<!-- ENDIF -->
+
+<!-- ENDIF -->

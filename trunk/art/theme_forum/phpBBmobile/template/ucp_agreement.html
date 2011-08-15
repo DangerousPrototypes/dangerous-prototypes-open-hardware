@@ -1,0 +1,74 @@
+<!-- INCLUDE overall_header.html -->
+
+
+
+<!-- IF S_SHOW_COPPA or S_REGISTRATION -->
+
+	<form method="post" action="{S_UCP_ACTION}">
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th height="25">{SITENAME} - {L_REGISTRATION}</th>
+	</tr>
+</table>
+
+		<!-- IF S_SHOW_COPPA -->
+<hr />
+<table cellspacing="0">
+	<tr class="row2">
+		<td class="gen" align="center">{L_COPPA_BIRTHDAY}</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr class="row1">
+		<td class="gen" align="center">[<a href="{U_COPPA_NO}">{L_COPPA_NO}</a>]<br /><br />[<a href="{U_COPPA_YES}">{L_COPPA_YES}</a>]</td>
+	</tr>
+</table>
+		<!-- ELSE -->
+<hr />
+<table cellspacing="0">
+	<tr class="row1">
+		<td class="genmed">{L_TERMS_OF_USE}</td>
+	</tr>
+</table>
+<hr />
+<br />
+			<div align="center">
+				<input class="btnlite" type="submit" id="agreed" name="agreed" value="{L_AGREE}" /><br /><br />
+				<input class="btnlite" type="submit" name="not_agreed" value="{L_NOT_AGREE}" />
+			</div>
+		<!-- ENDIF -->
+
+	{S_HIDDEN_FIELDS}
+	{S_FORM_TOKEN}
+	</form>
+
+<!-- ELSEIF S_AGREEMENT -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th height="25">{SITENAME} - {AGREEMENT_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr class="row1">
+		<td class="genmed" align="center">{AGREEMENT_TEXT}</td>
+	</tr>
+</table>
+<br />
+		<div align="center">
+			<a href="{U_BACK}">{L_BACK}</a>
+		</div>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

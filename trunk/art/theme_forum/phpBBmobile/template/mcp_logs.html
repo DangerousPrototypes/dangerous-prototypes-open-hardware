@@ -1,0 +1,76 @@
+<!-- INCLUDE mcp_header.html -->
+
+<hr />
+<br />
+
+<form method="post" name="mcp" action="{U_POST_ACTION}">
+	
+<!-- IF S_LOGS -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_VIEW_FORUM_LOGS}</th>
+	</tr>
+</table>
+
+	<!-- BEGIN log -->
+
+<hr />
+<table cellspacing="0">
+	<tr class="row2">
+		<td class="genmed">{L_POST_BY_AUTHOR} {log.USERNAME}</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1 genmed">{log.IP}<br />{log.DATE}<br />{log.ACTION}<br />{log.DATA}</td>
+	</tr>
+<!-- IF S_CLEAR_ALLOWED -->
+	<tr>
+		<td class="row1"><span class="gensmall"><input type="checkbox" class="radio" name="mark[]" value="{log.ID}" /> {L_SELECT}</span></td>
+	</tr>
+<!-- ENDIF -->
+</table>
+
+<!-- IF not log.S_LAST_ROW -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="spacer"></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+	<!-- END log -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><span class="gensmall">{L_DISPLAY_LOG}:</span> {S_SELECT_SORT_DAYS}&nbsp;<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;<input class="btnlite" type="submit" value="{L_GO}" name="sort" /></td>
+	</tr>
+</table>
+
+	<!-- IF S_CLEAR_ALLOWED -->
+<hr />
+<table cellspacing="0">
+		<tr>
+			<td align="center"><input class="btnlite" type="submit" name="action[del_all]" value="{L_DELETE_ALL}" />&nbsp; <input class="btnlite" type="submit" name="action[del_marked]" value="{L_DELETE_MARKED}" /></td>
+		</tr>
+</table>
+	<!-- ENDIF -->
+
+<!-- ELSE -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2" align="center"><span class="gen">{L_NO_ENTRIES}</span></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+{S_FORM_TOKEN}
+</form>
+
+<!-- INCLUDE mcp_footer.html -->

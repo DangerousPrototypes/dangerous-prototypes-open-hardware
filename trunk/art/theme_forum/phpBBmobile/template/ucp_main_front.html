@@ -1,0 +1,105 @@
+<!-- INCLUDE ucp_header.html -->
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_UCP}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><p class="genmed">{L_UCP_WELCOME}</p></td>
+	</tr>
+</table>
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_IMPORTANT_NEWS}</th>
+	</tr>
+</table>
+
+<!-- BEGIN topicrow -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><p class="topictitle"><!-- IF topicrow.S_UNREAD --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --> <a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><p class="topicdetails">{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}</p>
+			<p class="gensmall">{topicrow.GOTO_PAGE}</p>
+			<p class="topicdetails"><a href="{topicrow.U_LAST_POST}">{topicrow.LAST_POST_TIME}
+				{LAST_POST_IMG}</a></p></td>
+	</tr>
+</table>
+
+<!-- IF not topicrow.S_LAST_ROW -->
+<hr />
+<div class="spacer"></div>
+<!-- ENDIF -->
+
+<!-- BEGINELSE -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2" align="center"><b class="gen">{L_NO_IMPORTANT_NEWS}</b></td>
+	</tr>
+</table>
+<!-- END topicrow -->
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_YOUR_DETAILS}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b class="genmed">{L_JOINED}: </b><br />
+			<span class="gen">{JOINED}</span>
+		<div class="spacer"></div>
+			<b class="genmed">{L_TOTAL_POSTS}: </b><!-- IF POSTS_PCT --><b class="gen">{POSTS}</b><br />
+			<span class="genmed">({POSTS_PCT} / {POSTS_DAY})<br />
+			[ <a href="{U_SEARCH_SELF}">{L_SEARCH_YOUR_POSTS}</a> ]</span><!-- ELSE --><b class="gen">{POSTS}<b><!-- ENDIF -->
+	<!-- IF S_SHOW_ACTIVITY -->
+		<div class="spacer"></div>
+			<b class="genmed">{L_ACTIVE_IN_FORUM}: </b><!-- IF ACTIVE_FORUM --><br />
+			<b><a class="gen" href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></b><br />
+			<span class="genmed">({ACTIVE_FORUM_POSTS} / {ACTIVE_FORUM_PCT})</span><!-- ELSE --><span class="gen">-</span><!-- ENDIF -->
+		<div class="spacer"></div>
+			<b class="genmed">{L_ACTIVE_IN_TOPIC}: </b><br />
+		<!-- IF ACTIVE_TOPIC -->
+			<b><a class="gen" href="{U_ACTIVE_TOPIC}">{ACTIVE_TOPIC}</a></b><br />
+			<span class="genmed">({ACTIVE_TOPIC_POSTS} / {ACTIVE_TOPIC_PCT})</span><!-- ELSE --><span class="gen">-</span>
+		<!-- ENDIF -->
+	<!-- ENDIF -->
+	<!-- IF WARNINGS -->
+			<div class="spacer"></div>
+			<b class="genmed">{L_YOUR_WARNINGS}: </b>{WARNING_IMG} [ <b>{WARNINGS}</b> ]
+	<!-- ENDIF -->
+		</td>
+	</tr>
+</table>
+
+<hr />
+<br />
+
+<!-- INCLUDE ucp_footer.html -->

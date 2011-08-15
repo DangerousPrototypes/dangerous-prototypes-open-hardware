@@ -1,0 +1,116 @@
+<!-- INCLUDE ucp_header.html -->
+
+<hr />
+
+	<!-- IF TOTAL_TOPICS -->
+<table cellspacing="0">
+	<tr>
+		<td align="center">{PAGE_NUMBER}<br />[ {TOTAL_TOPICS} ]<br /><!-- INCLUDE pagination.html --></td>
+	</tr>
+</table>
+	<!-- ELSE -->
+<br />
+	<!-- ENDIF -->
+
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th colspan="4">{L_UCP}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><span class="genmed">{L_BOOKMARKS_EXPLAIN}</span></td>
+	</tr>
+</table>
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_BOOKMARKS}</th>
+	</tr>
+</table>
+
+<!-- IF S_NO_DISPLAY_BOOKMARKS -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="2" align="center"><b class="genmed">{L_BOOKMARKS_DISABLED}</b></td>
+	</tr>
+</table>
+
+<hr />
+<br />
+<!-- ELSE -->
+
+	<!-- BEGIN topicrow -->
+
+<hr />
+<table cellspacing="0">
+		<tr>
+		<!-- IF topicrow.S_DELETED_TOPIC -->
+			<td class="postdetails">{L_DELETED_TOPIC}</td>
+		<!-- ELSE -->
+			<td class="row2"><p class="topictitle"><!-- IF topicrow.S_UNREAD_TOPIC --><a href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}">{topicrow.TOPIC_TITLE}</a></p></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">{L_SELECT} <input type="checkbox" class="radio" name="t[{topicrow.TOPIC_ID}]" /><br />
+				<!-- IF topicrow.S_GLOBAL_TOPIC --><span class="gensmall">{L_GLOBAL_ANNOUNCEMENT}</span><!-- ELSE --><span class="gensmall"><b>{L_FORUM}: </b><a href="{topicrow.U_VIEW_FORUM}">{topicrow.FORUM_NAME}</a></span><!-- ENDIF -->
+				<!-- IF topicrow.PAGINATION -->
+				<p class="gensmall"> [ {GOTO_PAGE_IMG}{L_GOTO_PAGE}: {topicrow.PAGINATION} ] </p>
+				<!-- ENDIF -->
+				<p class="topicdetails">{topicrow.LAST_POST_TIME}</p>
+				<p class="topicdetails">{topicrow.LAST_POST_AUTHOR_FULL}
+					<a href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a>
+				</p>
+		</td>
+	</tr>
+</table>
+		<!-- ENDIF -->
+
+<!-- IF not topicrow.S_LAST_ROW -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="spacer"></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+	<!-- BEGINELSE -->
+<hr />
+<table cellspacing="0">
+	<tr class="row2">
+		<td align="center"><b class="genmed">{L_NO_BOOKMARKS}</b></td>
+	</tr>
+</table>
+	<!-- END topicrow -->
+
+<hr />
+
+		<!-- IF .topicrow -->
+<table cellspacing="0">
+		<tr>
+			<td align="{S_CONTENT_FLOW_END}"><input class="btnlite" type="submit" name="unbookmark" value="{L_REMOVE_BOOKMARK_MARKED}" />&nbsp;</td>
+		</tr>
+</table>
+		<!-- ENDIF -->
+	<!-- ENDIF -->
+
+<!-- IF not S_NO_DISPLAY_BOOKMARKS and .topicrow -->
+	<div class="gensmall" style="float: {S_CONTENT_FLOW_END}; padding-top: 2px;"><b><a href="#" onclick="marklist('ucp', 't', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('ucp', 't', false); return false;">{L_UNMARK_ALL}</a></b></div>
+<!-- ELSE -->
+<br />
+<!-- ENDIF -->
+
+<!-- INCLUDE ucp_footer.html -->

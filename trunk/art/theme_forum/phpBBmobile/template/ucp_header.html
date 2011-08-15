@@ -1,0 +1,197 @@
+<!-- INCLUDE overall_header.html -->
+
+<hr />
+<br />
+
+<!-- IF S_SHOW_PM_BOX and S_POST_ACTION -->
+	<form action="{S_POST_ACTION}" method="post" name="postform"{S_FORM_ENCTYPE}>
+<!-- ENDIF -->
+
+<!-- IF S_SHOW_PM_BOX and S_POST_ACTION -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_PM_TO}</th>
+	</tr>
+</table>
+
+	<!-- IF not S_ALLOW_MASS_PM -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b class="genmed">{L_USERNAME}:</b><br />[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</td>
+	</tr>
+	
+	<tr>
+		<td class="row1"><input class="post" type="text" name="username_list" size="20" value="" />&nbsp;<input class="post" type="submit" name="add_to" value="{L_ADD}" /></td>
+	</tr>
+</table>
+	<!-- ELSE -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1" align="center"><b class="genmed">{L_USERNAMES}:</b><br /><textarea name="username_list" rows="3" cols="22"></textarea><br />[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</td>
+	</tr>
+</table>
+	<!-- ENDIF -->
+
+	<!-- IF S_GROUP_OPTIONS -->
+<hr />
+<table cellspacing="0">
+		<tr>
+			<td class="row1" align="center"><b class="genmed">{L_USERGROUPS}:</b><br /><select name="group_list[]" multiple="multiple" size="5" style="width:150px">{S_GROUP_OPTIONS}</select></td>
+		</tr>
+</table>
+	<!-- ENDIF -->
+
+	<!-- IF S_ALLOW_MASS_PM -->
+<hr />
+<table cellspacing="0">
+		<tr>
+			<td class="cat"><div style="float: {S_CONTENT_FLOW_BEGIN};">&nbsp;<input class="post" type="submit" name="add_bcc" value="{L_ADD_BCC}" />&nbsp;</div><div style="float: {S_CONTENT_FLOW_END};">&nbsp;<input class="post" type="submit" name="add_to" value="{L_ADD_TO}" />&nbsp;</div></td>
+		</tr>
+</table>
+	<!-- ENDIF -->
+<hr />
+<br />
+<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+<tr>
+	<th>{L_OPTIONS}</th>
+</tr>
+</table>
+
+<!-- BEGIN l_block1 -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<!-- IF l_block1.S_SELECTED -->
+			<td class="row1"><b class="nav">{l_block1.L_TITLE}</b>
+
+			<!-- IF S_PRIVMSGS -->
+
+				<!-- the ! at the beginning of the loop name forces the loop to be not a nested one of l_block1 (it gets parsed separately) -->
+				<!-- BEGIN !folder -->
+					<!-- IF folder.S_FIRST_ROW -->
+						<ul class="nav" style="margin: 0; padding: 0; list-style-type: none; line-height: 175%;">
+					<!-- ENDIF -->
+
+					<!-- IF folder.S_CUR_FOLDER -->
+						<li class="row3" style="padding: 1px 0;border-width: 1px;border-style: solid;border-color: #888888;">&#187; <a href="{folder.U_FOLDER}">{folder.FOLDER_NAME}<!-- IF folder.S_UNREAD_MESSAGES --> ({folder.UNREAD_MESSAGES})<!-- ENDIF --></a></li>
+					<!-- ELSE -->
+						<li>&#187; <a href="{folder.U_FOLDER}">{folder.FOLDER_NAME}<!-- IF folder.S_UNREAD_MESSAGES --> ({folder.UNREAD_MESSAGES})<!-- ENDIF --></a></li>
+					<!-- ENDIF -->
+
+					<!-- IF folder.S_LAST_ROW -->
+						</ul>
+						<hr />
+					<!-- ENDIF -->
+				<!-- END !folder -->
+
+			<!-- ENDIF -->
+
+			<ul class="nav" style="margin: 0; padding: 0; list-style-type: none; line-height: 175%;">
+			<!-- BEGIN l_block2 -->
+				<li>&#187; <!-- IF l_block1.l_block2.S_SELECTED --><b>{l_block1.l_block2.L_TITLE}</b><!-- ELSE --><a href="{l_block1.l_block2.U_TITLE}">{l_block1.l_block2.L_TITLE}</a><!-- ENDIF --></li>
+			<!-- END l_block2 -->
+			</ul></td>
+		<!-- ELSE -->
+			<td class="row2" nowrap="nowrap" onmouseover="this.className='row3'" onmouseout="this.className='row2'" onclick="location.href=this.firstChild.href;"><a href="{l_block1.U_TITLE}">{l_block1.L_TITLE}</a></td>
+		<!-- ENDIF -->
+	</tr>
+</table>
+<!-- END l_block1 -->
+
+<!-- IF S_SHOW_COLOUR_LEGEND -->
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th colspan="2">{L_MESSAGE_COLOURS}</th>
+	</tr>
+</table>
+
+	<!-- BEGIN pm_colour_info -->
+<hr />
+<table cellspacing="0">
+		<tr>
+		<!-- IF not pm_colour_info.IMG -->
+			<td class="{pm_colour_info.CLASS}" width="10"><img src="images/spacer.gif" width="10" alt="{pm_colour_info.LANG}" /></td>
+			<td class="row1" width="100%" align="center"><span class="genmed">{pm_colour_info.LANG}</span></td>
+		</tr>
+</table>
+		<!-- ELSE -->
+<hr />
+<table cellspacing="0">
+			<td class="row1" width="25" align="center">{pm_colour_info.IMG}</td>
+			<td class="row1" width="100%" align="center"><span class="genmed">{pm_colour_info.LANG}</span></td>
+		</tr>
+</table>
+		<!-- ENDIF -->
+	<!-- END pm_colour_info -->
+
+<!-- ENDIF -->
+
+<!-- IF S_ZEBRA_ENABLED and S_ZEBRA_FRIENDS_ENABLED -->
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_FRIENDS}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1" align="center">
+		
+			<b class="genmed" style="color:green">{L_FRIENDS_ONLINE}</b>
+
+			<ul class="nav" style="margin: 0; padding: 0; list-style-type: none; line-height: 175%;">
+			<!-- BEGIN friends_online -->
+				<li>{friends_online.USERNAME_FULL}
+				<!-- IF S_SHOW_PM_BOX -->
+					&nbsp;[ <input class="post" style="font-size: 90%;" type="submit" name="add_to[{friends_online.USER_ID}]" value="{L_ADD}" /> ]
+				<!-- ENDIF -->
+				</li>
+			<!-- BEGINELSE -->
+				<li>{L_NO_FRIENDS_ONLINE}</li>
+			<!-- END friends_online -->
+			</ul>
+		</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2" align="center">
+			<b class="genmed" style="color:red">{L_FRIENDS_OFFLINE}</b>
+
+			<ul class="nav" style="margin: 0; padding: 0; list-style-type: none; line-height: 175%;">
+			<!-- BEGIN friends_offline -->
+				<li>{friends_offline.USERNAME_FULL}
+				<!-- IF S_SHOW_PM_BOX -->
+					&nbsp;[ <input class="post" style="font-size: 90%;" type="submit" name="add_to[{friends_offline.USER_ID}]" value="{L_ADD}" /> ]
+				<!-- ENDIF -->
+				</li>
+			<!-- BEGINELSE -->
+				<li>{L_NO_FRIENDS_OFFLINE}</li>
+			<!-- END friends_offline -->
+			</ul>
+		</td>
+	</tr>
+</table>
+
+<!-- ENDIF -->
+
+<!-- IF not S_PRIVMSGS or S_SHOW_DRAFTS -->
+<form name="ucp" id="ucp" method="post" action="{S_UCP_ACTION}"{S_FORM_ENCTYPE}>
+<!-- ENDIF -->
