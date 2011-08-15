@@ -86,6 +86,8 @@ function mobile_device_detect(){
 		|| (strpos($a, 'avantgo') !== false) //are these people still around? Really? I had that on my palm III
 		|| (strpos($a, 'blazer') !== false)			
 		|| (strpos($a, 'ipaq') !== false)	
+		|| (strpos($a, 'playstation') !== false)	
+		|| (strpos($a, 'portable') !== false)	
 		|| isset($_SERVER['HTTP_X_WAP_PROFILE']) //older headers
 		|| isset($_SERVER['HTTP_PROFILE']) //older headers
 	){
