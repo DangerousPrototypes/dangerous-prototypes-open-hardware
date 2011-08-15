@@ -1,0 +1,75 @@
+<!-- INCLUDE mcp_header.html -->
+
+<form name="mcp" id="mcp" method="post" action="{S_MCP_ACTION}">
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td align="center"><span class="gensmall">{L_DISPLAY_ITEMS}:</span> {S_SELECT_SORT_DAYS}&nbsp;<span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;<span class="gensmall">{L_FORUM}</span> <select name="f">{S_FORUM_OPTIONS}</select> &nbsp; <!-- IF TOPIC_ID --><input type="checkbox" class="radio" name="t" value="{TOPIC_ID}" checked="checked" />&nbsp; <b>{L_ONLY_TOPIC}</b> &nbsp; <!-- ENDIF --><input class="btnlite" type="submit" name="sort" value="{L_GO}" /></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th nowrap="nowrap">{L_DISPLAY_OPTIONS}</th>
+	</tr>
+</table>
+
+<!-- BEGIN postrow -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><span class="topictitle"><a href="{postrow.U_VIEWPOST}">{postrow.POST_SUBJECT}</a></span></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">{L_SELECT}&nbsp;<input type="checkbox" class="radio" name="post_id_list[]" value="{postrow.POST_ID}" /><br />
+			<span class="gensmall"><!-- IF postrow.U_VIEWFORUM -->{L_FORUM}: <br />
+			<a href="{postrow.U_VIEWFORUM}">{postrow.FORUM_NAME}</a><!-- ELSE -->{postrow.FORUM_NAME}<!-- ENDIF --></span><br />
+			<span class="gen">{postrow.POST_AUTHOR_FULL}</span><br />
+			<span class="gensmall">[ <a href="{postrow.U_VIEW_DETAILS}">{L_VIEW_DETAILS}</a> ]</span><br />
+			<span class="postdetails">{postrow.POST_TIME}</td>
+	</tr>
+</table>
+
+<!-- IF not postrow.S_LAST_ROW -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="spacer"></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+<!-- BEGINELSE -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2" align="center" valign="middle"><span class="gen"><!-- IF S_TOPICS -->{L_NO_TOPICS_QUEUE}<!-- ELSE -->{L_UNAPPROVED_POSTS_ZERO_TOTAL}<!-- ENDIF --></span></td>
+	</tr>
+</table>
+
+<!-- END postrow -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><input class="btnmain" type="submit" name="action[approve]" value="{L_APPROVE}" />&nbsp;&nbsp;<input class="btnlite" type="submit" name="action[disapprove]" value="{L_DISAPPROVE}" /></td>
+	</tr>
+</table>
+{S_FORM_TOKEN}
+</form>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td align="{S_CONTENT_FLOW_END}" valign="top" nowrap="nowrap"><b class="gensmall"><a href="#" onclick="marklist('mcp', '', true); return false;">{L_MARK_ALL}</a> :: <a href="#" onclick="marklist('mcp', '', false); return false;">{L_UNMARK_ALL}</a></b></td>
+	</tr>
+</table>
+
+<!-- INCLUDE mcp_footer.html -->

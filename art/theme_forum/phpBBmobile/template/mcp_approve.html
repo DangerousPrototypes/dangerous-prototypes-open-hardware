@@ -1,0 +1,49 @@
+<!-- INCLUDE overall_header.html -->
+
+<hr />
+<br />
+
+<div id="pagecontent">
+
+	<form name="confirm" action="{S_CONFIRM_ACTION}" method="post">
+	
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{MESSAGE_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">
+			<!-- IF ADDITIONAL_MSG -->
+				<span class="gen error">{ADDITIONAL_MSG}</span><br />
+			<!-- ENDIF -->
+			<!-- IF S_NOTIFY_POSTER -->
+				<span class="gen"><!-- IF S_APPROVE -->{L_NOTIFY_POSTER_APPROVAL}<!-- ELSE -->{L_NOTIFY_POSTER_DISAPPROVAL}<!-- ENDIF --></span><input type="checkbox" class="radio" name="notify_poster" checked="checked" />
+			<!-- ENDIF -->
+			<!-- IF not S_APPROVE -->
+				<div class="spacer"></div>
+					<b class="gen">{L_DISAPPROVE_REASON}:</b><br />
+					<select name="reason_id"><!-- BEGIN reason --><option value="{reason.ID}"<!-- IF reason.S_SELECTED --> selected="selected"<!-- ENDIF -->>{reason.DESCRIPTION}</option><!-- END reason --></select>
+				<div class="spacer"></div>
+					<span class="gen"><b>{L_MORE_INFO}:</b></span><br />
+					<textarea class="post" style="width:500px" name="reason" rows="10" cols="40">{REASON}</textarea><br /><span class="gensmall">{L_CAN_LEAVE_BLANK}</span>
+			<!-- ENDIF -->
+				<div class="spacer"></div>
+			{S_HIDDEN_FIELDS}<span class="gen">{MESSAGE_TEXT}</span><br />
+			<input type="submit" name="confirm" value="{YES_VALUE}" class="btnmain" />&nbsp;&nbsp;<input type="submit" name="cancel" value="{L_NO}" class="btnlite" /></span>
+		</td>
+	</tr>
+</table>
+	{S_FORM_TOKEN}
+	</form>
+	
+</div>
+
+<hr />
+<br />
+
+<!-- INCLUDE overall_footer.html -->

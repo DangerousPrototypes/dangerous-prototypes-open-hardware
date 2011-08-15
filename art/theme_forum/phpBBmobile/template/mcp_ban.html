@@ -1,0 +1,176 @@
+<!-- INCLUDE mcp_header.html -->
+
+<hr />
+<br />
+
+<script type="text/javascript">
+// <![CDATA[
+
+	var ban_length = new Array();
+		ban_length[-1] = '';
+	<!-- BEGIN ban_length -->
+		ban_length['{ban_length.BAN_ID}'] = '{ban_length.A_LENGTH}';
+	<!-- END ban_length -->
+
+	var ban_reason = new Array();
+		ban_reason[-1] = '';
+	<!-- BEGIN ban_reason -->
+		ban_reason['{ban_reason.BAN_ID}'] = '{ban_reason.A_REASON}';
+	<!-- END ban_reason -->
+
+	var ban_give_reason = new Array();
+		ban_give_reason[-1] = '';
+	<!-- BEGIN ban_give_reason -->
+		ban_give_reason['{ban_give_reason.BAN_ID}'] = '{ban_give_reason.A_REASON}';
+	<!-- END ban_give_reason -->
+
+	function display_details(option)
+	{
+		document.getElementById('mcp_ban').unbangivereason.value = ban_give_reason[option];
+		document.getElementById('mcp_ban').unbanreason.value = ban_reason[option];
+		document.getElementById('mcp_ban').unbanlength.value = ban_length[option];
+	}
+
+// ]]>
+</script>
+
+<form id="mcp_ban" method="post" action="{U_ACTION}">
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">{L_EXPLAIN}</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><b>{L_BAN_CELL}:</b><br />
+			<textarea name="ban" id="ban" cols="28" rows="3" class="post">{USERNAMES}</textarea>
+			<!-- IF S_USERNAME_BAN --><br />[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]<!-- ENDIF -->
+		</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b>{L_BAN_LENGTH}:</b><br />
+			<select name="banlength">{S_BAN_END_OPTIONS}</select><br /><br />
+			<input type="text" name="banlengthother" class="post" /><br />
+			{L_YEAR_MONTH_DAY}</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><b>{L_BAN_EXCLUDE}:</b><br />
+			<input type="radio" class="radio" name="banexclude" value="1" /> {L_YES} &nbsp; <input type="radio" class="radio" name="banexclude" value="0" checked="checked" /> {L_NO}<br />
+			<span class="gensmall">{L_BAN_EXCLUDE_EXPLAIN}</span></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b>{L_BAN_REASON}:</b><br />
+			<input name="banreason" type="text" class="post" maxlength="220" /></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><b>{L_BAN_GIVE_REASON}:</b><br />
+			<input name="bangivereason" type="text" class="post" maxlength="220" /></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><input type="submit" name="bansubmit" value="{L_SUBMIT}" class="btnmain" />&nbsp; <input type="reset" value="{L_RESET}" class="btnlite" />&nbsp;</td>
+	</tr>
+</table>
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{L_UNBAN_TITLE}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1">{L_UNBAN_EXPLAIN}</td>
+	</tr>
+</table>
+
+<!-- IF S_BANNED_OPTIONS -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><b>{L_BAN_CELL}:</b><br />
+			<select name="unban[]" multiple="multiple" size="10" style="width: 50%" onchange="if (this.selectedIndex > -1) display_details(this.options[this.selectedIndex].value); else display_details(-1);">{BANNED_OPTIONS}</select></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b>{L_BAN_LENGTH}:</b><br />
+			<input style="border: 0; width: 100%" type="text" name="unbanlength" disabled="disabled" /></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><b>{L_BAN_REASON}:</b><br />
+			<textarea style="border: 0; width: 100%" name="unbanreason" disabled="disabled" rows="5" cols="28">&nbsp;</textarea></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><b>{L_BAN_GIVE_REASON}:</b><br />
+			<textarea style="border: 0; width: 100%" name="unbangivereason" disabled="disabled" rows="5" cols="28">&nbsp;</textarea></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><input type="submit" name="unbansubmit" value="{L_SUBMIT}" class="btnmain" />&nbsp; <input type="reset" value="{L_RESET}" class="btnlite" />&nbsp;</td>
+	</tr>
+</table>
+
+<!-- ELSE -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2" align="center"><b>{L_NO_BAN_CELL}</b></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+{S_FORM_TOKEN}
+</form>
+
+<hr />
+<br />
+
+<!-- INCLUDE mcp_footer.html -->

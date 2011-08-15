@@ -1,0 +1,157 @@
+/*
+Theme Name:     Cwantwm Child
+Theme URI:      http: //cwantwm.co.uk
+Description:    Child theme for cwantwm theme 
+Author:         Rob Holmes
+Author URI:     http: //example.com/about/
+Template:       cwantwm
+Version:        0.1.0
+*/
+
+@import url("../cwantwm/style.css");
+
+/* Layout */
+body {font-family: Verdana,Helvetica,Arial,sans-serif;}
+p {margin: 0 0 1em 0; line-height:1.4;}
+
+ul, ol {margin-left: 1em; margin-bottom: 1em;}
+
+#page {width: 1000px;}
+.two-sidebars #content {width: 600px;margin-left: 200px;margin-right: -800px;}
+#sidebar-right {margin-left: 800px;margin-right: -1000px;}
+  #navbar {font-family: 'Francois One', sans-serif;} 
+
+
+/* Over-rides */
+a, a:active, a:visited {color: #1E7B8E; text-decoration:none; }
+a:hover {color:#155461;}
+h1 {position:relative; font-family: 'Francois One', sans-serif; border-bottom: 1px solid #CCC; padding: 0 0 .1em 0; font-size: 1.8em; color: #404040; font-weight: normal;}
+h2 {position:relative;  font-family: 'Francois One', sans-serif; border-bottom: 1px solid #CCC;  padding: 0 0 .1em 0; font-weight:normal; font-size: 1.8em; }
+h3#reply-title {font-family: 'Francois One', sans-serif; border-bottom: 1px solid #CCC;  padding: 0 0 .1em 0; font-weight:normal; font-size: 1.8em; margin-bottom: 15px; }
+h3#comments-title  {margin-top:25px;font-family: 'Francois One', sans-serif; border-bottom: 1px solid #CCC;  padding: 0 0 .1em 0; font-weight:normal; font-size: 1.8em; margin-bottom: 15px; }
+#searchsubmit {padding: 0; padding: 2px 0;
+width: 55px; border:2px outset #F0F0F0;}
+
+.archive h1 {margin-bottom:25px;}
+.page h1 {margin-bottom:15px;}
+#content-inner {margin: 0; padding: 16px 0 0 0;}
+#sidebar-left-inner {margin: 0 20px 0 0px; padding: 16px 0 0 0;}
+#sidebar-right-inner {margin: 0 0px 0 20px;; padding: 16px 0 0 0;}
+#sidebar-left li, #sidebar-right  li {list-style:none; padding-bottom:3px;}
+#sidebar-left ul, #sidebar-right ul {margin:0px;}
+address {line-height:1.4}
+
+/* logo */
+.widget_text.logo {margin-bottom: 5px;}
+
+
+/* Main Navigation   */
+#navbar {border-top:1px solid #dfdfdf; position:relative; background: #FFF; height: 3.1em; border-bottom:1px solid #dfdfdf;}
+#navbar a {color: #484848;text-decoration: none;font-size: 1.7em; }
+.ie6 .menu-nav a {font-size:1.6em !important;}
+.ie7 .menu-nav a {font-size:1.6em !important;}
+.ie8 .menu-nav a {font-size:1.6em !important;}
+#navbar .menu-nav {margin-top: 6px;text-transform:uppercase;}
+/* Social Links */
+#text-10 {width:312px; position:absolute; right:0px; text-align: right; top: 6px; background:none;}
+#text-10  a {font-family:sans-serif; font-size:1em; }
+#facebook {padding-right: 20px;  padding-bottom: 2px; background: url(images/social.png) no-repeat right 0px; margin-right: 10px;}
+#twitter {padding-right: 20px;  padding-bottom: 2px; background: url(images/social.png) no-repeat right -32px; margin-right: 10px;}
+#rss {padding-right: 20px; padding-bottom: 2px; background: url(images/social.png) no-repeat right -64px; margin-right: 10px;}
+#comrss {padding-right: 20px; padding-bottom: 2px; background: url(images/social.png) no-repeat right -96px; margin-right: 10px;}
+
+/* Main Layout */
+#main-inner {}
+.with-navbar #content, .with-navbar #sidebar-left, .with-navbar #sidebar-right {margin-top: 3.1em;}
+#footer-inner {}
+
+/* Meta */
+.meta {font-size: .8em;color: #808080; margin: 2px 0px 15px 0px; position :relative;}
+.meta.bottom {margin-top: 10px; margin-bottom: 30px;}
+.entry-date {}
+
+/*footer */
+#footer { border-top:1px solid #dfdfdf; padding-top:25px;width:1000px; margin:25px auto 25px auto; height:110px}
+#footer .textwidget {font-size: 0.9em;
+line-height: 1.4;
+color: gray;}
+
+/* Widgets */
+.widget-container {margin-bottom:15px; background:#f7f7f7;padding: 10px; -moz-border-radius: 6px; 
+  -webkit-border-radius: 6px; border-radius: 6px;          
+  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; 
+}
+.widget-container.logo {background:#ffffff; padding:0px;}
+.widget-container.social {background:#ffffff; padding:0px;}
+.widget-container h3 {font-size: 1em; font-weight: normal; color: #636363; text-transform: uppercase; letter-spacing: .1em;
+margin: 0 0 .8em 0; border-bottom: 1px solid #E5E5E5;  padding: 0 0 .4em 0; font-family: 'Francois One', sans-serif;}
+.widget_rss .rsswidget img {margin-bottom: -2px;margin-right: 4px;}
+.widget_search label {display:none;}
+#s {width: 94px;}
+.widget-container.banner{background:#ffffff; padding:0px; float:right; width:468px; position:absolute; top:15px; right:0px;}
+
+.widget-container.contact {background:#ffffff; padding:0px; float:right; width:226px;}
+.widget-container.about-us {background:#ffffff; padding:0px; float:right; width:225px; margin-right:33px;}
+.widget-container.projects {background:#ffffff; padding:0px; float:right; width:225px;margin-right:33px;}
+.widget-container.connect {background:#ffffff; padding:0px; float:right; width:225px;margin-right:33px;}
+
+.widget_rss li {margin-bottom: 8px;}
+.widget_rss li cite:before {content: 'by ';}
+.widget_rss li cite {text-transform:capitalize;}
+
+/* Cool Stuff */
+.fuse1 {height:30px; width:35px; background: url(images/1.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse2{height:30px; width:35px; background: url(images/2.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse3 {height:30px; width:35px; background: url(images/3.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse4 {height:30px; width:35px; background: url(images/4.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse5 {height:30px; width:35px; background: url(images/5.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse6 {height:30px; width:35px; background: url(images/6.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse7 {height:30px; width:35px; background: url(images/7.png) no-repeat; position:absolute; right:40px; top:-17px;}
+.fuse8 {height:30px; width:35px; background: url(images/8.png) no-repeat; position:absolute; right:40px; top:-17px;}
+
+.mike {height: 14px;width: 14px;background: url(images/mike.png) no-repeat;position: absolute;right: 40px;bottom: -13px;}
+.diode {height: 12px;width: 10px;background: url(images/diode.png) no-repeat;position: absolute;right: 40px;bottom: -6px;}
+
+
+/* BLockquotes */
+blockquote {margin: 2em 0 1em 0;padding: 0 3em;color: #808080;position:relative; font-style: italic; line-height: 1.4;}
+blockquote:before, blockquote:after { color: #69c; display: block; font-size: 700%; width: 50px; color:#E0E0E0; font-family: arial;}
+
+blockquote:before {content: '\201C';height: 0;margin-left: -0.5em; position:absolute; top:-36px;}
+blockquote:after {content: '\201D';height: 50px;margin-top: -36px; margin-left: 485px; }
+
+/* Images */
+.alignnone {margin-bottom:15px;}
+
+/* Lists */
+#content-area  li {list-style: none;
+background: url('images/point.png') no-repeat 1px 3px;
+list-style: none;
+padding-left: 21px;
+padding-bottom: 5px;}
+#footer li {list-style:none;}
+#footer  ul {margin:0px;}
+
+/* Categories */
+.widget_categories li {color:#808080;font-size:0.8em;}
+.widget_categories li  a {font-size: 1.2em; text-transform: capitalize;}
+
+/* Comments */
+#respond {margin-top:15px;}
+#respond h3 {position:relative;}
+#comments-wrap li {list-style:none; background:none; padding:0px; margin:0px;}
+#comments-wrap .avatar {float: left;margin-right: 11px;width: 45px;height: 45px;}
+#comments-wrap li.comment {margin-bottom:15px; padding-bottom:20px;}
+#comments-wrap ol {margin:0px;}
+#respond label {margin-bottom:2px; font-weight:bold;}
+.comment-meta {float: right;margin-top: -13px;font-size: 0.8em;}
+.reply {font-size: 0.8em;float: right;}
+/* Recent Comments */
+.widget_get_recent_comments img {float: left;margin-right: 5px;margin-top: 2px;border: 1px solid #E7E7E7;padding: 1px; width:25px; height:25px;}
+.comment cite, .comment .says {font-weight:bold;}
+.comment-body {padding:6px 0 0 0px;}
+#commentform input {width: 100%;}
+#commentform textarea {width: 100%;}
+#commentform  #submit {width: auto;}
+
+.comment ul.children {margin-top: 35px;}

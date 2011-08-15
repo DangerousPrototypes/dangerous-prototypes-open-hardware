@@ -1,0 +1,36 @@
+    <form method="post" action="{U_QR_ACTION}">
+
+    <hr />
+       <table cellspacing="0">
+          <tr>
+             <th align="center">{L_QUICKREPLY}</th>
+          </tr>
+       </table>
+    <hr />
+       <table cellspacing="0">
+          <tr>
+             <td class="row1" align="center"><b class="genmed">{L_SUBJECT}</b><br />
+             <input class="post" style="width:98%" type="text" name="subject" size="45" maxlength="64" tabindex="2" value="{SUBJECT}" /></td>
+          </tr>
+       </table>
+    <hr />
+       <table cellspacing="0">
+          <tr>
+             <td class="row2" align="center"><b class="genmed">{L_MESSAGE}</b><br />
+             <textarea name="message" rows="7" cols="76" tabindex="3"  style="width:98%"></textarea> </td>
+          </tr>
+       </table>
+    <hr />
+       <table cellspacing="0">
+          <tr>
+             <td class="cat" align="center">
+                <input class="btnmain" type="submit" accesskey="s" tabindex="6" name="post" value="{L_SUBMIT}" />
+
+                {S_FORM_TOKEN}
+                {QR_HIDDEN_FIELDS}
+             </td>
+          </tr>
+       </table>
+       
+    </form>
+    <hr />

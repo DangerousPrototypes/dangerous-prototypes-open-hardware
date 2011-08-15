@@ -1,0 +1,35 @@
+ 
+<br />
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<th>{L_GROUP_INFORMATION}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row2"><b class="genmed">{L_GROUP_NAME}:</b>
+		<p><b class="gensmall" <!-- IF GROUP_COLOR -->style="color:#{GROUP_COLOR}"<!-- ENDIF -->>{GROUP_NAME}</b></p></td>
+	</tr>
+</table>
+
+<!-- IF GROUP_RANK or U_PM -->
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row4" align="center"><!-- IF GROUP_RANK --><span class="gensmall">{GROUP_RANK}</span><!-- ENDIF --><!-- IF U_PM --><br /><a href="{U_PM}">{PM_IMG}</a><!-- ENDIF --></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row1"><b class="genmed">{L_GROUP_DESC}:</b>
+		<p class="forumdesc"><span class="gen">{GROUP_DESC} </span>{GROUP_TYPE}</p></td>
+	</tr>
+</table>
+<hr />
+<br />

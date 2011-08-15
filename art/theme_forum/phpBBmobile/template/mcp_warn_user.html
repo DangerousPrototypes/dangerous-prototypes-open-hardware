@@ -1,0 +1,107 @@
+<!-- INCLUDE mcp_header.html -->
+
+<hr />
+<br />
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th>{USERNAME}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row1" align="center">
+			<table>
+			<tr>
+				<td class="gen" align="center"><b>{USERNAME_FULL}</b></td>
+			</tr>
+			<!-- IF RANK_TITLE -->
+				<tr>
+					<td class="postdetails" align="center">{RANK_TITLE}</td>
+				</tr>
+			<!-- ENDIF -->
+			<!-- IF RANK_IMG -->
+				<tr>
+					<td align="center">{RANK_IMG}</td>
+				</tr>
+			<!-- ENDIF -->
+			<tr>
+				<td align="center"><!-- IF AVATAR_IMG -->{AVATAR_IMG}<!-- ELSE --><img src="{T_THEME_PATH}/images/no_avatar.gif" alt="" /><!-- ENDIF --></td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row2">
+			<table>
+			<tr> 
+				<td class="gen" align="{S_CONTENT_FLOW_END}" nowrap="nowrap">{L_JOINED}: <br />
+					<b class="gen">{JOINED}</b></td>
+			</tr>
+			<tr> 
+				<td class="gen" align="{S_CONTENT_FLOW_END}" valign="top" nowrap="nowrap">{L_TOTAL_POSTS}: <br />
+					<b class="gen">{POSTS}</b></td>
+			</tr>
+			<tr> 
+				<td class="gen" align="{S_CONTENT_FLOW_END}" valign="top" nowrap="nowrap">{L_WARNINGS}: <br />
+					<b class="gen">{WARNINGS}</b></td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<hr />
+<br clear="all" />
+
+<form method="post" name="mcp" action="{U_POST_ACTION}">
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<th align="center">{L_ADD_WARNING}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><span class="genmed">{L_ADD_WARNING_EXPLAIN}</span></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row2"><textarea name="warning" rows="10" cols="28"></textarea></td>
+	</tr>
+</table>
+
+	<!-- IF S_CAN_NOTIFY -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1"><input type="checkbox" class="radio" name="notify_user" checked="checked" /><span class="genmed">{L_NOTIFY_USER_WARN}</span></td>
+	</tr>
+</table>
+	<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="cat" align="center"><input class="btnmain" type="submit" name="action[add_warning]" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="btnlite" type="reset" value="{L_RESET}" /></td>
+	</tr>
+</table>
+{S_FORM_TOKEN}
+</form>
+
+<hr />
+
+<!-- INCLUDE mcp_footer.html -->

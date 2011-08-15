@@ -1,0 +1,52 @@
+<!-- INCLUDE overall_header.html -->
+
+<div id="pagecontent">
+
+	<form name="login_forum" method="post" action="{S_LOGIN_ACTION}">
+	
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<th>{L_LOGIN}</th>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row3" align="center"><span class="gensmall">{L_LOGIN_FORUM}</span></td>
+	</tr>
+</table>
+
+<!-- IF LOGIN_ERROR -->
+<hr />
+<table cellspacing="0">
+	<tr>
+		<td class="row1 gensmall" align="center"><span class="error">{LOGIN_ERROR}</span></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="row1" class="gensmall"><b>{L_PASSWORD}: </b><input class="post" type="password" name="password" size="25" tabindex="2" /></td>
+	</tr>
+</table>
+
+<hr />
+<table cellspacing="0">
+	<tr> 
+		<td class="cat" align="center">{S_HIDDEN_FIELDS}<input type="submit" name="login" class="btnmain" value="{L_LOGIN}" tabindex="3" /></td>
+	</tr>
+</table>
+	{S_FORM_TOKEN}
+	</form>
+
+</div>
+
+<!-- INCLUDE breadcrumbs.html -->
+
+<div align="center"><!-- INCLUDE jumpbox.html --></div>
+
+<!-- INCLUDE overall_footer.html -->
