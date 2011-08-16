@@ -85,7 +85,7 @@ class MonoBookTemplate extends QuickTemplate {
        <div class="textwidget"><a href="/"><img alt="Dangerous Prototypes" src="http://dangerousprototypes.com/wp-content/themes/cwantwm-child/logo.png"></a></div>
       </div>
       <div class="widget-container widget_text banner" id="text-11">
-       <div class="textwidget"><a href="http://dangerousprototypes.com/docs/Partlist" target="_blank" rel="nofollow"><img width="468" height="60" src="http://dangerousprototypes.com/wp-content/media/2011/07/banner-pcb-partlist.jpg" alt=""></a></div>
+       <div id="announce" class="textwidget"><?php include('/home/dp/www/announce/announce.php');?></div>
       </div>
      </div>
     </div>
