@@ -1,2 +1,1 @@
-sch2hdl,-intstyle,ise,-family,xc9500,-verilog,D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/Top.vf,-w,D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/Top.sch
-sch2hdl,-intstyle,ise,-family,xc9500,-verilog,D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/IDE_DECODE.vf,-w,D:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/IDE_DECODE.sch
+sch2hdl,-intstyle,ise,-family,xc9500,-verilog,C:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/IDE_DECODE.vf,-w,C:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/IDE_DECODE.sch

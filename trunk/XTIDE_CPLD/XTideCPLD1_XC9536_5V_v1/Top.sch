@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <drawing version="7">
-    <attr value="xc9500" name="DeviceFamilyName">
+    <attr value="xc9500xl" name="DeviceFamilyName">
         <trait delete="all:0" />
         <trait editname="all:0" />
         <trait edittrait="all:0" />
@@ -50,9 +50,9 @@
         <signal name="ADDR_IO_A7" />
         <signal name="ADDR_IO_A6" />
         <signal name="ADDR_IO_A5" />
-        <signal name="A2_IDE" />
-        <signal name="A0_IDE" />
         <signal name="A1_IDE" />
+        <signal name="A0_IDE" />
+        <signal name="A2_IDE" />
         <signal name="IOR_IDE" />
         <signal name="IOW_IDE" />
         <signal name="S1" />
@@ -81,9 +81,9 @@
         <port polarity="Input" name="ADDR_IO_A7" />
         <port polarity="Input" name="ADDR_IO_A6" />
         <port polarity="Input" name="ADDR_IO_A5" />
-        <port polarity="Output" name="A2_IDE" />
-        <port polarity="Output" name="A0_IDE" />
         <port polarity="Output" name="A1_IDE" />
+        <port polarity="Output" name="A0_IDE" />
+        <port polarity="Output" name="A2_IDE" />
         <port polarity="Output" name="IOR_IDE" />
         <port polarity="Output" name="IOW_IDE" />
         <port polarity="Output" name="S1" />
@@ -214,11 +214,11 @@
         </block>
         <block symbolname="obuf" name="XLXI_120">
             <blockpin signalname="iA2_ISA" name="I" />
-            <blockpin signalname="A1_IDE" name="O" />
+            <blockpin signalname="A2_IDE" name="O" />
         </block>
         <block symbolname="obuf" name="XLXI_118">
             <blockpin signalname="iA1_ISA" name="I" />
-            <blockpin signalname="A2_IDE" name="O" />
+            <blockpin signalname="A1_IDE" name="O" />
         </block>
         <block symbolname="obuf" name="XLXI_119">
             <blockpin signalname="iA0_ISA" name="I" />
@@ -264,7 +264,7 @@
             <blockpin signalname="iRESDRVn" name="I" />
             <blockpin signalname="RESET" name="O" />
         </block>
-        <block symbolname="IDE_DECODE" name="XLXI_229">
+        <block symbolname="IDE_DECODE" name="XLXI_230">
             <blockpin signalname="iA0_ISA" name="iA0_ISA" />
             <blockpin signalname="iA1_ISA" name="iA1_ISA" />
             <blockpin signalname="iA2_ISA" name="iA2_ISA" />
@@ -450,14 +450,14 @@
         <branch name="ADDR_IO_A5">
             <wire x2="1680" y1="2080" y2="2080" x1="1648" />
         </branch>
-        <branch name="A2_IDE">
+        <branch name="A1_IDE">
             <wire x2="3232" y1="2448" y2="2448" x1="3200" />
         </branch>
         <branch name="A0_IDE">
             <wire x2="3232" y1="2384" y2="2384" x1="3200" />
         </branch>
         <instance x="2976" y="2544" name="XLXI_120" orien="R0" />
-        <branch name="A1_IDE">
+        <branch name="A2_IDE">
             <wire x2="3232" y1="2512" y2="2512" x1="3200" />
         </branch>
         <branch name="IOR_IDE">
@@ -550,8 +550,8 @@
         <iomarker fontsize="28" x="1648" y="1952" name="ADDR_IO_A7" orien="R180" />
         <iomarker fontsize="28" x="1648" y="2016" name="ADDR_IO_A6" orien="R180" />
         <iomarker fontsize="28" x="1648" y="2080" name="ADDR_IO_A5" orien="R180" />
-        <iomarker fontsize="28" x="3232" y="2512" name="A1_IDE" orien="R0" />
-        <iomarker fontsize="28" x="3232" y="2448" name="A2_IDE" orien="R0" />
+        <iomarker fontsize="28" x="3232" y="2512" name="A2_IDE" orien="R0" />
+        <iomarker fontsize="28" x="3232" y="2448" name="A1_IDE" orien="R0" />
         <iomarker fontsize="28" x="3232" y="2384" name="A0_IDE" orien="R0" />
         <iomarker fontsize="28" x="3232" y="2320" name="IOW_IDE" orien="R0" />
         <iomarker fontsize="28" x="3232" y="2256" name="IOR_IDE" orien="R0" />
@@ -563,7 +563,7 @@
         <iomarker fontsize="28" x="3232" y="1056" name="CS3FX" orien="R0" />
         <iomarker fontsize="28" x="3232" y="992" name="CS1FX" orien="R0" />
         <iomarker fontsize="28" x="3232" y="1120" name="RESET" orien="R0" />
-        <instance x="2352" y="2112" name="XLXI_229" orien="R0">
+        <instance x="2352" y="2112" name="XLXI_230" orien="R0">
         </instance>
     </sheet>
 </drawing>

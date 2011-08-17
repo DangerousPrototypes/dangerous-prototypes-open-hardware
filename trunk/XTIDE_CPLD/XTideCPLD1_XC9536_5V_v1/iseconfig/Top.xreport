@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-08-10T16:45:01</DateModified>
+  <DateModified>2011-08-17T19:41:31</DateModified>
   <ModuleName>Top</ModuleName>
-  <SummaryTimeStamp>2011-08-10T14:47:36</SummaryTimeStamp>
-  <SavedFilePath>E:/Work/dp/XTIDE_CPLD/XTideCPLD1_XC9536_5V_v1/iseconfig/Top.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp/XTIDE_CPLD/XTideCPLD1_XC9536_5V_v1\</ImplementationReportsDirectory>
-  <DateInitialized>2010-09-14T16:58:01</DateInitialized>
+  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
+  <SavedFilePath>C:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/iseconfig/Top.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>C:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1</ImplementationReportsDirectory>
+  <DateInitialized>2011-08-17T19:41:31</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
  <body>
@@ -31,13 +31,11 @@
   </viewgroup>
   <viewgroup label="XPS Errors and Warnings" >
    <view program="platgen" WrapMessages="true" contextTags="EDK_ON" hidden="true" type="MessageList" hideColumns="Filtered" file="__xps/ise/_xmsgs/platgen.xmsgs" label="Platgen Messages" />
-   <view program="libgen" WrapMessages="true" contextTags="EDK_ON" hidden="true" type="MessageList" hideColumns="Filtered" file="__xps/ise/_xmsgs/libgen.xmsgs" label="Libgen Messages" />
    <view program="simgen" WrapMessages="true" contextTags="EDK_ON" hidden="true" type="MessageList" hideColumns="Filtered" file="__xps/ise/_xmsgs/simgen.xmsgs" label="Simgen Messages" />
    <view program="bitinit" WrapMessages="true" contextTags="EDK_ON" hidden="true" type="MessageList" hideColumns="Filtered" file="__xps/ise/_xmsgs/bitinit.xmsgs" label="BitInit Messages" />
   </viewgroup>
   <viewgroup label="XPS Reports" >
    <view inputState="PreSynthesized" program="platgen" contextTags="EDK_ON" hidden="true" type="Secondary_Report" file="platgen.log" label="Platgen Log File" />
-   <view inputState="PreSynthesized" program="libgen" contextTags="EDK_ON" hidden="true" type="Secondary_Report" file="libgen.log" label="Libgen Log File" />
    <view inputState="PreSynthesized" program="simgen" contextTags="EDK_ON" hidden="true" type="Secondary_Report" file="simgen.log" label="Simgen Log File" />
    <view inputState="PreSynthesized" program="bitinit" contextTags="EDK_ON" hidden="true" type="Secondary_Report" file="bitinit.log" label="BitInit Log File" />
    <view inputState="PreSynthesized" program="system" contextTags="EDK_ON" hidden="true" type="Secondary_Report" file="Top.log" label="System Log File" />
@@ -80,6 +78,7 @@
     <toc-item title="Asynchronous Control Signals Information" target="Asynchronous Control Signals Information" subItemLevel="2" />
     <toc-item title="Timing Summary" target="Timing Summary" subItemLevel="2" />
     <toc-item title="Timing Details" target="Timing Details" subItemLevel="2" />
+    <toc-item title="Cross Clock Domains Report" target="Cross Clock Domains Report:" subItemLevel="2" />
    </view>
    <view program="synplify" contextTags="SYNPLIFY_ONLY,EDK_OFF" hidden="true" type="Report" file="Top.srr" label="Synplify Report" />
    <view program="precision" contextTags="PRECISION_ONLY,EDK_OFF" hidden="true" type="Report" file="Top.prec_log" label="Precision Report" />
