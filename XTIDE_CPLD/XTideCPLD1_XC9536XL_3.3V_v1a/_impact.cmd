@@ -2,8 +2,8 @@ setMode -bs
 setMode -bs
 setMode -bs
 setMode -bs
-setCable -port xsvf -file "D:/Xilinx/Projects/XTideCPLD1_XC9536XL_3.3V_v1a/XTideCPLD1_XC9536XL_3.3V_v1a.xsvf"
-addDevice -p 1 -file "D:/Xilinx/Projects/XTideCPLD1_XC9536XL_3.3V_v1a/Top.jed"
+setCable -port xsvf -file "C:/Xilinx/Projects/XTideCPLD1_XC9536XL_3.3V_v1a/XTideCPLD1_XC9536XL_3.3V_v1a.xsvf"
+addDevice -p 1 -file "C:/Xilinx/Projects/XTideCPLD1_XC9536XL_3.3V_v1a/Top.jed"
 Program -p 1 -e -v 
 setMode -bs
 setMode -bs

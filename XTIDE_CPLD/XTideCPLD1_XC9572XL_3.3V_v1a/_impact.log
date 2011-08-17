@@ -1,6 +1,6 @@
 iMPACT Version: 13.2
 
-iMPACT log file Started on Wed Aug 10 14:58:09 2011
+iMPACT log file Started on Wed Aug 17 19:33:42 2011
 
 Welcome to iMPACT
 iMPACT Version: 13.2
@@ -8,15 +8,15 @@ Project: '\auto_project.ipf' already exists.
 Original project has been renamed to '\auto_project_1.ipf'.
 Project: \auto_project.ipf created.
 // *** BATCH CMD : setMode -bs
-// *** BATCH CMD : setCable -port xsvf -file"D:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/XTideCPLD1_XC9572XL_3.3V_v1a.xsvf"
-// *** BATCH CMD : addDevice -p 1 -file"D:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/Top.jed"
-'1': Loading file 'D:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/Top.jed' ...
+// *** BATCH CMD : setCable -port xsvf -file"C:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/XTideCPLD1_XC9572XL_3.3V_v1a.xsvf"
+// *** BATCH CMD : addDevice -p 1 -file"C:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/Top.jed"
+'1': Loading file 'C:/Xilinx/Projects/XTideCPLD1_XC9572XL_3.3V_v1a/Top.jed' ...
 done.
 INFO:iMPACT:1777 - 
-   Reading D:/Xilinx/13.2/ISE_DS/ISE/xc9500xl/data/xc9572xl.bsd...
+   Reading C:/Xilinx/13.2/ISE_DS/ISE/xc9500xl/data/xc9572xl.bsd...
 INFO:iMPACT:501 - '1': Added Device xc9572xl successfully.
 ----------------------------------------------------------------------
-INFO:iMPACT - Current time: 10-8-2011 14:58:28
+INFO:iMPACT - Current time: 17-8-2011 19:33:59
 WARNING:iMPACT - Warning: SVF Programming of 9500 series CPLDs is not supported   by every third-party boundary-scan tool provider. Please check for support   before using this SVF file to program a 9500 series device.
 // *** BATCH CMD : Program -p 1 -e -v 
 
