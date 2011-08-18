@@ -10,8 +10,8 @@
 #ifndef HARDWARE_PROFILE_H
 #define HARDWARE_PROFILE_H
 
-#define FIRMWARE_VERSION_H '1'
-#define FIRMWARE_VERSION_L '5'
+#define FIRMWARE_VERSION_H '2'
+#define FIRMWARE_VERSION_L '0'
 
 #define SAMPLE_ARRAY_SIZE 0x0080 //0x0010 JTR3 these are not used for SUMP mode. See sump.h and sump.c
 #define SAMPLE_SIZE 0x0400 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
