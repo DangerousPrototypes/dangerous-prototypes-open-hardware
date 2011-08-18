@@ -59,7 +59,7 @@ volatile static struct {
 #define SUMP_PIN IRRAW
 #endif
 #ifdef SUMPMODEIRRX
-#define SUMP_PIN IRX
+#defineSUMP_PIN IRX
 #endif
 
 #pragma udata
@@ -218,19 +218,6 @@ BYTE irSUMPservice(void) {
             // JTR2 Does NOT send ZLP after each packet only one at the end is required.
             do {
 
-/*
-                if (0 != FAST_usb_handler()) {
-                    // JTR2 Need to pop the CDC TX (USB IN) tranfer from the USB FIFO and also give SETUP PACKETs a chance.
-                    LAstate = LA_IDLE;
-                    for (i = 0; i < 6; i++) {
-                        LedOff();
-                        for (i2 = 0; i2 < 65535; i2++);
-                        LedOn();
-                        for (i2 = 0; i2 < 32684; i2++);
-                    }
-                    return 0xff;
-                }
-*/
                 FAST_usb_handler();
 
             } while (LAstate == LA_DUMP);
@@ -268,22 +255,11 @@ void SUMPInterruptHandlerHigh(void) {
 #endif
 #ifdef SUMP_8CH
         *InPtr = IRRX_PORT; //set current buffer bit if RX high
-        *InPtr = 0x54; // Invert demodulator output.
+        *InPtr ^= 0x54; // Invert demodulator output.
 #endif
         loga.ptr += 1;
         InPtr++;
         loga.sample += 1;
-        //counter += 1;
-
-        /*
-                    for (ii = 0; ii < 12; ii++) {
-                        LedOn();
-                        for (ii2 = 0; ii2 < 1535; ii2++);
-                        LedOff();
-                        for (ii2 = 0; ii2 < 1535; ii2++);
-                    }
-         */
-
 
         if ((loga.ptr == CDC_BUFFER_SIZE - 2) || ((unsigned int) loga.sample == (unsigned int) SUMP_SAMPLE_SIZExx)) {
 
@@ -302,16 +278,6 @@ void SUMPInterruptHandlerHigh(void) {
             T2ON = 0; //disable the sampling timer
             T2IE = 0;
             LedOn(); //LED off
-            /*
-                        WaitInReady();
-                        InPtr = &cdc_In_bufferA[0];
-                        Inbdp->BDADDR = cdc_In_bufferA;
-             *InPtr = 'J';
-                        InPtr++;
-             *InPtr = 'R';
-                        Inbdp->BDCNT = 2;
-                        Inbdp->BDSTAT = ((Inbdp->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
-             */
         }
             T2IF = 0; //clear the interrupt flag
 
@@ -340,7 +306,7 @@ void SUMPInterruptHandlerHigh(void) {
 #endif
 #ifdef SUMP_8CH
             *InPtr = IRRX_PORT; //set current buffer bit if RX high
-            *(InPtr) ^= 0xAB; // Invert demodulator output.
+            *(InPtr) ^= 0x54; // Invert demodulator output.
             loga.sample = 1; //start with 2 existing samples
             loga.ptr = 1; //start with byte 1
             //counter = 1;

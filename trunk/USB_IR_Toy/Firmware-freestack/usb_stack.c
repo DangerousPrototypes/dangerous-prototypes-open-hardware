@@ -614,9 +614,9 @@ void usb_handle_StandardEndpointRequest(BDentry *bdp) {
             epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_EVEN)];
             if (epbd->BDSTAT &= ~BSTALL)
                 rbdp->BDADDR[0] = 0x01; // EVEN BD is stall flag set?
-            epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_ODD)];
-            if (epbd->BDSTAT &= ~BSTALL)
-                rbdp->BDADDR[0] = 0x01; // ODD BD is stall flag set?
+            //epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_ODD)];
+            //if (epbd->BDSTAT &= ~BSTALL)
+            //    rbdp->BDADDR[0] = 0x01; // ODD BD is stall flag set?
             usb_ack_dat1(rbdp, 2); // JTR common addition for STD and CLASS ACK
             break;
 
@@ -658,8 +658,8 @@ void usb_handle_StandardEndpointRequest(BDentry *bdp) {
             dir = packet[USB_wIndex] >> 7;
             epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_EVEN)];
             epbd->BDSTAT |= BSTALL;
-            epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_ODD)];
-            epbd->BDSTAT |= BSTALL;
+            //epbd = &usb_bdt[USB_CALC_BD(epnum, dir, USB_PP_ODD)];
+            //epbd->BDSTAT |= BSTALL;
             usb_ack_dat1(rbdp, 0); // JTR common addition for STD and CLASS ACK
             break;
         case USB_REQUEST_SYNCH_FRAME:
@@ -697,22 +697,25 @@ void usb_handle_VendorRequest( void ) {
 // the current transactions.
 
 BYTE FAST_usb_handler(void) {
-    if (USB_RESET_FLAG) {
-        usb_handle_reset();
-        ClearUsbInterruptFlag(USB_URST);
-        return 0xFF;
-    }
-    if (USB_TRANSACTION_FLAG) {
-
-        trn_status = GetUsbTransaction();
-        if (0 != USB_STAT2EP(trn_status)) {
-            ClearUsbInterruptFlag(USB_TRN); // non-EP0 only
-        } else {
-            usb_handle_transaction();
+  //  if (TestGlobalUsbInterruptFlag()) {
+        if (USB_RESET_FLAG) {
+            usb_handle_reset();
+            ClearUsbInterruptFlag(USB_URST);
             return 0xFF;
         }
+        if (USB_TRANSACTION_FLAG) {
+            trn_status = GetUsbTransaction();
+            if (USB_STAT2EP(trn_status)) {
+                usb_handle_transaction();
+                ClearUsbInterruptFlag(USB_TRN); // non-EP0 only
+                return 0x0;
+            } else {
+                ClearUsbInterruptFlag(USB_TRN); // non-EP0 only
+                return 0;
+            }
+       // }
+    //   ClearGlobalUsbInterruptFlag();
     }
-    return 0;
 }
 
 void usb_handle_in(void) {
@@ -769,11 +772,11 @@ void usb_set_out_handler(int ep, usb_handler_t out_handler) {
 // using the usb_ack_dat1() as it more correctly forces a
 // DAT1 transfer and passes a varible for the transfer count.
 
-void usb_ack(BDentry *bd) {
+void usb_ack(BDentry * bd) {
     bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN; // TODO: Accomodate for >=256 byte buffers
 }
 
-void usb_ack_zero(BDentry *bd) {
+void usb_ack_zero(BDentry * bd) {
     bd->BDCNT = 0;
     bd->BDSTAT = ((bd->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
 
@@ -795,12 +798,12 @@ void usb_ack_dat1(BDentry *rbdp, int bdcnt) {
 void usb_RequestError(void) {
 
     usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_EVEN)].BDCNT = USB_EP0_BUFFER_SIZE;
-    usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_ODD)].BDCNT = USB_EP0_BUFFER_SIZE;
+    //usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_ODD)].BDCNT = USB_EP0_BUFFER_SIZE;
 
     usb_bdt[USB_CALC_BD(0, USB_DIR_IN, USB_PP_EVEN)].BDSTAT = UOWN + BSTALL;
     usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_EVEN)].BDSTAT = UOWN + BSTALL;
-    usb_bdt[USB_CALC_BD(0, USB_DIR_IN, USB_PP_ODD)].BDSTAT = UOWN + BSTALL;
-    usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_ODD)].BDSTAT = UOWN + BSTALL;
+    //usb_bdt[USB_CALC_BD(0, USB_DIR_IN, USB_PP_ODD)].BDSTAT = UOWN + BSTALL;
+    //usb_bdt[USB_CALC_BD(0, USB_DIR_OUT, USB_PP_ODD)].BDSTAT = UOWN + BSTALL;
 
     // JTR TODO: Should also kill the IN and OUT handlers?
 

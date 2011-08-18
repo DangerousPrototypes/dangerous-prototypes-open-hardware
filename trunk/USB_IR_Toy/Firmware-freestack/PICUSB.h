@@ -166,7 +166,8 @@ typedef unsigned char usb_uep_t;
 
 #define UsbInterruptFlags()                     (UIR)
 #define UsbErrorInterruptFlags()                (UEIR)
-
+#define TestGlobalUsbInterruptFlag()            PIR2bits.USBIF
+#define ClearGlobalUsbInterruptFlag()           PIR2bits.USBIF = 0
 #define TestUsbTrfInterruptFlag()               UIR (x)
 #define ClearUsbInterruptFlag(x)                UIR &= ~(x)
 #define ClearAllUsbInterruptFlags()             UIR = 0
@@ -397,6 +398,8 @@ typedef unsigned int usb_uep_t; // JTR PIC24 fixup potentially ?? changed from c
 #define EnableUsbErrorInterrupt(x)              U1EIE |= (x)
 #define EnableAllUsbErrorInterrupts()           U1EIE = 0x00FF
 #define EnableUSBHighInterrupts()
+#define ClearGlobalUsbInterruptFlag()           IFS5bits.USB1IF = 0
+#define TestGlobalUsbInterruptFlag()            IFS5bits.USB1IF
 
 /* UCON */
 #define ResetPPbuffers()                        do {U1CONbits.PPBRST = 1; U1CONbits.PPBRST=0;} while(0)
