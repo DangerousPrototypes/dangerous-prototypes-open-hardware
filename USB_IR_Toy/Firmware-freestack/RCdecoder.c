@@ -59,7 +59,7 @@ void SetupRC5(void) {
 void ProcessIR(void) {
     static unsigned char i;
 
-    if ((decoderState == SEND) && (WaitInReady())) {
+    if ((decoderState == SEND) && (getInReady())) { 
 
         //process IR data (decode RC5) in irToy.s[]
         //byte# | description
@@ -102,6 +102,7 @@ void ProcessIR(void) {
         putUnsignedCharArrayUsbUsart(cdc_In_buffer, 6);
         decoderState = IDLE; //wait for more RC commands....
         IRRXIE = 1; //interrupts back on
+		//LedOff(); //LED OFF!
     }
 }
 
