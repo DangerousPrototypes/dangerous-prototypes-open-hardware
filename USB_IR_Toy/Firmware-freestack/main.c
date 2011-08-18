@@ -107,13 +107,39 @@ void main(void) {
         //TRISB &= 0x7f;
         //TRISB |= 0x40;
         //LATB |= 0x40;
-        
+
         //mode = IRWIDGET;
         //irWidgetservice();
 
         switch (mode) { //periodic service routines
-            case IR_MAIN:
-                ProcessDefaultMainMode();
+            case IR_SUMP:
+                //SUMPlogicCommand();
+                if (irSUMPservice() != 0) SetUpDefaultMainMode();
+
+                break;
+            case IR_IO: //increment IR_IO module dump state machine
+                if (irIOservice() != 0) SetUpDefaultMainMode();
+
+                break;
+            case IR_S:
+                if (irsService() != 0) SetUpDefaultMainMode();
+
+                break;
+            case IR_REFLECT:
+                if (IrReflectService() != 0) SetUpDefaultMainMode();
+
+                break;
+            case USB_UART:
+                if (Usb2UartService() != 0) SetUpDefaultMainMode();
+
+                break;
+
+                //case IR_RECORDER: 				//save IR wave to EEPROM for playback
+                // Not currently supported
+            // case IR_DECODER:
+            default:
+
+                ProcessIR(); //increment IR decoder state machine
 
                 usbbufservice(); //service USB buffer system
                 // Kludge entry to SUMP MODE. Test for commands: 0, 1, 2
@@ -131,15 +157,13 @@ void main(void) {
                             break;
                     }
                 }
+
                 if (usbbufgetbyte(&inByte) == 1) { //break; //get (and remove!) a single byte from the USB buffer
-                            if (WaitInReady()) { //it's always ready, but this could be done better
-                                cdc_In_buffer[0] = inByte; //answer OK
-                                putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1);
-                            }
                     switch (inByte) {
                         case 'r': //IRMAN decoder mode
                         case 'R':
                             SetupRC5();
+                            mode = IR_DECODER;
                             if (WaitInReady()) { //it's always ready, but this could be done better
                                 cdc_In_buffer[0] = 'O'; //answer OK
                                 cdc_In_buffer[1] = 'K';
@@ -180,7 +204,7 @@ void main(void) {
                         case 'p':// Acquire Version
                             mode = IRWIDGET;
                             GetPulseFreq();
-                             SetUpDefaultMainMode();
+                            SetUpDefaultMainMode();
                             //GetPulseTime();
                             break;
 
@@ -188,32 +212,8 @@ void main(void) {
                             BootloaderJump();
                             break;
                     }//switch(c)
-                }
+                }//if byte
 
-            case IR_SUMP:
-                //SUMPlogicCommand();
-                if (irSUMPservice() != 0) SetUpDefaultMainMode();
-
-                break;
-            case IR_IO: //increment IR_IO module dump state machine
-                if (irIOservice() != 0) SetUpDefaultMainMode();
-
-                break;
-            case IR_S:
-                if (irsService() != 0) SetUpDefaultMainMode();
-
-                break;
-            case IR_REFLECT:
-                if (IrReflectService() != 0) SetUpDefaultMainMode();
-
-                break;
-            case USB_UART:
-                if (Usb2UartService() != 0) SetUpDefaultMainMode();
-                break;
-           //case IR_RECORDER: 				//save IR wave to EEPROM for playback
-                // Not currently supported
-            default://unused!!
-                SetUpDefaultMainMode(); //ProcessDefaultMainMode();
                 break;
         } //switch(mode)
     }//end while
@@ -488,7 +488,7 @@ void InterruptHandlerHigh(void) {
             _asm call DefaultISR, 0 _endasm
             break;
         default:
-           
+
             // _asm call DefaultISR _endasm
             break;
     }

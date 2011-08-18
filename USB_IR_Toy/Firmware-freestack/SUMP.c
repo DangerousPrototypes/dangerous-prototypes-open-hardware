@@ -59,7 +59,7 @@ volatile static struct {
 #define SUMP_PIN IRRAW
 #endif
 #ifdef SUMPMODEIRRX
-#defineSUMP_PIN IRX
+#define SUMP_PIN IRX
 #endif
 
 #pragma udata
@@ -145,6 +145,7 @@ BYTE irSUMPservice(void) {
                                                     for (i2 = 0; i2 < 32684; i2++);
                                                 }
                          */
+                        LedOn();
 
                         break;
 
@@ -189,32 +190,6 @@ BYTE irSUMPservice(void) {
             //case ARMED:
             //case LA_START_DUMP:
         case LA_DUMP: // JTR3 does nothing now except run the back ground USB STATE machine.
-            //if (USBUSARTIsTxTrfReady()) {
-            /*
-                        USBWriteCount = 0;
-                        for (i = 0; i < CDC_BUFFER_SIZE; i++) { //JTR2
-
-                            loga.btrack <<= 1; //shift bit at begin to reset from last loop
-                            if ((loga.btrack == 0) && (loga.ptr > 0)) {//no bits left
-                                loga.btrack = 0b00000001; //start at bit 0
-                                loga.ptr--;
-                            }
-                            if ((irToy.s[loga.ptr] & loga.btrack) != 0)
-                                cdc_In_buffer[USBWriteCount] = 0x30; //JTR2 go direct to USB RAM
-                            else
-                                cdc_In_buffer[USBWriteCount] = 0x31; //JTR2 go direct to USB RAM
-
-                            USBWriteCount++;
-
-                            loga.sample--;
-                            if (loga.sample == 0) { //send 64/128/512/1024 samples exactly!
-                                LAstate = LA_ZLP; //JTR2 added state the idea is to not have ZLP being send after every packet as otherwise would happpen
-                                break;
-                            }
-                        }
-
-                        while (0 == putFULLARRAYUSBUSART()) {
-             */
             // JTR2 Does NOT send ZLP after each packet only one at the end is required.
             do {
 
@@ -240,7 +215,7 @@ void SumpReset(void) {
     T2ON = 0; //tmr2 off
     IRRXIE = 0; //DISABLE RB port change interrupt
     LAstate = LA_IDLE;
-    DisArmCDCInDB();
+    //DisArmCDCInDB();
 }
 
 //high priority interrupt routine
