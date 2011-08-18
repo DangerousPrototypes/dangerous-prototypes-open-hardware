@@ -18,9 +18,14 @@ extern BYTE cdc_In_bufferA[64];
 extern BYTE cdc_In_bufferB[64];
 extern BYTE cdc_Out_bufferA[64];
 extern BYTE cdc_Out_bufferB[64];
+//extern BDentry *Inbdp;
+//extern BDentry *Outbdp;
 extern BYTE inByte;
+//extern BYTE IsInBufferA;
 extern BYTE *InPtr;
+//extern BYTE *InPtrNext;
 extern BYTE *OutPtr;
+//extern BYTE *InPtrNext;
 void SumpReset(void);
 //commandset
 //http://www.sump.org/projects/analyzer/protocol/
@@ -47,6 +52,7 @@ volatile static struct {
 
 #ifdef SUMP_8CH
 #pragma udata usb_data3
+//BYTE SampleBufferx5[0x80];
 #endif
 
 #ifdef SUMPMODEIRRAW
@@ -57,6 +63,7 @@ volatile static struct {
 #endif
 
 #pragma udata
+//BYTE counter;
 
 void IrSumpSetup(void) {
     BYTE dummy;
@@ -106,7 +113,7 @@ BYTE irSUMPservice(void) {
                         LedOff(); //ARMED, turn on LED
                         //LAstate = LA_ARMED;
                         LAstate = LA_DUMP;
-                        ArmCDCOutDB();
+                        ArmCDCInDB();
                         loga.ptr = 0;
                         loga.sample = 0;
                         *InPtr = IRRX_PORT;
@@ -115,18 +122,29 @@ BYTE irSUMPservice(void) {
                         TRISB |= 0x10;
                         TRISB &= 0x1F;
 
+/*
                         for (i = 0; i < 3; i++) {
                             LedOff();
                             for (i2 = 0; i2 < 65535; i2++);
                             LedOn();
                             for (i2 = 0; i2 < 65535; i2++);
                         }
+*/
 
                         IRRXIF = 0; //Reset the RB Port Change Interrupt Flag bit
                         IRRXIE = 1; //Enables the RB port change interrupt
 
                         INTCONbits.GIEL = 1; //enable peripheral interrupts
                         INTCONbits.GIEH = 1; //enable interrupts
+
+                        /*
+                                                for (i = 0; i < 6; i++) {
+                                                    LedOff();
+                                                    for (i2 = 0; i2 < 65535; i2++);
+                                                    LedOn();
+                                                    for (i2 = 0; i2 < 32684; i2++);
+                                                }
+                         */
 
                         break;
 
@@ -161,16 +179,46 @@ BYTE irSUMPservice(void) {
                 break;
         }
     }
+    //}
 
+    //unsigned char SUMPlogicService(void) {
+    //   static unsigned char i, USBWriteCount;
 
     switch (LAstate) {//dump data
             //case IDLE:
             //case ARMED:
             //case LA_START_DUMP:
         case LA_DUMP: // JTR3 does nothing now except run the back ground USB STATE machine.
+            //if (USBUSARTIsTxTrfReady()) {
+            /*
+                        USBWriteCount = 0;
+                        for (i = 0; i < CDC_BUFFER_SIZE; i++) { //JTR2
+
+                            loga.btrack <<= 1; //shift bit at begin to reset from last loop
+                            if ((loga.btrack == 0) && (loga.ptr > 0)) {//no bits left
+                                loga.btrack = 0b00000001; //start at bit 0
+                                loga.ptr--;
+                            }
+                            if ((irToy.s[loga.ptr] & loga.btrack) != 0)
+                                cdc_In_buffer[USBWriteCount] = 0x30; //JTR2 go direct to USB RAM
+                            else
+                                cdc_In_buffer[USBWriteCount] = 0x31; //JTR2 go direct to USB RAM
+
+                            USBWriteCount++;
+
+                            loga.sample--;
+                            if (loga.sample == 0) { //send 64/128/512/1024 samples exactly!
+                                LAstate = LA_ZLP; //JTR2 added state the idea is to not have ZLP being send after every packet as otherwise would happpen
+                                break;
+                            }
+                        }
+
+                        while (0 == putFULLARRAYUSBUSART()) {
+             */
             // JTR2 Does NOT send ZLP after each packet only one at the end is required.
             do {
 
+/*
                 if (0 != FAST_usb_handler()) {
                     // JTR2 Need to pop the CDC TX (USB IN) tranfer from the USB FIFO and also give SETUP PACKETs a chance.
                     LAstate = LA_IDLE;
@@ -182,11 +230,13 @@ BYTE irSUMPservice(void) {
                     }
                     return 0xff;
                 }
+*/
+                FAST_usb_handler();
 
             } while (LAstate == LA_DUMP);
 
-            DisArmCDCOutDB();
-            break;
+            DisArmCDCInDB();
+            //break;
         case LA_ZLP:
             SendZLP();
             LAstate = LA_RESET;
@@ -217,20 +267,33 @@ void SUMPInterruptHandlerHigh(void) {
             SampleBufferx5[loga.ptr] = 0x31;
 #endif
 #ifdef SUMP_8CH
-        *(InPtr) = IRRX_PORT; //set current buffer bit if RX high
-        *(InPtr) ^= 0x54; // Invert demodulator output.
+        *InPtr = IRRX_PORT; //set current buffer bit if RX high
+        *InPtr = 0x54; // Invert demodulator output.
 #endif
         loga.ptr += 1;
         InPtr++;
         loga.sample += 1;
+        //counter += 1;
+
+        /*
+                    for (ii = 0; ii < 12; ii++) {
+                        LedOn();
+                        for (ii2 = 0; ii2 < 1535; ii2++);
+                        LedOff();
+                        for (ii2 = 0; ii2 < 1535; ii2++);
+                    }
+         */
+
 
         if ((loga.ptr == CDC_BUFFER_SIZE - 2) || ((unsigned int) loga.sample == (unsigned int) SUMP_SAMPLE_SIZExx)) {
 
             SendCDC_In_ArmNext(loga.ptr);
             loga.ptr = 0;
-            FAST_usb_handler();
+            //counter = 0;
+           // FAST_usb_handler();
         }
         if ((unsigned int) loga.sample == (unsigned int) SUMP_SAMPLE_SIZExx) {//done sampling
+            WaitInReady();
             if ((loga.sample % (CDC_BUFFER_SIZE) != 0)) {
                 LAstate = LA_RESET;
             } else { // Last sample packet was modulo CDC_BUFFER_SIZE so flag requirement for a ZLP
@@ -239,9 +302,18 @@ void SUMPInterruptHandlerHigh(void) {
             T2ON = 0; //disable the sampling timer
             T2IE = 0;
             LedOn(); //LED off
-            T2IF = 0; //clear the interrupt flag
-
+            /*
+                        WaitInReady();
+                        InPtr = &cdc_In_bufferA[0];
+                        Inbdp->BDADDR = cdc_In_bufferA;
+             *InPtr = 'J';
+                        InPtr++;
+             *InPtr = 'R';
+                        Inbdp->BDCNT = 2;
+                        Inbdp->BDSTAT = ((Inbdp->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
+             */
         }
+            T2IF = 0; //clear the interrupt flag
 
     } else if (IRRXIE == 1 && IRRXIF == 1) { //if RB Port Change Interrupt
         if ((IRRX_PORT & IRRX_PIN) == 0) {
@@ -268,7 +340,7 @@ void SUMPInterruptHandlerHigh(void) {
 #endif
 #ifdef SUMP_8CH
             *InPtr = IRRX_PORT; //set current buffer bit if RX high
-            *(InPtr) ^= 0x54; // Invert demodulator output.
+            *(InPtr) ^= 0xAB; // Invert demodulator output.
             loga.sample = 1; //start with 2 existing samples
             loga.ptr = 1; //start with byte 1
             //counter = 1;

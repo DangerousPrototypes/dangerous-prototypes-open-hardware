@@ -80,13 +80,15 @@ void DispatchISR(void);
 #pragma code
 
 void main(void) {
+	static unsigned char ledtrig;
+
     initCDC(); // JTR this function has been highly modified It no longer sets up CDC endpoints.
     SetupBoard(); //setup the hardware, USB
     usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, USB_NUM_STRINGS); // TODO: Remove magic with macro
     usb_start();
     usbbufflush(); //flush USB input buffer system
     SetUpDefaultMainMode();
-
+	ledtrig=1; //only shut LED off once
     //	Never ending loop services each task in small increments
     while (1) {
         do {
@@ -96,7 +98,10 @@ void main(void) {
                 LedOff();
             } else if (usb_device_state < CONFIGURED_STATE) {
                 LedOn();
-            }
+            }else if((ledtrig==1) && (usb_device_state == CONFIGURED_STATE)){
+				LedOff();
+				ledtrig=0;
+			}
         } while (usb_device_state < CONFIGURED_STATE);
 
         //TRISB &= 0x7f;
@@ -108,6 +113,8 @@ void main(void) {
 
         switch (mode) { //periodic service routines
             case IR_MAIN:
+                ProcessDefaultMainMode();
+
                 usbbufservice(); //service USB buffer system
                 // Kludge entry to SUMP MODE. Test for commands: 0, 1, 2
                 // Do not remove from input buffer, just take a PEEK.
@@ -125,11 +132,14 @@ void main(void) {
                     }
                 }
                 if (usbbufgetbyte(&inByte) == 1) { //break; //get (and remove!) a single byte from the USB buffer
+                            if (WaitInReady()) { //it's always ready, but this could be done better
+                                cdc_In_buffer[0] = inByte; //answer OK
+                                putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1);
+                            }
                     switch (inByte) {
                         case 'r': //IRMAN decoder mode
                         case 'R':
                             SetupRC5();
-                            mode = IR_DECODER;
                             if (WaitInReady()) { //it's always ready, but this could be done better
                                 cdc_In_buffer[0] = 'O'; //answer OK
                                 cdc_In_buffer[1] = 'K';
@@ -180,10 +190,6 @@ void main(void) {
                     }//switch(c)
                 }
 
-            case IR_DECODER:
-                ProcessIR(); //increment IR decoder state machine
-                break;
-
             case IR_SUMP:
                 //SUMPlogicCommand();
                 if (irSUMPservice() != 0) SetUpDefaultMainMode();
@@ -203,13 +209,11 @@ void main(void) {
                 break;
             case USB_UART:
                 if (Usb2UartService() != 0) SetUpDefaultMainMode();
-
                 break;
-
-                //case IR_RECORDER: 				//save IR wave to EEPROM for playback
+           //case IR_RECORDER: 				//save IR wave to EEPROM for playback
                 // Not currently supported
-            default:
-                ProcessDefaultMainMode();
+            default://unused!!
+                SetUpDefaultMainMode(); //ProcessDefaultMainMode();
                 break;
         } //switch(mode)
     }//end while

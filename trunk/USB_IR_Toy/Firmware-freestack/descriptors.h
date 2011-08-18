@@ -58,16 +58,16 @@ ROM const unsigned char cdc_config_descriptor[] = {
         0x01,                                                           // bConfigurationValue
         0x00,                                                           // iConfiguration (0=none)
         0x80,                                                           // bmAttributes (0x80 = bus powered)
-        0x32,                                                           // bMaxPower (in 2 mA units, 50=100 mA)
-
+        0x64,                                                           // bMaxPower (in 2 mA units, 50=100 mA)
+		//Interface0 descriptor starts here
         0x09,                                                           // bLength (Interface0 descriptor starts here)
         USB_INTERFACE_DESCRIPTOR_TYPE,          // bDescriptorType
         0x00,                                                           // bInterfaceNumber
         0x00,                                                           // bAlternateSetting
         0x01,                                                           // bNumEndpoints (excluding EP0)  
-        0x02,                                                           // bInterfaceClass (0x00=per endpoint specified, 0xFF=vendor specific)
-        0x02,                                                           // bInterfaceSubClass (0x00=per endpoint specified, 0xFF=vendor specific)
-        0x00,                                                           // bInterfaceProtocol (0x00=no protocol, 0xFE=as by command set, 0xFF=vendor specific)
+        0x02, //0x02=com interface                                                          // bInterfaceClass (0x00=per endpoint specified, 0xFF=vendor specific)
+        0x02, //0x02=ACM                                                          // bInterfaceSubClass (0x00=per endpoint specified, 0xFF=vendor specific)
+        0x01,//0x01=AT modem was:0x00                                                           // bInterfaceProtocol (0x00=no protocol, 0xFE=as by command set, 0xFF=vendor specific)
         0x00,                                                           // iInterface (none)
 
         0x05,                                                           // bFunctionLength
@@ -99,14 +99,14 @@ ROM const unsigned char cdc_config_descriptor[] = {
         0x03,                                                           // bmAttributes (0x03=intr)
         LOWB(CDC_NOTICE_BUFFER_SIZE),                           // wMaxPacketSize (low byte)
         HIGHB(CDC_NOTICE_BUFFER_SIZE),                          // wMaxPacketSize (high byte)
-        0x40,                                                           // bInterval
-
+        0x02, //0x40,                                                           // bInterval
+		//Interface1 descriptor
         0x09,                                                           // bLength (Interface1 descriptor)
         USB_INTERFACE_DESCRIPTOR_TYPE,          // bDescriptorType
         0x01,                                                           // bInterfaceNumber
         0x00,                                                           // bAlternateSetting
         0x02,                                                           // bNumEndpoints
-        0x0A,                                                           // bInterfaceClass
+        0x0A, //0x0a datainterface type                                                          // bInterfaceClass
         0x00,                                                           // bInterfaceSubClass
         0x00,                                                           // bInterfaceProtocol (0x00=no protocol, 0xFE=functional unit, 0xFF=vendor specific)
         0x00,                                                           // iInterface
