@@ -18,14 +18,10 @@ extern BYTE cdc_In_bufferA[64];
 extern BYTE cdc_In_bufferB[64];
 extern BYTE cdc_Out_bufferA[64];
 extern BYTE cdc_Out_bufferB[64];
-//extern BDentry *Inbdp;
-//extern BDentry *Outbdp;
 extern BYTE inByte;
-//extern BYTE IsInBufferA;
 extern BYTE *InPtr;
-//extern BYTE *InPtrNext;
 extern BYTE *OutPtr;
-//extern BYTE *InPtrNext;
+
 void SumpReset(void);
 //commandset
 //http://www.sump.org/projects/analyzer/protocol/
@@ -50,32 +46,27 @@ volatile static struct {
     unsigned char btrack;
 } loga;
 
-#ifdef SUMP_8CH
+
 #pragma udata usb_data3
-//BYTE SampleBufferx5[0x80];
-#endif
 
 #ifdef SUMPMODEIRRAW
-#define SUMP_PIN IRRAW
+	#define SUMP_PIN IRRAW
 #endif
 #ifdef SUMPMODEIRRX
-#define SUMP_PIN IRX
+	#define SUMP_PIN IRX
 #endif
 
 #pragma udata
-//BYTE counter;
 
 void IrSumpSetup(void) {
     BYTE dummy;
-    //setup IR SUMP mode
-    //IRRXIE = 0; //disable RX interrupts
-    // T2IE = 0; //disable any Timer 2 interrupt
+    //setup IR SUMP mode (need or false trigger from RC5 decoder mode)
+    IRRXIE = 0; //disable RX interrupts
+    T2IE = 0; //disable any Timer 2 interrupt
     dummy = IRRX_PORT; // Init read for PORTB IOR
 }
 
 BYTE irSUMPservice(void) {
-    unsigned int i, i2;
-
     enum _SUMP {
         C_IDLE = 0,
         C_PARAMETERS,
@@ -89,6 +80,8 @@ BYTE irSUMPservice(void) {
     } sumpRX;
 
     usbbufservice(); //service USB buffer system
+
+	//handle SUMP commands in this loop
     if (usbbufgetbyte(&inByte) == 1) {//process any command bytes
         WaitInReady();
         switch (sumpRXstate) { //this is a state machine that grabs the incoming commands one byte at a time
@@ -122,31 +115,14 @@ BYTE irSUMPservice(void) {
                         TRISB |= 0x10;
                         TRISB &= 0x1F;
 
-/*
-                        for (i = 0; i < 3; i++) {
-                            LedOff();
-                            for (i2 = 0; i2 < 65535; i2++);
-                            LedOn();
-                            for (i2 = 0; i2 < 65535; i2++);
-                        }
-*/
-
                         IRRXIF = 0; //Reset the RB Port Change Interrupt Flag bit
                         IRRXIE = 1; //Enables the RB port change interrupt
 
                         INTCONbits.GIEL = 1; //enable peripheral interrupts
                         INTCONbits.GIEH = 1; //enable interrupts
 
-                        /*
-                                                for (i = 0; i < 6; i++) {
-                                                    LedOff();
-                                                    for (i2 = 0; i2 < 65535; i2++);
-                                                    LedOn();
-                                                    for (i2 = 0; i2 < 32684; i2++);
-                                                }
-                         */
-                        LedOn();
-
+						LedOn();
+						
                         break;
 
                     case SUMP_META://meta data
@@ -180,11 +156,8 @@ BYTE irSUMPservice(void) {
                 break;
         }
     }
-    //}
 
-    //unsigned char SUMPlogicService(void) {
-    //   static unsigned char i, USBWriteCount;
-
+	//loop for handling USB data transfer
     switch (LAstate) {//dump data
             //case IDLE:
             //case ARMED:
@@ -193,18 +166,20 @@ BYTE irSUMPservice(void) {
             // JTR2 Does NOT send ZLP after each packet only one at the end is required.
             do {
 
-                FAST_usb_handler();
+               // FAST_usb_handler();
 
             } while (LAstate == LA_DUMP);
 
-            DisArmCDCInDB();
+            FAST_usb_handler();
+
+           //DisArmCDCInDB();
             //break;
         case LA_ZLP:
-            SendZLP();
+           //SendZLP();
             LAstate = LA_RESET;
         case LA_RESET:
             SumpReset();
-            return 0xff;
+			return 0xFF; //remove for DEBUG
             break;
     }
     return 0;
@@ -215,35 +190,42 @@ void SumpReset(void) {
     T2ON = 0; //tmr2 off
     IRRXIE = 0; //DISABLE RB port change interrupt
     LAstate = LA_IDLE;
-    //DisArmCDCInDB();
+    DisArmCDCInDB();
 }
 
 //high priority interrupt routine
 // #pragma interrupt SUMPInterruptHandlerHigh
 
 void SUMPInterruptHandlerHigh(void) {
+
+	//TIMER2 INTERRUPT
     if (T2IE == 1 && T2IF == 1) { //is this timer 2 interrupt?  //JTR2 swapped positions
-#ifndef SUMP_8CH
-        SampleBufferx5[loga.ptr] = 0x30;
-        if ((IRRX_PORT & IRRX_PIN) != 0)
-            SampleBufferx5[loga.ptr] = 0x31;
-#endif
-#ifdef SUMP_8CH
+
         *InPtr = IRRX_PORT; //set current buffer bit if RX high
-        *InPtr ^= 0x54; // Invert demodulator output.
-#endif
+        *InPtr ^= 0b10110; //0x54; // Invert demodulator output.
+
         loga.ptr += 1;
         InPtr++;
         loga.sample += 1;
+		
+		//Buffer full, send to USB
+        if ((loga.ptr == CDC_BUFFER_SIZE - 2) || ((unsigned int) loga.sample >= (unsigned int) SUMP_SAMPLE_SIZExx)) {
 
-        if ((loga.ptr == CDC_BUFFER_SIZE - 2) || ((unsigned int) loga.sample == (unsigned int) SUMP_SAMPLE_SIZExx)) {
+			//?????indicate end or error??????
+		   if ((unsigned int) loga.sample >= (unsigned int) SUMP_SAMPLE_SIZExx) {
+		            InPtr--;
+		            *InPtr = 0x99;
+		            //LedOn(); //debug - why are we here?
+		   }
 
             SendCDC_In_ArmNext(loga.ptr);
+
             loga.ptr = 0;
-            //counter = 0;
-           // FAST_usb_handler();
+            FAST_usb_handler();
         }
-        if ((unsigned int) loga.sample == (unsigned int) SUMP_SAMPLE_SIZExx) {//done sampling
+		
+		//done sampling
+        if ((unsigned int) loga.sample >= (unsigned int) SUMP_SAMPLE_SIZExx) {//done sampling
             WaitInReady();
             if ((loga.sample % (CDC_BUFFER_SIZE) != 0)) {
                 LAstate = LA_RESET;
@@ -252,44 +234,40 @@ void SUMPInterruptHandlerHigh(void) {
             }
             T2ON = 0; //disable the sampling timer
             T2IE = 0;
-            LedOn(); //LED off
         }
-            T2IF = 0; //clear the interrupt flag
-
+        
+		T2IF = 0; //clear the interrupt flag
+	
+	//PIN CHANGE INTERRUPT
     } else if (IRRXIE == 1 && IRRXIF == 1) { //if RB Port Change Interrupt
-        if ((IRRX_PORT & IRRX_PIN) == 0) {
+        if ((IRRX_PORT & IRRX_PIN) == 0) {//only start on IR signal
+
             IRRXIE = 0; //disable port b interrupt
             IRRXIF = 0; //Reset the RB Port Change Interrupt Flag bit
-            //TIMER2 sample rate,
-            //need to adjust speed for 2x frequency, nyquist rate
-            //T2CON=PRE_x4+POST_x3;
-            //PR2=221;
-            T2_RXsampleperiod();
+            T2_RXsampleperiod(); //sample speed
             T2IF = 0; //clear the interrupt flag
             T2IE = 1; //able interrupts...
             T2ON = 1; //timer on
 
-#ifndef SUMP_8CH
-            if ((IRRX_PORT & SUMP_PIN) == 0) {//only if 0, must read PORTB to clear RBIF
-                *InPtr = 0x31; //;0b10000000; //preload value for pretty LA output
-                InPtr++;
-                *InPtr = 0x30; //;0b10000000; //preload value for pretty LA output
-                InPtr++;
-                loga.sample = 2; //start with 2 existing samples
-                //loga.ptr = 2; //start with byte 1
-            }
-#endif
-#ifdef SUMP_8CH
-            *InPtr = IRRX_PORT; //set current buffer bit if RX high
-            *(InPtr) ^= 0x54; // Invert demodulator output.
-            loga.sample = 1; //start with 2 existing samples
-            loga.ptr = 1; //start with byte 1
-            //counter = 1;
+			//pack first change data into USB buffer
+			//add some blank bytes so the LA display is pretty
+            *InPtr = 0x00; //set current buffer bit if RX high
             InPtr++;
-#endif
-            //LedOff(); //LED OFF
+            *InPtr = 0x00; //set current buffer bit if RX high
+            InPtr++;
+            *InPtr = 0x00; //set current buffer bit if RX high
+            InPtr++;
+            *InPtr = 0x00; //set current buffer bit if RX high
+            InPtr++;
+            *InPtr = IRRX_PORT; //set current buffer bit if RX high
+            *(InPtr) ^= 0b10110; //0x54; // Invert demodulator output.
+            InPtr++;
+            loga.sample += 5; //start with 2 existing samples
+            loga.ptr += 5; //start with byte 1
+            
+			LedOff(); //LED off
+
             LAstate = LA_DUMP;
-            //LedToggle();
         }
         IRRXIF = 0; //Reset the RB Port Change Interrupt Flag bit
     }

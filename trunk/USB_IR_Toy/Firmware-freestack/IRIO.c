@@ -56,12 +56,13 @@ void irIOsetup(void) {
     IRRXIE = 0; //enable RX interrupts for data ACQ
     dummy = IRRX_PORT; // Init read for PORTB IOR
     //send version string
-    if (WaitInReady()) { //it's always ready, but this could be done better
-        cdc_In_buffer[0] = 'X'; //answer OK
-        cdc_In_buffer[1] = '0';
-        cdc_In_buffer[2] = '1';
-        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3);
-    }
+    //   if (WaitInReady()) { //it's always ready, but this could be done better
+    WaitInReady();
+    cdc_In_buffer[0] = 'X'; //answer OK
+    cdc_In_buffer[1] = '0';
+    cdc_In_buffer[2] = '1';
+    putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3);
+    //   }
 
     //setup for IR TX
     /*
@@ -359,7 +360,7 @@ void irIOInterruptHandlerHigh(void) {
                 irIO.RXsamples++;
                 InPtr++;
 
-                if (((irIO.RXsamples == CDC_BUFFER_SIZE - 2) || (irIO.flushflag == 1))) {  //if we have full buffer, or end of capture flush
+                if (((irIO.RXsamples == CDC_BUFFER_SIZE - 2) || (irIO.flushflag == 1))) { //if we have full buffer, or end of capture flush
 
                     SendCDC_In_ArmNext(irIO.RXsamples);
                     /*
@@ -383,7 +384,7 @@ void irIOInterruptHandlerHigh(void) {
                         irIOstate = I_IDLE;
                         DisArmCDCInDB();
                         if (irIO.sendzzz) {
-                            
+
                             cdc_In_buffer[0] = 'z';
                             cdc_In_buffer[1] = 'z';
                             cdc_In_buffer[2] = 'z';
