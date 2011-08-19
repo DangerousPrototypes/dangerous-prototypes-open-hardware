@@ -48,12 +48,13 @@ static void IrReflectTxPwmSetup(void) {
 }
 
 void IrReflectSetup(void) {
-    if (WaitInReady()) {
+  //  if (WaitInReady()) {
+     WaitInReady();
         cdc_In_buffer[0] = 'E'; //answer OK
         cdc_In_buffer[1] = '0';
         cdc_In_buffer[2] = '1';
         putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3);
-    }
+   // }
     IrReflectTxPwmSetup();
     EnablePortbChangeInterrupt()
     RBInterruptCount = 0;
@@ -99,7 +100,8 @@ unsigned char IrReflectService(void) {
 
         if (isRbCountingOk == TRUE) {
             LedOn();
-            if (WaitInReady())
+           // if (WaitInReady()) // bad mistake no {}
+                 WaitInReady();
                 cdc_In_buffer[0] = 'D';
             cdc_In_buffer[1] = 'E';
             cdc_In_buffer[2] = 'T';

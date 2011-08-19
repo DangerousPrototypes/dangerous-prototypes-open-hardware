@@ -164,11 +164,10 @@ void main(void) {
                         case 'R':
                             SetupRC5();
                             mode = IR_DECODER;
-                            if (WaitInReady()) { //it's always ready, but this could be done better
+                            WaitInReady();  //it's always ready, but this could be done better
                                 cdc_In_buffer[0] = 'O'; //answer OK
                                 cdc_In_buffer[1] = 'K';
                                 putUnsignedCharArrayUsbUsart(cdc_In_buffer, 2);
-                            }
                             break;
 
                         case 'S': //IRIO Sampling Mode
@@ -291,7 +290,7 @@ void SelfTest(void) {
 
     if (IRRX_PORT & IRRX_PIN)
         err |= ERROR_RXACT; //IR LED should activate RX
-    if (WaitInReady()) { //it's always ready, but this could be done better
+    WaitInReady();  //it's always ready, but this could be done better
         if (err) {
             LedOff(); //LED off
             cdc_In_buffer[0] = 'F'; //answer fail
@@ -303,7 +302,6 @@ void SelfTest(void) {
             GetUsbIrToyVersion();
         }
     }
-}
 //
 // Initial configuration
 //
@@ -440,13 +438,13 @@ void SetupBoard(void) {
 }
 
 void GetUsbIrToyVersion(void) {
-    if (WaitInReady()) {
+    WaitInReady();
         cdc_In_buffer[0] = 'V'; //answer OK
         cdc_In_buffer[1] = (irToy.HardwareVersion + 0x30);
         cdc_In_buffer[2] = FIRMWARE_VERSION_H;
         cdc_In_buffer[3] = FIRMWARE_VERSION_L;
         putUnsignedCharArrayUsbUsart(cdc_In_buffer, 4);
-    }
+
 }
 
 //	Interrupt remap chain

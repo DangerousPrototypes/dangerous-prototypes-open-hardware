@@ -104,6 +104,7 @@ static struct {
     unsigned char TXInvert : 1;
     //   unsigned char TXend : 1;
     unsigned char bigendian : 1;
+
     unsigned char handshake : 1;
     unsigned char sendcount : 1;
     unsigned char sendfinish : 1;
@@ -117,12 +118,14 @@ void irsSetup(void) {
     //send version string
 
 
-    if (WaitInReady) {
+
+ // if (WaitInReady) {
+	      WaitInReady();
         cdc_In_buffer[0] = 'S'; //answer OK
         cdc_In_buffer[1] = '0';
         cdc_In_buffer[2] = '1';
         putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3);
-    }
+//    }
 
     //setup for IR TX
     /*
@@ -244,6 +247,7 @@ typedef struct _smCommand {
 #define IRIO_LEDOFF             0x13
 #define IRIO_LITTLEENDIAN       0x20
 #define IRIO_BIGENDIAN          0x21
+
 #define IRIO_DESCRIPTOR         0x23
 #define IRIO_RETURNTXCNT        0x24
 #define IRIO_NOTIFYONCOMPLETE   0X25
@@ -284,8 +288,11 @@ unsigned char irsService(void) {
         TxBuffCtr = 0;
     }
 
+/*
     if (!WaitInReady())
         return 0;
+*/
+    WaitInReady();
     //USBDeviceTasks();
 
     if (irS.TXsamples > 0) {
