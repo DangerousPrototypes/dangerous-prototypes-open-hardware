@@ -11,6 +11,8 @@ Prefix 'USB';
 Description '';
 Value On;
 Add CONN_USB_4P 'G$1' Next 0 (0 0);
+Add USB_BODY_PINS2 'G$2' Next 0 (-5.08 0);
 Package 'CONN_USB_A_MALE' '''''';
 Technology '';
-Connect  'G$1.VUSB' 'VUSB'  'G$1.D-' 'D-'  'G$1.D+' 'D+'  'G$1.GND' 'GND';
+Connect  'G$1.VUSB' 'VUSB'  'G$1.D-' 'D-'  'G$1.D+' 'D+'  'G$1.GND' 'GND'  'G$2.BODY@1' 'BODY@1' \
+         'G$2.BODY@2' 'BODY@2'  'G$2.BODY@4' 'BODY@4'  'G$2.BODY@3' 'BODY@3';
