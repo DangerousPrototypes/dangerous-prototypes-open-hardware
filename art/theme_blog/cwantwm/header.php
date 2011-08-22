@@ -36,6 +36,18 @@
       <?php } ?>
     </div></header>
 
+    <?php if (has_navbar() != '') { ?>
+          <nav id="navbar"><div id="navbar-inner" class="clear-block region region-navbar">
+              <a name="navigation" id="navigation"></a>
+             <?php wp_nav_menu( array( 'sort_column' => 'menu_order', 'container_class' => 'menu-nav', 'theme_location' => 'primary'  ) ); ?>
+             <?php if ( function_exists('is_sidebar_active') && is_sidebar_active('region-left') ) { ?>
+             <?php dynamic_sidebar('region-navbar'); ?>
+          <?php } ?>
+             
+             
+            </div></nav> 
+          <?php } ?>
+
     <div id="main"><div id="main-inner" class="clearfix <?php print has_navbar(); ?>">
 		<div id="content"><div id="content-inner">
 			<?php if ( function_exists('is_sidebar_active') && is_sidebar_active('region-content-top') ) { ?>		
