@@ -155,3 +155,17 @@ padding-bottom: 5px;}
 #commentform  #submit {width: auto;}
 
 .comment ul.children {margin-top: 35px;}
+
+    #main, #content, #navbar {
+      clear: both;
+      display: block;
+    }
+
+    #navbar {
+      margin: 0;
+    }
+
+    #main, #content, #main-inner, #content-inner, .with-navbar #content, .with-navbar #sidebar-left, .with-navbar #sidebar-right  {
+      margin-top: 0 !important;
+    }
+
