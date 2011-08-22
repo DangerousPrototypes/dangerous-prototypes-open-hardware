@@ -1,0 +1,4 @@
+ALTER TABLE `banner` ADD COLUMN `click_tracking` BOOLEAN NOT NULL DEFAULT 1 AFTER `end_date`,
+ ADD COLUMN `clicks` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER `click_tracking`,
+ ADD COLUMN `display_tracking` BOOLEAN NOT NULL DEFAULT 1 AFTER `clicks`,
+ ADD COLUMN `displays` INTEGER UNSIGNED NOT NULL DEFAULT 0 AFTER `display_tracking`;

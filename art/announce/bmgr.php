@@ -15,6 +15,7 @@ session_start();
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 	<title>Banner rotation manager</title>
+	<script type='text/javascript' src='datetimepicker_css.js'></script>
 	<link rel='stylesheet' href='banner.css' type='text/css' />
 	<script type='text/javascript' src='bmgr.js'></script>
 </head><body>
@@ -63,17 +64,26 @@ if( $action == 'login' ) {
 mysql_connect( $cfg->mysql_server, $cfg->mysql_user, $cfg->mysql_password );
 mysql_select_db( $cfg->mysql_db );
 
+$dtid = 0;
+
 function dateWithHint( $name, $value ) {
+	global $dtid;
 ?>
 <div class='date_with_hint'>
-	<input type='text' maxlength='10' size='10' name='<?php echo $name; ?>' 
-		value="<?php echo htmlentities( $value ); ?>" />
+	<input type='text' maxlength='10' size='10' name='<?php echo $name; ?>' id='dt<?php echo $dtid; ?>' 
+		value="<?php echo htmlentities( $value ); ?>" /><img src='http://<?php 
+		echo $_SERVER[ 'SERVER_NAME' ] . dirname( $_SERVER[ 'PHP_SELF' ] ); 
+		?>/dtp-images/cal.gif' onclick='NewCssCal( "dt<?php echo $dtid; ?>", "yyyyMMdd" );'
+		style='cursor: pointer' />
 	<div class='date_hint'>yyyy-mm-dd</div>
 </div>
 <?php
+	++ $dtid;
 }
 
-function addBannerForm( $error, $hidden, $url = '', $startDate = '', $endDate = '' ) {
+function addBannerForm( $error, $hidden, 
+	$url = '', $startDate = '', $endDate = '', 
+	$track_clicks = 'checked', $track_displays = 'checked' ) {
 ?>	
 	<form name='newBanner' 
 			action='bmgr.php?action=add' 
@@ -91,6 +101,16 @@ function addBannerForm( $error, $hidden, $url = '', $startDate = '', $endDate = 
 		<span class='input_join'>
 			<span class='label_input'>Start date: <?php dateWithHint( 'start_date', $startDate ); ?></span>
 			<span class='label_input'>End date: <?php dateWithHint( 'end_date', $endDate ); ?></span>
+		</span>
+		<span class='input_join'>
+			<span class='label_input'>
+				<input type='checkbox' name='track_clicks' <?php echo $track_clicks; ?> />
+				Enable click tracking
+			</span>
+			<span class='label_input'>
+				<input type='checkbox' name='track_displays' <?php echo $track_displays; ?> />
+				Enable display tracking
+			</span>
 		</span>
 		<br />
 		<input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
@@ -116,7 +136,9 @@ if( $action == 'add' ) {
 			false, 
 			$_POST[ 'url'], 
 			$_POST[ 'start_date' ], 
-			$_POST[ 'end_date' ] );
+			$_POST[ 'end_date' ],
+			isset( $_POST[ 'track_clicks' ] ) ? 'checked' : '',
+			isset( $_POST[ 'track_displays' ] ) ? 'checked' : '' );
 	} else {
 		$url = mysql_real_escape_string( $_POST[ 'url' ] );
 		
@@ -130,7 +152,10 @@ if( $action == 'add' ) {
 		
 		$ext = pathinfo( $_FILES[ 'image' ][ 'name'], PATHINFO_EXTENSION );
 
-		$sql = "insert into banner( url, ext, start_date, end_date ) values( '$url', '$ext', $startDate, $endDate )";
+		$sql = "insert into banner( url, ext, start_date, end_date, click_tracking, display_tracking ) "
+			. "values( '$url', '$ext', $startDate, $endDate, "
+			. ( isset( $_POST[ 'track_clicks' ] ) ? '1' : '0' ) . ", "
+			. ( isset( $_POST[ 'track_displays' ] ) ? '1' : '0' ) . " )";
 		
 		if( ! mysql_query( $sql ) ) {
 			showLogOut();
@@ -138,7 +163,9 @@ if( $action == 'add' ) {
 				false, 
 				$_POST[ 'url'], 
 				$_POST[ 'start_date' ], 
-				$_POST[ 'end_date' ] );
+				$_POST[ 'end_date' ],
+				isset( $_POST[ 'track_clicks' ] ) ? 'checked' : '',
+				isset( $_POST[ 'track_displays' ] ) ? 'checked' : '' );
 		} else {
 			$id = mysql_insert_id();
 			
@@ -153,7 +180,9 @@ if( $action == 'add' ) {
 					false, 
 					$_POST[ 'url'], 
 					$_POST[ 'start_date' ], 
-					$_POST[ 'end_date' ] );
+					$_POST[ 'end_date' ],
+					isset( $_POST[ 'track_clicks' ] ) ? 'checked' : '',
+					isset( $_POST[ 'track_displays' ] ) ? 'checked' : '' );
 			} else
 				$action = 'list';
 		}
@@ -178,7 +207,9 @@ if( $action == 'change' ) {
 	if( $endDate == "''" )
 		$endDate = 'null';
 
-	$sql = "update banner set url = '$url', start_date = $startDate, end_date = $endDate where id = '$id'";
+	$sql = "update banner set url = '$url', start_date = $startDate, end_date = $endDate, click_tracking = "
+		. ( isset( $_POST[ 'track_clicks' ] ) ? '1' : '0' ) . ", display_tracking = "
+		. ( isset( $_POST[ 'track_displays' ] ) ? '1' : '0' ) . " where id = '$id'";
 
 	if( ! mysql_query( $sql ) ) {
 		$error = mysql_error();
@@ -312,6 +343,17 @@ if( $action == 'list' ) {
 						<?php echo $b->end_date == null ? '-' : $b->end_date; ?>
 					</span>
 				</span>
+				<span class='input_join'>
+					<span class='label_input'>
+						<span class='bannerLabel'>Click count</span> (<?php 
+							echo ( $b->click_tracking ? 'enabled)' : 'disabled)' )
+								. ': ' . $b->clicks; ?>
+					</span><span class='label_input'>
+						<span class='bannerLabel'>Display count</span> (<?php 
+							echo ( $b->display_tracking ? 'enabled)' : 'disabled)' )
+								. ': ' . $b->displays; ?>
+					</span>
+				</span>
 				<form name='change<?php echo $n; ?>'
 						action='bmgr.php?action=change' 
 						method='post'
@@ -331,6 +373,15 @@ if( $action == 'list' ) {
 							Start date: <?php dateWithHint( 'start_date', $b->start_date ); ?>
 						</span><span class='label_input'>
 							End date: <?php dateWithHint( 'end_date', $b->end_date ); ?>
+						</span>
+					</span><span class='input_join'>
+						<span class='label_input'>
+							<input type='checkbox' name='track_clicks' <?php 
+								if( $b->click_tracking ) echo 'checked '?>/> Enable click tracking
+						</span>
+						<span class='label_input'>
+							<input type='checkbox' name='track_displays' <?php 
+								if( $b->display_tracking ) echo 'checked '?>/> Enable display tracking
 						</span>
 					</span>
 					<br />
