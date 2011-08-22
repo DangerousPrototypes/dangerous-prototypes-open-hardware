@@ -18,21 +18,7 @@
 				</section> 
 			<?php } ?>
 		</div></div>
-
-		<?php if (has_navbar() != '') { ?>
-      <nav id="navbar"><div id="navbar-inner" class="clear-block region region-navbar">
-          <a name="navigation" id="navigation"></a>
-			<?php wp_nav_menu( array( 'sort_column' => 'menu_order', 'container_class' => 'menu-nav', 'theme_location' => 'primary'  ) ); ?>
-			<?php if ( function_exists('is_sidebar_active') && is_sidebar_active('region-left') ) { ?>
-			<?php dynamic_sidebar('region-navbar'); ?>
-      <?php } ?>
-			
-			
-        </div></nav>  
-		<?php } ?>
- 
-
-     
+   
 	<?php if ( function_exists('is_sidebar_active') && is_sidebar_active('region-left') ) { ?>
         <section id="sidebar-left"><div id="sidebar-left-inner" class="region region-left">
          <?php dynamic_sidebar('region-left'); ?>
