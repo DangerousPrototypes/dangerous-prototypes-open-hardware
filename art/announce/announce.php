@@ -1,3 +1,4 @@
+<?php
 /*
        Simple announcement banner rotator with impression and click tracking.
 
@@ -20,8 +21,6 @@
 
 */
 
-<?php
-
 $cfg = require( 'bconfig.php' );
 
 $base = 'http://' . $_SERVER[ 'SERVER_NAME' ] . $cfg->base_dir . '/img/';
@@ -34,47 +33,36 @@ mysql_select_db( $cfg->mysql_db );
 
 if( isset( $_GET[ 'redirect' ] ) && $_GET[ 'redirect' ] == 'true' && isset( $_GET[ 'id' ] ) ) {
 
-	$id = ( int ) $_GET[ 'id' ];
-	$query = mysql_query( "select url from banner where id = $id" );
+	if(is_numeric($_GET[ 'id' ])){ //sanatize it
+		$id = ( int ) $_GET[ 'id' ];
+	}else{
+		$id=0;
+	}
+	
+	$query = mysql_query( "SELECT url FROM banner WHERE id = $id" );
 	if( $banner = mysql_fetch_row( $query ) ) {
-		mysql_query( "update banner set clicks = clicks + 1 where id = $id" );
+		mysql_query( "UPDATE banner SET clicks = clicks + 1 WHERE id = $id" );
 		header( "Location: $banner[0]" );
 	}
 
 } else {
+	
+	$query = mysql_query('SELECT id, url, ext, click_tracking, display_tracking FROM banner WHERE ( start_date is null OR start_date <= NOW() ) AND ( end_date is null OR end_date >= NOW() ) ORDER BY RAND() LIMIT 1');
+		
+	$row = mysql_fetch_row( $query );
 
-	$sql = <<<SQL
-from banner where ( 
-	start_date is null or start_date <= now() ) 
-and ( 
-	end_date is null or end_date >= now() )
-SQL;
-	
-	$query = mysql_query( "select count(*) $sql" );
-	$n = mysql_fetch_row( $query, 0 );
-	
-	if( ! ( $n && $n[ 0 ] ) ) 
+	if( $row ) {
+		$url = $row[ 3 ] ? 
+			'http://' . $_SERVER[ 'SERVER_NAME' ] . $cfg->base_dir . '/announce.php?redirect=true&&id='
+				. $row[ 0 ]
+			: $row[ 1 ];
+		$banner = '<a href="' . $url . '"><img src="' . $base . $row[ 0 ] . '.' . $row[ 2 ] . '" /></a>';
+		if( $row[ 4 ] )
+			mysql_query( 'update banner set displays = displays + 1 where id = ' . $row[ 0 ] );
+	} else{ // ALL banners are deleted or expired
 		$banner = $noBanner;
-	else {
-		
-		$query = mysql_query( "select id, url, ext, click_tracking, display_tracking $sql limit 1 offset " 
-			. rand( 0, $n[ 0 ] - 1 ) );
-		
-		$row = mysql_fetch_row( $query );
-		if( ! $row ) // In the case of bad luck, if banners were deleted or expired between two requests
-			$row = mysql_fetch_row( mysql_query( "select id, url, ext $sql limit 1" ) );
-		
-		if( $row ) {
-			$url = $row[ 3 ] ? 
-				'http://' . $_SERVER[ 'SERVER_NAME' ] . $cfg->base_dir . '/announce.php?redirect=true&&id='
-					. $row[ 0 ]
-				: $row[ 1 ];
-			$banner = '<a href="' . $url . '"><img src="' . $base . $row[ 0 ] . '.' . $row[ 2 ] . '" /></a>';
-			if( $row[ 4 ] )
-				mysql_query( 'update banner set displays = displays + 1 where id = ' . $row[ 0 ] );
-		} else // ALL banners are deleted or expired
-			$banner = $noBanner;
 	}
+
 	
 	if( isset( $_GET[ 'ajax' ] ) ) {
 		header( 'Content-type: text/xml' );
@@ -84,8 +72,9 @@ SQL;
 	<content><?php echo htmlentities( $banner ); ?></content>
 	</banner>
 	<?php
-	} else
+	} else {
 		echo $banner;
+	}
 } 
 
 ?>
