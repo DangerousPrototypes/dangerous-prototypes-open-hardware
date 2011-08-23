@@ -1,3 +1,5 @@
+<?php
+
 /*
        Simple announcement banner rotator with impression and click tracking.
 
@@ -20,7 +22,7 @@
 
 */
 
-<?php
+
 return ( object ) array(
 	'mysql_server' => 'localhost',
 	'mysql_user' => 'root',
