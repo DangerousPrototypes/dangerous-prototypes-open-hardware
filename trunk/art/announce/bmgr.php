@@ -1,3 +1,5 @@
+<?php 
+
 /*
        Simple announcement banner rotator with impression and click tracking.
 
@@ -21,7 +23,7 @@
 */
 
 
-<?php 
+
 
 $base = 'http://' . $_SERVER[ 'SERVER_NAME' ] . dirname( $_SERVER[ 'PHP_SELF' ] ) . '/img/';
 
