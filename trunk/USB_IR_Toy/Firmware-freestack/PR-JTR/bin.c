@@ -269,12 +269,18 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             JTRbuffer[0] = 0x26; // causes packet handshake to be sent.
             serial_write( fd, JTRbuffer, 1);
         }
+        if (countreq)
+        {
+            JTRbuffer[0] = 0x24;  // causes transmit count to be returned.
+            serial_write( fd, JTRbuffer, 1);
+        }
+        if (completereq)
+        {
 
-        JTRbuffer[0] = 0x24;  // causes transmit count to be returned.
-        serial_write( fd, JTRbuffer, 1);
+            JTRbuffer[0] = 0x25;  // causes Compete message to be returned.
+            serial_write( fd, JTRbuffer, 1);
 
-        JTRbuffer[0] = 0x25;  // causes Compete message to be returned.
-        serial_write( fd, JTRbuffer, 1);
+        }
 
         serial_write( fd, "\x3", 1);     // was "\x03"
         if (useHandshake)
@@ -304,6 +310,8 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             printf(" Did not receive packet size from IR TOY. \n");
             exit(-1);
         }
+
+        int totalbytes=0;
 
         while(!feof(fp))
         {
@@ -376,6 +384,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                     else
                     {
                         printf(" %i bytes....ok.\n",comsresult);
+                        totalbytes+=comsresult;
                         Error_flag=0;
                         // added here: bytes irtoy ready to recieve
                         // check for buffer[res] and buffer[res-1] == 0xff
@@ -400,7 +409,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                                     {
                                         Sleep(1);
                                         timecounter++;
-                                        if (timecounter> 200)
+                                        if (timecounter> 2000)
                                         {
                                             printf(" IRtoy Got no reply...\n");
                                             break;
@@ -444,6 +453,10 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
         //int timecounter=0;
         int bytestx;
 
+        //read and discard last handshake byte
+        if (useHandshake)
+            res= serial_read(fd, buffer, 1); // sizeof(buffer));  //get number of bytes sent
+
         if (countreq)
         {
 
@@ -453,8 +466,8 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                 if(buffer[0]=='t')
                 {
                     bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
-                    printf(" IR Toy got: %d bytes", bytestx);
-                    //if(bytestx==totalbytes) ok else failed;
+                    printf(" IR Toy got: %d bytes, file was %d bytes ", bytestx, totalbytes);
+                    if(bytestx==totalbytes) printf("ok\n"); else printf("failed\n");
                 }
                 else
                 {
@@ -477,6 +490,10 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                 if(buffer[0]=='C')
                 {
                     printf(" IR Toy finished sending");
+                }
+                 else if(buffer[0]=='F')
+                {
+                    printf(" Error, transmit was interrupted at some point!!!");
                 }
                 else
                 {
