@@ -1205,7 +1205,7 @@ address {line-height:1.4}
 .ie8 .menu-nav a {font-size:1.6em !important;}
 #navbar .menu-nav {margin-top: 6px;text-transform:uppercase;}
 /* Social Links */
-#text-10 {width:312px; position:absolute; right:0px; text-align: right; top: 6px; background:none;}
+#text-10 {position:absolute; right:0px; text-align: right; top: 6px; background:none;}
 #text-10  a {font-family:sans-serif; font-size:1em; }
 #facebook {padding-right: 20px;  padding-bottom: 2px; background: url(images/social.png) no-repeat right 0px; margin-right: 10px;}
 #twitter {padding-right: 20px;  padding-bottom: 2px; background: url(images/social.png) no-repeat right -32px; margin-right: 10px;}
@@ -1304,3 +1304,16 @@ i{ font-style:italic;}
 th{ vertical-align:middle; padding:5px;}
 
 ul ul, ol ol{ margin-bottom:0 !important;}
+
+    #main, #content, #navbar {
+      clear: both;
+      display: block;
+    }
+
+    #navbar {
+      margin: 0;
+    }
+
+    #main, #content, #main-inner, #content-inner, .with-navbar #content, .with-navbar #sidebar-left, .with-navbar #sidebar-right  {
+      margin-top: 0 !important;
+    }
