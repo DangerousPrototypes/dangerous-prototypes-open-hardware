@@ -96,9 +96,9 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
 int verbose = 0;
-char useHandshake = 0;
-char  completereq = 0;
-char countreq = 0;
+char useHandshake = 1;
+char  completereq = 1;
+char countreq = 1;
 
 
 int print_usage(char * appname)
@@ -134,8 +134,6 @@ int print_usage(char * appname)
     printf("                     each command.\n");
     printf("                  -v Display verbose output, have to specify level 0, 1 etc,\n");
     printf("                     although at present it is only on or off :).\n");
-    printf("                  -b buffersize. Sets the buffer size, default is 256. Use inputs in multiple of 16.\n ");
-    printf("                       e.g. 16,32,64, 128, 256 and so on. Use to finetune playback buffer size, ");
     printf("                  -o Create OLS file based on the filename format \n");
     printf("                     ext. \"ols\" (Requires -f)  \n");
     printf("                  -t Create or Play text files based on the filename format\n");
@@ -205,7 +203,7 @@ int main(int argc, char** argv)
         exit(-1);
     }
 
-    while ((opt = getopt(argc, argv, "torpqsvnce:a:d:f:b:h:")) != -1)
+    while ((opt = getopt(argc, argv, "torpqsvcen:a:d:f:b:h:")) != -1)
     {
         // printf("%c  \n",opt);
         switch (opt)

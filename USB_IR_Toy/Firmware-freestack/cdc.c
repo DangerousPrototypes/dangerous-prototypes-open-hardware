@@ -18,7 +18,7 @@ or send a letter to
 #include "globals.h"
 #include <string.h>
 void USBDeviceTasks(void);
-
+extern unsigned char d;
 enum stopbits {
     one = 0, oneandahalf = 1, two = 2
 };
@@ -211,23 +211,23 @@ void cdc_get_line_coding(void) {
 }
 
 void cdc_set_line_coding_data(void) { // JTR handling an OUT token In the CDC stack this is the only function that handles an OUT data stage.
-         unsigned long dwBaud;   
+    unsigned long dwBaud;
 
-memcpy(&linecodeing, (const void *) bdp->BDADDR, sizeof (struct cdc_LineCodeing));
+    memcpy(&linecodeing, (const void *) bdp->BDADDR, sizeof (struct cdc_LineCodeing));
 
     // JTR2 added 8th June 2011 not tested
 
-  //  if (linecodeing.dwDTERate > 115200) {
-  //      usb_RequestError();
-  //  } else {
+    //  if (linecodeing.dwDTERate > 115200) {
+    //      usb_RequestError();
+    //  } else {
 
 
 
-        dwBaud = (CLOCK_FREQ / 4) / linecodeing.dwDTERate - 1;
+    dwBaud = (CLOCK_FREQ / 4) / linecodeing.dwDTERate - 1;
 
-        SPBRG = dwBaud & 0xFFu;
-        SPBRGH = (dwBaud >> 8) & 0xFFu;
-  //  }
+    SPBRG = dwBaud & 0xFFu;
+    SPBRGH = (dwBaud >> 8) & 0xFFu;
+    //  }
 
     usb_unset_out_handler(0); // Unregister OUT handler; JTR serious bug fix in macro!
     usb_set_in_handler(0, cdc_set_line_coding_status); // JTR why bother?
@@ -317,15 +317,15 @@ if (0) { // Response Available Notification
  /*****************************************************************************/
 BYTE WaitOutReady() // JTR2 added reduced overhead
 {
-	BYTE i=0;
+    BYTE i = 0;
     while ((Outbdp->BDSTAT & UOWN)) {
         if (!TestUsbInterruptEnabled()) {
             if (0 != FAST_usb_handler()) // JTR2 Pop non-EP0 (USB IN) tranfers from the FIFO and also give SETUP PACKETs a chance.
-                i=0;
+                i = 0;
         }
-    }
+    }//end WaitOutReady
     return i;
-}//end WaitOutReady
+}
 
 /**********************************************************************************/
 
@@ -384,11 +384,11 @@ BYTE putPARTARRAYUSBUSART(BYTE *data, BYTE length) // JTR2 added reduced overhea
         if (!TestUsbInterruptEnabled()) {
             FAST_usb_handler();
 
-/*
-            if (0 != FAST_usb_handler()) { // JTR2 Pop non-EP0 (USB IN) tranfers from the FIFO and also give SETUP PACKETs a chance.
-                //return 0xff;
-            }
-*/
+            /*
+                        if (0 != FAST_usb_handler()) { // JTR2 Pop non-EP0 (USB IN) tranfers from the FIFO and also give SETUP PACKETs a chance.
+                            //return 0xff;
+                        }
+             */
         }
     }
     Inbdp->BDADDR = data;
@@ -427,31 +427,29 @@ BYTE getCDC_Out_ArmNext(void) {
 
     CDCFunctionError = 0;
 
+    /*
+        if (WaitOutReady()) {
+     */
+    WaitOutReady();
 
-    //first, get 64 bytes OR to FF FF
-/*
-    if (WaitOutReady()) {
-*/
-        WaitOutReady();
-
-        if (IsOutBufferA) {
-            OutPtr = &cdc_Out_bufferA[0];
-            Outbdp->BDADDR = &cdc_Out_bufferB[0];
-        } else {
-            OutPtr = &cdc_Out_bufferB[0];
-            Outbdp->BDADDR = &cdc_Out_bufferA[0];
-        }
-        IsOutBufferA ^= 0xFF;
-        cdc_Out_len = Outbdp->BDCNT;
-        Outbdp->BDCNT = CDC_BUFFER_SIZE;
-        Outbdp->BDSTAT = ((Outbdp->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
-
-/*
+    if ((IsOutBufferA & 1)) {
+        OutPtr = &cdc_Out_bufferA[0];
+        Outbdp->BDADDR = &cdc_Out_bufferB[0];
     } else {
-        cdc_Out_len = 0;
-        CDCFunctionError = 1;
+        OutPtr = &cdc_Out_bufferB[0];
+        Outbdp->BDADDR = &cdc_Out_bufferA[0];
     }
-*/
+    IsOutBufferA ^= 0xFF;
+    cdc_Out_len = Outbdp->BDCNT;
+    Outbdp->BDCNT = CDC_BUFFER_SIZE;
+    Outbdp->BDSTAT = ((Outbdp->BDSTAT ^ DTS) & DTS) | UOWN | DTSEN;
+
+    /*
+        } else {
+            cdc_Out_len = 0;
+            CDCFunctionError = 1;
+        }
+     */
     return cdc_Out_len;
 }//end getCDC_Out_ArmNext
 
@@ -481,11 +479,12 @@ BYTE SendCDC_In_ArmNext(BYTE count) {
 }
 
 void ArmCDCOutDB(void) {
-    Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
+    Outbdp->BDSTAT &= ~UOWN; // ian JTR3 immediately reclaim out buffer
     Outbdp->BDADDR = &cdc_Out_bufferA[0];
     Outbdp->BDCNT = CDC_BUFFER_SIZE;
     Outbdp->BDSTAT |= UOWN;
     IsOutBufferA = 0xFF;
+    OutPtr = cdc_Out_bufferA; //ian
 }
 
 void ArmCDCInDB(void) {
@@ -499,10 +498,10 @@ void ArmCDCInDB(void) {
 }
 
 void DisArmCDCOutDB(void) {
-    Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
+    Outbdp->BDSTAT &= ~UOWN; // ianJTR3 immediately reclaim out buffer
     Outbdp->BDADDR = &cdc_Out_buffer[0];
     Outbdp->BDCNT = CDC_BUFFER_SIZE;
-    Outbdp->BDSTAT |= UOWN;
+    Outbdp->BDSTAT |= UOWN; //ian
 }
 
 void DisArmCDCInDB(void) {
@@ -537,6 +536,10 @@ BYTE getsUSBUSART(BYTE *buffer, BYTE len) {
     cdc_Out_len = 0;
     if (0 == (Outbdp->BDSTAT & UOWN)) // Do we have a packet from host?
     {
+
+		//if(d>0){ //IAN DEBUG
+		//	d--;
+		//}
         // Adjust the expected number of BYTEs to equal
         // the actual number of BYTEs received.
 

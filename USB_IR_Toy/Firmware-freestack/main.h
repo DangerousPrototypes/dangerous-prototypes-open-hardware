@@ -65,7 +65,7 @@ void quickflashLED( void );
 // extern declarations
 extern struct _irtoy irToy; //access to the USB buffer, etc
 
-
+extern unsigned char d;
 
 
 #endif

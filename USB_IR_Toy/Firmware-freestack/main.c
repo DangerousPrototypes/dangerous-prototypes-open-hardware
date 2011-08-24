@@ -34,6 +34,8 @@ extern unsigned char cdc_trf_state;
 extern BYTE cdc_In_buffer[64];
 extern BDentry *Inbdp;
 
+unsigned char d=0;
+
 void user_configured_init(void);
 void usb_start(void);
 void initCDC(void);
