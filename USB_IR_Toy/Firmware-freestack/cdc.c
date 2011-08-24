@@ -317,13 +317,14 @@ if (0) { // Response Available Notification
  /*****************************************************************************/
 BYTE WaitOutReady() // JTR2 added reduced overhead
 {
+	BYTE i=0;
     while ((Outbdp->BDSTAT & UOWN)) {
         if (!TestUsbInterruptEnabled()) {
             if (0 != FAST_usb_handler()) // JTR2 Pop non-EP0 (USB IN) tranfers from the FIFO and also give SETUP PACKETs a chance.
-                return 0;
+                i=0;
         }
     }
-    return 1;
+    return i;
 }//end WaitOutReady
 
 /**********************************************************************************/

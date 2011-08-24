@@ -398,9 +398,9 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                                     }
                                     else
                                     {
-                                        Sleep(1000);
+                                        Sleep(1);
                                         timecounter++;
-                                        if (timecounter> 20)
+                                        if (timecounter> 200)
                                         {
                                             printf(" IRtoy Got no reply...\n");
                                             break;

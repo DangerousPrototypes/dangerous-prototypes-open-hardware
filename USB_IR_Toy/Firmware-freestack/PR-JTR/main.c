@@ -414,10 +414,10 @@ int main(int argc, char** argv)
     }
 
 
-    if (FIRMWARE_VERSION < 15)
+    if (FIRMWARE_VERSION < 20)
     {
         printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-        printf(" This utility is for firmware version 15 and up.\n");
+        printf(" This utility is for firmware version 20 and up.\n");
         printf(" Please update your IRTOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
         printf(" See documentation and firmware update procedures at \n");
         printf(" http://dangerousprototypes.com/docs/USB_Infrared_Toy#Firmware\n");

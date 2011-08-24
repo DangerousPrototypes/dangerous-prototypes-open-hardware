@@ -331,8 +331,9 @@ unsigned char irsService(void) {
 
                         do {
                             irS.TXsamples = getCDC_Out_ArmNext();
-                            if (irS.TXsamples == 0) {
-                            }
+                            //if (irS.TXsamples == 64) {
+							//	continue;
+                           // }
 
                             if (irS.handshake) {
                                 WaitInReady();
@@ -427,7 +428,7 @@ unsigned char irsService(void) {
                             cdc_In_buffer[2] = (txcnt & 0xff);
                             putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3); //send current buffer to USB
                         }
-                        while (irS.txflag == 1);
+                        while (irS.txflag == 1) FAST_usb_handler();
                         LedOff();
                         if (irS.sendfinish) {
                             WaitInReady();
@@ -844,6 +845,7 @@ void irsInterruptHandlerHigh(void) {
                 PWMoff();
                 LedOff();
                 irS.TX = 0;
+//				while(1);
                 //reset receive interrupt
                 IRRXIF = 0;
                 IRRXIE = 1; // JTR debug note, Watch the effect of this
