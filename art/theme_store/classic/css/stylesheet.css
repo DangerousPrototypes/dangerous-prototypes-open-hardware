@@ -417,8 +417,11 @@ HR {
 /*Image Display*/
 
 #productMainImage, #reviewsInfoDefaultProductImage, #productReviewsDefaultProductImage, #reviewWriteMainImage {
-	margin: 0em 1em 1em 0em;
+   margin: 0em 1em 1em 0em;
+   /* quick dirty fix Image not clickable */
+   z-index: 1000;
 }
+
 .categoryIcon {
 }
 #cartImage {
