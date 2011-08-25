@@ -181,8 +181,8 @@ void irsSetup(void) {
 
     //timer 1 as USB packet send timeout
     T1CON = 0;
-    T2IE = 0; //disable interrupts...
-    T2ON = 0; //tmr2 off
+    //T2IE = 0; //disable interrupts...
+    //T2ON = 0; //tmr2 off
 
     dummy = IRRX_PORT; // Init read for PORTB IOR
     IRRXIF = 0; //Reset the RB Port Change Interrupt Flag bit
@@ -351,8 +351,7 @@ unsigned char irsService(void) {
                                         T0_IE = 1;
                                         T0ON = 1; //enable the timer
                                         //enable the PWM
-                                        TMR2 = 0;
-                                        CCP1CON |= 0b1100;
+                                        PWMon(); //TMR2 = 0; CCP1CON |= 0b1100;
                                         irS.TXInvert = IRS_TRANSMIT_LO;
                                         LedOn();
                                     }
