@@ -1140,3 +1140,134 @@
 1307623065 source:c:\users\jamz\desktop\for release irtoy\irtoyrecplay\bin.c
 	"bin.h"
 
+1307027900 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\kbhit.c
+	"kbhit.h"
+	<termios.h>
+	<unistd.h>
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\kbhit.h
+	<stdio.h>
+
+1310130422 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\main.c
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<stdio.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+	"txt.h"
+	"ols.h"
+	"bin.h"
+	"queue.h"
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\txt.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"kbhit.h"
+	"serial.h"
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\ols.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+
+1308582317 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\bin.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+	"kbhit.h"
+	"serial.h"
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\queue.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+
+1307325256 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\ols.c
+	"ols.h"
+
+1307027900 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\queue.c
+	"queue.h"
+
+1308794165 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\serial.c
+	"config.h"
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\config.h
+
+1308948998 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\txt.c
+	"txt.h"
+
+1310135987 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\bin.c
+	"bin.h"
+
