@@ -91,7 +91,7 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.85 rc1"
+#define IRTOY_VERSION "v20 rc1"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
@@ -350,18 +350,23 @@ int main(int argc, char** argv)
         return -1;
     }
     serial_setup(fd, (speed_t) param_speed);
+   // printf(" Pass serial_setup\n");
 
     cnt=0;
     serial_write( fd, "\xFF", 1);
+    //printf(" Pass write 0xff 1\n");
     serial_write( fd, "\xFF", 1);
+       //printf(" Pass write 0xff 1\n");
     for (i=0; i<5; i++)
     {
         //send 5x, just to make sure it exit the sump mode too
         serial_write( fd, "\x00", 1);
     }
+      // printf(" Pass write 0x00 x5\n");
     while (1)
     {
         serial_write( fd, "v", 1);
+           //printf(" Pass write v\n");
         res= serial_read(fd, buffer, sizeof(buffer));  //get version
         if (res > 0)
         {
@@ -416,7 +421,7 @@ int main(int argc, char** argv)
     {
         printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
         printf(" This utility is for firmware version 20 and up.\n");
-        printf(" Please update your IRTOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
+        printf(" Please update your IR TOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
         printf(" See documentation and firmware update procedures at \n");
         printf(" http://dangerousprototypes.com/docs/USB_Infrared_Toy#Firmware\n");
         printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
@@ -531,13 +536,13 @@ int main(int argc, char** argv)
 
         IRqueue(param_fname,fd);
     } // queue=true
-
+    Sleep(2000);
     serial_close(fd);
     FREE(param_port);
     FREE(param_speed);
     FREE(param_fname);
     FREE(param_buffin);
-    printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
+    printf("\n Thank you for playing with the IR Toy! Utility version: %s. \n", IRTOY_VERSION);
 
     return 0;
 }  //main

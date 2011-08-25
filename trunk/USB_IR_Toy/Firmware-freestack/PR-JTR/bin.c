@@ -250,7 +250,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 
 #ifdef _WIN32
 
-            Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+         //   Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
             sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #endif
@@ -421,6 +421,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                         else
                         {
                             if (useHandshake)
+                            Sleep(200); // JTR6 added, give the IR TOY time to send the 0xFFFF
                                 res= serial_read(fd, bufferrx, sizeof(bufferrx)); // JTR discard count
                             //   printf(" eof-- got 0xff \n");
                             // printf("\n");
@@ -440,7 +441,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 
 #ifdef _WIN32
 // temporary disabled to alow to pass here.. in win64 param_delay with -1 seems to wait forever. --Need to confirm
-                    Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+           //         Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
                     //         printf("Sleeping..\n");
                     sleep(atoi(param_delay));           //seconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
@@ -452,10 +453,6 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
         printf(" End of file reached: %s \n",fnameseq);
         //int timecounter=0;
         int bytestx;
-
-        //read and discard last handshake byte
-        if (useHandshake)
-            res= serial_read(fd, buffer, 1); // sizeof(buffer));  //get number of bytes sent
 
         if (countreq)
         {
@@ -479,7 +476,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             }
             else
             {
-                printf(" IRtoy Did not return correct No. of count bytes...\n");
+                printf(" IR Toy Did not return correct No. of count bytes...\n");
             }
         }
         if (completereq)
@@ -489,7 +486,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             {
                 if(buffer[0]=='C')
                 {
-                    printf(" IR Toy finished sending");
+                    printf(" Transmit was successful and glitch free!");
                 }
                  else if(buffer[0]=='F')
                 {
@@ -504,11 +501,11 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             }
             else
             {
-                printf(" IRtoy Did not return complete token...\n");
+                printf(" IR Toy Did not return complete token...\n");
             }
         }
 
-        Sleep(1000);
+      //  Sleep(1000);
 
         fclose(fp);
         if (soloplay==TRUE)
