@@ -20,14 +20,10 @@
 
 #define IRTOY
 
-//includes config fuses
-
-
 //USB stack
 #include "globals.h"
 #include "configwords.h"	// JTR only included in main.c
 #include "descriptors.h"	// JTR Only included in main.c
-//#include "cdc.h"
 
 extern unsigned char usb_device_state; // JTR2 corrected type
 extern unsigned char cdc_trf_state;
@@ -41,26 +37,19 @@ void usb_start(void);
 void initCDC(void);
 void usb_init(ROMPTR const unsigned char*, ROMPTR const unsigned char*, ROMPTR const unsigned char*, int);
 BYTE FAST_usb_handler(void);
-//BYTE putPARTARRAYUSBUSART(char* data, unsigned char length);
-//BYTE WaitInReady(void);
-//
-//	This variable tracks the current IR Toy mode
-//
+
 #pragma udata
 
 static enum _mode {
     IR_MAIN = 0,
     IR_DECODER, //IRMAN IR RC decoder
     IR_SUMP, //SUMP logic analyzer
-    IR_IO, //IR input output mode
     IR_S, //IR Sampling mode
-    IR_REFLECT, // IR Reflection mode
     USB_UART,
     IRWIDGET
     //IR_RECORDER //record IR signal to EEPROM, playback
 } mode = IR_MAIN; //mode variable tracks the IR Toy mode
 
-//enum _mode DefaultMode = IR_DECODER;
 
 struct _irtoy irToy;
 BYTE inByte; // JTR3 Global
@@ -119,16 +108,8 @@ void main(void) {
                 if (irSUMPservice() != 0) SetUpDefaultMainMode();
 
                 break;
-            case IR_IO: //increment IR_IO module dump state machine
-                if (irIOservice() != 0) SetUpDefaultMainMode();
-
-                break;
             case IR_S:
                 if (irsService() != 0) SetUpDefaultMainMode();
-
-                break;
-            case IR_REFLECT:
-                if (IrReflectService() != 0) SetUpDefaultMainMode();
 
                 break;
             case USB_UART:
@@ -177,16 +158,6 @@ void main(void) {
                             mode = IR_S;
                             irsSetup();
                             break;
-                        case 'X': //IRIO RXTX mode
-                        case 'x':
-                            mode = IR_IO;
-                            irIOsetup();
-                            break;
-                        case 'E':
-                        case 'e':
-                            mode = IR_REFLECT;
-                            IrReflectSetup();
-                            break;
                         case 'U':
                         case 'u':
                             mode = USB_UART;
@@ -202,7 +173,7 @@ void main(void) {
                             break;
 
                         case 'P':
-                        case 'p':// Acquire Version
+                        case 'p':// IR Widget mode
                             mode = IRWIDGET;
                             GetPulseFreq();
                             SetUpDefaultMainMode();
@@ -465,10 +436,6 @@ void InterruptHandlerHigh(void) {
         case IRWIDGET:
             _asm call irWInterruptHandlerHigh, 0 _endasm
             break;
-        case IR_IO:
-            //_asm call irIOInterruptHandlerHigh, 0 _endasm //see IRIO.c
-            irIOInterruptHandlerHigh();
-            break;
         case IR_S:
             _asm call irsInterruptHandlerHigh, 0 _endasm //see IRIO.c
             break;
@@ -478,9 +445,6 @@ void InterruptHandlerHigh(void) {
         case IR_DECODER:
             _asm call IRdecoderInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
             break;
-        case IR_REFLECT:
-            _asm call IrReflectionInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
-            break;
         case USB_UART:
             _asm call Usb2UartInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
             break;
@@ -488,8 +452,6 @@ void InterruptHandlerHigh(void) {
             _asm call DefaultISR, 0 _endasm
             break;
         default:
-
-            // _asm call DefaultISR _endasm
             break;
     }
 }

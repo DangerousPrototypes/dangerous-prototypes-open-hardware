@@ -18,7 +18,7 @@ or send a letter to
 #include "globals.h"
 #include <string.h>
 void USBDeviceTasks(void);
-extern unsigned char d;
+
 enum stopbits {
     one = 0, oneandahalf = 1, two = 2
 };
@@ -478,14 +478,7 @@ BYTE SendCDC_In_ArmNext(BYTE count) {
     return CDCFunctionError;
 }
 
-void ArmCDCOutDB(void) {
-    Outbdp->BDSTAT &= ~UOWN; // ian JTR3 immediately reclaim out buffer
-    Outbdp->BDADDR = &cdc_Out_bufferA[0];
-    Outbdp->BDCNT = CDC_BUFFER_SIZE;
-    Outbdp->BDSTAT |= UOWN;
-    IsOutBufferA = 0xFF;
-    OutPtr = cdc_Out_bufferA; //ian
-}
+
 
 void ArmCDCInDB(void) {
     WaitInReady();
@@ -497,19 +490,49 @@ void ArmCDCInDB(void) {
     InPtr = cdc_In_bufferA;
 }
 
-void DisArmCDCOutDB(void) {
-    Outbdp->BDSTAT &= ~UOWN; // ianJTR3 immediately reclaim out buffer
-    Outbdp->BDADDR = &cdc_Out_buffer[0];
-    Outbdp->BDCNT = CDC_BUFFER_SIZE;
-    Outbdp->BDSTAT |= UOWN; //ian
-}
-
 void DisArmCDCInDB(void) {
     WaitInReady();
     //Inbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim In buffer
     Inbdp->BDADDR = &cdc_In_buffer[0];
     Inbdp->BDCNT = CDC_BUFFER_SIZE;
     //Inbdp->BDSTAT |= UOWN;
+}
+
+void ArmCDCOutDB(void) {
+	BYTE i;
+	IsOutBufferA = 0xFF;
+	OutPtr = cdc_Out_bufferA;
+	i = Outbdp->BDSTAT;
+	i &= DTS;
+	Outbdp->BDSTAT = i;
+	Outbdp->BDADDR = &cdc_Out_bufferA[0];
+	i |= (UOWN | DTSEN);
+	Outbdp->BDSTAT = i;
+		
+	/*
+	Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
+	Outbdp->BDADDR = &cdc_Out_bufferA[0];
+	Outbdp->BDCNT = CDC_BUFFER_SIZE;
+	Outbdp->BDSTAT |= UOWN;
+	*/
+}
+
+void DisArmCDCOutDB(void) {
+	BYTE i;
+	i = Outbdp->BDSTAT;
+	i &= DTS;
+	Outbdp->BDSTAT = i;
+	Outbdp->BDADDR = &cdc_Out_buffer[0];
+	i |= (UOWN | DTSEN);
+	Outbdp->BDSTAT = i;
+	
+	/*
+	// WaitOutReady();
+	Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
+	Outbdp->BDADDR = &cdc_Out_buffer[0];
+	//Outbdp->BDCNT = CDC_BUFFER_SIZE;
+	Outbdp->BDSTAT |= UOWN;
+	*/
 }
 
 void SendZLP(void) {
@@ -537,9 +560,6 @@ BYTE getsUSBUSART(BYTE *buffer, BYTE len) {
     if (0 == (Outbdp->BDSTAT & UOWN)) // Do we have a packet from host?
     {
 
-		//if(d>0){ //IAN DEBUG
-		//	d--;
-		//}
         // Adjust the expected number of BYTEs to equal
         // the actual number of BYTEs received.
 

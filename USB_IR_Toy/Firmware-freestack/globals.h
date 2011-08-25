@@ -13,12 +13,9 @@
 //IR Toy functions
 #include "main.h"
 #include "SUMP.h"               //sump functions
-#include "IRIO.h"               //IRIO functions
 #include "IRs.h"                //IRs functions
 #include "RCdecoder.h"  //RC5 decoder
-#include "IrReflect.h"
 #include "usb2uart.h"
-#include "hal_lin_m.h"
 #include "irWidget.h"
 
 // From Microchip Library
