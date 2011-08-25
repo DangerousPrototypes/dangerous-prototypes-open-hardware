@@ -65,7 +65,7 @@ Low power request macro
 #define  USBLEDON()   USBLED = 0
 
 #define USB_VID (0x4d8)
-#define USB_PID (0xFD08)
+#define USB_PID (0xFB00)
 #define USB_DEV 0x0002
 
 #define USB_NUM_CONFIGURATIONS          1u
