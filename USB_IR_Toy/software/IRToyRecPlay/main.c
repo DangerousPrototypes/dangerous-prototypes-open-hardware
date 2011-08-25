@@ -91,14 +91,14 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v0.85 rc1"
+#define IRTOY_VERSION "v20 rc1"
 
 
 int modem =FALSE;   //set this to TRUE of testing a MODEM
 int verbose = 0;
-char useHandshake = 0;
-char  completereq = 0;
-char countreq = 0;
+char useHandshake = 1;
+char  completereq = 1;
+char countreq = 1;
 
 
 int print_usage(char * appname)
@@ -134,8 +134,6 @@ int print_usage(char * appname)
     printf("                     each command.\n");
     printf("                  -v Display verbose output, have to specify level 0, 1 etc,\n");
     printf("                     although at present it is only on or off :).\n");
-    printf("                  -b buffersize. Sets the buffer size, default is 256. Use inputs in multiple of 16.\n ");
-    printf("                       e.g. 16,32,64, 128, 256 and so on. Use to finetune playback buffer size, ");
     printf("                  -o Create OLS file based on the filename format \n");
     printf("                     ext. \"ols\" (Requires -f)  \n");
     printf("                  -t Create or Play text files based on the filename format\n");
@@ -205,7 +203,7 @@ int main(int argc, char** argv)
         exit(-1);
     }
 
-    while ((opt = getopt(argc, argv, "torpqsvnce:a:d:f:b:h:")) != -1)
+    while ((opt = getopt(argc, argv, "torpqsvcen:a:d:f:b:h:")) != -1)
     {
         // printf("%c  \n",opt);
         switch (opt)
@@ -352,18 +350,23 @@ int main(int argc, char** argv)
         return -1;
     }
     serial_setup(fd, (speed_t) param_speed);
+   // printf(" Pass serial_setup\n");
 
     cnt=0;
     serial_write( fd, "\xFF", 1);
+    //printf(" Pass write 0xff 1\n");
     serial_write( fd, "\xFF", 1);
+       //printf(" Pass write 0xff 1\n");
     for (i=0; i<5; i++)
     {
         //send 5x, just to make sure it exit the sump mode too
         serial_write( fd, "\x00", 1);
     }
+      // printf(" Pass write 0x00 x5\n");
     while (1)
     {
         serial_write( fd, "v", 1);
+           //printf(" Pass write v\n");
         res= serial_read(fd, buffer, sizeof(buffer));  //get version
         if (res > 0)
         {
@@ -414,11 +417,11 @@ int main(int argc, char** argv)
     }
 
 
-    if (FIRMWARE_VERSION < 15)
+    if (FIRMWARE_VERSION < 20)
     {
         printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-        printf(" This utility is for firmware version 15 and up.\n");
-        printf(" Please update your IRTOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
+        printf(" This utility is for firmware version 20 and up.\n");
+        printf(" Please update your IR TOY firmware version %i to the latest firmware.\n",FIRMWARE_VERSION);
         printf(" See documentation and firmware update procedures at \n");
         printf(" http://dangerousprototypes.com/docs/USB_Infrared_Toy#Firmware\n");
         printf(" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
@@ -533,13 +536,13 @@ int main(int argc, char** argv)
 
         IRqueue(param_fname,fd);
     } // queue=true
-
+    Sleep(2000);
     serial_close(fd);
     FREE(param_port);
     FREE(param_speed);
     FREE(param_fname);
     FREE(param_buffin);
-    printf("\n Thank you for playing with the IRToy version: %s. \n", IRTOY_VERSION);
+    printf("\n Thank you for playing with the IR Toy! Utility version: %s. \n", IRTOY_VERSION);
 
     return 0;
 }  //main
