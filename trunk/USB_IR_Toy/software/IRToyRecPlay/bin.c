@@ -250,7 +250,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 
 #ifdef _WIN32
 
-            Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+         //   Sleep(atoi(param_delay)*1000);           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
             sleep(atoi(param_delay));           //auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #endif
@@ -269,12 +269,18 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             JTRbuffer[0] = 0x26; // causes packet handshake to be sent.
             serial_write( fd, JTRbuffer, 1);
         }
+        if (countreq)
+        {
+            JTRbuffer[0] = 0x24;  // causes transmit count to be returned.
+            serial_write( fd, JTRbuffer, 1);
+        }
+        if (completereq)
+        {
 
-        JTRbuffer[0] = 0x24;  // causes transmit count to be returned.
-        serial_write( fd, JTRbuffer, 1);
+            JTRbuffer[0] = 0x25;  // causes Compete message to be returned.
+            serial_write( fd, JTRbuffer, 1);
 
-        JTRbuffer[0] = 0x25;  // causes Compete message to be returned.
-        serial_write( fd, JTRbuffer, 1);
+        }
 
         serial_write( fd, "\x3", 1);     // was "\x03"
         if (useHandshake)
@@ -304,6 +310,8 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             printf(" Did not receive packet size from IR TOY. \n");
             exit(-1);
         }
+
+        int totalbytes=0;
 
         while(!feof(fp))
         {
@@ -376,6 +384,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                     else
                     {
                         printf(" %i bytes....ok.\n",comsresult);
+                        totalbytes+=comsresult;
                         Error_flag=0;
                         // added here: bytes irtoy ready to recieve
                         // check for buffer[res] and buffer[res-1] == 0xff
@@ -398,9 +407,9 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                                     }
                                     else
                                     {
-                                        Sleep(1000);
+                                        Sleep(1);
                                         timecounter++;
-                                        if (timecounter> 20)
+                                        if (timecounter> 2000)
                                         {
                                             printf(" IRtoy Got no reply...\n");
                                             break;
@@ -412,6 +421,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                         else
                         {
                             if (useHandshake)
+                            Sleep(200); // JTR6 added, give the IR TOY time to send the 0xFFFF
                                 res= serial_read(fd, bufferrx, sizeof(bufferrx)); // JTR discard count
                             //   printf(" eof-- got 0xff \n");
                             // printf("\n");
@@ -431,7 +441,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
 
 #ifdef _WIN32
 // temporary disabled to alow to pass here.. in win64 param_delay with -1 seems to wait forever. --Need to confirm
-                    Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
+           //         Sleep(atoi(param_delay)*1000);           //milliseconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
 #else
                     //         printf("Sleeping..\n");
                     sleep(atoi(param_delay));           //seconds auto play. Do not wait for keyboard input, just wait the specified time (miliseconds)
@@ -453,8 +463,8 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                 if(buffer[0]=='t')
                 {
                     bytestx=(buffer[1]<<8)+(uint8_t)buffer[2];
-                    printf(" IR Toy got: %d bytes", bytestx);
-                    //if(bytestx==totalbytes) ok else failed;
+                    printf(" IR Toy got: %d bytes, file was %d bytes ", bytestx, totalbytes);
+                    if(bytestx==totalbytes) printf("ok\n"); else printf("failed\n");
                 }
                 else
                 {
@@ -466,7 +476,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             }
             else
             {
-                printf(" IRtoy Did not return correct No. of count bytes...\n");
+                printf(" IR Toy Did not return correct No. of count bytes...\n");
             }
         }
         if (completereq)
@@ -476,7 +486,11 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             {
                 if(buffer[0]=='C')
                 {
-                    printf(" IR Toy finished sending");
+                    printf(" Transmit was successful and glitch free!");
+                }
+                 else if(buffer[0]=='F')
+                {
+                    printf(" Error, transmit was interrupted at some point!!!");
                 }
                 else
                 {
@@ -487,11 +501,11 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
             }
             else
             {
-                printf(" IRtoy Did not return complete token...\n");
+                printf(" IR Toy Did not return complete token...\n");
             }
         }
 
-        Sleep(1000);
+      //  Sleep(1000);
 
         fclose(fp);
         if (soloplay==TRUE)

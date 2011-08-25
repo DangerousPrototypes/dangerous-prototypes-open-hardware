@@ -1148,7 +1148,7 @@
 1307027900 c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\kbhit.h
 	<stdio.h>
 
-1310130422 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\main.c
+1314229363 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\main.c
 	<stdlib.h>
 	<unistd.h>
 	<string.h>
@@ -1268,6 +1268,137 @@
 1308948998 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\txt.c
 	"txt.h"
 
-1310135987 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\bin.c
+1314183479 source:c:\000working\usb central\00 dp irtoy consolidated\irtoyrecplay\bin.c
 	"bin.h"
+
+1307056700 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\kbhit.c
+	"kbhit.h"
+	<termios.h>
+	<unistd.h>
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\kbhit.h
+	<stdio.h>
+
+1307354056 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\ols.c
+	"ols.h"
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\ols.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+
+1307056700 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\queue.c
+	"queue.h"
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\queue.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\serial.h
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+	<IOKit/serial/ioss.h>
+	<sys/ioctl.h>
+	<stdint.h>
+	<windows.h>
+	<time.h>
+	<unistd.h>
+	<termios.h>
+	<sys/select.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1308822964 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\serial.c
+	"config.h"
+	<stdio.h>
+	<stdlib.h>
+	<fcntl.h>
+	<string.h>
+	"serial.h"
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\config.h
+
+1308977798 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\txt.c
+	"txt.h"
+
+1307056700 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\txt.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"kbhit.h"
+	"serial.h"
+
+1314260549 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\bin.c
+	"bin.h"
+
+1308611116 e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\bin.h
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	<stdint.h>
+	"kbhit.h"
+	"serial.h"
+
+1314260546 source:e:\work\dp\usb_ir_toy\firmware-freestack\pr-jtr\main.c
+	<stdlib.h>
+	<unistd.h>
+	<string.h>
+	<time.h>
+	<stdio.h>
+	<conio.h>
+	<windef.h>
+	<windows.h>
+	<sys/select.h>
+	<ncurses.h>
+	<stdbool.h>
+	<unistd.h>
+	"serial.h"
+	"txt.h"
+	"ols.h"
+	"bin.h"
+	"queue.h"
 
