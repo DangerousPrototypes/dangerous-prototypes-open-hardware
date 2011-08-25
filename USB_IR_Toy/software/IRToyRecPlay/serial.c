@@ -51,8 +51,8 @@ int serial_setup(int fd, unsigned long speed)
 	timeouts.ReadIntervalTimeout = 100;
 	timeouts.ReadTotalTimeoutMultiplier = 10;
 	timeouts.ReadTotalTimeoutConstant = 100;
-	timeouts.WriteTotalTimeoutMultiplier = 10;
-	timeouts.WriteTotalTimeoutConstant = 100;
+	timeouts.WriteTotalTimeoutMultiplier = 100;
+	timeouts.WriteTotalTimeoutConstant = 2550;
 
 	if (!SetCommTimeouts(hCom, &timeouts)) {
 		return -1;
