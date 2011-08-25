@@ -1,5 +1,5 @@
 MPLINK 4.37, Linker
-Linker Map File - Created Wed Aug 24 16:08:04 2011
+Linker Map File - Created Thu Aug 25 10:17:46 2011
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -10,54 +10,45 @@ Linker Map File - Created Wed Aug 24 16:08:04 2011
     REMAPPED_RESET_VECTOR       code   0x000800    program   0x000006
 REMAPPED_HIGH_INTERRUPT_VECTOR       code   0x000808    program   0x000006
 REMAPPED_LOW_INTERRUPT_VECTOR       code   0x000818    program   0x000006
-                   .cinit    romdata   0x00082a    program   0x000062
-        .code_usb_stack.o       code   0x00088c    program   0x0012b8
-              .code_IRs.o       code   0x001b44    program   0x000a98
-              .code_cdc.o       code   0x0025dc    program   0x000990
-             .code_main.o       code   0x002f6c    program   0x000574
-             .code_IRIO.o       code   0x0034e0    program   0x000428
-             .code_SUMP.o       code   0x003908    program   0x0002ec
-         .code_irWidget.o       code   0x003bf4    program   0x000222
-        .code_RCdecoder.o       code   0x003e16    program   0x0001a6
-         .code_usb2uart.o       code   0x003fbc    program   0x00015c
-        .code_IrReflect.o       code   0x004118    program   0x000156
-        .code_hal_Lin_m.o       code   0x00426e    program   0x0000cc
-          .romdata_main.o    romdata   0x00433a    program   0x0000a7
-         .romdata_c018i.o    romdata   0x0043e1    program   0x000000
-      .romdata_usb2uart.o    romdata   0x0043e1    program   0x000000
-      .idata_usb2uart.o_i    romdata   0x0043e1    program   0x000000
-     .romdata_usb_stack.o    romdata   0x0043e1    program   0x000000
-     .idata_usb_stack.o_i    romdata   0x0043e1    program   0x000000
-          .romdata_SUMP.o    romdata   0x0043e1    program   0x000000
-     .romdata_RCdecoder.o    romdata   0x0043e1    program   0x000000
-           .romdata_cdc.o    romdata   0x0043e1    program   0x000000
-     .idata_hal_Lin_m.o_i    romdata   0x0043e1    program   0x000001
-     .romdata_hal_Lin_m.o    romdata   0x0043e1    program   0x000000
-          .romdata_IRIO.o    romdata   0x0043e1    program   0x000000
-      .romdata_irWidget.o    romdata   0x0043e1    program   0x000000
-      .idata_irWidget.o_i    romdata   0x0043e1    program   0x000000
-           .romdata_IRs.o    romdata   0x0043e1    program   0x000000
-        .romdata___init.o    romdata   0x0043e1    program   0x000000
-      .romdata_fxd3232u.o    romdata   0x0043e1    program   0x000000
-     .romdata_IrReflect.o    romdata   0x0043e1    program   0x000000
-               _cinit_scn       code   0x0043e2    program   0x00009e
-                   STRING       code   0x004480    program   0x000056
-         .code_fxd3232u.o       code   0x0044d6    program   0x000048
-             D10KTCYXCODE       code   0x00451e    program   0x00002e
-                    .code       code   0x00454c    program   0x000020
-             _startup_scn       code   0x00456c    program   0x00001c
-           .code___init.o       code   0x004588    program   0x000002
-          .idata_main.o_i    romdata   0x00458a    program   0x000002
-           .idata_cdc.o_i    romdata   0x00458c    program   0x000006
-      .idata_fxd3232u.o_i    romdata   0x00458c    program   0x000000
-        .idata___init.o_i    romdata   0x004592    program   0x000000
-         .idata_c018i.o_i    romdata   0x004592    program   0x000000
-          .idata_SUMP.o_i    romdata   0x004592    program   0x000001
-     .idata_RCdecoder.o_i    romdata   0x004593    program   0x000001
-     .idata_IrReflect.o_i    romdata   0x004594    program   0x000003
-           .idata_IRs.o_i    romdata   0x004597    program   0x000001
-          .idata_IRIO.o_i    romdata   0x004598    program   0x000001
-            .code_c018i.o       code   0x00459a    program   0x000000
+                   .cinit    romdata   0x00082a    program   0x00003e
+        .code_usb_stack.o       code   0x000868    program   0x0012b8
+              .code_cdc.o       code   0x001b20    program   0x0009cc
+              .code_IRs.o       code   0x0024ec    program   0x000924
+             .code_main.o       code   0x002e10    program   0x000518
+             .code_SUMP.o       code   0x003328    program   0x0002ec
+         .code_irWidget.o       code   0x003614    program   0x000222
+        .code_RCdecoder.o       code   0x003836    program   0x0001a6
+         .code_usb2uart.o       code   0x0039dc    program   0x00015c
+          .romdata_main.o    romdata   0x003b38    program   0x0000a7
+     .romdata_RCdecoder.o    romdata   0x003bdf    program   0x000000
+          .idata_SUMP.o_i    romdata   0x003bdf    program   0x000001
+          .romdata_SUMP.o    romdata   0x003bdf    program   0x000000
+     .idata_usb_stack.o_i    romdata   0x003bdf    program   0x000000
+     .romdata_usb_stack.o    romdata   0x003bdf    program   0x000000
+        .romdata___init.o    romdata   0x003bdf    program   0x000000
+        .idata___init.o_i    romdata   0x003bdf    program   0x000000
+      .romdata_fxd3232u.o    romdata   0x003bdf    program   0x000000
+      .idata_fxd3232u.o_i    romdata   0x003bdf    program   0x000000
+           .romdata_cdc.o    romdata   0x003bdf    program   0x000000
+      .romdata_usb2uart.o    romdata   0x003bdf    program   0x000000
+      .idata_usb2uart.o_i    romdata   0x003bdf    program   0x000000
+         .idata_c018i.o_i    romdata   0x003bdf    program   0x000000
+         .romdata_c018i.o    romdata   0x003bdf    program   0x000000
+           .romdata_IRs.o    romdata   0x003bdf    program   0x000000
+      .idata_irWidget.o_i    romdata   0x003bdf    program   0x000000
+      .romdata_irWidget.o    romdata   0x003bdf    program   0x000000
+               _cinit_scn       code   0x003be0    program   0x00009e
+                   STRING       code   0x003c7e    program   0x000056
+         .code_fxd3232u.o       code   0x003cd4    program   0x000048
+             D10KTCYXCODE       code   0x003d1c    program   0x00002e
+                    .code       code   0x003d4a    program   0x000020
+             _startup_scn       code   0x003d6a    program   0x00001c
+           .code___init.o       code   0x003d86    program   0x000002
+          .idata_main.o_i    romdata   0x003d88    program   0x000002
+           .idata_cdc.o_i    romdata   0x003d8a    program   0x000006
+     .idata_RCdecoder.o_i    romdata   0x003d90    program   0x000001
+           .idata_IRs.o_i    romdata   0x003d91    program   0x000001
+            .code_c018i.o       code   0x003d92    program   0x000000
     .config_300000_main.o    romdata   0x300000    program   0x000001
     .config_300001_main.o    romdata   0x300001    program   0x000001
     .config_300002_main.o    romdata   0x300002    program   0x000001
@@ -76,32 +67,26 @@ REMAPPED_LOW_INTERRUPT_VECTOR       code   0x000818    program   0x000006
                 DELAYDAT1      udata   0x000019       data   0x000001
             .udata_main.o      udata   0x000060       data   0x000083
         .udata_usb2uart.o      udata   0x0000e3       data   0x00001a
-       .idata_IrReflect.o      idata   0x0000fd       data   0x000003
+            .idata_main.o      idata   0x0000fd       data   0x000002
+            .idata_SUMP.o      idata   0x0000ff       data   0x000001
        .udata_usb_stack.o      udata   0x000100       data   0x000061
              .udata_cdc.o      udata   0x000161       data   0x000059
              .udata_IRs.o      udata   0x0001ba       data   0x00001e
-            .udata_IRIO.o      udata   0x0001d8       data   0x000013
-       .udata_hal_Lin_m.o      udata   0x0001eb       data   0x00000e
-        .udata_irWidget.o      udata   0x0001f9       data   0x000007
-            .udata_SUMP.o      udata   0x000200       data   0x00000c
-           .udata_c018i.o      udata   0x00020c       data   0x00000a
-             .idata_cdc.o      idata   0x000216       data   0x000006
-       .udata_RCdecoder.o      udata   0x00021c       data   0x000004
-            .idata_main.o      idata   0x000220       data   0x000002
-       .udata_IrReflect.o      udata   0x000222       data   0x000001
-       .idata_hal_Lin_m.o      idata   0x000223       data   0x000001
-            .idata_SUMP.o      idata   0x000224       data   0x000001
-       .idata_RCdecoder.o      idata   0x000225       data   0x000001
-             .idata_IRs.o      idata   0x000226       data   0x000001
-            .idata_IRIO.o      idata   0x000227       data   0x000001
-        .udata_fxd3232u.o      udata   0x000228       data   0x000000
-        .idata_fxd3232u.o      idata   0x000228       data   0x000000
-        .idata_usb2uart.o      idata   0x000228       data   0x000000
-          .udata___init.o      udata   0x000228       data   0x000000
-          .idata___init.o      idata   0x000228       data   0x000000
-       .idata_usb_stack.o      idata   0x000228       data   0x000000
-        .idata_irWidget.o      idata   0x000228       data   0x000000
-           .idata_c018i.o      idata   0x000228       data   0x000000
+            .udata_SUMP.o      udata   0x0001d8       data   0x00000c
+           .udata_c018i.o      udata   0x0001e4       data   0x00000a
+        .udata_irWidget.o      udata   0x0001ee       data   0x000007
+             .idata_cdc.o      idata   0x0001f5       data   0x000006
+       .udata_RCdecoder.o      udata   0x0001fb       data   0x000004
+       .idata_RCdecoder.o      idata   0x0001ff       data   0x000001
+             .idata_IRs.o      idata   0x000200       data   0x000001
+          .udata___init.o      udata   0x000201       data   0x000000
+        .idata_fxd3232u.o      idata   0x000201       data   0x000000
+        .udata_fxd3232u.o      udata   0x000201       data   0x000000
+          .idata___init.o      idata   0x000201       data   0x000000
+        .idata_usb2uart.o      idata   0x000201       data   0x000000
+       .idata_usb_stack.o      idata   0x000201       data   0x000000
+        .idata_irWidget.o      idata   0x000201       data   0x000000
+           .idata_c018i.o      idata   0x000201       data   0x000000
                    .stack      udata   0x000300       data   0x000100
                   usb_bdt      udata   0x000400       data   0x000018
                  usb_data      udata   0x000480       data   0x00001a
@@ -120,140 +105,126 @@ REMAPPED_LOW_INTERRUPT_VECTOR       code   0x000818    program   0x000006
                             0x000800    0x000805      
                             0x000808    0x00080d      
                             0x000818    0x00081d      
-                            0x00082a    0x004598      
+                            0x00082a    0x003d91      
                             0x300000    0x300003      
                             0x300005    0x300006      
                             0x300008    0x30000d      
-            15775 out of 33048 program addresses used, program memory utilization is 47%
+            13720 out of 33048 program addresses used, program memory utilization is 41%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-             AbortHandler   0x0032b0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-               ArmCDCInDB   0x002cee    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              ArmCDCOutDB   0x002ca6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                   D10K_1   0x00452a    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-                    D10Kl   0x004536    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-                    D10Kx   0x004528    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-               DefaultISR   0x0034b4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-             Delay10KTCYx   0x00451e    program     extern C:\MCC18\src\traditional\delays\d10ktcyx.asm
-            DisArmCDCInDB   0x002d60    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-           DisArmCDCOutDB   0x002d24    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-         FAST_usb_handler   0x00171a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                 FXD3232U   0x0044d6    program     extern C:\MCC18\src\traditional\math\fxd3232u.c
-             GetPulseFreq   0x003cfc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-             GetPulseTime   0x003c30    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-       GetUsbIrToyVersion   0x003408    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+             AbortHandler   0x00310c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+               ArmCDCInDB   0x0021ea    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              ArmCDCOutDB   0x00224a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                   D10K_1   0x003d28    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+                    D10Kl   0x003d34    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+                    D10Kx   0x003d26    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+               DefaultISR   0x0032fc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+             Delay10KTCYx   0x003d1c    program     extern C:\MCC18\src\traditional\delays\d10ktcyx.asm
+            DisArmCDCInDB   0x002220    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+           DisArmCDCOutDB   0x0022b0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+         FAST_usb_handler   0x0016f6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                 FXD3232U   0x003cd4    program     extern C:\MCC18\src\traditional\math\fxd3232u.c
+             GetPulseFreq   0x00371c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+             GetPulseTime   0x003650    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+       GetUsbIrToyVersion   0x003264    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                  High_ISR   0x000008    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-IRdecoderInterruptHandlerHigh   0x003ed4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-     InterruptHandlerHigh   0x00343c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-      InterruptHandlerLow   0x0034ba    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-         IrReflectService   0x00416e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-           IrReflectSetup   0x004134    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-      IrReflectTxPwmSetup   0x004118    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-IrReflectionInterruptHandlerHigh   0x004258    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-             IrS_ReadPort   0x001bd8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-         IrS_SetPortEqual   0x001b44    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-     IrS_SetPortTrisEqual   0x001b8e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-              IrSumpSetup   0x003908    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+IRdecoderInterruptHandlerHigh   0x0038f4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+     InterruptHandlerHigh   0x003298    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+      InterruptHandlerLow   0x003302    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+             IrS_ReadPort   0x002580    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+         IrS_SetPortEqual   0x0024ec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+     IrS_SetPortTrisEqual   0x002536    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+              IrSumpSetup   0x003328    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
                   Low_ISR   0x000018    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-        PEEKusbbufgetbyte   0x002f22    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-   ProcessDefaultMainMode   0x0032a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                ProcessIR   0x003e3e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+        PEEKusbbufgetbyte   0x0024a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+   ProcessDefaultMainMode   0x0030fe    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                ProcessIR   0x00385e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
         Remapped_High_ISR   0x000808    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
          Remapped_Low_ISR   0x000818    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
- SUMPInterruptHandlerHigh   0x003a98    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                 SelfTest   0x00316e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       SendCDC_In_ArmNext   0x002c10    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                  SendZLP   0x002d8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     SetUpDefaultMainMode   0x0032a6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-               SetupBoard   0x003366    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                 SetupRC5   0x003e16    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-                SumpReset   0x003a8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-           USBDeviceTasks   0x0009ee    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-Usb2UartInterruptHandlerHigh   0x0040fa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-          Usb2UartService   0x00402a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-            Usb2UartSetup   0x003fbc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-       Usb2Uart_CloseUart   0x004024    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-        Usb2Uart_InitUart   0x003fec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-              WaitInReady   0x002a7e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-             WaitOutReady   0x002a46    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              _4jContinue   0x0044b4    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                   _5jEnd   0x0044be    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-       _D10KTCYXCODE_0010   0x00452e    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-       _D10KTCYXCODE_001C   0x00453a    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-       ___case_0_lbl00028   0x003076    program     static                          
-       ___case_0_lbl00091   0x00349c    program     static                          
-     ___case_101_lbl00038   0x003134    program     static                          
-     ___case_112_lbl00046   0x003154    program     static                          
-     ___case_114_lbl00033   0x0030ea    program     static                          
-     ___case_115_lbl00034   0x00311c    program     static                          
-     ___case_116_lbl00042   0x00314c    program     static                          
-     ___case_117_lbl00040   0x003140    program     static                          
-     ___case_118_lbl00044   0x003150    program     static                          
-     ___case_120_lbl00036   0x003128    program     static                          
-       ___case_1_lbl00027   0x003076    program     static                          
-       ___case_1_lbl00088   0x00348a    program     static                          
-       ___case_2_lbl00015   0x00300e    program     static                          
-       ___case_2_lbl00026   0x003076    program     static                          
-       ___case_2_lbl00087   0x003484    program     static                          
-      ___case_36_lbl00048   0x003162    program     static                          
-       ___case_3_lbl00017   0x00301a    program     static                          
-       ___case_3_lbl00085   0x003478    program     static                          
-       ___case_4_lbl00019   0x003026    program     static                          
-       ___case_4_lbl00086   0x00347e    program     static                          
-       ___case_5_lbl00021   0x003032    program     static                          
-       ___case_5_lbl00089   0x003490    program     static                          
-      ___case_69_lbl00039   0x003134    program     static                          
-       ___case_6_lbl00023   0x00303e    program     static                          
-       ___case_6_lbl00090   0x003496    program     static                          
-       ___case_7_lbl00084   0x003472    program     static                          
-      ___case_80_lbl00047   0x003154    program     static                          
-      ___case_82_lbl00032   0x0030ea    program     static                          
-      ___case_83_lbl00035   0x00311c    program     static                          
-      ___case_84_lbl00043   0x00314c    program     static                          
-      ___case_85_lbl00041   0x003140    program     static                          
-      ___case_86_lbl00045   0x003150    program     static                          
-      ___case_88_lbl00037   0x003128    program     static                          
-      ___default_lbl00024   0x00304a    program     static                          
-      ___default_lbl00092   0x0034a2    program     static                          
-           ___do_lbl00003   0x002fec    program     static                          
-           ___do_lbl00004   0x002ff4    program     static                          
-           ___do_lbl00012   0x002fb8    program     static                          
-         ___else_lbl00009   0x002fd8    program     static                          
-         ___else_lbl00011   0x002fcc    program     static                          
-           ___if_lbl00005   0x002fc0    program     static                          
-           ___if_lbl00007   0x002fec    program     static                          
-           ___if_lbl00008   0x002fec    program     static                          
-           ___if_lbl00010   0x002fec    program     static                          
-           ___if_lbl00014   0x003018    program     static                          
-           ___if_lbl00016   0x003024    program     static                          
-           ___if_lbl00018   0x003030    program     static                          
-           ___if_lbl00020   0x00303c    program     static                          
-           ___if_lbl00022   0x003048    program     static                          
-           ___if_lbl00029   0x00308a    program     static                          
-           ___if_lbl00030   0x00308c    program     static                          
-           ___if_lbl00049   0x003168    program     static                          
-       ___return_lbl00000   0x00451c    program     static                          
+ SUMPInterruptHandlerHigh   0x0034b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                 SelfTest   0x002fca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+       SendCDC_In_ArmNext   0x002154    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                  SendZLP   0x00230a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     SetUpDefaultMainMode   0x003102    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+               SetupBoard   0x0031c2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                 SetupRC5   0x003836    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                SumpReset   0x0034aa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+           USBDeviceTasks   0x0009ca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+Usb2UartInterruptHandlerHigh   0x003b1a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+          Usb2UartService   0x003a4a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+            Usb2UartSetup   0x0039dc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+       Usb2Uart_CloseUart   0x003a44    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+        Usb2Uart_InitUart   0x003a0c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+              WaitInReady   0x001fc2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+             WaitOutReady   0x001f8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              _4jContinue   0x003cb2    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                   _5jEnd   0x003cbc    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+       _D10KTCYXCODE_0010   0x003d2c    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+       _D10KTCYXCODE_001C   0x003d38    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+       ___case_0_lbl00024   0x002efa    program     static                          
+       ___case_0_lbl00081   0x0032e4    program     static                          
+     ___case_112_lbl00038   0x002fb0    program     static                          
+     ___case_114_lbl00029   0x002f5e    program     static                          
+     ___case_115_lbl00030   0x002f90    program     static                          
+     ___case_116_lbl00034   0x002fa8    program     static                          
+     ___case_117_lbl00032   0x002f9c    program     static                          
+     ___case_118_lbl00036   0x002fac    program     static                          
+       ___case_1_lbl00023   0x002efa    program     static                          
+       ___case_1_lbl00079   0x0032d8    program     static                          
+       ___case_2_lbl00015   0x002eaa    program     static                          
+       ___case_2_lbl00022   0x002efa    program     static                          
+       ___case_2_lbl00078   0x0032d2    program     static                          
+      ___case_36_lbl00040   0x002fbe    program     static                          
+       ___case_3_lbl00017   0x002eb6    program     static                          
+       ___case_3_lbl00077   0x0032cc    program     static                          
+       ___case_4_lbl00019   0x002ec2    program     static                          
+       ___case_4_lbl00080   0x0032de    program     static                          
+       ___case_5_lbl00076   0x0032c6    program     static                          
+      ___case_80_lbl00039   0x002fb0    program     static                          
+      ___case_82_lbl00028   0x002f5e    program     static                          
+      ___case_83_lbl00031   0x002f90    program     static                          
+      ___case_84_lbl00035   0x002fa8    program     static                          
+      ___case_85_lbl00033   0x002f9c    program     static                          
+      ___case_86_lbl00037   0x002fac    program     static                          
+      ___default_lbl00020   0x002ece    program     static                          
+      ___default_lbl00082   0x0032ea    program     static                          
+           ___do_lbl00003   0x002e90    program     static                          
+           ___do_lbl00004   0x002e98    program     static                          
+           ___do_lbl00012   0x002e5c    program     static                          
+         ___else_lbl00009   0x002e7c    program     static                          
+         ___else_lbl00011   0x002e70    program     static                          
+           ___if_lbl00005   0x002e64    program     static                          
+           ___if_lbl00007   0x002e90    program     static                          
+           ___if_lbl00008   0x002e90    program     static                          
+           ___if_lbl00010   0x002e90    program     static                          
+           ___if_lbl00014   0x002eb4    program     static                          
+           ___if_lbl00016   0x002ec0    program     static                          
+           ___if_lbl00018   0x002ecc    program     static                          
+           ___if_lbl00025   0x002f0e    program     static                          
+           ___if_lbl00026   0x002f10    program     static                          
+           ___if_lbl00041   0x002fc4    program     static                          
+       ___return_lbl00000   0x003d1a    program     static                          
+       ___return_lbl00000   0x002fc8    program     static                          
        ___return_lbl00000   0x000004    program     static                          
-       ___return_lbl00000   0x00316c    program     static                          
-       ___return_lbl00001   0x004586    program     static                          
-       ___return_lbl00002   0x00447e    program     static                          
-       ___return_lbl00082   0x0034a4    program     static                          
-       ___return_lbl00093   0x0034b8    program     static                          
-       ___return_lbl00095   0x00080c    program     static                          
-       ___return_lbl00096   0x00081c    program     static                          
-       ___return_lbl00097   0x000804    program     static                          
-       ___return_lbl00098   0x00000c    program     static                          
-       ___return_lbl00099   0x00001c    program     static                          
-   ___switchexit_lbl00013   0x00316a    program     static                          
-   ___switchexit_lbl00025   0x00308c    program     static                          
-   ___switchexit_lbl00031   0x003168    program     static                          
-   ___switchexit_lbl00083   0x0034a4    program     static                          
-        ___while_lbl00001   0x002fb8    program     static                          
-        ___while_lbl00002   0x00316c    program     static                          
+       ___return_lbl00001   0x003d84    program     static                          
+       ___return_lbl00002   0x003c7c    program     static                          
+       ___return_lbl00074   0x0032ec    program     static                          
+       ___return_lbl00083   0x003300    program     static                          
+       ___return_lbl00085   0x00080c    program     static                          
+       ___return_lbl00086   0x00081c    program     static                          
+       ___return_lbl00087   0x000804    program     static                          
+       ___return_lbl00088   0x00000c    program     static                          
+       ___return_lbl00089   0x00001c    program     static                          
+   ___switchexit_lbl00013   0x002fc6    program     static                          
+   ___switchexit_lbl00021   0x002f10    program     static                          
+   ___switchexit_lbl00027   0x002fc4    program     static                          
+   ___switchexit_lbl00075   0x0032ec    program     static                          
+        ___while_lbl00001   0x002e5c    program     static                          
+        ___while_lbl00002   0x002fc8    program     static                          
                __config_0   0x300000    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                __config_1   0x300001    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
               __config_10   0x30000c    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
@@ -266,88 +237,79 @@ Usb2UartInterruptHandlerHigh   0x0040fa    program     extern E:\Work\dp\USB_IR_
                __config_7   0x300009    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                __config_8   0x30000a    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                __config_9   0x30000b    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                   __init   0x004588    program     extern C:\MCC18\src\traditional\stdclib\__init.c
-               __tmplbl_0   0x002fe6    program     static                          
-               __tmplbl_1   0x002fde    program     static                          
-            __zero_memory   0x00454c    program     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                _do_cinit   0x0043e2    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                   __init   0x003d86    program     extern C:\MCC18\src\traditional\stdclib\__init.c
+               __tmplbl_0   0x002e8a    program     static                          
+               __tmplbl_1   0x002e82    program     static                          
+            __zero_memory   0x003d4a    program     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                _do_cinit   0x003be0    program     extern C:\MCC18\src\traditional\startup\c018i.c
                    _entry   0x000000    program     extern C:\MCC18\src\traditional\startup\c018i.c
-                   _false   0x004518    program     static                          
+                   _false   0x003d16    program     static                          
                    _reset   0x000800    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                 _startup   0x00456c    program     extern C:\MCC18\src\traditional\startup\c018i.c
-    cdc_config_descriptor   0x00434c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-    cdc_device_descriptor   0x00433a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-      cdc_get_line_coding   0x0028a0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-cdc_set_control_line_state_status   0x002a2e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
- cdc_set_line_coding_data   0x0028b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-cdc_set_line_coding_status   0x002a16    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                cdc_setup   0x0026ac    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            cdc_str_descs   0x00438f    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-                  cleanup   0x002454    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                compare_l   0x004562    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                copy_loop   0x004454    program     static                          
-            copy_one_byte   0x00445a    program     static                          
-                     done   0x00447e    program     static                          
-             done_copying   0x004468    program     static                          
-       getCDC_Out_ArmNext   0x002b7c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-               getInReady   0x002dd4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              getOutReady   0x002dbc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-             getsUSBUSART   0x002dec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-    hal_Lin_M_HandlerHigh   0x004318    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-           hal_Lin_M_Init   0x00426e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-     hal_Lin_M_IsDataRxOk   0x0042f6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-       hal_Lin_M_SendData   0x0042b4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-hal_Lin_M_SendSyncBreakHeaderID   0x004280    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-                  initCDC   0x0025dc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
- irIOInterruptHandlerHigh   0x0037b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-             irIOSend8Bit   0x0036de    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-              irIOservice   0x00355e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-                irIOsetup   0x0034e0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-            irSUMPservice   0x003924    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-  irWInterruptHandlerHigh   0x003d62    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-          irWidgetservice   0x003bf4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-  irsInterruptHandlerHigh   0x00246e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-               irsService   0x001cb2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                 irsSetup   0x001c22    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                     jEnd   0x0044c4    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                    jLoop   0x0044a8    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                     loop   0x00457c    program     static                          
-                     loop   0x0044e4    program     static                          
-                   loop_h   0x00455a    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                   loop_l   0x004564    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                     main   0x002f6c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                   memcpy   0x004480    program     extern C:\MCC18\src\traditional\stdclib\memcpy.asm
-     putFULLARRAYUSBUSART   0x002b32    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     putPARTARRAYUSBUSART   0x002ab6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                     test   0x0043fc    program     static                          
-         usb_RequestError   0x0019b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                  usb_ack   0x0018ec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_ack_dat1   0x001970    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_ack_zero   0x001926    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardDeviceRequest   0x000cd6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardEndpointRequest   0x001484    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardInterfaceRequest   0x001322    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_error   0x000a3c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-            usb_handle_in   0x001754    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-           usb_handle_out   0x0017ae    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_reset   0x000a40    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_setup   0x000b70    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-   usb_handle_transaction   0x000b08    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-              usb_handler   0x0009f2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                 usb_init   0x00088c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_register_class_setup_handler   0x001834    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
- usb_register_sof_handler   0x001818    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_send_rom   0x0019f2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-          usb_set_address   0x0019c6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-       usb_set_in_handler   0x00186c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-      usb_set_out_handler   0x0018a8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                usb_start   0x0009da    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-              usbbufflush   0x002f64    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            usbbufgetbyte   0x002edc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            usbbufservice   0x002eb0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     user_configured_init   0x002608    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-               zero_block   0x00455a    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                 _startup   0x003d6a    program     extern C:\MCC18\src\traditional\startup\c018i.c
+    cdc_config_descriptor   0x003b4a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+    cdc_device_descriptor   0x003b38    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+      cdc_get_line_coding   0x001de4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+cdc_set_control_line_state_status   0x001f72    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+ cdc_set_line_coding_data   0x001dfc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+cdc_set_line_coding_status   0x001f5a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                cdc_setup   0x001bf0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            cdc_str_descs   0x003b8d    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+                  cleanup   0x002ca6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                compare_l   0x003d60    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                copy_loop   0x003c52    program     static                          
+            copy_one_byte   0x003c58    program     static                          
+                     done   0x003c7c    program     static                          
+             done_copying   0x003c66    program     static                          
+       getCDC_Out_ArmNext   0x0020c0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+               getInReady   0x002354    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              getOutReady   0x00233c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+             getsUSBUSART   0x00236c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                  initCDC   0x001b20    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            irSUMPservice   0x003344    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+  irWInterruptHandlerHigh   0x003782    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+          irWidgetservice   0x003614    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+  irsInterruptHandlerHigh   0x002cc0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+               irsService   0x002658    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                 irsSetup   0x0025ca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                     jEnd   0x003cc2    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                    jLoop   0x003ca6    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                     loop   0x003d7a    program     static                          
+                     loop   0x003ce2    program     static                          
+                   loop_h   0x003d58    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                   loop_l   0x003d62    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                     main   0x002e10    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                   memcpy   0x003c7e    program     extern C:\MCC18\src\traditional\stdclib\memcpy.asm
+     putFULLARRAYUSBUSART   0x002076    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     putPARTARRAYUSBUSART   0x001ffa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                     test   0x003bfa    program     static                          
+         usb_RequestError   0x001994    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                  usb_ack   0x0018c8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_ack_dat1   0x00194c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_ack_zero   0x001902    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardDeviceRequest   0x000cb2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardEndpointRequest   0x001460    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardInterfaceRequest   0x0012fe    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_error   0x000a18    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+            usb_handle_in   0x001730    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+           usb_handle_out   0x00178a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_reset   0x000a1c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_setup   0x000b4c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+   usb_handle_transaction   0x000ae4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+              usb_handler   0x0009ce    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                 usb_init   0x000868    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_register_class_setup_handler   0x001810    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+ usb_register_sof_handler   0x0017f4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_register_vendor_setup_handler   0x00182c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_send_rom   0x0019ce    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+          usb_set_address   0x0019a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+       usb_set_in_handler   0x001848    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+      usb_set_out_handler   0x001884    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                usb_start   0x0009b6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+              usbbufflush   0x0024e4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            usbbufgetbyte   0x00245c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            usbbufservice   0x002430    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     user_configured_init   0x001b4c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+               zero_block   0x003d58    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
                    ADCON0   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                ADCON0bits   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    ADCON1   0x000fc1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -431,11 +393,10 @@ usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\US
                  LATBbits   0x000f8a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      LATC   0x000f8b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  LATCbits   0x000f8b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                  LAstate   0x000224       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                  LAstate   0x0000ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
                    LVDCON   0x000fd2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                LVDCONbits   0x000fd2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-         LineStateUpdated   0x00021b       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-        NumbytesToReceive   0x000223       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
+         LineStateUpdated   0x0001fa       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
                    OSCCON   0x000fd3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                OSCCONbits   0x000fd3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   OSCTUNE   0x000f9b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -478,19 +439,15 @@ usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\US
                      PROD   0x000ff3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     PRODH   0x000ff4       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     PRODL   0x000ff3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-         RBInterruptCount   0x0000fd       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-                      RC5   0x00021c       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                      RC5   0x0001fb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
                      RCON   0x000fd0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  RCONbits   0x000fd0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     RCREG   0x000fae       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     RCSTA   0x000fab       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 RCSTAbits   0x000fab       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 RxBuffer   0x0001eb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
                  RxBuffer   0x0000f1       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
             RxBufferCtrIn   0x0000fb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-            RxBufferCtrIn   0x0001f8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
            RxBufferCtrOut   0x0000fc       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-           RxBufferCtrOut   0x0001f7       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
                      SIGN   0x00000e       data     extern C:\MCC18\src\traditional\math\cmath18.asm
                     SPBRG   0x000faf       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    SPBRGH   0x000fb0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -620,16 +577,14 @@ usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\US
                   __REMB1   0x000002       data     extern C:\MCC18\src\traditional\math\aarg.asm
                   __REMB2   0x000001       data     extern C:\MCC18\src\traditional\math\aarg.asm
                   __REMB3   0x000000       data     extern C:\MCC18\src\traditional\math\aarg.asm
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
                   __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
                   __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                     aptr   0x0001fd       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                     aptr   0x0001f2       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
                       bdp   0x000158       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                        c   0x0001e3       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
             cdc_In_buffer   0x000500       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
            cdc_In_bufferA   0x000580       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
            cdc_In_bufferB   0x0005c0       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
@@ -642,43 +597,38 @@ usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\US
             cdc_trf_state   0x0001b9       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
       class_setup_handler   0x00010d       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
                       cls   0x0001aa       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                    count   0x0001ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                      ctr   0x0000fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-                curr_byte   0x00020f       data     static C:\MCC18\src\traditional\startup\c018i.c
-               curr_entry   0x000211       data     static C:\MCC18\src\traditional\startup\c018i.c
-                        d   0x000220       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                 data_ptr   0x000213       data     static C:\MCC18\src\traditional\startup\c018i.c
-             decoderState   0x000225       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                    count   0x0001f4       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                curr_byte   0x0001e7       data     static C:\MCC18\src\traditional\startup\c018i.c
+               curr_entry   0x0001e9       data     static C:\MCC18\src\traditional\startup\c018i.c
+                        d   0x0000fd       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                 data_ptr   0x0001eb       data     static C:\MCC18\src\traditional\startup\c018i.c
+             decoderState   0x0001ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
                 endpoints   0x000111       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
                         h   0x0001ba       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                         i   0x0001ce       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                        i   0x00021f       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                        i   0x0001fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
                    inByte   0x0000e1       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                     irIO   0x0001d8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
               irIOcommand   0x0001d1       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-              irIOcommand   0x0001e4       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-                irIOstate   0x000226       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                irIOstate   0x000227       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
+                irIOstate   0x000200       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                       irS   0x0001c8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                     irToy   0x000060       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                      irW   0x0001f9       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                      irW   0x0001ee       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
                         l   0x0001bb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                   ledtrig   0x0000e2       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
               linecodeing   0x000161       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                     loga   0x000200       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                     loga   0x0001d8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
                   modFreq   0x0001bf       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                modFreqCnt   0x0001c7       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                     mode   0x000221       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-               parity_str   0x000216       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                     prom   0x00020c       data     static C:\MCC18\src\traditional\startup\c018i.c
+                     mode   0x0000fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+               parity_str   0x0001f5       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                     prom   0x0001e4       data     static C:\MCC18\src\traditional\startup\c018i.c
                      rbdp   0x00015a       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
               sof_handler   0x00010b       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                   sumpRX   0x000205       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                     time   0x0001fb       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                   sumpRX   0x0001dd       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                     time   0x0001f0       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
                  tmr0_buf   0x0001bc       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                trn_status   0x000157       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
                     txcnt   0x0001cf       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-               txledstate   0x000222       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
          usb_addr_pending   0x000156       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
                   usb_bdt   0x000400       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
     usb_config_descriptor   0x000103       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
@@ -703,208 +653,185 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
                    _entry   0x000000    program     extern C:\MCC18\src\traditional\startup\c018i.c
        ___return_lbl00000   0x000004    program     static                          
                  High_ISR   0x000008    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00098   0x00000c    program     static                          
+       ___return_lbl00088   0x00000c    program     static                          
                   Low_ISR   0x000018    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00099   0x00001c    program     static                          
+       ___return_lbl00089   0x00001c    program     static                          
                    _reset   0x000800    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00097   0x000804    program     static                          
+       ___return_lbl00087   0x000804    program     static                          
         Remapped_High_ISR   0x000808    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00095   0x00080c    program     static                          
+       ___return_lbl00085   0x00080c    program     static                          
          Remapped_Low_ISR   0x000818    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00096   0x00081c    program     static                          
-                 usb_init   0x00088c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                usb_start   0x0009da    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-           USBDeviceTasks   0x0009ee    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-              usb_handler   0x0009f2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_error   0x000a3c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_reset   0x000a40    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-   usb_handle_transaction   0x000b08    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_handle_setup   0x000b70    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardDeviceRequest   0x000cd6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardInterfaceRequest   0x001322    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_handle_StandardEndpointRequest   0x001484    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         FAST_usb_handler   0x00171a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-            usb_handle_in   0x001754    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-           usb_handle_out   0x0017ae    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
- usb_register_sof_handler   0x001818    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_register_class_setup_handler   0x001834    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-usb_register_vendor_setup_handler   0x001850    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-       usb_set_in_handler   0x00186c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-      usb_set_out_handler   0x0018a8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                  usb_ack   0x0018ec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_ack_zero   0x001926    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_ack_dat1   0x001970    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         usb_RequestError   0x0019b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-          usb_set_address   0x0019c6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-             usb_send_rom   0x0019f2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-         IrS_SetPortEqual   0x001b44    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-     IrS_SetPortTrisEqual   0x001b8e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-             IrS_ReadPort   0x001bd8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                 irsSetup   0x001c22    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-               irsService   0x001cb2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                  cleanup   0x002454    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-  irsInterruptHandlerHigh   0x00246e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                  initCDC   0x0025dc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     user_configured_init   0x002608    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                cdc_setup   0x0026ac    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-      cdc_get_line_coding   0x0028a0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
- cdc_set_line_coding_data   0x0028b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-cdc_set_line_coding_status   0x002a16    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-cdc_set_control_line_state_status   0x002a2e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-             WaitOutReady   0x002a46    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              WaitInReady   0x002a7e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     putPARTARRAYUSBUSART   0x002ab6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-     putFULLARRAYUSBUSART   0x002b32    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-       getCDC_Out_ArmNext   0x002b7c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-       SendCDC_In_ArmNext   0x002c10    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              ArmCDCOutDB   0x002ca6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-               ArmCDCInDB   0x002cee    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-           DisArmCDCOutDB   0x002d24    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            DisArmCDCInDB   0x002d60    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                  SendZLP   0x002d8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              getOutReady   0x002dbc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-               getInReady   0x002dd4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-             getsUSBUSART   0x002dec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            usbbufservice   0x002eb0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-            usbbufgetbyte   0x002edc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-        PEEKusbbufgetbyte   0x002f22    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-              usbbufflush   0x002f64    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                     main   0x002f6c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-        ___while_lbl00001   0x002fb8    program     static                          
-           ___do_lbl00012   0x002fb8    program     static                          
-           ___if_lbl00005   0x002fc0    program     static                          
-         ___else_lbl00011   0x002fcc    program     static                          
-         ___else_lbl00009   0x002fd8    program     static                          
-               __tmplbl_1   0x002fde    program     static                          
-               __tmplbl_0   0x002fe6    program     static                          
-           ___if_lbl00008   0x002fec    program     static                          
-           ___if_lbl00007   0x002fec    program     static                          
-           ___do_lbl00003   0x002fec    program     static                          
-           ___if_lbl00010   0x002fec    program     static                          
-           ___do_lbl00004   0x002ff4    program     static                          
-       ___case_2_lbl00015   0x00300e    program     static                          
-           ___if_lbl00014   0x003018    program     static                          
-       ___case_3_lbl00017   0x00301a    program     static                          
-           ___if_lbl00016   0x003024    program     static                          
-       ___case_4_lbl00019   0x003026    program     static                          
-           ___if_lbl00018   0x003030    program     static                          
-       ___case_5_lbl00021   0x003032    program     static                          
-           ___if_lbl00020   0x00303c    program     static                          
-       ___case_6_lbl00023   0x00303e    program     static                          
-           ___if_lbl00022   0x003048    program     static                          
-      ___default_lbl00024   0x00304a    program     static                          
-       ___case_2_lbl00026   0x003076    program     static                          
-       ___case_1_lbl00027   0x003076    program     static                          
-       ___case_0_lbl00028   0x003076    program     static                          
-           ___if_lbl00029   0x00308a    program     static                          
-   ___switchexit_lbl00025   0x00308c    program     static                          
-           ___if_lbl00030   0x00308c    program     static                          
-     ___case_114_lbl00033   0x0030ea    program     static                          
-      ___case_82_lbl00032   0x0030ea    program     static                          
-      ___case_83_lbl00035   0x00311c    program     static                          
-     ___case_115_lbl00034   0x00311c    program     static                          
-      ___case_88_lbl00037   0x003128    program     static                          
-     ___case_120_lbl00036   0x003128    program     static                          
-     ___case_101_lbl00038   0x003134    program     static                          
-      ___case_69_lbl00039   0x003134    program     static                          
-      ___case_85_lbl00041   0x003140    program     static                          
-     ___case_117_lbl00040   0x003140    program     static                          
-     ___case_116_lbl00042   0x00314c    program     static                          
-      ___case_84_lbl00043   0x00314c    program     static                          
-      ___case_86_lbl00045   0x003150    program     static                          
-     ___case_118_lbl00044   0x003150    program     static                          
-      ___case_80_lbl00047   0x003154    program     static                          
-     ___case_112_lbl00046   0x003154    program     static                          
-      ___case_36_lbl00048   0x003162    program     static                          
-   ___switchexit_lbl00031   0x003168    program     static                          
-           ___if_lbl00049   0x003168    program     static                          
-   ___switchexit_lbl00013   0x00316a    program     static                          
-       ___return_lbl00000   0x00316c    program     static                          
-        ___while_lbl00002   0x00316c    program     static                          
-                 SelfTest   0x00316e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-   ProcessDefaultMainMode   0x0032a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-     SetUpDefaultMainMode   0x0032a6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-             AbortHandler   0x0032b0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-               SetupBoard   0x003366    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       GetUsbIrToyVersion   0x003408    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-     InterruptHandlerHigh   0x00343c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___case_7_lbl00084   0x003472    program     static                          
-       ___case_3_lbl00085   0x003478    program     static                          
-       ___case_4_lbl00086   0x00347e    program     static                          
-       ___case_2_lbl00087   0x003484    program     static                          
-       ___case_1_lbl00088   0x00348a    program     static                          
-       ___case_5_lbl00089   0x003490    program     static                          
-       ___case_6_lbl00090   0x003496    program     static                          
-       ___case_0_lbl00091   0x00349c    program     static                          
-      ___default_lbl00092   0x0034a2    program     static                          
-       ___return_lbl00082   0x0034a4    program     static                          
-   ___switchexit_lbl00083   0x0034a4    program     static                          
-               DefaultISR   0x0034b4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-       ___return_lbl00093   0x0034b8    program     static                          
-      InterruptHandlerLow   0x0034ba    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                irIOsetup   0x0034e0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-              irIOservice   0x00355e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-             irIOSend8Bit   0x0036de    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
- irIOInterruptHandlerHigh   0x0037b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-              IrSumpSetup   0x003908    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-            irSUMPservice   0x003924    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                SumpReset   0x003a8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
- SUMPInterruptHandlerHigh   0x003a98    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-          irWidgetservice   0x003bf4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-             GetPulseTime   0x003c30    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-             GetPulseFreq   0x003cfc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-  irWInterruptHandlerHigh   0x003d62    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                 SetupRC5   0x003e16    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-                ProcessIR   0x003e3e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-IRdecoderInterruptHandlerHigh   0x003ed4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-            Usb2UartSetup   0x003fbc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-        Usb2Uart_InitUart   0x003fec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-       Usb2Uart_CloseUart   0x004024    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-          Usb2UartService   0x00402a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-Usb2UartInterruptHandlerHigh   0x0040fa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-      IrReflectTxPwmSetup   0x004118    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-           IrReflectSetup   0x004134    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-         IrReflectService   0x00416e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-IrReflectionInterruptHandlerHigh   0x004258    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-           hal_Lin_M_Init   0x00426e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-hal_Lin_M_SendSyncBreakHeaderID   0x004280    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-       hal_Lin_M_SendData   0x0042b4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-     hal_Lin_M_IsDataRxOk   0x0042f6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-    hal_Lin_M_HandlerHigh   0x004318    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-    cdc_device_descriptor   0x00433a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-    cdc_config_descriptor   0x00434c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-            cdc_str_descs   0x00438f    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
-                _do_cinit   0x0043e2    program     extern C:\MCC18\src\traditional\startup\c018i.c
-                     test   0x0043fc    program     static                          
-                copy_loop   0x004454    program     static                          
-            copy_one_byte   0x00445a    program     static                          
-             done_copying   0x004468    program     static                          
-       ___return_lbl00002   0x00447e    program     static                          
-                     done   0x00447e    program     static                          
-                   memcpy   0x004480    program     extern C:\MCC18\src\traditional\stdclib\memcpy.asm
-                    jLoop   0x0044a8    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-              _4jContinue   0x0044b4    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                   _5jEnd   0x0044be    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                     jEnd   0x0044c4    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
-                 FXD3232U   0x0044d6    program     extern C:\MCC18\src\traditional\math\fxd3232u.c
-                     loop   0x0044e4    program     static                          
-                   _false   0x004518    program     static                          
-       ___return_lbl00000   0x00451c    program     static                          
-             Delay10KTCYx   0x00451e    program     extern C:\MCC18\src\traditional\delays\d10ktcyx.asm
-                    D10Kx   0x004528    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-                   D10K_1   0x00452a    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-       _D10KTCYXCODE_0010   0x00452e    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-                    D10Kl   0x004536    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-       _D10KTCYXCODE_001C   0x00453a    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
-            __zero_memory   0x00454c    program     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-               zero_block   0x00455a    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                   loop_h   0x00455a    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                compare_l   0x004562    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                   loop_l   0x004564    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
-                 _startup   0x00456c    program     extern C:\MCC18\src\traditional\startup\c018i.c
-                     loop   0x00457c    program     static                          
-       ___return_lbl00001   0x004586    program     static                          
-                   __init   0x004588    program     extern C:\MCC18\src\traditional\stdclib\__init.c
+       ___return_lbl00086   0x00081c    program     static                          
+                 usb_init   0x000868    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                usb_start   0x0009b6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+           USBDeviceTasks   0x0009ca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+              usb_handler   0x0009ce    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_error   0x000a18    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_reset   0x000a1c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+   usb_handle_transaction   0x000ae4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_handle_setup   0x000b4c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardDeviceRequest   0x000cb2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardInterfaceRequest   0x0012fe    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_handle_StandardEndpointRequest   0x001460    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         FAST_usb_handler   0x0016f6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+            usb_handle_in   0x001730    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+           usb_handle_out   0x00178a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+ usb_register_sof_handler   0x0017f4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_register_class_setup_handler   0x001810    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+usb_register_vendor_setup_handler   0x00182c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+       usb_set_in_handler   0x001848    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+      usb_set_out_handler   0x001884    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                  usb_ack   0x0018c8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_ack_zero   0x001902    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_ack_dat1   0x00194c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+         usb_RequestError   0x001994    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+          usb_set_address   0x0019a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+             usb_send_rom   0x0019ce    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                  initCDC   0x001b20    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     user_configured_init   0x001b4c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                cdc_setup   0x001bf0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+      cdc_get_line_coding   0x001de4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+ cdc_set_line_coding_data   0x001dfc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+cdc_set_line_coding_status   0x001f5a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+cdc_set_control_line_state_status   0x001f72    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+             WaitOutReady   0x001f8a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              WaitInReady   0x001fc2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     putPARTARRAYUSBUSART   0x001ffa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+     putFULLARRAYUSBUSART   0x002076    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+       getCDC_Out_ArmNext   0x0020c0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+       SendCDC_In_ArmNext   0x002154    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+               ArmCDCInDB   0x0021ea    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            DisArmCDCInDB   0x002220    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              ArmCDCOutDB   0x00224a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+           DisArmCDCOutDB   0x0022b0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                  SendZLP   0x00230a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              getOutReady   0x00233c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+               getInReady   0x002354    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+             getsUSBUSART   0x00236c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            usbbufservice   0x002430    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+            usbbufgetbyte   0x00245c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+        PEEKusbbufgetbyte   0x0024a2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+              usbbufflush   0x0024e4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+         IrS_SetPortEqual   0x0024ec    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+     IrS_SetPortTrisEqual   0x002536    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+             IrS_ReadPort   0x002580    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                 irsSetup   0x0025ca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+               irsService   0x002658    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                  cleanup   0x002ca6    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+  irsInterruptHandlerHigh   0x002cc0    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                     main   0x002e10    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+        ___while_lbl00001   0x002e5c    program     static                          
+           ___do_lbl00012   0x002e5c    program     static                          
+           ___if_lbl00005   0x002e64    program     static                          
+         ___else_lbl00011   0x002e70    program     static                          
+         ___else_lbl00009   0x002e7c    program     static                          
+               __tmplbl_1   0x002e82    program     static                          
+               __tmplbl_0   0x002e8a    program     static                          
+           ___do_lbl00003   0x002e90    program     static                          
+           ___if_lbl00010   0x002e90    program     static                          
+           ___if_lbl00007   0x002e90    program     static                          
+           ___if_lbl00008   0x002e90    program     static                          
+           ___do_lbl00004   0x002e98    program     static                          
+       ___case_2_lbl00015   0x002eaa    program     static                          
+           ___if_lbl00014   0x002eb4    program     static                          
+       ___case_3_lbl00017   0x002eb6    program     static                          
+           ___if_lbl00016   0x002ec0    program     static                          
+       ___case_4_lbl00019   0x002ec2    program     static                          
+           ___if_lbl00018   0x002ecc    program     static                          
+      ___default_lbl00020   0x002ece    program     static                          
+       ___case_1_lbl00023   0x002efa    program     static                          
+       ___case_2_lbl00022   0x002efa    program     static                          
+       ___case_0_lbl00024   0x002efa    program     static                          
+           ___if_lbl00025   0x002f0e    program     static                          
+   ___switchexit_lbl00021   0x002f10    program     static                          
+           ___if_lbl00026   0x002f10    program     static                          
+      ___case_82_lbl00028   0x002f5e    program     static                          
+     ___case_114_lbl00029   0x002f5e    program     static                          
+     ___case_115_lbl00030   0x002f90    program     static                          
+      ___case_83_lbl00031   0x002f90    program     static                          
+      ___case_85_lbl00033   0x002f9c    program     static                          
+     ___case_117_lbl00032   0x002f9c    program     static                          
+      ___case_84_lbl00035   0x002fa8    program     static                          
+     ___case_116_lbl00034   0x002fa8    program     static                          
+     ___case_118_lbl00036   0x002fac    program     static                          
+      ___case_86_lbl00037   0x002fac    program     static                          
+     ___case_112_lbl00038   0x002fb0    program     static                          
+      ___case_80_lbl00039   0x002fb0    program     static                          
+      ___case_36_lbl00040   0x002fbe    program     static                          
+   ___switchexit_lbl00027   0x002fc4    program     static                          
+           ___if_lbl00041   0x002fc4    program     static                          
+   ___switchexit_lbl00013   0x002fc6    program     static                          
+        ___while_lbl00002   0x002fc8    program     static                          
+       ___return_lbl00000   0x002fc8    program     static                          
+                 SelfTest   0x002fca    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+   ProcessDefaultMainMode   0x0030fe    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+     SetUpDefaultMainMode   0x003102    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+             AbortHandler   0x00310c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+               SetupBoard   0x0031c2    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+       GetUsbIrToyVersion   0x003264    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+     InterruptHandlerHigh   0x003298    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+       ___case_5_lbl00076   0x0032c6    program     static                          
+       ___case_3_lbl00077   0x0032cc    program     static                          
+       ___case_2_lbl00078   0x0032d2    program     static                          
+       ___case_1_lbl00079   0x0032d8    program     static                          
+       ___case_4_lbl00080   0x0032de    program     static                          
+       ___case_0_lbl00081   0x0032e4    program     static                          
+      ___default_lbl00082   0x0032ea    program     static                          
+   ___switchexit_lbl00075   0x0032ec    program     static                          
+       ___return_lbl00074   0x0032ec    program     static                          
+               DefaultISR   0x0032fc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+       ___return_lbl00083   0x003300    program     static                          
+      InterruptHandlerLow   0x003302    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+              IrSumpSetup   0x003328    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+            irSUMPservice   0x003344    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                SumpReset   0x0034aa    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+ SUMPInterruptHandlerHigh   0x0034b8    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+          irWidgetservice   0x003614    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+             GetPulseTime   0x003650    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+             GetPulseFreq   0x00371c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+  irWInterruptHandlerHigh   0x003782    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                 SetupRC5   0x003836    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                ProcessIR   0x00385e    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+IRdecoderInterruptHandlerHigh   0x0038f4    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+            Usb2UartSetup   0x0039dc    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+        Usb2Uart_InitUart   0x003a0c    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+       Usb2Uart_CloseUart   0x003a44    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+          Usb2UartService   0x003a4a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+Usb2UartInterruptHandlerHigh   0x003b1a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
+    cdc_device_descriptor   0x003b38    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+    cdc_config_descriptor   0x003b4a    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+            cdc_str_descs   0x003b8d    program     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\descriptors.h
+                _do_cinit   0x003be0    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                     test   0x003bfa    program     static                          
+                copy_loop   0x003c52    program     static                          
+            copy_one_byte   0x003c58    program     static                          
+             done_copying   0x003c66    program     static                          
+                     done   0x003c7c    program     static                          
+       ___return_lbl00002   0x003c7c    program     static                          
+                   memcpy   0x003c7e    program     extern C:\MCC18\src\traditional\stdclib\memcpy.asm
+                    jLoop   0x003ca6    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+              _4jContinue   0x003cb2    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                   _5jEnd   0x003cbc    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                     jEnd   0x003cc2    program     static C:\MCC18\src\traditional\stdclib\memcpy.asm
+                 FXD3232U   0x003cd4    program     extern C:\MCC18\src\traditional\math\fxd3232u.c
+                     loop   0x003ce2    program     static                          
+                   _false   0x003d16    program     static                          
+       ___return_lbl00000   0x003d1a    program     static                          
+             Delay10KTCYx   0x003d1c    program     extern C:\MCC18\src\traditional\delays\d10ktcyx.asm
+                    D10Kx   0x003d26    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+                   D10K_1   0x003d28    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+       _D10KTCYXCODE_0010   0x003d2c    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+                    D10Kl   0x003d34    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+       _D10KTCYXCODE_001C   0x003d38    program     static C:\MCC18\src\traditional\delays\d10ktcyx.asm
+            __zero_memory   0x003d4a    program     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+               zero_block   0x003d58    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                   loop_h   0x003d58    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                compare_l   0x003d60    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                   loop_l   0x003d62    program     static C:\MCC18\src\traditional\proc\p18F2550.asm
+                 _startup   0x003d6a    program     extern C:\MCC18\src\traditional\startup\c018i.c
+                     loop   0x003d7a    program     static                          
+       ___return_lbl00001   0x003d84    program     static                          
+                   __init   0x003d86    program     extern C:\MCC18\src\traditional\stdclib\__init.c
                __config_0   0x300000    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                __config_1   0x300001    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                __config_2   0x300002    program     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
@@ -938,13 +865,12 @@ hal_Lin_M_SendSyncBreakHeaderID   0x004280    program     extern E:\Work\dp\USB_
                      SIGN   0x00000e       data     extern C:\MCC18\src\traditional\math\cmath18.asm
                 __FPFLAGS   0x00000f       data     extern C:\MCC18\src\traditional\math\cmath18.asm
             __FPFLAGSbits   0x00000f       data     extern C:\MCC18\src\traditional\math\cmath18.asm
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
                   __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
                   __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
+                  __tmp_0   0x000010       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
             DelayCounter2   0x000018       data     extern C:\MCC18\src\traditional\delays\delayd2.asm
             DelayCounter1   0x000019       data     extern C:\MCC18\src\traditional\delays\delayd1.asm
                     irToy   0x000060       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
@@ -958,8 +884,9 @@ hal_Lin_M_SendSyncBreakHeaderID   0x004280    program     extern E:\Work\dp\USB_
                  RxBuffer   0x0000f1       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
             RxBufferCtrIn   0x0000fb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
            RxBufferCtrOut   0x0000fc       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb2uart.c
-         RBInterruptCount   0x0000fd       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-                      ctr   0x0000fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
+                        d   0x0000fd       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                     mode   0x0000fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
+                  LAstate   0x0000ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
     usb_device_descriptor   0x000100       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
     usb_config_descriptor   0x000103       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
     usb_string_descriptor   0x000106       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
@@ -1000,34 +927,22 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
                         i   0x0001ce       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                     txcnt   0x0001cf       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
               irIOcommand   0x0001d1       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                     irIO   0x0001d8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-                        c   0x0001e3       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-              irIOcommand   0x0001e4       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
-                 RxBuffer   0x0001eb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-           RxBufferCtrOut   0x0001f7       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-            RxBufferCtrIn   0x0001f8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-                      irW   0x0001f9       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                     time   0x0001fb       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                     aptr   0x0001fd       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                    count   0x0001ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
-                     loga   0x000200       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                   sumpRX   0x000205       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-                     prom   0x00020c       data     static C:\MCC18\src\traditional\startup\c018i.c
-                curr_byte   0x00020f       data     static C:\MCC18\src\traditional\startup\c018i.c
-               curr_entry   0x000211       data     static C:\MCC18\src\traditional\startup\c018i.c
-                 data_ptr   0x000213       data     static C:\MCC18\src\traditional\startup\c018i.c
-               parity_str   0x000216       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-         LineStateUpdated   0x00021b       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                      RC5   0x00021c       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-                        i   0x00021f       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-                        d   0x000220       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-                     mode   0x000221       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\main.c
-               txledstate   0x000222       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\IrReflect.c
-        NumbytesToReceive   0x000223       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\hal_Lin_m.c
-                  LAstate   0x000224       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
-             decoderState   0x000225       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
-                irIOstate   0x000226       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
-                irIOstate   0x000227       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRIO.c
+                     loga   0x0001d8       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                   sumpRX   0x0001dd       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\SUMP.c
+                     prom   0x0001e4       data     static C:\MCC18\src\traditional\startup\c018i.c
+                curr_byte   0x0001e7       data     static C:\MCC18\src\traditional\startup\c018i.c
+               curr_entry   0x0001e9       data     static C:\MCC18\src\traditional\startup\c018i.c
+                 data_ptr   0x0001eb       data     static C:\MCC18\src\traditional\startup\c018i.c
+                      irW   0x0001ee       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                     time   0x0001f0       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                     aptr   0x0001f2       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+                    count   0x0001f4       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\irWidget.c
+               parity_str   0x0001f5       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+         LineStateUpdated   0x0001fa       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
+                      RC5   0x0001fb       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                        i   0x0001fe       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+             decoderState   0x0001ff       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\RCdecoder.c
+                irIOstate   0x000200       data     static E:\Work\dp\USB_IR_Toy\Firmware-freestack\IRs.c
                   usb_bdt   0x000400       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
           usb_ep0_out_buf   0x000480       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
            usb_ep0_in_buf   0x000488       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\usb_stack.c
@@ -1038,11 +953,11 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
            cdc_In_bufferB   0x0005c0       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
           cdc_Out_bufferA   0x000600       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
           cdc_Out_bufferB   0x000640       data     extern E:\Work\dp\USB_IR_Toy\Firmware-freestack\cdc.c
-                     UFRM   0x000f66       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UFRML   0x000f66       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UFRMLbits   0x000f66       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    UFRMH   0x000f67       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UFRM   0x000f66       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UFRMHbits   0x000f67       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    UFRMH   0x000f67       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   UIRbits   0x000f68       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                       UIR   0x000f68       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                       UIE   0x000f69       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -1051,42 +966,42 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
                      UEIR   0x000f6a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEIEbits   0x000f6b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEIE   0x000f6b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    USTAT   0x000f6c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 USTATbits   0x000f6c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    USTAT   0x000f6c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UCONbits   0x000f6d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UCON   0x000f6d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                UADDRbits   0x000f6e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UADDR   0x000f6e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UCFG   0x000f6f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                UADDRbits   0x000f6e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UCFGbits   0x000f6f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 UEP0bits   0x000f70       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UCFG   0x000f6f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEP0   0x000f70       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 UEP0bits   0x000f70       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP1bits   0x000f71       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEP1   0x000f71       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP2bits   0x000f72       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEP2   0x000f72       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UEP3   0x000f73       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP3bits   0x000f73       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UEP4   0x000f74       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UEP3   0x000f73       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP4bits   0x000f74       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UEP5   0x000f75       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UEP4   0x000f74       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP5bits   0x000f75       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UEP5   0x000f75       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP6bits   0x000f76       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEP6   0x000f76       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UEP7   0x000f77       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP7bits   0x000f77       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     UEP8   0x000f78       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UEP7   0x000f77       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  UEP8bits   0x000f78       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 UEP9bits   0x000f79       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     UEP8   0x000f78       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      UEP9   0x000f79       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 UEP9bits   0x000f79       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UEP10bits   0x000f7a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UEP10   0x000f7a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    UEP11   0x000f7b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UEP11bits   0x000f7b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    UEP12   0x000f7c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    UEP11   0x000f7b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UEP12bits   0x000f7c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                UEP13bits   0x000f7d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    UEP12   0x000f7c       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UEP13   0x000f7d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                UEP13bits   0x000f7d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 UEP14bits   0x000f7e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UEP14   0x000f7e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     UEP15   0x000f7f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -1101,38 +1016,38 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
                     PORTE   0x000f84       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  LATAbits   0x000f89       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      LATA   0x000f89       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     LATB   0x000f8a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  LATBbits   0x000f8a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                     LATC   0x000f8b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     LATB   0x000f8a       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  LATCbits   0x000f8b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 DDRAbits   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    TRISA   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                     LATC   0x000f8b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 TRISAbits   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    TRISA   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      DDRA   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                TRISBbits   0x000f93       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 DDRAbits   0x000f92       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     TRISB   0x000f93       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                TRISBbits   0x000f93       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  DDRBbits   0x000f93       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      DDRB   0x000f93       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 DDRCbits   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                TRISCbits   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     TRISC   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                TRISCbits   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 DDRCbits   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      DDRC   0x000f94       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
               OSCTUNEbits   0x000f9b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   OSCTUNE   0x000f9b       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  PIE1bits   0x000f9d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      PIE1   0x000f9d       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 PIR1bits   0x000f9e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      PIR1   0x000f9e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 PIR1bits   0x000f9e       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  IPR1bits   0x000f9f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      IPR1   0x000f9f       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 PIE2bits   0x000fa0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      PIE2   0x000fa0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 PIE2bits   0x000fa0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                  PIR2bits   0x000fa1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      PIR2   0x000fa1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 IPR2bits   0x000fa2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                      IPR2   0x000fa2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-               EECON1bits   0x000fa6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 IPR2bits   0x000fa2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    EECON1   0x000fa6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+               EECON1bits   0x000fa6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    EECON2   0x000fa7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    EEDATA   0x000fa8       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     EEADR   0x000fa9       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
@@ -1144,38 +1059,38 @@ usb_num_string_descriptors   0x000109       data     extern E:\Work\dp\USB_IR_To
                     RCREG   0x000fae       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     SPBRG   0x000faf       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    SPBRGH   0x000fb0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    T3CON   0x000fb1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 T3CONbits   0x000fb1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    T3CON   0x000fb1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     TMR3L   0x000fb2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     TMR3H   0x000fb3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    CMCON   0x000fb4       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                 CMCONbits   0x000fb4       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    CMCON   0x000fb4       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                CVRCONbits   0x000fb5       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    CVRCON   0x000fb5       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-               CCP1ASbits   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                   CCP1AS   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-              ECCP1ASbits   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   ECCP1AS   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+              ECCP1ASbits   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                   CCP1AS   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+               CCP1ASbits   0x000fb6       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
              ECCP1DELbits   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                 ECCP1DEL   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-              CCP1DELbits   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   CCP1DEL   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                  BAUDCON   0x000fb8       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+              CCP1DELbits   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                 ECCP1DEL   0x000fb7       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
               BAUDCONbits   0x000fb8       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                  BAUDCON   0x000fb8       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
               CCP2CONbits   0x000fba       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                   CCP2CON   0x000fba       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                    CCPR2   0x000fbb       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    CCPR2L   0x000fbb       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                    CCPR2   0x000fbb       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    CCPR2H   0x000fbc       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-                  CCP1CON   0x000fbd       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
               CCP1CONbits   0x000fbd       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+                  CCP1CON   0x000fbd       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    CCPR1L   0x000fbe       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     CCPR1   0x000fbe       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    CCPR1H   0x000fbf       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                ADCON2bits   0x000fc0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    ADCON2   0x000fc0       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
-               ADCON1bits   0x000fc1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    ADCON1   0x000fc1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
+               ADCON1bits   0x000fc1       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                    ADCON0   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                ADCON0bits   0x000fc2       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
                     ADRES   0x000fc3       data     extern C:\MCC18\src\traditional\proc\p18F2550.asm
