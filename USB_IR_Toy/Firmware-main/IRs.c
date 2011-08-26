@@ -337,7 +337,6 @@ unsigned char irsService(void) {
                                     tmr0_buf[0] = *(OutPtr + 1); //put the first byte in the buffer
                                     
                                     txcnt += 2; //total bytes transmitted
-                                    irS.txflag = 1; //reset the interrupt buffer full flag
 
                                     if (irS.TX == 0) {//enable interrupt if this is the first time
                                         if (!TestUsbInterruptEnabled()) {
@@ -354,7 +353,10 @@ unsigned char irsService(void) {
                                         PWMon(); //TMR2 = 0; CCP1CON |= 0b1100;
                                         irS.TXInvert = IRS_TRANSMIT_LO;
                                         LedOn();
-                                    }
+                                    }else{
+										//only set AFTER 1st packet or the first packet is sent twice
+                                    	irS.txflag = 1; //reset the interrupt buffer full flag
+									}
 
                                     if (irIOstate == I_LAST_PACKET)
                                         break;
