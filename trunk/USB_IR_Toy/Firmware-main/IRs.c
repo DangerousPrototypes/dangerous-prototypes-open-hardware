@@ -26,10 +26,10 @@ void USBDeviceTasks(void);
 extern struct _irtoy irToy;
 extern BYTE cdc_In_buffer[64];
 extern BYTE cdc_Out_buffer[64];
-extern BYTE cdc_Out_bufferA[64];
-extern BYTE cdc_Out_bufferB[64];
-extern BYTE cdc_In_bufferA[64];
-extern BYTE cdc_In_bufferB[64];
+//extern BYTE cdc_Out_bufferA[64];
+//extern BYTE cdc_Out_bufferB[64];
+//extern BYTE cdc_In_bufferA[64];
+//extern BYTE cdc_In_bufferB[64];
 extern BYTE *InPtr;
 extern BYTE *OutPtr;
 
