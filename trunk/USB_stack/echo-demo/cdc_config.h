@@ -63,10 +63,10 @@ Low power request macro
 
 #define CLOCK_FREQ 32000000 // required for baud rate calculations
 
-#define MODELED LATBbits.LATB8
-#define USBLED  LATBbits.LATB10 //Active LOW
+//#define MODELED LATBbits.LATB8
+//#define USBLED  LATBbits.LATB10 //Active LOW
 
-#define  USBLEDON()   USBLED = 0
+//#define  USBLEDON()   USBLED = 0
 
 #define USB_VID (0x4d8)
 #define USB_PID (0xFB00)
