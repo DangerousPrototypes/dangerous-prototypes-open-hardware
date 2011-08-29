@@ -1,0 +1,15 @@
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 27 : symbol 'BUFSZ' has not been defined
+Error[1219] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 27 : integer constant expected
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 28 : symbol 'BUFSZ' has not been defined
+Error[1219] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 28 : integer constant expected
+Warning[2058] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 52 : call of function without prototype
+Warning[2058] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 53 : call of function without prototype
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 106 : symbol 'UsbRxDataBuffer' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 107 : symbol 'UsbRxDataBuffer' has not been defined
+Error[1129] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 107 : [] operator requires a pointer and an integer as operands
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 109 : symbol 'USBUARTBUFCTRMASK' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 123 : symbol 'USBUARTBUFCTRMASK' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 131 : symbol 'TxIf' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 135 : symbol 'USBUARTBUFCTRMASK' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 153 : symbol 'RcIf' has not been defined
+Error[1105] E:\Work\dp\USB_IR_Toy\echo-demo\usb2uart.c 156 : symbol 'USBUARTBUFCTRMASK' has not been defined
