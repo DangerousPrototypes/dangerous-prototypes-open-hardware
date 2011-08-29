@@ -53,8 +53,6 @@ void main(void)
 int main(void)
 #endif
 {
-	static unsigned char ledtrig;
-
 	unsigned int dly=0xffff;
 
 	//while(dly--);
@@ -74,9 +72,6 @@ int main(void)
 	#endif
     usbbufflush(); //flush USB input buffer system
 
-	ledtrig=1; //only shut LED off once
-    //	Never ending loop services each task in small increments
-    while (1) {
         do {
 
             #ifndef USB_INTERRUPTS
@@ -89,22 +84,33 @@ int main(void)
 			#endif
 
             if ((usb_device_state < DEFAULT_STATE)) { // JTR2 no suspendControl available yet || (USBSuspendControl==1) ){
-                LedOff();
-				ledtrig=1;
+
             } else if (usb_device_state < CONFIGURED_STATE) {
-                LedOn();
-				ledtrig=1;
-            }else if((ledtrig==1) && (usb_device_state == CONFIGURED_STATE)){
-				LedOff();
-				ledtrig=0;
-				#if defined (DOUBLE_BUFFER_OUTPUT)
-				    ArmCDCInDB(); // Set up CDC IN double buffer
-				#endif
+
+            }else if((usb_device_state == CONFIGURED_STATE)){
+
 
 
 			}
 
         } while (usb_device_state < CONFIGURED_STATE);
+		
+		LedOff();
+
+		#if defined (DOUBLE_BUFFER_OUTPUT)
+		    ArmCDCInDB(); // Set up CDC IN double buffer
+		#endif
+
+    //	Never ending loop services each task in small increments
+    while (1) {
+        #ifndef USB_INTERRUPTS
+			//service USB tasks 
+			//Guaranteed one pass in polling mode 
+			//even when usb_device_state == CONFIGURED_STATE
+			if (!TestUsbInterruptEnabled()){
+               	USBDeviceTasks(); 
+			}
+		#endif
 
         usbbufservice(); //service USB buffer system
 		
