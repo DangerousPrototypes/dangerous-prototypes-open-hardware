@@ -61,14 +61,14 @@
 
 #include <stdint.h>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include <time.h>
 
 #define B115200 115200
 #define B921600 921600
 
-typedef unsigned long speed_t;
+// typedef unsigned long speed_t;
 
 #else
 
@@ -80,7 +80,7 @@ typedef unsigned long speed_t;
 
 #endif
 
-int serial_setup(int fd, speed_t speed);
+int serial_setup(int fd, unsigned long speed);
 int serial_write(int fd, char *buf, int size);
 int serial_read(int fd, char *buf, int size);
 int serial_open(char *port);

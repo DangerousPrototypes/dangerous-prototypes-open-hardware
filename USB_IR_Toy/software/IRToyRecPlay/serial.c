@@ -61,24 +61,26 @@ int serial_setup(int fd, unsigned long speed)
 	return 0;
 #else
 	struct termios t_opt;
-	speed_t baud;
-
+	unsigned long  baud;
+  //  printf("Serial: Speed= %lu\n",speed);
 	switch (speed) {
 		case 921600:
-			baud = B921600;
+			baud = 921600;
 			break;
 		case 115200:
-			baud = B115200;
+			baud = 115200;
 			break;
 		case 1000000:
-			baud = B1000000;
+			baud = 1000000;
 			break;
 		case 1500000:
-			baud = B1500000;
+			baud = 1500000;
 			break;
 		default:
-			printf("unknown speed setting \n");
-			return -1;
+			printf("unknown speed setting: %lu \n",speed);
+			baud=115200;
+			printf("setting to default: %lu\n",baud);
+			//return -1;
 			break;
 	}
 
@@ -146,8 +148,8 @@ int serial_read(int fd, char *buf, int size)
 {
 	int len = 0;
 	int ret = 0;
-//	int timeout = 0;
-#if IS_WIN32
+
+    #if IS_WIN32
 	HANDLE hCom = (HANDLE)fd;
 	unsigned long bread = 0;
 
@@ -160,6 +162,7 @@ int serial_read(int fd, char *buf, int size)
 	}
 
 #else
+	int timeout = 0;
 	while (len < size) {
 		ret = read(fd, buf+len, size-len);
 		if (ret == -1){

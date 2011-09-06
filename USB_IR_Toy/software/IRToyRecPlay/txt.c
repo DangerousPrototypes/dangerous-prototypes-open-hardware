@@ -214,7 +214,11 @@ void IRtxtplay(	char *param_fname,int fd,char *param_delay)
 
                 c=0;
                 printf("\n");
+                #ifdef _WIN32
                 Sleep(2500);
+                #else
+                sleep(3);
+                #endif
 //                comsresult = serial_write( fd, "\x24", 1);
 //                res= serial_read(fd, buffer, 3);  //get number of bytes sent
 //                if (res >= 3)
