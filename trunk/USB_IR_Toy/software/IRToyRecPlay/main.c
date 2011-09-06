@@ -90,10 +90,10 @@ Contact Details: http://www.DangerousPrototypes.com
 
 
 #define FREE(x) if(x) free(x)
-#define IRTOY_VERSION "v20"
+#define IRTOY_VERSION "v21"
 
 
-int modem =FALSE;   //set this to TRUE of testing a MODEM
+//int modem =FALSE;   //set this to TRUE of testing a MODEM
 int verbose = 0;
 char useHandshake = 1;
 char  completereq = 1;
@@ -124,7 +124,7 @@ int print_usage(char * appname)
     printf("                  -r Record into a file indicated in -f parameter (requires -f) \n");
     printf("                  -p Play the file/sequence of file indicated in -f parameter");
     printf("                     (requires -f \n");
-    printf("                  -n Output and convert codes to other resulutions  (default is 21.33us)\n");
+    printf("                  -n Output and convert codes to other resolutions  (default is 21.33us)\n");
     printf("                     (requires -f \n");
     printf("                  -q Play command files listed in the file indicated in -f");
     printf("                     parameter (requires -f )\n");
@@ -208,16 +208,16 @@ int main(int argc, char** argv)
         switch (opt)
         {
 
-        case 'v':  // verbose output
+        case 'v':
             verbose=1;
             break;
-        case 'e':  // verbose output
+        case 'e':
             completereq=1;
             break;
-        case 'c':  // verbose output
+        case 'c':
             countreq = 1;
             break;
-        case 'h':  // verbose output
+        case 'h':
             param_handshake = strdup(optarg);
             if (!strcmp((param_handshake), ("off")))
                 useHandshake= 0;
@@ -259,7 +259,8 @@ int main(int argc, char** argv)
             param_fname = strdup(optarg);
 
             break;
-        case 'b':  // device   eg. com1 com12 etc
+        case 'b':  //buffer receive size, default is 512 - note starting v21, play buffer is 62  bytes only, while read can be adjusted
+
             if ( param_buffin != NULL)
             {
                 printf(" Error: Buffer-In parameter error!\n");
@@ -318,10 +319,12 @@ int main(int argc, char** argv)
 
     if (param_buffin==NULL)
     {
-        param_buffin=strdup("256");  //default
+        param_buffin=strdup("512");  //default buffer size for recieving
     }
-    if (param_speed==NULL)
-        param_speed=strdup("115200");
+    if (param_speed==NULL) {
+        param_speed=strdup("115200");    //default port speed
+        // printf("Speed: %s\n",param_speed);
+    }
     if (record==TRUE)
     {
         if ((param_fname==NULL) && (record==TRUE))     //either 'r' or 'p' or both should be used  witout filename it will just display it
@@ -348,7 +351,11 @@ int main(int argc, char** argv)
         printf(" Error opening serial port\n");
         return -1;
     }
-    serial_setup(fd, (speed_t) param_speed);
+    #ifdef _WIN32
+    serial_setup(fd, (unsigned long) param_speed);
+    #else
+      serial_setup(fd, strtoul(param_speed,NULL,10));
+    #endif
    // printf(" Pass serial_setup\n");
 
     cnt=0;
@@ -455,7 +462,7 @@ int main(int argc, char** argv)
             }
             else   //got garbage, retry again
             {
-                for (i=0; i< 255; i++)
+                for (i=0; i< 512; i++)
                 {
                     buffer[i]='\0';   // assigne null
                 }
@@ -494,7 +501,7 @@ int main(int argc, char** argv)
         {
             printf(" Recording at Resolution= %fus\n",resolution);
 
-            if ( IRrecord(param_fname,fd,resolution)==-1)
+            if ( IRrecord(param_fname,fd,resolution,param_buffin)==-1)
             {
                 FREE(param_port);
                 FREE(param_speed);
@@ -535,7 +542,12 @@ int main(int argc, char** argv)
 
         IRqueue(param_fname,fd);
     } // queue=true
-    Sleep(2000);
+
+    #ifdef _WIN32
+    Sleep(2000);     // windows: Sleep for 2000 milliseconds
+    #else
+    sleep(2);    // linux: sleep for 2 secs
+    #endif
     serial_close(fd);
     FREE(param_port);
     FREE(param_speed);

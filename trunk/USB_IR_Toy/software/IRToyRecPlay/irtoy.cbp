@@ -7,21 +7,21 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows Debug">
-				<Option output="bin\Debug\irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Debug\" />
+				<Option output="bin/windows/Debug/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/windows/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d COM4 -p -f test6_000.bin -c -e -v -h on -b 6000" />
+				<Option parameters="-d COM20  -r -p -f test  -v  -b 512" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="windows Release">
-				<Option output="bin\Release\irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Release\" />
+				<Option output="bin/windows/Release/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/windows/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d COM4 -p -f test -v -b 64 -h on -e -c" />
+				<Option parameters="-d COM20 -p -f test -v  -r" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -30,24 +30,41 @@
 				</Linker>
 			</Target>
 			<Target title="Linux debug">
-				<Option output="bin\Debug\irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Debug\" />
+				<Option output="bin/debian5/Debug/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/debian5/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-d  /dev/ttyACM0  -f  test -p  -v   -r" />
+				<Option parameters="-d  /dev/ttyACM0  -f  test -r  -p  -v  " />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
 			</Target>
 			<Target title="Linux Release">
-				<Option output="bin\Release\irtoy" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Release\" />
+				<Option output="bin/debian5/Release/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/debian5/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-d  /dev/ttyACM0  -f  test -p  -v   -r" />
 				<Linker>
 					<Add option="-s" />
 				</Linker>
+			</Target>
+			<Target title="MAC OS debug">
+				<Option output="bin/MacOS/Debug/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/MacOS/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-d  /dev/tty.usbmodem00000001  -f  test -p  -v  " />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="MAC OS Release">
+				<Option output="bin/MacOS/Release/irtoy" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/MacOS/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-d  /dev/tty.usbmodem00000001  -f  test -p  -v   -r" />
 			</Target>
 		</Build>
 		<Compiler>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="windows Release" />
-	<File name="bin.c" open="0" top="0" tabpos="13">
-		<Cursor position="16895" topLine="477" />
+	<ActiveTarget name="MAC OS Release" />
+	<File name="bin.c" open="1" top="1" tabpos="4">
+		<Cursor position="1896" topLine="58" />
 	</File>
-	<File name="bin.h" open="0" top="0" tabpos="5">
-		<Cursor position="1590" topLine="5" />
+	<File name="bin.h" open="1" top="0" tabpos="5">
+		<Cursor position="1631" topLine="25" />
 	</File>
 	<File name="config.h" open="0" top="0" tabpos="12">
 		<Cursor position="123" topLine="0" />
@@ -16,8 +16,8 @@
 	<File name="kbhit.h" open="0" top="0" tabpos="11">
 		<Cursor position="1187" topLine="0" />
 	</File>
-	<File name="main.c" open="1" top="1" tabpos="0">
-		<Cursor position="3851" topLine="69" />
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="16385" topLine="538" />
 	</File>
 	<File name="ols.c" open="0" top="0" tabpos="3">
 		<Cursor position="5775" topLine="92" />
@@ -28,11 +28,11 @@
 	<File name="queue.c" open="0" top="0" tabpos="6">
 		<Cursor position="2209" topLine="22" />
 	</File>
-	<File name="serial.c" open="0" top="0" tabpos="2">
-		<Cursor position="1644" topLine="23" />
+	<File name="serial.c" open="1" top="0" tabpos="2">
+		<Cursor position="1717" topLine="137" />
 	</File>
-	<File name="serial.h" open="0" top="0" tabpos="9">
-		<Cursor position="2043" topLine="0" />
+	<File name="serial.h" open="1" top="0" tabpos="3">
+		<Cursor position="1754" topLine="65" />
 	</File>
 	<File name="txt.c" open="0" top="0" tabpos="7">
 		<Cursor position="5375" topLine="126" />

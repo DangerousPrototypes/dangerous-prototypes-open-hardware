@@ -18,13 +18,13 @@ Where Labs, LLC, 208 Pine Street, Muscatine, IA 52761,USA
 
 #include "bin.h"
 
-extern int modem;
+// extern int modem;
 extern int verbose;
 extern char useHandshake;
 extern char countreq;
 extern char completereq;
 
-int IRrecord(char *param_fname,int fd,float resolution)
+int IRrecord(char *param_fname,int fd,float resolution,char *param_buff)
 {
     uint16_t IRCode;
     double NewIRcode;
@@ -36,7 +36,7 @@ int IRrecord(char *param_fname,int fd,float resolution)
 #endif
     int res,c;
     int fcounter;
-    char buffer[255] = {0};  //   buffer
+    char buffer[512] = {0};  //   buffer
     char fnameseq[255];
     FILE *fp=NULL;
     int cnt, flag;
@@ -47,7 +47,8 @@ int IRrecord(char *param_fname,int fd,float resolution)
     c=0;
     flag=0;
     fcounter=0;
-
+    int buflen=sizeof(buffer)/sizeof(char);
+    printf(" Allocated Record Buffer size: %d\n", buflen);
     printf(" Recording started.....\n");
     printf(" Press a button on the remote. \n");
     printf("\n Waiting..any key to exit..\n");
@@ -55,16 +56,23 @@ int IRrecord(char *param_fname,int fd,float resolution)
     while (1)
     {
 
-        while ((res= serial_read(fd, buffer, sizeof(buffer))) > 0)
+      while ((res= serial_read(fd, buffer, sizeof(buffer))) > 0)
+
         {
-            if (res % 2)
-                exit(-1); // JTR IRTOY should ALWAYS return even number of BYTE values
+           // comment out to avoid exiting.
+           // if (res % 2)
+           //     exit(-1); // JTR IRTOY should ALWAYS return even number of BYTE values
 
             no_data_yet=FALSE;
             if (file_created==FALSE)
             {
                 // check if fileextension is specified
+                #ifdef _WIN32
                 if((strcmpi(param_fname,".bin")) <= 0)
+                #else
+                //Linux does not have strcmpi.
+                if((strcasecmp(param_fname,".bin")) <= 0)
+                #endif
                 {
                     printf(" file has bin ");
                     sprintf(fnameseq,"%s",param_fname);
@@ -372,7 +380,7 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                             Error_flag=1;
                         }
 
-                        serial_write( fd, "/x3", 1);
+                        serial_write( fd, "\x3", 1);
                         res= serial_read(fd, bufferrx, sizeof(bufferrx));
                         if (res!=0)
                         {
@@ -407,7 +415,13 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                                     }
                                     else
                                     {
-                                        Sleep(1);
+                                 #ifdef _WIN32
+                                     Sleep(1);
+                                 #else
+                                     sleep(1);
+                                 #endif
+
+
                                         timecounter++;
                                         if (timecounter> 2000)
                                         {
@@ -421,7 +435,11 @@ void IRplay(char *param_fname,int fd,char *param_delay,char *param_buff)
                         else
                         {
                             if (useHandshake)
+                            #ifdef _WIN32
                             Sleep(200); // JTR6 added, give the IR TOY time to send the 0xFFFF
+                            #else
+                            sleep(2);
+                            #endif
                                 res= serial_read(fd, bufferrx, sizeof(bufferrx)); // JTR discard count
                             //   printf(" eof-- got 0xff \n");
                             // printf("\n");
