@@ -75,7 +75,7 @@ void rtcc_get_bcd_tm(struct rtcc_bcd_tm *tptr)
 	tptr->hour = wday_hour & 0xff;
 	tptr->day = month_date & 0xff;
 	tptr->mon = month_date >> 8;
-	tptr->year = short2bcd(year); //assuming rtcc year is years since 2000
+	tptr->year = year; //assuming rtcc year is years since 2000
 }
 
 void rtcc_get_tm(struct tm *tptr)
@@ -93,13 +93,13 @@ void rtcc_get_tm(struct tm *tptr)
 	tptr->tm_wday = wday_hour >> 8;
 	tptr->tm_mday = bcdL2char( month_date );
 	tptr->tm_mon = bcdH2char( month_date ) - 1; //struct tm has 0 - 11 for month
-	tptr->tm_year = year + 100; //assuming rtcc year is years since 2000
+	tptr->tm_year = bcdL2char( year ); //assuming rtcc year is years since 2000
 }
 
 
 void rtcc_tm_to_vals( const struct tm time, short *year, short *month_date, short *wday_hour, short *min_sec )
 {
-	*year=time.tm_year - 100;
+	*year=short2bcd((short)time.tm_year);
 	*month_date=short2bcd((short)time.tm_mday) + (short2bcd((short)time.tm_mon) << 8);
 	*wday_hour=short2bcd((short)time.tm_hour) + (short2bcd((short)time.tm_wday) << 8);
 	*min_sec=short2bcd((short)time.tm_sec) + (short2bcd((short)time.tm_min) << 8);
