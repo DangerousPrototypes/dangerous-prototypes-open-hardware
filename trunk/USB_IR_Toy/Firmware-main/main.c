@@ -258,7 +258,7 @@ void SelfTest(void) {
     CCPR1L = 0b00101001; //upper 8 bits of duty cycte
     CCP1CON = 0b00011100; //we leave this on for visual inspection (5-4 two LSB of duty, 3-0 set PWM)
 
-    cnt = 40000;
+    cnt = 200000;
     while (cnt--);
 
     if (IRRX_PORT & IRRX_PIN)
