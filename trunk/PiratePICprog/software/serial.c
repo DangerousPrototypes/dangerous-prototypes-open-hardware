@@ -91,15 +91,13 @@ int serial_write(int fd, char *buf, int size)
 
 	//fprintf(stderr, "size = %d ret = %d\n", size, ret);
 	//buspirate_print_buffer(buf, size);
-    if (disable_comport !=1)   //added for no port
-    {
-
-
-	if (ret != size)
-		fprintf(stderr, "Error sending data");
+	if (disable_comport !=1)   //added for no port
+	{
+		if (ret != size)
+			fprintf(stderr, "Error sending data");
+		return ret;
+	}
 	return ret;
-    }
-    return ret;
 }
 
 int serial_read(int fd, char *buf, int size)
@@ -144,19 +142,14 @@ int serial_read(int fd, char *buf, int size)
 	//printf("should have read = %i actual size = %i \n", size, len);
 	//fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
 	//buspirate_print_buffer(buf, len);
-if (disable_comport!=1)
-{
-
-
-	if (len != size)
-		fprintf(stderr, "Error sending data");
-
-
-	return len;
-}
-else
-return len;
-}
+	if (disable_comport!=1)
+	{
+		if (len != size)
+			fprintf(stderr, "Error sending data");
+		return len;
+	} else
+		return len;
+	}
 
 int serial_open(char *port)
 {
@@ -200,122 +193,3 @@ int serial_close(int fd)
 	return 0;
 }
 
-/*
-int readWithTimeout(int fd, uint8_t *out, int length, int timeout)
-{
-	fd_set fds;
-	struct timeval tv = {timeout, 0};
-	int res = -1;
-	int got = 0;
-
-	do {
-
-		FD_ZERO(&fds);
-		FD_SET(fd, &fds);
-
-		res = select(fd + 1, &fds, NULL, NULL, &tv);
-
-		if( res > 0 ) {
-			res = read(fd, out, length);
-			if( res > 0 ) {
-				length -= res;
-				got    += res;
-				out    += res;
-			} else {
-				break;
-			}
-		} else {
-			return res;
-		}
-	} while( length > 0);
-
-	return got;
-}
-
-int configurePort(int fd, unsigned long baudrate)
-{
-#ifdef WIN32
-	COMMTIMEOUTS timeouts;
-	DCB dcb = {0};
-	HANDLE hCom = (HANDLE)fd;
-
-	dcb.DCBlength = sizeof(dcb);
-
-	dcb.BaudRate = baudrate;
-	dcb.ByteSize = 8;
-	dcb.Parity = NOPARITY;
-	dcb.StopBits = ONESTOPBIT;
-
-	if( !SetCommState(hCom, &dcb) ){
-		return -1;
-	}
-
-
-	timeouts.ReadIntervalTimeout = 100;
-	timeouts.ReadTotalTimeoutMultiplier = 10;
-	timeouts.ReadTotalTimeoutConstant = 100;
-	timeouts.WriteTotalTimeoutMultiplier = 10;
-	timeouts.WriteTotalTimeoutConstant = 100;
-
-	if (!SetCommTimeouts(hCom, &timeouts)) {
-		return -1;
-	}
-
-	return (int)hCom;
-#else
-    speed_t baud = B921600;
-	struct termios g_new_tio;
-
-	switch (baudrate) {
-		case 921600:
-			baud = B921600;
-			break;
-		case 115200:
-			baud = B115200;
-			break;
-		case 1000000:
-			baud = B1000000;
-			break;
-		case 1500000:
-			baud = B1500000;
-		default:
-			printf("unknown speed setting \n");
-			return -1;
-			break;
-	}
-
-	memset(&g_new_tio, 0x00 , sizeof(g_new_tio));
-	cfmakeraw(&g_new_tio);
-
-	g_new_tio.c_cflag |=  (CS8 | CLOCAL | CREAD);
-	g_new_tio.c_cflag &= ~(PARENB | CSTOPB | CSIZE);
-	g_new_tio.c_oflag = 0;
-	g_new_tio.c_lflag = 0;
-
-	g_new_tio.c_cc[VTIME] = 0;
-	g_new_tio.c_cc[VMIN] = 1;
-
-#ifdef MACOSX
-
-	if( tcsetattr(fd, TCSANOW, &g_new_tio) < 0 ) {
-		return -1;
-	}
-
-	return ioctl( fd, IOSSIOSPEED, &baud );
-#else
-	cfsetispeed (&g_new_tio, baudrate);
-	cfsetospeed (&g_new_tio, baudrate);
-
-	tcflush(fd, TCIOFLUSH);
-
-	return tcsetattr(fd, TCSANOW, &g_new_tio);
-#endif //#ifdef MACOSX
-
-#endif
-}
-
-int openPort(const char* dev, unsigned long flags)
-{
-	return open(dev, O_RDWR | O_NOCTTY | O_NDELAY | flags);
-}
-*/

@@ -18,4 +18,3 @@ uint32_t PIC24_WriteFlash(struct picprog_t *, uint8_t *);
 uint32_t PIC24_ReadFlash(struct picprog_t *, uint8_t *);
 
 #endif
-

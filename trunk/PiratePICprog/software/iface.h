@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+struct picprog_t;
+
 enum bitorder_t {
 	BIT_MSB,
 	BIT_LSB
@@ -11,34 +13,34 @@ enum bitorder_t {
 struct iface_t {
 	char *name;
 
-	uint32_t (*Init)(void *, char *, char *);
-	uint32_t (*Deinit)(void *);
-	uint32_t (*DataLow)(void *);
-	uint32_t (*DataHigh)(void *);
+	uint32_t (*Init)(struct picprog_t *, char *, char *);
+	uint32_t (*Deinit)(struct picprog_t *);
+	uint32_t (*DataLow)();
+	uint32_t (*DataHigh)();
 
-	uint32_t (*ClockLow)(void *);
-	uint32_t (*ClockHigh)(void *);
+	uint32_t (*ClockLow)();
+	uint32_t (*ClockHigh)();
 
-	uint32_t (*MCLRLow)(void *);
-	uint32_t (*MCLRHigh)(void *);
+	uint32_t (*MCLRLow)();
+	uint32_t (*MCLRHigh)();
 
-	uint32_t (*SetBitOrder)(void *, uint8_t);
-	uint32_t (*SendBytes)(void *, uint8_t, char *);
-	uint32_t (*SendBits)(void *, uint8_t, char);
+	uint32_t (*SetBitOrder)(uint8_t);
+	uint32_t (*SendBytes)(uint8_t, char *);
+	uint32_t (*SendBits)(uint8_t, char);
 
-	uint32_t (*PIC614Read)(void *, uint8_t);
-	uint32_t (*PIC614Write)(void *, uint8_t, uint16_t);
+	uint32_t (*PIC614Read)(uint8_t);
+	uint32_t (*PIC614Write)(uint8_t, uint16_t);
 
-	uint32_t (*PIC416Read)(void *, uint8_t, void *, uint32_t);
-	uint32_t (*PIC416Write)(void *, uint8_t, uint16_t);
+	uint32_t (*PIC416Read)(uint8_t, void *, uint32_t);
+	uint32_t (*PIC416Write)(uint8_t, uint16_t);
 
-	uint32_t (*PIC424Read)(void *, uint32_t, void *, uint32_t);
-	uint32_t (*PIC424Write)(void *, uint32_t, uint8_t, uint8_t);
+	uint32_t (*PIC424Read)(uint32_t, void *, uint32_t);
+	uint32_t (*PIC424Write)(uint32_t, uint8_t, uint8_t);
 
-	uint32_t (*flush)(void *pBP);
+	uint32_t (*flush)();
 
-	uint32_t (*VPPHigh)(void *pBP);
-	uint32_t (*VPPLow)(void *pBP);
+	uint32_t (*VPPHigh)();
+	uint32_t (*VPPLow)();
 
 };
 

@@ -18,5 +18,3 @@ int PIC12_WriteFlash(struct picprog_t *, uint8_t *);
 int PIC12_ReadFlash(struct picprog_t *, uint8_t *);
 
 #endif
-
-
