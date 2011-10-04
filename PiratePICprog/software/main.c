@@ -20,9 +20,11 @@
 #include "iface.h"
 #include "common.h"
 #include "buspirate.h"
+#include "memory.h"
 
 int verbose = 0;
 int disable_comport = 0;   //1 to say yes, disable comport, any value to enable port default is 0 meaning port is enable.
+
 enum {
 	CMD_READ = 1,
 	CMD_WRITE = 2,
@@ -32,11 +34,11 @@ enum {
 
 
 void print_usage(char* name) {
-        printf("Pirate Pic Programmer v0.2\n");
-        printf("USAGE: \n");
-        printf(" %s -p PROG -u PORT -s SPEED -c CHIP -t TYPE -w | -r FILE  -E | -W | -R | -V \n" ,name);
+		printf("Pirate Pic Programmer v0.2\n");
+		printf("USAGE: \n");
+		printf(" %s -p PROG -u PORT -s SPEED -c CHIP -t TYPE -w | -r FILE  -E | -W | -R | -V \n" ,name);
 
-        printf(" %s -h \n\n" ,name);
+		printf(" %s -h \n\n" ,name);
 
 		printf("-p PROG  - name of interface\n");
 		printf("-u PORT  - interface port\n");
@@ -56,8 +58,8 @@ void print_usage(char* name) {
 		printf("-h  - this help usage\n");
 		printf("\n\n");
 		printf("Example usage: %s -p buspirate -u COM12 -s 115200 -c 18F2550 -t HEX  -r test.hex  -E\n",name);
-        printf("               %s -p buspirate -u COM12 -s 115200 -c 18F2550 -V\n",name);
-        printf("               %s -h\n",name);
+		printf("               %s -p buspirate -u COM12 -s 115200 -c 18F2550 -V\n",name);
+		printf("               %s -h\n",name);
 
 }
 
@@ -66,17 +68,14 @@ int main(int argc, char** argv) {
 	int opt;
 //	int	res = -1;
 	uint32_t i;
-    uint16_t PICidver, PICrev, PICid;
+	uint16_t PICidver, PICrev, PICid;
 
-	uint32_t read_size;
-
-	uint8_t *buf_read, *buf_write;
 	char *param_write_file = NULL;
 	char *param_read_file = NULL;
 	char *param_prog = NULL;
 	char *param_port = NULL;
 	char *param_speed = NULL;
-	char *param_type = NULL;
+	struct file_ops_t *datafile;
 	char *param_chip = NULL;
 	uint16_t cmd = 0;
 
@@ -85,30 +84,33 @@ int main(int argc, char** argv) {
 	struct pic_chip_t *picchip;
 	struct pic_family_t *picfamily;
 
+	struct memory_t *memread;
+	struct memory_t *memwrite;
+
 
 	printf("(Bus) Pirate PIC Programer v0.2 \n\n");
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
-	cmd|=CMD_WRITE;
-    cmd|=CMD_VERIFY;
-    //cmd|=CMD_READ;
-	param_chip=strdup("18F2550");
-	param_port=strdup("COM12");
-	param_prog=strdup("buspirate");
-	param_speed=strdup("115200");
-    param_read_file=strdup("dump-18F2550.hex");
-	param_write_file=strdup("test-18F2550.hex");
-	param_type=strdup("HEX");
+	cmd |= CMD_WRITE;
+	cmd |= CMD_VERIFY;
+	//cmd |= CMD_READ;
+	param_chip = strdup("18F2550");
+	param_port = strdup("COM12");
+	param_prog = strdup("buspirate");
+	param_speed = strdup("115200");
+	param_read_file = strdup("dump-18F2550.hex");
+	param_write_file = strdup("test-18F2550.hex");
+	datafile = GetFileOps("HEX");
 #else
 // added routine to trap no arguments
 	if (argc <= 1)  {
-	    printf("ERROR: Invalid argument(s).\n\n");
-	    printf("Help Menu\n");
+		printf("ERROR: Invalid argument(s).\n\n");
+		printf("Help Menu\n");
 		print_usage(argv[0]);
 		exit(-1);
 	}
-	#endif
+#endif
 
 	while ((opt = getopt(argc, argv, "ERWVr:w:evu:xp:s:c:t:")) != -1) {
        // printf("%c  \n",opt);
@@ -144,11 +146,11 @@ int main(int argc, char** argv) {
 			//	printf("param_read_file: %s\n", param_read_file);
 				break;
 			case 't':
-				if (param_type != NULL) {
-					printf("Multiple arguments !\n");
+				datafile = GetFileOps(optarg);
+				if (datafile == NULL) {
+					printf("Unknown data file type!\n");
 					exit(-1);
 				}
-				param_type = strdup(optarg);
 				break;
 			case 'c':
 				if (param_chip != NULL) {
@@ -207,8 +209,13 @@ int main(int argc, char** argv) {
 	{
 	    printf("Name of Interface is required: eg.  -p buspirate\n");
 	    exit(-1);
-
 	}
+
+	if (datafile == NULL) {
+	    printf("Need to know type of input file\n");
+	    exit(-1);
+	}
+
 	picprog.iface = Iface_GetByName(param_prog);
 
 	if (picprog.iface == NULL) {
@@ -218,24 +225,22 @@ int main(int argc, char** argv) {
 
 	printf("Initializing interface \n");
 
+	if (param_speed != NULL && param_port != NULL) {   //added to check if port is null to avoid crash
 
-    if (param_speed !=NULL && param_port !=NULL)     //added to check if port is null to avoid crash
-    {
-       if(picprog.iface->Init(&picprog, param_port, param_speed)){
-            printf("ERROR: interface not responding \n");
-            exit(-1);
-       }
-    }
-    else {
-        printf("ERROR: Port name or port speed not specified \n");
-        printf("parameter -u and  -s must be specified: e.g -u com12 -s 115200\n");
-        exit(-1);
-    }
-    if (param_chip==NULL)
-    {
-        printf("Chip type not specified: e.g -c 18F2550\n");
-        exit(-1);
-    }
+		if(picprog.iface->Init(&picprog, param_port, param_speed)){
+			printf("ERROR: interface not responding \n");
+			exit(-1);
+		}
+	} else {
+		printf("ERROR: Port name or port speed not specified \n");
+		printf("parameter -u and  -s must be specified: e.g -u com12 -s 115200\n");
+		exit(-1);
+	}
+
+	if (param_chip == NULL) {
+		printf("Chip type not specified: e.g -c 18F2550\n");
+		exit(-1);
+	}
 
 	picprog.chip_idx = PIC_GetChipIdx(param_chip);
 	if (picprog.chip_idx == -1) {
@@ -248,119 +253,107 @@ int main(int argc, char** argv) {
 	picchip = PIC_GetChip(picprog.chip_idx);
 	picfamily = PIC_GetFamily(picchip->family);
 
-
-
-	buf_read = (uint8_t*)malloc(picchip->flash);
-	buf_write = (uint8_t*)malloc(picchip->flash);
-
-	if ((buf_read == NULL) || (buf_write == NULL)) {
-		printf("Error allocating %ld bytes of memory\n", (long)picchip->flash);
-		return -1;
-	}
-
-	memset(buf_read, PIC_EMPTY, picchip->flash);
-	memset(buf_write, PIC_EMPTY, picchip->flash);
+	memread = MEM_Init(picfamily->page_size);
+	memwrite = MEM_Init(picfamily->page_size);
 
 
 //check chip
-    printf("Checking for %s attached to programmer... \n", param_chip);
-    PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
+	printf("Checking for %s attached to programmer... \n", param_chip);
+	PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
+
 //determine device type
 //if comport is disable make PICid=picchip->ID
-if (disable_comport != 0)
-{
-    PICid=picchip->ID;
-}
-
-	if(PICid!=picchip->ID)
-	{
-	    printf("\nWrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
- 	    return -1;
+	if (disable_comport != 0) {
+		PICid=picchip->ID;
 	}
-    printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);
 
+	if(PICid!=picchip->ID) {
+	    printf("\nWrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
+	    return -1;
+	}
+	printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);
 
-// prepare data file
-if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
+	// prepare data file
+	if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
+		uint32_t read_size;
 
 		if (param_write_file == NULL) {
 			printf("No write file specified\n");
 			return -1;
 		}
-		if (strcasecmp(param_type, "HEX")==0) {
-			printf("Reading HEX file '%s' ... ", param_write_file);
-			read_size = HEX_ReadFile(param_write_file, buf_write, picchip->flash);
-		} else if (strcasecmp(param_type, "BIN")==0) {
-			printf("Reading BIN file '%s' ... ", param_write_file);
-			read_size = BIN_ReadFile(param_write_file, buf_write, picchip->flash);
-		} else {
-			printf("You need to specify file type! \n");
-			return -1;
-		}
 
+		read_size = datafile->ReadFile(param_write_file, memwrite);
 		if (read_size == 0) {
 			printf("Error!\n");
 			return -1;
 		}
+
 		printf("Read binary size = %ld\n", (long int)read_size);
 	}
 
 // execute commands
 	if (cmd & CMD_READ) {
 		//picops->Read(&picprog, 0x0000, buf_read, picchip->flash);
-        picops->ReadFlash(&picprog, buf_read);
+		//picops->ReadFlash(&picprog, buf_read);
+
+		PIC_ReadMemory(&picprog, memread);
+
 		if (param_read_file == NULL) {
 			printf("No read file specified\n");
 			return -1;
 		}
-		if (strcasecmp(param_type, "HEX")==0) {
-			printf("Writing HEX file '%s' ... ", param_read_file);
-			HEX_WriteFile(param_read_file, buf_read, picchip->flash);
-			printf("done!\n");
-		} else if (strcasecmp(param_type, "BIN")==0) {
-			printf("Writing BIN file '%s' ... ", param_read_file);
-			BIN_WriteFile(param_read_file, buf_read, picchip->flash);
-			printf("done!\n");
-		} else {
-			printf("No output filetype specified\n");
-			return -1;
-		}
+
+		datafile->WriteFile(param_read_file, memread);
 	}
 
 	if (cmd & CMD_ERASE) {
-        printf("Erasing chip... ");
+		// TODO: make user choose
+		if (cmd & CMD_WRITE) {
+			printf("Saving configuration words... ");
+			PIC_PreserveConfig(&picprog, memwrite);
+		}
+
+		printf("Erasing chip... ");
 		picops->Erase(&picprog);
 		printf("OK :) \n");
 	}
 
 	if (cmd & CMD_WRITE) {
 		//picops->Write(&picprog, 0x0000, buf_write, picchip->flash);
-		picops->WriteFlash(&picprog, buf_write);
+		//picops->WriteFlash(&picprog, buf_write);
+
+		PIC_WriteMemory(&picprog, memwrite);
 	}
 
 	if (cmd & CMD_VERIFY) {
 		//if (cmd & CMD_READ == 0) { // read only when necessary
-			picops->ReadFlash(&picprog, buf_read);
+			//picops->ReadFlash(&picprog, buf_read);
 		//}
-		if (memcmp(buf_read, buf_write, picchip->flash)) {
+		struct memory_t *memverify = MEM_Init(picfamily->page_size);
+
+		printf("Verifing ... \n");
+		PIC_ReadMemory(&picprog, memverify);
+
+		if (MEM_Compare(memwrite, memverify)) {
 			printf("Verify ERROR :( \n");
 		} else {
 			printf("Verify OK :) !\n");
 		}
 
-        for(i=0; i<picchip->flash; i++){
-            if(buf_read[i]!=buf_write[i]){
-                printf("Verify ERROR %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
-            }/*else{
-                printf("Verify OK %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
-            }*/
-        }
+//		for(i=0; i<picchip->flash; i++){
+//			if(buf_read[i]!=buf_write[i]){
+//				printf("Verify ERROR %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
+//			}/*else{
+//				printf("Verify OK %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
+//			}*/
+//		}
+		MEM_Destroy(memverify);
 	}
 
 	picprog.iface->Deinit(&picprog);
 
-	free(buf_write);
-	free(buf_read);
+	MEM_Destroy(memwrite);
+	MEM_Destroy(memread);
 
 #define FREE(x) if(x) free(x);
 	FREE(param_write_file);
@@ -368,7 +361,6 @@ if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
 	FREE(param_prog);
 	FREE(param_port);
 	FREE(param_speed);
-	FREE(param_type);
 	FREE(param_chip);
 
 	return 0;

@@ -4,21 +4,32 @@
 #include <stdint.h>
 
 #include "common.h"
+#include "memory.h"
 #include "proto_pic.h"
 
 #define PIC_EMPTY  0xff
 
+enum pic_mem_t {
+	PIC_MEM_FUSE,
+	PIC_MEM_FLASH,
+	PIC_MEM_EEPROM,
+	PIC_MEM_LAST
+};
+
+struct pic_memmap_t {
+	uint32_t base;
+	uint32_t size;
+};
+
 struct pic_chip_t {
 	const char *name;
 	uint16_t ID;
-	uint32_t flash;
-	uint32_t eeprom;
 	uint16_t family;
+
+	struct pic_memmap_t memmap[PIC_MEM_LAST];
 };
 
 struct pic_family_t {
-	uint32_t family;
-
 	enum proto_t proto;
 	uint32_t ID_addr;
 	uint8_t word_size;
@@ -38,8 +49,9 @@ struct pic_chip_t *PIC_GetChip(uint16_t i);
 struct pic_family_t *PIC_GetFamily(uint16_t i);
 struct proto_ops_t *PIC_GetProtoOps(uint16_t i);
 
-int PIC_WriteFlash(struct picprog_t *p, uint8_t *fw_data);
-int PIC_ReadFlash(struct picprog_t *p, uint8_t *fw_data);
+void PIC_PreserveConfig(struct picprog_t *p, struct memory_t *mem);
+int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem);
+int PIC_ReadMemory(struct picprog_t *p, struct memory_t *mem);
 
 #endif
 

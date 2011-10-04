@@ -1,19 +1,69 @@
-/*
- * HEX/BIN Data file parser and writer
+/* 
+ * Part of ols-fwloader - data file parsing/generaion
  *
- * 2010 - Michal Demin
+ * Copyright (C) 2011 Michal Demin <michal.demin@gmail.com>
  *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "data_file.h"
+
+static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem);
+static int HEX_WriteFile(const char *file, struct memory_t *mem);
+static int HEX_CheckType(const char *);
+static uint32_t BIN_ReadFile(const char *file, struct memory_t *mem);
+static int BIN_WriteFile(const char *file, struct memory_t *mem);
+static int BIN_CheckType(const char *);
+
+#define FILE_OPS_CNT (sizeof(file_ops)/sizeof(struct file_ops_t))
+const struct file_ops_t file_ops[] = {
+	{
+		.name = "HEX",
+		.ReadFile = HEX_ReadFile,
+		.WriteFile = HEX_WriteFile,
+		.CheckType = HEX_CheckType,
+	},
+	{
+		.name = "BIN",
+		.ReadFile = BIN_ReadFile,
+		.WriteFile = BIN_WriteFile,
+		.CheckType = BIN_CheckType,
+	}
+};
+
+struct file_ops_t *GetFileOps(char *name)
+{
+	int i;
+
+	for (i = 0; i < FILE_OPS_CNT; i++) {
+		if (strcasecmp(name, file_ops[i].name) == 0) {
+			return (struct file_ops_t *)&file_ops[i];
+		}
+	}
+
+	return NULL;
+}
 
 /*
  * returns checksum of input buffer
  */
-uint8_t Data_Checksum(uint8_t *buf, uint16_t size) {
+uint8_t Data_Checksum(uint8_t *buf, uint16_t size)
+{
 	uint16_t i;
 	uint8_t sum = 0;
 
@@ -29,12 +79,19 @@ uint8_t Data_Checksum(uint8_t *buf, uint16_t size) {
  * buf - buffer where the data should be written to
  * size - size of buffer
  */
-uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size) {
-	char raw_line[256];
+#define MAX_LINE_SIZE 256
+static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
+{
+	char raw_line[MAX_LINE_SIZE];
 	int line = 0;
 	uint32_t base_addr;
 	FILE *fp;
 	uint32_t addr_max=0;
+	uint8_t *tmp;
+	uint16_t tmp_len;
+	uint8_t chksum;
+	uint16_t i;
+	unsigned int b;
 
 	fp = fopen(file, "r");
 
@@ -42,64 +99,96 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 		return 0;
 	}
 
+	tmp = malloc(sizeof(raw_line)+1);
+	if (tmp == NULL) {
+		fprintf(stderr, "Memory allocation problem\n");
+		return 0;
+	}
+
 
 	while(fgets(raw_line, sizeof(raw_line), fp) != 0) {
 		// read line header
-		unsigned int tmp[3];
 		uint8_t byte_count;
 		uint32_t addr;
 		uint8_t rec_type;
+		const char *p;
 
 		if (raw_line[0] != ':') {
 			printf("File '%s' is note a hex file !\n", file);
+			return 0;
 		}
-		line ++;
 
-		sscanf(raw_line+1, "%2x%4x%2x", &tmp[0], &tmp[1], &tmp[2]);
-		byte_count = tmp[0] & 0xff;
-		addr = tmp[1] & 0xffff;
-		rec_type = tmp[2] & 0xff;
+		line ++;
+		p = raw_line + 1;
+
+		tmp_len = 0;
+		// read byte count (1byte), address (2byte), record type (1byte)
+		for (i = 0; i < 4; i ++) {
+			sscanf(p, "%2x", &b);
+			p += 2;
+			tmp[tmp_len] = b;
+			tmp_len ++;
+		}
+
+		byte_count = tmp[0];
+		addr = (tmp[1] << 8) | tmp[2];
+		rec_type = tmp[3];
 
 		if (rec_type == 0x00) {
 			// data record
-			uint8_t chksum;
 			uint16_t i;
 			addr = base_addr | addr;
 
-			if (out_buf_size < byte_count + addr) {
-				printf("data won't fit into buffer :( \n");
-				fclose(fp);
-				return 0;
-			}
+			for (i = 0; i < byte_count; i++) {
+				sscanf(p, "%2x", &b);
+				p += 2;
 
-			for (i=0; i<byte_count; i++) {
-				uint8_t byte;
-				sscanf(raw_line+9+2*i, "%2x", &tmp[0]);
-				byte = tmp[0];
-				out_buf[addr+i] = byte;
-				if (addr_max < addr+i) addr_max = addr+i;
-			}
-			sscanf(raw_line+9+2*i, "%2x", &tmp[0]);
-			chksum = tmp[0];
-			// TODO: check chksum
-			if (Data_Checksum(&out_buf[addr+i], byte_count) != chksum) {
-				//printf("WARNING: HEX checksum error on line %d !! \n", line);
-			}
+				tmp[tmp_len] = b;
 
+				tmp_len++;
+
+				if (addr_max < addr + i) {
+					addr_max = addr + i;
+				}
+			}
+			MEM_Write(mem, addr, &tmp[tmp_len-byte_count], byte_count);
 		} else if (rec_type == 0x04) {
-			// base addr
-			sscanf(raw_line+9, "%4x", &base_addr);
+			// extended linear: base addr
+			base_addr = 0;
+			for (i = 0; i < byte_count; i++) {
+				sscanf(p, "%2x", &b);
+				p += 2;
+
+				tmp[tmp_len] = b;
+				tmp_len ++;
+				base_addr = (base_addr << 8) | (b & 0xff);
+			}
+
 			base_addr <<= 16;
+#ifdef DEBUG
+			fprintf(stderr, "new (linear) base addr = %08x\n", base_addr);
+#endif
 		} else if (rec_type == 0x01) {
 			// end record
 			break;
 		} else {
-			printf("Unknown record type on line %d\n", line);
+			fprintf(stderr, "Unknown record type on line %d\n", line);
+			return 0;
+		}
+
+		sscanf(p, "%2x", &b);
+		chksum = b;
+
+		// calculate checksum after line was parsed
+		if (Data_Checksum(tmp, tmp_len) != chksum) {
+			fprintf(stderr, "Checksum error on line %d\n", line);
+			return 0;
 		}
 	}
 
+	free(tmp);
 	fclose(fp);
-	return addr_max+1;
+	return addr_max + 1;
 }
 
 /*
@@ -108,14 +197,13 @@ uint32_t HEX_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
  * buf - buffer where data is stored
  * size - size of buffer
  */
-static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t addr, uint8_t *data) {
+static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t addr, uint8_t *data)
+{
 	int res;
 	uint8_t bin_line[128];
 	char raw_line[256];
 	uint8_t i=0;
 	uint8_t j;
-
-	//uint8_t checksum = 0;
 
 	// fill header
 	bin_line[0] = byte_count;
@@ -125,18 +213,19 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
 
 	// copy data
 	for (i=0; i<byte_count; i++) {
-		bin_line[4+i] = data[i];
+		bin_line[4 + i] = data[i];
 	}
 
 	// add checksum
-	bin_line[4+i] = Data_Checksum(bin_line, 4+i);
+	bin_line[4 + i] = Data_Checksum(bin_line, 4+i);
 
 	// rewrite bin data to hex
 	res = sprintf(raw_line, ":");
-	for (j=0; j<4+i+1; j++) {
-		res += sprintf(raw_line+res, "%02X", bin_line[j]);
+	for (j = 0; j < 4 + i + 1; j++) {
+		res += sprintf(raw_line + res, "%02X", bin_line[j]);
 	}
-	res += sprintf(raw_line+res, "\n");
+	res += sprintf(raw_line + res, "\n");
+//	printf(raw_line);
 
 	// output to file
 	res = fwrite(raw_line, sizeof(char), res, fp);
@@ -148,12 +237,20 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
  * buf - buffer which contains the data
  * size - size of buffer
  */
-int HEX_WriteFile(const char *file, uint8_t *in_buf, uint32_t in_buf_size) {
-	//int res;
+static int HEX_WriteFile(const char *file, struct memory_t *mem)
+{
+	struct mem_page_t *page;
 	uint32_t written = 0;
 	uint16_t base = 0x0000;
+	uint16_t oldbase = 0xFFFF;
+	uint8_t base_bytes[2];
 	uint32_t addr = 0x0000;
 	FILE *fp;
+
+	if (mem == NULL) {
+		return -2;
+	}
+
 
 	fp = fopen(file, "w");
 
@@ -161,35 +258,58 @@ int HEX_WriteFile(const char *file, uint8_t *in_buf, uint32_t in_buf_size) {
 		return -1;
 	}
 
-	// ext address record
-	HEX_WriteRec(fp, 0x04, 2, 0x0000, (uint8_t*)&base);
+	page = MEM_GetFirstPage(mem);
+	while (page != NULL) {
+		written = 0;
 
-	while (written < in_buf_size) {
-		uint8_t byte_count;
-		if ((in_buf_size - written) > 0x10) {
-			byte_count = 0x10;
-		} else {
-			byte_count = in_buf_size - written;
+		if (MEM_PageEmpty(page)) {
+			page = MEM_GetNextPage(page);
+			continue;
 		}
 
-		// write data record
-		HEX_WriteRec(fp, 0x00, byte_count, addr, &in_buf[written]);
-		written += byte_count;
-		addr += byte_count;
-
-		// write ext addr record
-		if (addr & 0x10000) {
-			uint8_t tmp[2];
-
-			base ++;
-
-			tmp[0] = (base >> 8) & 0xff;
-			tmp[1] = (base & 0xff);
-
-			HEX_WriteRec(fp, 0x04, 2, 0x0000, tmp);
-
-			addr -= 0x10000;
+		// ext address record
+		base = page->base >> 16;
+		if (oldbase != base) {
+			base_bytes[0] = (base & 0xff00) >> 8;
+			base_bytes[1] = base & 0x00ff;
+			HEX_WriteRec(fp, 0x04, 2, 0x0000, base_bytes);
+			oldbase = base;
 		}
+
+//		printf("w base= %08x \n", base);
+		while (written < page->size) {
+			uint8_t byte_count;
+			uint32_t offset;
+
+			if ((page->size - written) > 0x10) {
+				byte_count = 0x10;
+			} else {
+				byte_count = page->size - written;
+			}
+
+			addr = (page->base + written) & 0xffff;
+
+			// write data record
+			HEX_WriteRec(fp, 0x00, byte_count, addr, &page->data[written]);
+
+			written += byte_count;
+/*
+			// write ext addr record
+			if (addr & 0x10000) {
+				uint8_t tmp[2];
+
+				base ++;
+
+				tmp[0] = (base >> 8) & 0xff;
+				tmp[1] = (base & 0xff);
+
+				HEX_WriteRec(fp, 0x04, 2, 0x0000, tmp);
+
+				addr -= 0x10000;
+			}
+	*/	}
+
+		page = MEM_GetNextPage(page);
 	}
 
 	// end record
@@ -199,16 +319,31 @@ int HEX_WriteFile(const char *file, uint8_t *in_buf, uint32_t in_buf_size) {
 	return 0;
 }
 
+static int HEX_CheckType(const char *dummy)
+{
+	return 0 ;; //TODO: finish
+}
+
 /*
  * reads bin file
  * file - name of hexfile
  * buf - buffer where the data should be written to
  * size - size of buffer, returns actual size read
  */
-uint32_t BIN_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size) {
+static uint32_t BIN_ReadFile(const char *file, struct memory_t *mem)
+{
 	int res;
 	long fsize;
 	FILE *fp;
+
+	uint8_t *data;
+	uint32_t addr = 0;
+
+	data = malloc(mem->page_size);
+	if (data == NULL) {
+		printf("Out of memory!\n");
+		return 0;
+	}
 
 	fp = fopen(file, "rb");
 	if (fp == NULL) {
@@ -219,18 +354,16 @@ uint32_t BIN_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
 	fsize = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-	if (fsize > out_buf_size) {
-		printf("file won't fit into buffer :(\n");
-		return 0;
+	addr = 0;
+
+	while ((res = fread(data, sizeof(uint8_t), mem->page_size, fp)) > 0) {
+		MEM_Write(mem, addr, data, res);
+		addr += res;
 	}
 
-	res = fread(out_buf, sizeof(uint8_t), fsize, fp);
-	if (res <= 0) {
-		printf("error reading file %s \n", file);
-	}
-
+	free(data);
 	fclose(fp);
-	return (res<0)?0:res;
+	return addr;
 }
 
 /*
@@ -239,7 +372,9 @@ uint32_t BIN_ReadFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size)
  * buf - buffer which contains the data
  * size - size of buffer
  */
-int BIN_WriteFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size) {
+static int BIN_WriteFile(const char *file, struct memory_t *mem)
+{
+/* TODO: finish
 	FILE *fp;
 	int res;
 
@@ -252,6 +387,12 @@ int BIN_WriteFile(const char *file, uint8_t *out_buf, uint32_t out_buf_size) {
 		printf("error writing file %s\n", file);
 	}
 	fclose(fp);
-
+*/
 	return 0;
+}
+
+static int BIN_CheckType(const char *dummy)
+{
+	/* always binary */
+	return 1;
 }

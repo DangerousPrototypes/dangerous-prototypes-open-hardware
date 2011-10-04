@@ -6,18 +6,12 @@
 #include "pic18.h"
 #include "pic24.h"
 
-
 #include "proto_pic.h"
 
-#define PROTO_OPS_CNT (sizeof(proto_ops)/sizeof(struct proto_ops_t))
-
-// need to be sure the order is the same as in the Enum in .h file
 struct proto_ops_t proto_ops[] = {
-	{
-		.type = PROTO_PIC12,
+	[PROTO_PIC12] = {
 	},
-	{
-		.type = PROTO_PIC16,
+	[PROTO_PIC16] = {
 		.EnterICSP = PIC16_EnterICSP,
 		.ExitICSP = PIC16_ExitICSP,
 		.ReadID = PIC16_ReadID,
@@ -27,8 +21,7 @@ struct proto_ops_t proto_ops[] = {
 		.WriteFlash = PIC16_WriteFlash,
 		.ReadFlash = PIC16_ReadFlash,
 	},
-	{
-		.type = PROTO_PIC18,
+	[PROTO_PIC18] = {
 		.EnterICSP = PIC18_EnterICSP,
 		.ExitICSP = PIC18_ExitICSP,
 		.ReadID = PIC18_ReadID,
@@ -38,8 +31,7 @@ struct proto_ops_t proto_ops[] = {
 		.WriteFlash = PIC18_WriteFlash,
 		.ReadFlash = PIC18_ReadFlash,
 	},
-	{
-		.type = PROTO_PIC24,
+	[PROTO_PIC24] = {
 		.EnterICSP = PIC24_EnterICSP,
 		.ExitICSP = PIC24_ExitICSP,
 		.ReadID = PIC24_ReadID,
@@ -52,12 +44,8 @@ struct proto_ops_t proto_ops[] = {
 };
 
 struct proto_ops_t *Proto_GetOps(enum proto_t protocol) {
-	if (protocol > PROTO_OPS_CNT)
+	if (protocol >= PROTO_LAST)
 		return NULL;
 
-	if (proto_ops[protocol].type == protocol)
-		return &proto_ops[protocol];
-
-	return NULL;
+	return &proto_ops[protocol];
 }
-
