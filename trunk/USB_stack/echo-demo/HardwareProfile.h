@@ -10,11 +10,11 @@
 #ifndef HARDWARE_PROFILE_H
 #define HARDWARE_PROFILE_H
 
-#define BUSPIRATEV4
+//#define BUSPIRATEV4
 //#define IRTOY
 //#define EA14k //Embedded adventures PIC18F14K50 module
 //#define JTR_PIC24GB002        // JTR's PIC24..GB002 mockup
-//#define IANS18FJ      //Ian's PIC18F24J50 test bed
+#define IANS18FJ      //Ian's PIC18F24J50 test bed
 //#define LPC14K  // Microchip low pin count demo board
 //JTR_18FXXJ53 // JTR PIC18F27J53
 
