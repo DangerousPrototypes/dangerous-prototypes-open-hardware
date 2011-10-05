@@ -121,6 +121,21 @@ typedef struct USB_EP_TYPE {
 #error "More than 1 configuration not supported yet"
 #endif
 
+#if defined(PIC_18F)
+typedef struct BDENTRY {
+        unsigned char
+        BDSTAT;
+        unsigned char BDCNT;
+        unsigned char *BDADDR;
+} BDentry;
+#else
+typedef struct BDENTRY {
+        unsigned char BDCNT;    // JTR PIC24 fixup Note that BDCNT & BDSTAT are swapped from the PIC18!!
+        unsigned char BDSTAT;   // Smacks head. Go on, yo know you want to. 
+        unsigned char *BDADDR;
+} BDentry;
+#endif
+
 extern BDentry usb_bdt[];
 
 typedef struct USB_DEVICE_REQUEST {

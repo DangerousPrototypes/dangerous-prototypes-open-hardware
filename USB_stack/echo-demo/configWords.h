@@ -9,6 +9,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+
+
 #if defined(BUSPIRATEV4)
         #if defined(__PIC24FJ64GB106__) || defined(__PIC24FJ128GB106__) || defined(__PIC24FJ192GB106__) || defined(__PIC24FJ256GB106__) || defined(__PIC24FJ64GB108__) || defined(__PIC24FJ128GB108__) || defined(__PIC24FJ192GB108__) || defined(__PIC24FJ256GB108__) || defined(__PIC24FJ64GB110__) || defined(__PIC24FJ128GB110__) || defined(__PIC24FJ192GB110__) || defined(__PIC24FJ256GB110__) 
         _CONFIG1( JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2) 
@@ -77,11 +79,11 @@
 
 // JTR end of IRTOY config words        
 
-#elif defined(Ians18FJ)  //__18F24J50
+#elif defined(IANS18FJ)  //__18F24J50
 
      #pragma config WDTEN = OFF       
 
-     #pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
+     #pragma config PLLDIV = 4           //Divide by 5 (20 MHz oscillator input) 
      #pragma config STVREN = ON         
      #pragma config XINST = OFF          
      #pragma config CPUDIV = OSC1        

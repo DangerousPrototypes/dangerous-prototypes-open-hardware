@@ -225,7 +225,7 @@ void cdc_set_line_coding_data(void) { // JTR handling an OUT token In the CDC st
 
     dwBaud = (CLOCK_FREQ / 4) / linecodeing.dwDTERate - 1;
 
-    UART_BAUD_setup(dwBaud);
+    //UART_BAUD_setup(dwBaud);
     //  }
 
     usb_unset_out_handler(0); // Unregister OUT handler; JTR serious bug fix in macro!

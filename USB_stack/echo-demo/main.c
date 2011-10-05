@@ -10,9 +10,9 @@
 //Depending on the install location you may need to tweak the include paths under Project->build options.
 
 //SET HARDWARE IN HardwareProfile.h!!!
-#define DOUBLE_BUFFER_OUTPUT //double-buffered CDC output to PC
-//#define SIMPLE_CDC //simple array in and out CDC demo
-#define USB_INTERRUPTS //use interrupts instead of polling
+//#define DOUBLE_BUFFER_OUTPUT //double-buffered CDC output to PC
+#define SIMPLE_CDC //simple array in and out CDC demo
+//#define USB_INTERRUPTS //use interrupts instead of polling
 
 //USB stack
 #include "globals.h"
@@ -95,7 +95,7 @@ int main(void)
 
         } while (usb_device_state < CONFIGURED_STATE);
 		
-		LedOff();
+//		LedOff();
 
 		#if defined (DOUBLE_BUFFER_OUTPUT)
 		    ArmCDCInDB(); // Set up CDC IN double buffer
@@ -115,7 +115,7 @@ int main(void)
         usbbufservice(); //service USB buffer system
 		
 		if (usbbufgetbyte(&inByte) == 1) { //break; //get (and remove!) a single byte from the USB buffer
-			LedOn();
+//			LedOn();
 
 			#if defined(SIMPLE_CDC)
 				WaitInReady();
@@ -128,7 +128,7 @@ int main(void)
 				FAST_usb_handler();
 			#endif
 
-			LedOff();
+//			LedOff();
 		}//if byte
 
     }//end while
@@ -157,9 +157,29 @@ void SetupBoard(void) {
     //INTCONbits.GIEH = 1; //enable HIGH proirity interrupts
 #endif
 
+#if defined (IANS18FJ)
+	unsigned int cnt = 2048;
+	
+	//all pins digital
+    ANCON0 = 0xFF;                  
+    ANCON1 = 0b00011111;// updated for lower power consumption. See datasheet page 343                  
+
+	//make sure everything is input (should be on startup, but just in case)
+	TRISA=0xff;
+	TRISB=0xff;
+	TRISC=0b11111111; 
+
+	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
+	OSCTUNEbits.PLLEN = 1;  //enable PLL
+	while(cnt--); //wait for lock
+
+
+
+#endif
+
     //visual indicator LED config
-    LedOn(); //start with LED ON till USB connect
-    LED_TRIS &= (~LED_PIN); //direction output
+    //LedOn(); //start with LED ON till USB connect
+    //LED_TRIS &= (~LED_PIN); //direction output
 }
 
 
