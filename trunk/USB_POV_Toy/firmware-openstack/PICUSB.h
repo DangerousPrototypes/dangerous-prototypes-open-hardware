@@ -105,6 +105,8 @@ entries common to both PIC families.
 #define MyProcessor     // JTR check that a PIC is defined
 #include <p18cxxx.h>
 
+#define UART_BAUD_setup(x)  SPBRG1 = x & 0xFFu; SPBRGH1 = (x >> 8) & 0xFFu
+
 #define USTAT_ODD_EVEN (2)      // JTR may be required for ping-pong BD* calculations and are different from PIC18 to PIC24
 #define USTAT_ODD_EVEN_SHIFT (1)
 
@@ -323,6 +325,8 @@ typedef struct BDENTRY {
 
 #define MyProcessor
 #include <p24fxxxx.h>
+
+#define UART_BAUD_setup(x) U2BRG = x
 
 #define USTAT_ODD_EVEN (4)              // JTR PIC24 fixup potentially ?? Only required when ping-pong buffering is enabled. 
 #define USTAT_ODD_EVEN_SHIFT (2)        // JTR these are required for BD* calculations and are different for the PIC24

@@ -211,7 +211,7 @@ void usb_start(void) {
 void USBDeviceTasks() {
     usb_handler();
 }
-#if 0
+#if 1
 void usb_handler(void) {
 	if (USB_RESET_FLAG) {
 		usb_handle_reset();
@@ -262,9 +262,7 @@ void usb_handler(void) {
 	}
 
 }
-
-#endif
-#if 1
+#else
 void usb_handler(void) {
     if (USB_ERROR_FLAG) {
         usb_handle_error();
