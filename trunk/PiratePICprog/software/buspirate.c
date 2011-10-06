@@ -11,9 +11,11 @@ extern int disable_comport;
 struct BP_t *pBP;
 
 static uint8_t BP_reversebyte(uint8_t c);
+static uint32_t BP_Flush();
 
 //low lever send command, get reply function
-static uint32_t BP_WriteToPirate(int fd, char * val) {
+static uint32_t BP_WriteToPirate(int fd, char * val)
+{
 	int res = -1;
 	char ret = 0;
 
@@ -72,22 +74,26 @@ static void BP_EnableRaw2Wire(int fd)
 	}
 }
 
-uint32_t BP_MCLRLow() {
+static uint32_t BP_MCLRLow()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x04");
 }
 
-uint32_t BP_VPPHigh() {
+static uint32_t BP_VPPHigh()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x4B");
 }
 
-uint32_t BP_VPPLow() {
+static uint32_t BP_VPPLow()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x49");
 }
 
-uint32_t BP_Init(struct picprog_t *p, char *port, char *speed) {
+static uint32_t BP_Init(struct picprog_t *p, char *port, char *speed)
+{
 	int fd;
 	printf("%s\n",speed);
 	fd = serial_open(port);
@@ -128,12 +134,7 @@ uint32_t BP_Init(struct picprog_t *p, char *port, char *speed) {
 	}
 	printf("(OK) \n");
 
-	pBP = malloc(sizeof(struct BP_t));
-	if (pBP == NULL) {
-		printf("Error allocating memory\n");
-		return -1;
-	}
-
+	pBP = safe_malloc(sizeof(struct BP_t));
 	pBP->fd = fd;
 	pBP->bufcnt=2; //start the buffer at position 2, after the command and length
 	p->iface_data = pBP;
@@ -142,13 +143,14 @@ uint32_t BP_Init(struct picprog_t *p, char *port, char *speed) {
 	return 0;
 }
 
-uint32_t BP_Deinit(struct picprog_t *p) {
+static uint32_t BP_Deinit(struct picprog_t *p)
+{
 	struct BP_t *pBP = p->iface_data;
 	int fd = pBP->fd;
 	char tmp[6];
 	int ret;
 
-	tmp[0] = 0x00; /* exit OCD1 mode */
+	tmp[0] = 0x00;
 	serial_write(fd, tmp, 1);
 
 	ret = serial_read(fd, tmp, 5);
@@ -166,7 +168,8 @@ uint32_t BP_Deinit(struct picprog_t *p) {
 	return 0;
 }
 
-uint32_t BP_SetBitOrder(uint8_t lsb) {
+static uint32_t BP_SetBitOrder(uint8_t lsb)
+{
 	int fd = pBP->fd;
 	if(BP_WriteToPirate(fd, (lsb==1)?"\x8A":"\x88")){
 		printf("Set bit order (%s)...ERROR", (lsb==1)?"LSB":"MSB");
@@ -176,7 +179,8 @@ uint32_t BP_SetBitOrder(uint8_t lsb) {
 }
 
 //binmode: bulk write bytes to bus command
-uint32_t BP_BulkByteWrite(uint8_t bwrite, char* val) {
+static uint32_t BP_BulkByteWrite(uint8_t bwrite, char* val)
+{
 	int fd = pBP->fd;
 	int i;
 	char opcode = 0x10;
@@ -190,7 +194,8 @@ uint32_t BP_BulkByteWrite(uint8_t bwrite, char* val) {
 	return 0;
 }
 
-uint32_t BP_BulkBitWrite(uint8_t bit_count, char val) {
+static uint32_t BP_BulkBitWrite(uint8_t bit_count, char val)
+{
 	int fd = pBP->fd;
 	char opcode = 0x30;
 
@@ -202,32 +207,38 @@ uint32_t BP_BulkBitWrite(uint8_t bit_count, char val) {
 	return 0;
 }
 
-uint32_t BP_DataLow() {
+static uint32_t BP_DataLow()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x0C");
 }
 
-uint32_t BP_DataHigh() {
+static uint32_t BP_DataHigh()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x0D");
 }
 
-uint32_t BP_ClockLow() {
+static uint32_t BP_ClockLow()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x0A");
 }
 
-uint32_t BP_ClockHigh() {
+static uint32_t BP_ClockHigh()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x0B");
 }
 
-uint32_t BP_MCLRHigh() {
+static uint32_t BP_MCLRHigh()
+{
 	int fd = pBP->fd;
 	return BP_WriteToPirate(fd, "\x05");
 }
 
-uint8_t BP_reversebyte(uint8_t c){
+static uint8_t BP_reversebyte(uint8_t c)
+{
 	uint8_t r, i;
 
 	for(i = 0x1; i != 0; i = i << 1){
@@ -238,7 +249,8 @@ uint8_t BP_reversebyte(uint8_t c){
 	return r;
 }
 
-static int BP_SetPicMode(enum BP_picmode_t mode) {
+static int BP_SetPicMode(enum BP_picmode_t mode)
+{
 	int fd = pBP->fd;
 	char m = mode;
 
@@ -254,7 +266,9 @@ static int BP_SetPicMode(enum BP_picmode_t mode) {
 	}
 	return 0;
 }
-uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data) {
+
+static uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data)
+{
 	int fd = pBP->fd;
 	//uint8_t buffer[4] = {0};
 	//int res = -1;
@@ -292,7 +306,8 @@ uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data) {
 	return 0;
 }
 
-static void BPdr(char *Data, uint32_t length){
+static void BPdr(char *Data, uint32_t length)
+{
 	uint32_t i;
 	//swap bit order
 	for(i=0; i<length; i++){
@@ -301,7 +316,8 @@ static void BPdr(char *Data, uint32_t length){
 
 }
 
-uint32_t BP_PIC416Read(uint8_t cmd, void *Data, uint32_t length) {
+static uint32_t BP_PIC416Read(uint8_t cmd, void *Data, uint32_t length)
+{
 	int fd = pBP->fd;
 	char buffer[3] = {0};
 	int res = -1;
@@ -322,9 +338,8 @@ uint32_t BP_PIC416Read(uint8_t cmd, void *Data, uint32_t length) {
 	return 0;
 }
 
-
-
-uint32_t BP_PIC424Read(uint32_t cmd, void *Data, uint32_t length) {
+static uint32_t BP_PIC424Read(uint32_t cmd, void *Data, uint32_t length)
+{
 	int fd = pBP->fd;
 	char buffer[5] = {0};
 	int res = -1;
@@ -347,7 +362,8 @@ uint32_t BP_PIC424Read(uint32_t cmd, void *Data, uint32_t length) {
 	return 0; //BP_reversebyte(buffer[0]) | BP_reversebyte(buffer[1]) << 8;	//upper 8 bits
 }
 
-uint32_t BP_PIC424Write(uint32_t data, uint8_t prenop, uint8_t postnop) {
+static uint32_t BP_PIC424Write(uint32_t data, uint8_t prenop, uint8_t postnop)
+{
 	int fd = pBP->fd;
 	//uint8_t buffer[5] = {0};
 	//int res = -1;
@@ -385,7 +401,8 @@ uint32_t BP_PIC424Write(uint32_t data, uint8_t prenop, uint8_t postnop) {
 	return 0;
 }
 
-uint32_t BP_Flush() {
+static uint32_t BP_Flush()
+{
 	int fd = pBP->fd;
 	char buffer[1] = {0};
 	int res = -1;
@@ -401,3 +418,25 @@ uint32_t BP_Flush() {
 	return 0;
 }
 
+struct iface_t buspirate_iface = 
+{
+	.name = "buspirate",
+	.Init = BP_Init,
+	.Deinit = BP_Deinit,
+	.DataLow = BP_DataLow,
+	.DataHigh = BP_DataHigh,
+	.ClockLow = BP_ClockLow,
+	.ClockHigh = BP_ClockHigh,
+	.MCLRLow = BP_MCLRLow,
+	.MCLRHigh = BP_MCLRHigh,
+	.SetBitOrder = BP_SetBitOrder,
+	.SendBytes = BP_BulkByteWrite,
+	.SendBits = BP_BulkBitWrite,
+	.PIC416Read = BP_PIC416Read,
+	.PIC416Write = BP_PIC416Write,
+	.PIC424Read = BP_PIC424Read,
+	.PIC424Write = BP_PIC424Write,
+	.flush=BP_Flush,
+	.VPPHigh = BP_VPPHigh,
+	.VPPLow = BP_VPPLow,
+};

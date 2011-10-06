@@ -2,6 +2,7 @@
 #define COMMON_h_
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "iface.h"
 struct picprog_t {
 	struct iface_t *iface;
@@ -14,11 +15,8 @@ struct picprog_t {
 
 
 uint8_t hexdec(const char* pc);
+void *safe_malloc(size_t size);
 void dumpHex(uint8_t *buf, uint32_t len);
-
-#ifdef WIN32
-//	int usleep(unsigned long x);
-#endif
 
 #endif
 
