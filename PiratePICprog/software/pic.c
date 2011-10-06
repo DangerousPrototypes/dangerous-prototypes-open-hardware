@@ -122,11 +122,7 @@ int PIC_ReadMemory(struct picprog_t *p, struct memory_t *mem)
 	uint32_t size;
 	uint32_t addr;
 
-	data = malloc(fam->page_size);
-	if (data == NULL) {
-		printf("Out of mem!\n");
-		return 1;
-	}
+	data = safe_malloc(fam->page_size);
 
 	proto->EnterICSP(p, fam->icsp_type); 
 	
@@ -230,11 +226,7 @@ void PIC_PreserveConfig(struct picprog_t *p, struct memory_t *mem)
 	}
 
 
-	tmp = malloc(size);
-	if (tmp == NULL) {
-		printf("Out of mem!\n");
-		exit(-1);
-	}
+	tmp = safe_malloc(size);
 
 	printf("Loading fuses from PIC\n");
 

@@ -25,6 +25,19 @@ void dumpHex(uint8_t *buf, uint32_t len)
 	printf("\n");
 }
 
+void *safe_malloc(size_t size)
+{
+	void *ptr;
+
+	ptr = malloc(size);
+	if (ptr == NULL) {
+		fprintf(stderr, "Error allocating memory\n");
+		exit(1);
+	}
+
+	return ptr;
+}
+
 #ifdef XXWIN32
 int usleep(unsigned long x) {
   Sleep(x + 999 / 1000);

@@ -1,9 +1,8 @@
-//TODO: 
-//	add memory checks
-//	finish bulk page write
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "common.h"
 
 #include "memory.h"
 
@@ -11,24 +10,43 @@ static struct mem_page_t *MEM_CreatePage(struct memory_t *mem, uint32_t base)
 {
 	struct mem_page_t *tmp = NULL;
 
-	tmp = malloc(sizeof(struct mem_page_t));
+	tmp = safe_malloc(sizeof(struct mem_page_t));
 
 	tmp->base = base;
 	tmp->size = 0;
 	tmp->next = NULL;
 	//tmp->data = NULL;
 
-	tmp->data = malloc(mem->page_size);
+	tmp->data = safe_malloc(mem->page_size);
 	memset(tmp->data, MEM_EMPTY, mem->page_size);
 
 	return tmp;
+}
+
+static void MEM_PageTrim(struct mem_page_t *page)
+{
+	uint32_t i;
+
+	if (page == NULL)
+		return;
+
+	if (page->data == NULL)
+		return;
+
+	i = page->size - 1;
+	while (i > 0 && page->data[i] == MEM_EMPTY) {
+		i--;
+	}
+
+	page->size = i;
+
 }
 
 struct memory_t *MEM_Init(uint32_t page_size)
 {
 	struct memory_t *tmp;
 
-	tmp = malloc(sizeof(struct memory_t));
+	tmp = safe_malloc(sizeof(struct memory_t));
 
 	tmp->page = NULL;
 	tmp->page_size = page_size;
@@ -119,16 +137,11 @@ int MEM_Write(struct memory_t *mem, uint32_t addr, uint8_t *data, uint32_t len)
 	page = MEM_GetPage(mem, base);
 
 	if (page->base + mem->page_size < addr + len) {
-		// TODO: data overlaps to next page
-		printf("not implemented");
-		return 1;
-/* something like this: (+-1)
 		uint32_t rest;
 		rest = (addr + len) - (page->base + mem->page_size);
 		len = len - rest;
 
 		MEM_Write(mem, addr + len, data + len, rest);
-*/
 	}
 
 #ifdef DEBUG
@@ -186,9 +199,12 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 		return 1;
 	}
 
-	while ((pa != NULL) || (pb != NULL)) {
+	while ((pa != NULL) && (pb != NULL)) {
+		MEM_PageTrim(pa);
+		MEM_PageTrim(pb);
+
 		if (pa->size != pb->size) {
-			printf("page data size differs\n");
+			printf("page data size differs page=0x%08x\n",pa->base);
 			return 1;
 		}
 
@@ -213,12 +229,14 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 	}
 
 	if ((pa != NULL) || (pb != NULL)) {
+#ifdef DEBUG
 		if (pb != NULL) {
 			printf(" page b @0x%08x\n", pb->base);
 		}
 		if (pa != NULL) {
 			printf(" page a @0x%08x\n", pa->base);
 		}
+#endif
 		return 1;
 	}
 

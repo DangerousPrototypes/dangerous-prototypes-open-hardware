@@ -1,25 +1,9 @@
-/* 
- * Part of ols-fwloader - data file parsing/generaion
- *
- * Copyright (C) 2011 Michal Demin <michal.demin@gmail.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "common.h"
 
 #include "data_file.h"
 
@@ -99,11 +83,7 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 		return 0;
 	}
 
-	tmp = malloc(sizeof(raw_line)+1);
-	if (tmp == NULL) {
-		fprintf(stderr, "Memory allocation problem\n");
-		return 0;
-	}
+	tmp = safe_malloc(sizeof(raw_line)+1);
 
 
 	while(fgets(raw_line, sizeof(raw_line), fp) != 0) {
@@ -150,6 +130,8 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 				if (addr_max < addr + i) {
 					addr_max = addr + i;
 				}
+
+				//MEM_Write(mem, addr + i, &tmp[tmp_len-1], 1);
 			}
 			MEM_Write(mem, addr, &tmp[tmp_len-byte_count], byte_count);
 		} else if (rec_type == 0x04) {
@@ -225,7 +207,10 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
 		res += sprintf(raw_line + res, "%02X", bin_line[j]);
 	}
 	res += sprintf(raw_line + res, "\n");
-//	printf(raw_line);
+
+#ifdef DEBUG
+	printf(raw_line);
+#endif
 
 	// output to file
 	res = fwrite(raw_line, sizeof(char), res, fp);
@@ -276,7 +261,6 @@ static int HEX_WriteFile(const char *file, struct memory_t *mem)
 			oldbase = base;
 		}
 
-//		printf("w base= %08x \n", base);
 		while (written < page->size) {
 			uint8_t byte_count;
 			uint32_t offset;
@@ -293,21 +277,7 @@ static int HEX_WriteFile(const char *file, struct memory_t *mem)
 			HEX_WriteRec(fp, 0x00, byte_count, addr, &page->data[written]);
 
 			written += byte_count;
-/*
-			// write ext addr record
-			if (addr & 0x10000) {
-				uint8_t tmp[2];
-
-				base ++;
-
-				tmp[0] = (base >> 8) & 0xff;
-				tmp[1] = (base & 0xff);
-
-				HEX_WriteRec(fp, 0x04, 2, 0x0000, tmp);
-
-				addr -= 0x10000;
-			}
-	*/	}
+		}
 
 		page = MEM_GetNextPage(page);
 	}
@@ -321,7 +291,7 @@ static int HEX_WriteFile(const char *file, struct memory_t *mem)
 
 static int HEX_CheckType(const char *dummy)
 {
-	return 0 ;; //TODO: finish
+	return 0; //TODO: finish
 }
 
 /*
@@ -337,13 +307,13 @@ static uint32_t BIN_ReadFile(const char *file, struct memory_t *mem)
 	FILE *fp;
 
 	uint8_t *data;
+	uint8_t *empty;
 	uint32_t addr = 0;
 
-	data = malloc(mem->page_size);
-	if (data == NULL) {
-		printf("Out of memory!\n");
-		return 0;
-	}
+	data = safe_malloc(mem->page_size);
+	empty = safe_malloc(mem->page_size);
+
+	memset(empty, MEM_EMPTY, mem->page_size);
 
 	fp = fopen(file, "rb");
 	if (fp == NULL) {
@@ -357,7 +327,9 @@ static uint32_t BIN_ReadFile(const char *file, struct memory_t *mem)
 	addr = 0;
 
 	while ((res = fread(data, sizeof(uint8_t), mem->page_size, fp)) > 0) {
-		MEM_Write(mem, addr, data, res);
+		if (memcmp(data, empty, mem->page_size) != 0) {
+			MEM_Write(mem, addr, data, res);
+		}
 		addr += res;
 	}
 
@@ -374,7 +346,8 @@ static uint32_t BIN_ReadFile(const char *file, struct memory_t *mem)
  */
 static int BIN_WriteFile(const char *file, struct memory_t *mem)
 {
-/* TODO: finish
+	struct mem_page_t *page;
+	uint32_t addr;
 	FILE *fp;
 	int res;
 
@@ -382,12 +355,42 @@ static int BIN_WriteFile(const char *file, struct memory_t *mem)
 	if (fp == NULL) {
 		return -1;
 	}
-	res = fwrite(out_buf, sizeof(uint8_t), out_buf_size, fp);
-	if (res != out_buf_size) {
-		printf("error writing file %s\n", file);
+
+	page = MEM_GetFirstPage(mem);
+	addr = 0;
+	while (page != NULL) {
+		if (MEM_PageEmpty(page)) {
+			page = MEM_GetNextPage(page);
+			continue;
+		}
+
+#ifdef DEBUG
+		printf("pagebase %08x addr %08x size %02x\n", page->base, addr, page->size);
+#endif
+
+		// fill difference with MEM_EMPTYs
+		if (page->base > addr) {
+			uint32_t i;
+			uint8_t tmp = MEM_EMPTY;
+
+#ifdef DEBUG
+			printf("adding empty (%ld)\n", page->base -addr);
+#endif
+			for (i = 0; i < page->base - addr; i++) {
+				fwrite(&tmp, sizeof(uint8_t), 1, fp);
+			}
+
+			addr = page->base;
+		}
+
+		res = fwrite(page->data, sizeof(uint8_t), page->size, fp);
+		addr += page->size;
+
+		page = MEM_GetNextPage(page);
 	}
+
 	fclose(fp);
-*/
+
 	return 0;
 }
 
