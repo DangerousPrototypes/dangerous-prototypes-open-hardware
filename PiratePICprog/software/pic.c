@@ -42,6 +42,21 @@ const struct pic_chip_t pic_chip[] = {
 		}
 	},
 	{
+		.name = "18F4550",
+		.ID = 0x90,
+		.family = FAMILY_18Fx5xx,
+		.memmap = {
+			[PIC_MEM_FLASH] = {
+				.base = 0x0000,
+				.size = 32*1024
+			},
+			[PIC_MEM_FUSE] = {
+				.base = 0x300000,
+				.size = 14
+			}
+		}
+	},
+	{
 		.name = "18F24J50",
 		.ID = 0x260,
 		.family = FAMILY_18F2xJxx,
