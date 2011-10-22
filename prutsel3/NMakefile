@@ -1,0 +1,23 @@
+# MPLAB IDE generated this makefile for use with Microsoft `nmake'.
+# Project: test-project.mcp
+# Date: Wed Jul 07 19:30:28 2010
+
+AS = pic30-as.exe
+CC = pic30-gcc.exe
+LD = pic30-ld.exe
+AR = pic30-ar.exe
+HX = pic30-bin2hex.exe
+RM = del
+
+"test-project.hex" : "test-project.cof"
+	$(HX) "test-project.cof"
+
+"test-project.cof" : "main.o"
+	$(CC) -mcpu=24FJ64GA002 "main.o" -o"test-project.cof" -Wl,--script="p24FJ64GA002.gld",--defsym=__MPLAB_BUILD=1,-Map="test-project.map",--report-mem
+
+"main.o" : "dummy2.h" "dummy.h" "hardwarev3.h" "c:\program files\microchip\mplab c30\support\PIC24F\h\p24FJ64GA002.h" "c:\program files\microchip\mplab c30\support\PIC24F\h\p24fxxxx.h" "hardware.h" "main.c"
+	$(CC) -mcpu=24FJ64GA002 -x c -c "main.c" -o"main.o" -g -Wall
+
+"clean" : 
+	$(RM) "main.o" "test-project.cof" "test-project.hex"
+

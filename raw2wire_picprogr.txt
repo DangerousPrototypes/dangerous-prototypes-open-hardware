@@ -1,0 +1,21 @@
+00001010	clk lo
+00001100	dat lo
+10000010	hiz/lsb
+01001100	power+pullup vpp off, mclr1
+01001110	vpp en
+
+05	rawwire
+82	hiz, 2w, lsb
+0a	clk lo	
+0c	dat lo
+4c
+4e
+60	speed 0
+a0 00	picmode=0
+
+A5 04 read word
+
+A1 04
+a2
+
+aux=1, cs=0

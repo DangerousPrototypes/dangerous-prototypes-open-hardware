@@ -1,0 +1,26 @@
+
+
+
+char pwm, counter, i, setpoint;
+
+pwm=1;
+counter=0;
+
+while(1)
+{	GP2=1;
+
+	for(i=0; i<=255; i++)
+	{	if(i==pwm) GP2=0;
+		delay();
+	}
+
+	voltage=getadc(0);
+	if(voltage<setpoint) pwm++;
+	if(voltage>setpoint) pwm--;
+}	
+
+
+
+
+scl  ##_ _B_ _B_ _##
+sda  #__ _#_ _#_ __#
