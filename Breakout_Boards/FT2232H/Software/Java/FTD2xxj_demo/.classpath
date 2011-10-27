@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/application/bin" path="src/application"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_29"/>
+	<classpathentry kind="lib" path="images"/>
+	<classpathentry kind="lib" path="resourceBundles/ftd2xxj"/>
+	<classpathentry kind="lib" path="resourceBundles/ftd2xxj_de"/>
+	<classpathentry kind="lib" path="lib/javax.util.property-2_0.jar"/>
+	<classpathentry kind="output" path="target/application/bin"/>
+</classpath>
