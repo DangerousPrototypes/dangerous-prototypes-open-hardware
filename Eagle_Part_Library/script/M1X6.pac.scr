@@ -8,12 +8,12 @@ Grid mm;
 
 Edit 'M1X6.pac';
 Description '';
-Change Drill 0.8;Pad '1' Square 0 R0 (0 0);
+Change Drill 0.8;Pad '1' Square 0 R0 FIRST (0 0);
 Change Drill 0.8;Pad '2' Round 0 R0 (2.54 0);
 Change Drill 0.8;Pad '3' Round 0 R0 (5.08 0);
 Change Drill 0.8;Pad '4' Round 0 R0 (7.62 0);
 Change Drill 0.8;Pad '5' Round 0 R0 (10.16 0);
-Change Drill 0.8;Pad '6' Round 0 R0 FIRST (12.7 0);
+Change Drill 0.8;Pad '6' Round 0 R0 (12.7 0);
 Layer 21;
 Change Size 1.27;
 Change Ratio 8;

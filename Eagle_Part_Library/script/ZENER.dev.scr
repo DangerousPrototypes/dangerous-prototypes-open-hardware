@@ -17,4 +17,3 @@ Connect  'G$1.A' 'A'  'G$1.C' 'C';
 Package 'SOD-123' 'SOD-123';
 Technology '';
 Connect  'G$1.A' 'A'  'G$1.C' 'C';
-Grid inch;

@@ -52,3 +52,22 @@ Wire  0.127 (-2 1.5) (-2 1.75);
 Wire  0.127 (-1.5 2) (-1.75 2);
 Layer 21;
 Circle 0.127 (-1.95 1.95) (-1.7202 1.95);
+Layer 29;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0.127  (-1.2 -1.2) (1.2 -1.2) (1.2 1.2) (-1 1.2) \
+      (-1.2 1) (-1.2 -1.2);
+Layer 31;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0.127  (-1.2 -1.2) (1.2 -1.2) (1.2 1.2) (-1 1.2) \
+      (-1.2 1) (-1.2 -1.2);
+Layer 1;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 7;
+Polygon 0.127  (-1.2 -1.2) (1.2 -1.2) (1.2 1.2) (-1 1.2) \
+      (-1.2 1) (-1.2 -1.2);
+Change Drill 0.8;Pad 'P$1' Square 0 R0 (0 0);
