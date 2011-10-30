@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'DFN6_3X3.pac';
+Edit 'DFN8_3X3-EASY.pac';
 Description '';
 Layer 1;
 Smd '1' 0.35 0.65 -0 R0 (-0.975 -1.55);
@@ -46,3 +46,4 @@ Layer 29;
 Rect R0 (-1.3 -0.8) (1.3 0.8);
 Layer 31;
 Rect R0 (-1.3 -0.8) (1.3 0.8);
+Change Drill 0.8;Pad 'P$1' Square 0 R0 (0 0);
