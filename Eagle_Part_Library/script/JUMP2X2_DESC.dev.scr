@@ -18,4 +18,3 @@ Attribute OPT1 'option1' variable;
 Attribute OPT2 'option2' variable;
 Attribute OPT3 'option3' variable;
 Attribute OPT4 'option4' variable;
-Grid inch;
