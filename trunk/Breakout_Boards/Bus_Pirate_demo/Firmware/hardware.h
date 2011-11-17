@@ -2,17 +2,15 @@
 
 #define OSCCONVALUE	0xEA		// 4Mhz, PLL enable, intosc, UART 
 
-#define PROTOCOLMASK 0x03
-#define MODESPI		0x00
-#define MODEUART	0x01
-#define MODEI2C		0x02
-#define MODEUNK		0x03
+#define MODESPI		0x03 //0b11
+#define MODEI2C		0x02 //0b10
+#define MODEUART	0x01 //0b01
+#define MODEUNK		0x00 //0b00 (both jumpers
 
-#define TYPEMASK	0x30
-#define MODEADC		0x00
-#define MODEMEM		0x10
-#define MODEDAC		0x20
-#define MODEPWM		0x30
+#define MODEADC		0x03 //0b11
+#define MODEDAC		0x02 //0b10
+#define MODEMEM		0x01 //0b01
+#define MODEPWM		0x00 //0b00 (both jumpers
 
 // leds
 #define LED1ON		RC5=1;
@@ -25,3 +23,4 @@
 #define X2			RC2
 #define Y1			RB4
 #define Y2			RB6
+

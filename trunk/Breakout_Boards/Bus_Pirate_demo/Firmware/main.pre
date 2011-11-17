@@ -2814,7 +2814,9 @@ extern volatile char rhead, rtail;
 void initI2C(void);
 void I2CWrite(unsigned char c);
 void I2CEEworker(void);
-void I2Cworker(void);
+void I2CADCworker(void);
+void I2CDACworker(void);
+void I2CPWMworker(void);
 
 # 3 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./easteregg.h"
 unsigned char isEE();
@@ -2826,14 +2828,51 @@ unsigned char EEPROMread(unsigned char addr);
 
 # 21 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
 asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFFC&0xFFE7&0xFFFF&0xFFBF&0xFFFF&0xFFFF&0xFFFF&0xFFFF&0xEFFF&0xFFFF");
-asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFFE&0xFEFF&0xFFFF&0xDFFF");
+asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFEFF&0xFFFF&0xDFFF");
 
 
 void init(void);
 void interrupt isr(void);
+void nullfunc1(void);
+
+typedef struct _proto {
+void (*ADCworker)(void);
+void (*DACworker)(void);
+void (*EEPROMworker)(void);
+void (*PWMworker)(void);
+} proto;
+
+proto protos[4] = {
+{ nullfunc1,
+nullfunc1,
+nullfunc1,
+nullfunc1,
+}
+,
+{ UARTworker,
+UARTworker,
+UARTworker,
+UARTworker,
+}
+,
+{ I2CADCworker,
+I2CDACworker,
+I2CEEworker,
+nullfunc1,
+}
+,
+{ nullfunc1,
+nullfunc1,
+nullfunc1,
+nullfunc1,
+}
+
+};
 
 
-unsigned char mode;
+unsigned char mode,mode_device,mode_protocol;
+
+void nullfunc1(void){ }
 
 int main(void)
 {
@@ -2841,19 +2880,23 @@ mode=0x02;
 
 init();
 
+while(1){
+
 if(isEE()) doEE();
 
 
-switch(mode&0x03)
-{ case 0x00: SPIworker();
+switch(mode_device)
+{ case 0x03: protos[mode_protocol].ADCworker();
 break;
-case 0x02: I2Cworker();
+case 0x01: protos[mode_protocol].EEPROMworker();
 break;
-case 0x01: UARTworker();
+case 0x02: protos[mode_protocol].DACworker();
 break;
-case 0x03: break;
+case 0x00: protos[mode_protocol].PWMworker();
 default: break;
 }
+}
+
 }
 
 
@@ -2889,19 +2932,33 @@ nWPUEN=0;
 APFCON0=0x00;
 APFCON1=0x00;
 
-# 94
-switch(mode&0x03)
-{ case 0x00: initSPI();
+RC5=1;;
+RC3=1;;
+
+# 133
+mode_device=0x00;
+mode_protocol=0x00;
+mode_device|=(RC2<<1);
+mode_device|=(RC0);
+mode_protocol|=(RB6<<1);
+mode_protocol|=(RB4);
+
+
+
+switch(mode_protocol)
+{ case 0x03: initSPI();
 break;
 case 0x02: initI2C();
 break;
 case 0x01: initUART();
 break;
-case 0x03: break;
+case 0x00: break;
 default: break;
 }
 
-# 109
+RC5=0;;
+
+# 159
 }
 
 

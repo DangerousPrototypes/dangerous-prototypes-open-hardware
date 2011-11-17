@@ -2801,7 +2801,9 @@ extern void _delay(unsigned long);
 void initI2C(void);
 void I2CWrite(unsigned char c);
 void I2CEEworker(void);
-void I2Cworker(void);
+void I2CADCworker(void);
+void I2CDACworker(void);
+void I2CPWMworker(void);
 
 # 5 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./eeprom.h"
 void EEPROMwrite (unsigned char addr, unsigned char data);
@@ -2889,7 +2891,7 @@ SSP2CON1bits.CKP=1;
 
 
 
-void I2Cworker(void)
+void I2CADCworker(void)
 { unsigned char token, temp, adc;
 
 adc=0x00;
