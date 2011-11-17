@@ -19,7 +19,9 @@
 void initI2C(void);				// init I2C hardware, setup interrupts etc
 void I2CWrite(unsigned char c);	// write a byte on the bus
 void I2CEEworker(void);			// main I2C processing loop EEPROM
-void I2Cworker(void);		// main I2C processing loop ADC
+void I2CADCworker(void);		// main I2C processing loop ADC
+void I2CDACworker(void);		// main I2C processing loop DAC
+void I2CPWMworker(void);		// main I2C processing loop PWM
 
 // isr macro
 // I2C doesn't have an isr (although It should have one!)

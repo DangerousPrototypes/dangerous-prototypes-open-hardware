@@ -4026,7 +4026,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;i2c.h: 19: void initI2C(void);
 [; ;i2c.h: 20: void I2CWrite(unsigned char c);
 [; ;i2c.h: 21: void I2CEEworker(void);
-[; ;i2c.h: 22: void I2Cworker(void);
+[; ;i2c.h: 22: void I2CADCworker(void);
+[; ;i2c.h: 23: void I2CDACworker(void);
+[; ;i2c.h: 24: void I2CPWMworker(void);
 [; ;eeprom.h: 5: void EEPROMwrite (unsigned char addr, unsigned char data);
 [; ;eeprom.h: 6: unsigned char EEPROMread(unsigned char addr);
 [; ;adc.h: 4: unsigned int getADC(unsigned char adc);
@@ -4238,11 +4240,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e :UE 254 ]
 }
 "87
-[v _I2Cworker `(v  1 ef ]
+[v _I2CADCworker `(v  1 ef ]
 {
-[; ;i2c.c: 86: void I2Cworker(void)
+[; ;i2c.c: 86: void I2CADCworker(void)
 [; ;i2c.c: 87: { unsigned char token, temp, adc;
-[e :U _I2Cworker ]
+[e :U _I2CADCworker ]
 [f ]
 [v _token `uc  1 a ]
 [v _temp `uc  1 a ]

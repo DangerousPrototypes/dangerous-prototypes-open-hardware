@@ -83,7 +83,7 @@ void I2CEEworker(void)
 
 // main loop + statemachine
 // ADC
-void I2Cworker(void)
+void I2CADCworker(void)
 {	unsigned char token, temp, adc;
 
 	adc=0x00;

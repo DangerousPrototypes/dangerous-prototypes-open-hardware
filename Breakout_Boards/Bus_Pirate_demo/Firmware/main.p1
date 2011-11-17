@@ -2057,8 +2057,34 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S251 . . ]
 "3028 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
 [v _TOSHbits `VS251  1 e@4079 ]
-"29 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+"30 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v F2524 `(v  0 tf ]
+"31 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v F2527 `(v  0 tf ]
+"32 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v F2530 `(v  0 tf ]
+"33 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v F2533 `(v  0 tf ]
+[s S253 `*F2524 1 `*F2527 1 `*F2530 1 `*F2533 1 ]
+[n S253 _proto ADCworker DACworker EEPROMworker PWMworker ]
+"36 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v _protos `S253  -> 4 `i e ]
+"27 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v _nullfunc1 `(v  0 ef ]
+"10 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./uart.h
+[v _UARTworker `(v  0 ef ]
+"22 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h
+[v _I2CADCworker `(v  0 ef ]
+"23 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h
+[v _I2CDACworker `(v  0 ef ]
+"21 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h
+[v _I2CEEworker `(v  0 ef ]
+"64 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
 [v _mode `uc  1 e ]
+"64 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v _mode_device `uc  1 e ]
+"64 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
+[v _mode_protocol `uc  1 e ]
 [p mainexit ]
 "25 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c
 [v _init `(v  0 ef ]
@@ -2066,12 +2092,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _isEE `(uc  0 ef ]
 "4 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./easteregg.h
 [v _doEE `(v  0 ef ]
-"5 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./spi.h
-[v _SPIworker `(v  0 ef ]
-"22 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h
-[v _I2Cworker `(v  0 ef ]
-"10 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./uart.h
-[v _UARTworker `(v  0 ef ]
 "4 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./spi.h
 [v _initSPI `(v  0 ef ]
 "19 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h
@@ -4045,7 +4065,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;i2c.h: 19: void initI2C(void);
 [; ;i2c.h: 20: void I2CWrite(unsigned char c);
 [; ;i2c.h: 21: void I2CEEworker(void);
-[; ;i2c.h: 22: void I2Cworker(void);
+[; ;i2c.h: 22: void I2CADCworker(void);
+[; ;i2c.h: 23: void I2CDACworker(void);
+[; ;i2c.h: 24: void I2CPWMworker(void);
 [; ;easteregg.h: 3: unsigned char isEE();
 [; ;easteregg.h: 4: void doEE();
 [; ;eeprom.h: 5: void EEPROMwrite (unsigned char addr, unsigned char data);
@@ -4055,235 +4077,358 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; 	psect config,class=CONFIG,delta=2 ;#
 [; 	dw 0xFFFC&0xFFE7&0xFFFF&0xFFBF&0xFFFF&0xFFFF&0xFFFF&0xFFFF&0xEFFF&0xFFFF ;#
 "22
-[; ;main.c: 22: asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFFE&0xFEFF&0xFFFF&0xDFFF");
+[; ;main.c: 22: asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFEFF&0xFFFF&0xDFFF");
 [; 	psect config,class=CONFIG,delta=2 ;#
-[; 	dw 0xFFFE&0xFEFF&0xFFFF&0xDFFF ;#
+[; 	dw 0xFEFF&0xFFFF&0xDFFF ;#
 [; ;main.c: 25: void init(void);
 [; ;main.c: 26: void interrupt isr(void);
-[; ;main.c: 29: unsigned char mode;
-"32
+[; ;main.c: 27: void nullfunc1(void);
+[; ;main.c: 29: typedef struct _proto {
+[; ;main.c: 30: void (*ADCworker)(void);
+[; ;main.c: 31: void (*DACworker)(void);
+[; ;main.c: 32: void (*EEPROMworker)(void);
+[; ;main.c: 33: void (*PWMworker)(void);
+[; ;main.c: 34: } proto;
+"36
+[i _protos
+:U ..
+:U ..
+"37
+&U _nullfunc1
+"38
+&U _nullfunc1
+"39
+&U _nullfunc1
+"40
+&U _nullfunc1
+..
+:U ..
+"43
+&U _UARTworker
+"44
+&U _UARTworker
+"45
+&U _UARTworker
+"46
+&U _UARTworker
+..
+:U ..
+"49
+&U _I2CADCworker
+"50
+&U _I2CDACworker
+"51
+&U _I2CEEworker
+"52
+&U _nullfunc1
+..
+:U ..
+"55
+&U _nullfunc1
+"56
+&U _nullfunc1
+"57
+&U _nullfunc1
+"58
+&U _nullfunc1
+..
+..
+]
+[; ;main.c: 36: proto protos[4] = {
+[; ;main.c: 37: { nullfunc1,
+[; ;main.c: 38: nullfunc1,
+[; ;main.c: 39: nullfunc1,
+[; ;main.c: 40: nullfunc1,
+[; ;main.c: 41: }
+[; ;main.c: 42: ,
+[; ;main.c: 43: { UARTworker,
+[; ;main.c: 44: UARTworker,
+[; ;main.c: 45: UARTworker,
+[; ;main.c: 46: UARTworker,
+[; ;main.c: 47: }
+[; ;main.c: 48: ,
+[; ;main.c: 49: { I2CADCworker,
+[; ;main.c: 50: I2CDACworker,
+[; ;main.c: 51: I2CEEworker,
+[; ;main.c: 52: nullfunc1,
+[; ;main.c: 53: }
+[; ;main.c: 54: ,
+[; ;main.c: 55: { nullfunc1,
+[; ;main.c: 56: nullfunc1,
+[; ;main.c: 57: nullfunc1,
+[; ;main.c: 58: nullfunc1,
+[; ;main.c: 59: }
+[; ;main.c: 61: };
+[; ;main.c: 64: unsigned char mode,mode_device,mode_protocol;
+"66
+[v _nullfunc1 `(v  1 ef ]
+{
+[; ;main.c: 66: void nullfunc1(void){ }
+[e :U _nullfunc1 ]
+[f ]
+[e :UE 254 ]
+}
+"69
 [v _main `(i  1 ef ]
 {
-[; ;main.c: 31: int main(void)
-[; ;main.c: 32: {
+[; ;main.c: 68: int main(void)
+[; ;main.c: 69: {
 [e :U _main ]
 [f ]
-[; ;main.c: 33: mode=0x02;
-"33
+[; ;main.c: 70: mode=0x02;
+"70
 [e = _mode -> -> 2 `i `uc ]
-[; ;main.c: 35: init();
-"35
+[; ;main.c: 72: init();
+"72
 [e ( _init ..  ]
-[; ;main.c: 37: if(isEE()) doEE();
-"37
-[e $ ! != -> ( _isEE ..  `i -> -> -> 0 `i `uc `i 254  ]
-[e ( _doEE ..  ]
-[e :U 254 ]
-[; ;main.c: 40: switch(mode&0x03)
-"40
-[e $U 256  ]
-[; ;main.c: 41: { case 0x00: SPIworker();
-"41
-{
+[; ;main.c: 74: while(1){
+"74
 [e :U 257 ]
-[e ( _SPIworker ..  ]
-[; ;main.c: 42: break;
-"42
-[e $U 255  ]
-[; ;main.c: 43: case 0x02: I2Cworker();
-"43
-[e :U 258 ]
-[e ( _I2Cworker ..  ]
-[; ;main.c: 44: break;
-"44
-[e $U 255  ]
-[; ;main.c: 45: case 0x01: UARTworker();
-"45
+{
+[; ;main.c: 76: if(isEE()) doEE();
+"76
+[e $ ! != -> ( _isEE ..  `i -> -> -> 0 `i `uc `i 259  ]
+[e ( _doEE ..  ]
 [e :U 259 ]
-[e ( _UARTworker ..  ]
-[; ;main.c: 46: break;
-"46
-[e $U 255  ]
-[; ;main.c: 47: case 0x03: break;
-"47
-[e :U 260 ]
-[e $U 255  ]
-[; ;main.c: 48: default: break;
-"48
+[; ;main.c: 79: switch(mode_device)
+"79
+[e $U 261  ]
+[; ;main.c: 80: { case 0x03: protos[mode_protocol].ADCworker();
+"80
+{
+[e :U 262 ]
+[e ( *U . *U + &U _protos * -> _mode_protocol `ux -> -> # *U &U _protos `ui `ux 0 ..  ]
+[; ;main.c: 81: break;
+"81
+[e $U 260  ]
+[; ;main.c: 82: case 0x01: protos[mode_protocol].EEPROMworker();
+"82
+[e :U 263 ]
+[e ( *U . *U + &U _protos * -> _mode_protocol `ux -> -> # *U &U _protos `ui `ux 2 ..  ]
+[; ;main.c: 83: break;
+"83
+[e $U 260  ]
+[; ;main.c: 84: case 0x02: protos[mode_protocol].DACworker();
+"84
+[e :U 264 ]
+[e ( *U . *U + &U _protos * -> _mode_protocol `ux -> -> # *U &U _protos `ui `ux 1 ..  ]
+[; ;main.c: 85: break;
+"85
+[e $U 260  ]
+[; ;main.c: 86: case 0x00: protos[mode_protocol].PWMworker();
+"86
+[e :U 265 ]
+[e ( *U . *U + &U _protos * -> _mode_protocol `ux -> -> # *U &U _protos `ui `ux 3 ..  ]
+[; ;main.c: 87: default: break;
+"87
+[e :U 266 ]
+[e $U 260  ]
+"88
+}
+[; ;main.c: 88: }
+[e $U 260  ]
+"79
 [e :U 261 ]
-[e $U 255  ]
-"49
+[e [\ _mode_device , $ -> -> 3 `i `uc 262
+ , $ -> -> 1 `i `uc 263
+ , $ -> -> 2 `i `uc 264
+ , $ -> -> 0 `i `uc 265
+ 266 ]
+"88
+[e :U 260 ]
+"89
 }
-[; ;main.c: 49: }
-[e $U 255  ]
-"40
 [e :U 256 ]
-[e [\ & -> _mode `i -> 3 `i , $ -> 0 `i 257
- , $ -> 2 `i 258
- , $ -> 1 `i 259
- , $ -> 3 `i 260
- 261 ]
-"49
-[e :U 255 ]
-[; ;main.c: 50: }
-"50
-[e :UE 253 ]
+"74
+[e $U 257  ]
+[e :U 258 ]
+[; ;main.c: 89: }
+[; ;main.c: 91: }
+"91
+[e :UE 255 ]
 }
-"54
+"95
 [v _init `(v  1 ef ]
 {
-[; ;main.c: 53: void init(void)
-[; ;main.c: 54: {
+[; ;main.c: 94: void init(void)
+[; ;main.c: 95: {
 [e :U _init ]
 [f ]
-[; ;main.c: 55: OSCCON=0xEA;
-"55
-[e = _OSCCON -> -> 234 `i `uc ]
-[; ;main.c: 59: PORTA=0x00;
-"59
-[e = _PORTA -> -> 0 `i `uc ]
-[; ;main.c: 60: LATA=0x00;
-"60
-[e = _LATA -> -> 0 `i `uc ]
-[; ;main.c: 61: ANSELA=0x00;
-"61
-[e = _ANSELA -> -> 0 `i `uc ]
-[; ;main.c: 62: TRISA=0xFF;
-"62
-[e = _TRISA -> -> 255 `i `uc ]
-[; ;main.c: 63: WPUA=0x00;
-"63
-[e = _WPUA -> -> 0 `i `uc ]
-[; ;main.c: 66: PORTB=0x00;
-"66
-[e = _PORTB -> -> 0 `i `uc ]
-[; ;main.c: 67: LATB=0x00;
-"67
-[e = _LATB -> -> 0 `i `uc ]
-[; ;main.c: 68: ANSELB=0x00;
-"68
-[e = _ANSELB -> -> 0 `i `uc ]
-[; ;main.c: 69: TRISB=0xFF;
-"69
-[e = _TRISB -> -> 255 `i `uc ]
-[; ;main.c: 70: WPUB=0x50;
-"70
-[e = _WPUB -> -> 80 `i `uc ]
-[; ;main.c: 73: PORTC=0x00;
-"73
-[e = _PORTC -> -> 0 `i `uc ]
-[; ;main.c: 74: LATC=0x00;
-"74
-[e = _LATC -> -> 0 `i `uc ]
-[; ;main.c: 75: ANSELC=0x00;
-"75
-[e = _ANSELC -> -> 0 `i `uc ]
-[; ;main.c: 76: TRISC=0xD7;
-"76
-[e = _TRISC -> -> 215 `i `uc ]
-[; ;main.c: 77: WPUC=0x05;
-"77
-[e = _WPUC -> -> 5 `i `uc ]
-[; ;main.c: 79: nWPUEN=0;
-"79
-[e = _nWPUEN -> -> 0 `i `b ]
-[; ;main.c: 82: APFCON0=0x00;
-"82
-[e = _APFCON0 -> -> 0 `i `uc ]
-[; ;main.c: 83: APFCON1=0x00;
-"83
-[e = _APFCON1 -> -> 0 `i `uc ]
-[; ;main.c: 94: switch(mode&0x03)
-"94
-[e $U 264  ]
-[; ;main.c: 95: { case 0x00: initSPI();
-"95
-{
-[e :U 265 ]
-[e ( _initSPI ..  ]
-[; ;main.c: 96: break;
+[; ;main.c: 96: OSCCON=0xEA;
 "96
-[e $U 263  ]
-[; ;main.c: 97: case 0x02: initI2C();
-"97
-[e :U 266 ]
-[e ( _initI2C ..  ]
-[; ;main.c: 98: break;
-"98
-[e $U 263  ]
-[; ;main.c: 99: case 0x01: initUART();
-"99
-[e :U 267 ]
-[e ( _initUART ..  ]
-[; ;main.c: 100: break;
+[e = _OSCCON -> -> 234 `i `uc ]
+[; ;main.c: 100: PORTA=0x00;
 "100
-[e $U 263  ]
-[; ;main.c: 101: case 0x03: break;
+[e = _PORTA -> -> 0 `i `uc ]
+[; ;main.c: 101: LATA=0x00;
 "101
-[e :U 268 ]
-[e $U 263  ]
-[; ;main.c: 102: default: break;
+[e = _LATA -> -> 0 `i `uc ]
+[; ;main.c: 102: ANSELA=0x00;
 "102
-[e :U 269 ]
-[e $U 263  ]
+[e = _ANSELA -> -> 0 `i `uc ]
+[; ;main.c: 103: TRISA=0xFF;
 "103
-}
-[; ;main.c: 103: }
-[e $U 263  ]
-"94
-[e :U 264 ]
-[e [\ & -> _mode `i -> 3 `i , $ -> 0 `i 265
- , $ -> 2 `i 266
- , $ -> 1 `i 267
- , $ -> 3 `i 268
- 269 ]
-"103
-[e :U 263 ]
-[; ;main.c: 109: }
+[e = _TRISA -> -> 255 `i `uc ]
+[; ;main.c: 104: WPUA=0x00;
+"104
+[e = _WPUA -> -> 0 `i `uc ]
+[; ;main.c: 107: PORTB=0x00;
+"107
+[e = _PORTB -> -> 0 `i `uc ]
+[; ;main.c: 108: LATB=0x00;
+"108
+[e = _LATB -> -> 0 `i `uc ]
+[; ;main.c: 109: ANSELB=0x00;
 "109
-[e :UE 262 ]
+[e = _ANSELB -> -> 0 `i `uc ]
+[; ;main.c: 110: TRISB=0xFF;
+"110
+[e = _TRISB -> -> 255 `i `uc ]
+[; ;main.c: 111: WPUB=0x50;
+"111
+[e = _WPUB -> -> 80 `i `uc ]
+[; ;main.c: 114: PORTC=0x00;
+"114
+[e = _PORTC -> -> 0 `i `uc ]
+[; ;main.c: 115: LATC=0x00;
+"115
+[e = _LATC -> -> 0 `i `uc ]
+[; ;main.c: 116: ANSELC=0x00;
+"116
+[e = _ANSELC -> -> 0 `i `uc ]
+[; ;main.c: 117: TRISC=0xD7;
+"117
+[e = _TRISC -> -> 215 `i `uc ]
+[; ;main.c: 118: WPUC=0x05;
+"118
+[e = _WPUC -> -> 5 `i `uc ]
+[; ;main.c: 120: nWPUEN=0;
+"120
+[e = _nWPUEN -> -> 0 `i `b ]
+[; ;main.c: 123: APFCON0=0x00;
+"123
+[e = _APFCON0 -> -> 0 `i `uc ]
+[; ;main.c: 124: APFCON1=0x00;
+"124
+[e = _APFCON1 -> -> 0 `i `uc ]
+[; ;main.c: 126: RC5=1;;
+"126
+[e = _RC5 -> -> 1 `i `b ]
+[; ;main.c: 127: RC3=1;;
+"127
+[e = _RC3 -> -> 1 `i `b ]
+[; ;main.c: 133: mode_device=0x00;
+"133
+[e = _mode_device -> -> 0 `i `uc ]
+[; ;main.c: 134: mode_protocol=0x00;
+"134
+[e = _mode_protocol -> -> 0 `i `uc ]
+[; ;main.c: 135: mode_device|=(RC2<<1);
+"135
+[e =| _mode_device -> << -> _RC2 `i -> 1 `i `uc ]
+[; ;main.c: 136: mode_device|=(RC0);
+"136
+[e =| _mode_device -> -> _RC0 `i `uc ]
+[; ;main.c: 137: mode_protocol|=(RB6<<1);
+"137
+[e =| _mode_protocol -> << -> _RB6 `i -> 1 `i `uc ]
+[; ;main.c: 138: mode_protocol|=(RB4);
+"138
+[e =| _mode_protocol -> -> _RB4 `i `uc ]
+[; ;main.c: 142: switch(mode_protocol)
+"142
+[e $U 269  ]
+[; ;main.c: 143: { case 0x03: initSPI();
+"143
+{
+[e :U 270 ]
+[e ( _initSPI ..  ]
+[; ;main.c: 144: break;
+"144
+[e $U 268  ]
+[; ;main.c: 145: case 0x02: initI2C();
+"145
+[e :U 271 ]
+[e ( _initI2C ..  ]
+[; ;main.c: 146: break;
+"146
+[e $U 268  ]
+[; ;main.c: 147: case 0x01: initUART();
+"147
+[e :U 272 ]
+[e ( _initUART ..  ]
+[; ;main.c: 148: break;
+"148
+[e $U 268  ]
+[; ;main.c: 149: case 0x00: break;
+"149
+[e :U 273 ]
+[e $U 268  ]
+[; ;main.c: 150: default: break;
+"150
+[e :U 274 ]
+[e $U 268  ]
+"151
+}
+[; ;main.c: 151: }
+[e $U 268  ]
+"142
+[e :U 269 ]
+[e [\ _mode_protocol , $ -> -> 3 `i `uc 270
+ , $ -> -> 2 `i `uc 271
+ , $ -> -> 1 `i `uc 272
+ , $ -> -> 0 `i `uc 273
+ 274 ]
+"151
+[e :U 268 ]
+[; ;main.c: 153: RC5=0;;
+"153
+[e = _RC5 -> -> 0 `i `b ]
+[; ;main.c: 159: }
+"159
+[e :UE 267 ]
 }
 "26
-[v F2515 `(v  1 tf ]
-"114
-[v _isr `IF2515  1 e ]
+[v F2519 `(v  1 tf ]
+"164
+[v _isr `IF2519  1 e ]
 {
-[; ;main.c: 113: void interrupt isr(void)
-[; ;main.c: 114: {
+[; ;main.c: 163: void interrupt isr(void)
+[; ;main.c: 164: {
 [e :U _isr ]
 [f ]
-[; ;main.c: 115: do { if(RCIF) { RC3=1;; if(!(RCSTA&0b00000110)) { rhead++; rhead&=(8-1); ringbuff[rhead]=RCREG; } RCIF=0; RC3=0;; } if(TXIF) { TXIF=0; } } while(0);;
-"115
-[e :U 273 ]
+[; ;main.c: 165: do { if(RCIF) { RC3=1;; if(!(RCSTA&0b00000110)) { rhead++; rhead&=(8-1); ringbuff[rhead]=RCREG; } RCIF=0; RC3=0;; } if(TXIF) { TXIF=0; } } while(0);;
+"165
+[e :U 278 ]
 {
-[e $ ! _RCIF 274  ]
+[e $ ! _RCIF 279  ]
 {
 [e = _RC3 -> -> 1 `i `b ]
-[e $ ! ! != & -> _RCSTA `i -> 6 `i -> 0 `i 275  ]
+[e $ ! ! != & -> _RCSTA `i -> 6 `i -> 0 `i 280  ]
 {
 [e ++ _rhead -> -> 1 `i `uc ]
 [e =& _rhead -> - -> 8 `i -> 1 `i `uc ]
 [e = *U + &U _ringbuff * -> _rhead `ux -> -> # *U &U _ringbuff `ui `ux -> _RCREG `ui ]
 }
-[e :U 275 ]
+[e :U 280 ]
 [e = _RCIF -> -> 0 `i `b ]
 [e = _RC3 -> -> 0 `i `b ]
 }
-[e :U 274 ]
-[e $ ! _TXIF 276  ]
+[e :U 279 ]
+[e $ ! _TXIF 281  ]
 {
 [e = _TXIF -> -> 0 `i `b ]
 }
-[e :U 276 ]
+[e :U 281 ]
 }
-[e :U 272 ]
-[; ;main.c: 116: do { ;} while(0);;
-"116
-[e :U 279 ]
+[e :U 277 ]
+[; ;main.c: 166: do { ;} while(0);;
+"166
+[e :U 284 ]
 {
 }
-[e :U 278 ]
-[; ;main.c: 119: }
-"119
-[e :UE 270 ]
+[e :U 283 ]
+[; ;main.c: 169: }
+"169
+[e :UE 275 ]
 }

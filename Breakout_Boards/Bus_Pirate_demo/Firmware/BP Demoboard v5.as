@@ -52,20 +52,29 @@ pclath	equ	10
 # 22 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
 	psect config,class=CONFIG,delta=2 ;#
 # 22 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
-	dw 0xFFFE&0xFEFF&0xFFFF&0xDFFF ;#
+	dw 0xFEFF&0xFFFF&0xDFFF ;#
 	FNCALL	_main,_init
 	FNCALL	_main,_isEE
 	FNCALL	_main,_doEE
-	FNCALL	_main,_SPIworker
-	FNCALL	_main,_I2Cworker
+	FNCALL	_main,_I2CADCworker
 	FNCALL	_main,_UARTworker
+	FNCALL	_main,_nullfunc1
+	FNCALL	_main,_I2CEEworker
+	FNCALL	_main,_I2CDACworker
 	FNCALL	_doEE,_teletype
 	FNCALL	_teletype,_UARTwrite
 	FNCALL	_UARTworker,_UARTread
 	FNCALL	_UARTworker,_UARTwrite
-	FNCALL	_I2Cworker,_enableTS
-	FNCALL	_I2Cworker,_getADC
-	FNCALL	_I2Cworker,_I2CWrite
+	FNCALL	_I2CDACworker,_enableDAC
+	FNCALL	_I2CDACworker,_setDAC
+	FNCALL	_I2CDACworker,_getADC
+	FNCALL	_I2CDACworker,_I2CWrite
+	FNCALL	_I2CADCworker,_enableTS
+	FNCALL	_I2CADCworker,_getADC
+	FNCALL	_I2CADCworker,_I2CWrite
+	FNCALL	_I2CEEworker,_EEPROMwrite
+	FNCALL	_I2CEEworker,_EEPROMread
+	FNCALL	_I2CEEworker,_I2CWrite
 	FNCALL	_init,_initSPI
 	FNCALL	_init,_initI2C
 	FNCALL	_init,_initUART
@@ -73,13 +82,39 @@ pclath	equ	10
 	FNCALL	intlevel1,_isr
 	global	intlevel1
 	FNROOT	intlevel1
+	global	_protos
+psect	idataBANK0,class=CODE,space=0,delta=2
+global __pidataBANK0
+__pidataBANK0:
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+	line	36
+
+;initializer for _protos
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__UARTworker-fpbase)&0ffh
+	retlw	(fp__UARTworker-fpbase)&0ffh
+	retlw	(fp__UARTworker-fpbase)&0ffh
+	retlw	(fp__UARTworker-fpbase)&0ffh
+	retlw	(fp__I2CADCworker-fpbase)&0ffh
+	retlw	(fp__I2CDACworker-fpbase)&0ffh
+	retlw	(fp__I2CEEworker-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
+	retlw	(fp__nullfunc1-fpbase)&0ffh
 	global	_ringbuff
+	global	_mode_device
+	global	_mode_protocol
 	global	_rhead
 	global	_rtail
 	global	_mode
-psect	nvCOMMON,class=COMMON,space=1
-global __pnvCOMMON
-__pnvCOMMON:
+psect	nvBANK0,class=BANK0,space=1
+global __pnvBANK0
+__pnvBANK0:
 _mode:
        ds      1
 
@@ -93,6 +128,14 @@ _PORTC	set	14
 _CARRY	set	24
 	global	_GIE
 _GIE	set	95
+	global	_RB4
+_RB4	set	108
+	global	_RB6
+_RB6	set	110
+	global	_RC0
+_RC0	set	112
+	global	_RC2
+_RC2	set	114
 	global	_RC3
 _RC3	set	115
 	global	_RC5
@@ -660,6 +703,9 @@ start_initialization:
 psect	bssCOMMON,class=COMMON,space=1
 global __pbssCOMMON
 __pbssCOMMON:
+_mode_protocol:
+       ds      1
+
 _rhead:
        ds      1
 
@@ -670,6 +716,16 @@ psect	bssBANK0,class=BANK0,space=1
 global __pbssBANK0
 __pbssBANK0:
 _ringbuff:
+       ds      16
+
+_mode_device:
+       ds      1
+
+psect	dataBANK0,class=BANK0,space=1
+global __pdataBANK0
+__pdataBANK0:
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+_protos:
        ds      16
 
 psect clrtext,class=CODE,delta=2
@@ -689,6 +745,7 @@ psect cinit,class=CODE,delta=2
 	global __pbssCOMMON
 	clrf	((__pbssCOMMON)+0)&07Fh
 	clrf	((__pbssCOMMON)+1)&07Fh
+	clrf	((__pbssCOMMON)+2)&07Fh
 ; Clear objects allocated to BANK0
 psect cinit,class=CODE,delta=2
 	global __pbssBANK0
@@ -696,8 +753,31 @@ psect cinit,class=CODE,delta=2
 	movwf	fsr0l
 	movlw	high(__pbssBANK0)
 	movwf	fsr0h
-	movlw	010h
+	movlw	011h
 	fcall	clear_ram
+psect inittext,class=CODE,delta=2
+global init_ram,btemp
+init_ram:
+	movwf btemp,f
+initloop:
+	moviw fsr0++
+	movwi fsr1++
+	decfsz btemp
+	goto initloop
+	retlw 0
+; Initialize objects allocated to BANK0
+	global __pidataBANK0,__pdataBANK0
+psect cinit,class=CODE,delta=2
+	movlw low(__pidataBANK0)
+	movwf fsr0l
+	movlw high(__pidataBANK0)|80h
+	movwf fsr0h
+	movlw low(__pdataBANK0)
+	movwf fsr1l
+	movlw high(__pdataBANK0)
+	movwf fsr1h
+	movlw 010h
+	fcall init_ram
 psect cinit,class=CODE,delta=2
 global end_of_initialization
 
@@ -709,16 +789,20 @@ ljmp _main	;jump to C main() function
 psect	cstackCOMMON,class=COMMON,space=1
 global __pcstackCOMMON
 __pcstackCOMMON:
+	global	?_nullfunc1
+?_nullfunc1:	; 0 bytes @ 0x0
+	global	?_UARTworker
+?_UARTworker:	; 0 bytes @ 0x0
+	global	?_I2CADCworker
+?_I2CADCworker:	; 0 bytes @ 0x0
+	global	?_I2CDACworker
+?_I2CDACworker:	; 0 bytes @ 0x0
+	global	?_I2CEEworker
+?_I2CEEworker:	; 0 bytes @ 0x0
 	global	?_init
 ?_init:	; 0 bytes @ 0x0
 	global	?_doEE
 ?_doEE:	; 0 bytes @ 0x0
-	global	?_SPIworker
-?_SPIworker:	; 0 bytes @ 0x0
-	global	?_I2Cworker
-?_I2Cworker:	; 0 bytes @ 0x0
-	global	?_UARTworker
-?_UARTworker:	; 0 bytes @ 0x0
 	global	?_initSPI
 ?_initSPI:	; 0 bytes @ 0x0
 	global	?_initI2C
@@ -729,6 +813,10 @@ __pcstackCOMMON:
 ?_I2CWrite:	; 0 bytes @ 0x0
 	global	?_enableTS
 ?_enableTS:	; 0 bytes @ 0x0
+	global	?_enableDAC
+?_enableDAC:	; 0 bytes @ 0x0
+	global	?_setDAC
+?_setDAC:	; 0 bytes @ 0x0
 	global	?_UARTwrite
 ?_UARTwrite:	; 0 bytes @ 0x0
 	global	?_isr
@@ -737,25 +825,35 @@ __pcstackCOMMON:
 ??_isr:	; 0 bytes @ 0x0
 	global	?_isEE
 ?_isEE:	; 1 bytes @ 0x0
+	global	?_EEPROMread
+?_EEPROMread:	; 1 bytes @ 0x0
 	global	?_UARTread
 ?_UARTread:	; 1 bytes @ 0x0
 	global	?_main
 ?_main:	; 2 bytes @ 0x0
 	ds	3
+	global	??_nullfunc1
+??_nullfunc1:	; 0 bytes @ 0x3
 	global	??_isEE
 ??_isEE:	; 0 bytes @ 0x3
-	global	??_SPIworker
-??_SPIworker:	; 0 bytes @ 0x3
 	global	??_initSPI
 ??_initSPI:	; 0 bytes @ 0x3
 	global	??_initI2C
 ??_initI2C:	; 0 bytes @ 0x3
 	global	??_initUART
 ??_initUART:	; 0 bytes @ 0x3
+	global	?_EEPROMwrite
+?_EEPROMwrite:	; 0 bytes @ 0x3
 	global	??_I2CWrite
 ??_I2CWrite:	; 0 bytes @ 0x3
+	global	??_EEPROMread
+??_EEPROMread:	; 0 bytes @ 0x3
 	global	??_enableTS
 ??_enableTS:	; 0 bytes @ 0x3
+	global	??_enableDAC
+??_enableDAC:	; 0 bytes @ 0x3
+	global	??_setDAC
+??_setDAC:	; 0 bytes @ 0x3
 	global	??_UARTread
 ??_UARTread:	; 0 bytes @ 0x3
 	global	??_UARTwrite
@@ -766,20 +864,32 @@ __pcstackCOMMON:
 I2CWrite@c:	; 1 bytes @ 0x3
 	global	UARTwrite@c
 UARTwrite@c:	; 1 bytes @ 0x3
+	global	EEPROMwrite@data
+EEPROMwrite@data:	; 1 bytes @ 0x3
+	global	EEPROMread@addr
+EEPROMread@addr:	; 1 bytes @ 0x3
+	global	setDAC@dac
+setDAC@dac:	; 1 bytes @ 0x3
 	ds	1
+	global	??_EEPROMwrite
+??_EEPROMwrite:	; 0 bytes @ 0x4
 	global	?_teletype
 ?_teletype:	; 0 bytes @ 0x4
 	global	initUART@i
 initUART@i:	; 1 bytes @ 0x4
 	global	UARTread@temp
 UARTread@temp:	; 1 bytes @ 0x4
+	global	EEPROMwrite@addr
+EEPROMwrite@addr:	; 1 bytes @ 0x4
 	global	teletype@s
 teletype@s:	; 2 bytes @ 0x4
 	ds	1
-	global	??_init
-??_init:	; 0 bytes @ 0x5
 	global	??_UARTworker
 ??_UARTworker:	; 0 bytes @ 0x5
+	global	??_I2CEEworker
+??_I2CEEworker:	; 0 bytes @ 0x5
+	global	??_init
+??_init:	; 0 bytes @ 0x5
 	global	getADC@adc
 getADC@adc:	; 1 bytes @ 0x5
 	ds	1
@@ -799,26 +909,45 @@ global __pcstackBANK0
 __pcstackBANK0:
 	global	??_getADC
 ??_getADC:	; 0 bytes @ 0x0
-	ds	4
-	global	??_I2Cworker
-??_I2Cworker:	; 0 bytes @ 0x4
+	global	I2CEEworker@temp
+I2CEEworker@temp:	; 1 bytes @ 0x0
 	ds	1
-	global	I2Cworker@temp
-I2Cworker@temp:	; 1 bytes @ 0x5
+	global	I2CEEworker@token
+I2CEEworker@token:	; 1 bytes @ 0x1
 	ds	1
-	global	I2Cworker@token
-I2Cworker@token:	; 1 bytes @ 0x6
+	global	I2CEEworker@addressed
+I2CEEworker@addressed:	; 1 bytes @ 0x2
 	ds	1
-	global	I2Cworker@adc
-I2Cworker@adc:	; 1 bytes @ 0x7
+	global	I2CEEworker@addr
+I2CEEworker@addr:	; 1 bytes @ 0x3
+	ds	1
+	global	??_I2CADCworker
+??_I2CADCworker:	; 0 bytes @ 0x4
+	global	??_I2CDACworker
+??_I2CDACworker:	; 0 bytes @ 0x4
+	ds	1
+	global	I2CADCworker@temp
+I2CADCworker@temp:	; 1 bytes @ 0x5
+	global	I2CDACworker@temp
+I2CDACworker@temp:	; 1 bytes @ 0x5
+	ds	1
+	global	I2CADCworker@token
+I2CADCworker@token:	; 1 bytes @ 0x6
+	global	I2CDACworker@token
+I2CDACworker@token:	; 1 bytes @ 0x6
+	ds	1
+	global	I2CADCworker@adc
+I2CADCworker@adc:	; 1 bytes @ 0x7
+	global	I2CDACworker@dac
+I2CDACworker@dac:	; 1 bytes @ 0x7
 	ds	1
 	global	??_main
 ??_main:	; 0 bytes @ 0x8
-	ds	2
-;;Data sizes: Strings 394, constant 0, data 0, bss 18, persistent 1 stack 0
+	ds	1
+;;Data sizes: Strings 394, constant 0, data 16, bss 20, persistent 1 stack 0
 ;;Auto spaces:   Size  Autos    Used
 ;; COMMON          14      8      11
-;; BANK0           80     10      26
+;; BANK0           80      9      43
 ;; BANK1           80      0       0
 ;; BANK2           80      0       0
 ;; BANK3           80      0       0
@@ -842,6 +971,30 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;		 -> STR_6(CODE[24]), STR_5(CODE[39]), STR_4(CODE[37]), STR_3(CODE[57]), 
 ;;		 -> STR_2(CODE[33]), STR_1(CODE[32]), 
 ;;
+;; S2884_proto$PWMworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> UARTworker(), nullfunc1(), 
+;;
+;; protos.PWMworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> UARTworker(), nullfunc1(), 
+;;
+;; S2884_proto$EEPROMworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CEEworker(), UARTworker(), nullfunc1(), 
+;;
+;; protos.EEPROMworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CEEworker(), UARTworker(), nullfunc1(), 
+;;
+;; S2884_proto$DACworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CDACworker(), UARTworker(), nullfunc1(), 
+;;
+;; protos.DACworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CDACworker(), UARTworker(), nullfunc1(), 
+;;
+;; S2884_proto$ADCworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CADCworker(), UARTworker(), nullfunc1(), 
+;;
+;; protos.ADCworker	PTR FTN()void  size(1) Largest target is 0
+;;		 -> I2CADCworker(), UARTworker(), nullfunc1(), 
+;;
 
 
 ;;
@@ -850,7 +1003,9 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;   _doEE->_teletype
 ;;   _teletype->_UARTwrite
 ;;   _UARTworker->_UARTread
-;;   _I2Cworker->_getADC
+;;   _I2CDACworker->_getADC
+;;   _I2CADCworker->_getADC
+;;   _I2CEEworker->_EEPROMwrite
 ;;   _init->_initUART
 ;;
 ;; Critical Paths under _isr in COMMON
@@ -859,8 +1014,10 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;
 ;; Critical Paths under _main in BANK0
 ;;
-;;   _main->_I2Cworker
-;;   _I2Cworker->_getADC
+;;   _main->_I2CADCworker
+;;   _main->_I2CDACworker
+;;   _I2CDACworker->_getADC
+;;   _I2CADCworker->_getADC
 ;;
 ;; Critical Paths under _isr in BANK0
 ;;
@@ -963,7 +1120,7 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;   None.
 
 ;;
-;;Main: autosize = 0, tempsize = 2, incstack = 0, save=0
+;;Main: autosize = 0, tempsize = 1, incstack = 0, save=0
 ;;
 
 ;;
@@ -972,44 +1129,65 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;; ---------------------------------------------------------------------------------
 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;; ---------------------------------------------------------------------------------
-;; (0) _main                                                 2     2      0     439
-;;                                              8 BANK0      2     2      0
+;; (0) _main                                                 1     1      0    1108
+;;                                              8 BANK0      1     1      0
 ;;                               _init
 ;;                               _isEE
 ;;                               _doEE
-;;                          _SPIworker
-;;                          _I2Cworker
+;;                       _I2CADCworker
 ;;                         _UARTworker
+;;                          _nullfunc1
+;;                        _I2CEEworker
+;;                       _I2CDACworker
 ;; ---------------------------------------------------------------------------------
-;; (1) _doEE                                                 0     0      0      75
+;; (1) _doEE                                                 0     0      0     113
 ;;                           _teletype
 ;; ---------------------------------------------------------------------------------
-;; (2) _teletype                                             5     3      2      75
+;; (2) _teletype                                             5     3      2     113
 ;;                                              4 COMMON     4     2      2
 ;;                          _UARTwrite
 ;; ---------------------------------------------------------------------------------
-;; (1) _UARTworker                                           2     2      0      61
+;; (1) _UARTworker                                           2     2      0      68
 ;;                                              5 COMMON     2     2      0
 ;;                           _UARTread
 ;;                          _UARTwrite
 ;; ---------------------------------------------------------------------------------
-;; (1) _I2Cworker                                            4     4      0     235
+;; (1) _I2CDACworker                                         4     4      0     300
+;;                                              4 BANK0      4     4      0
+;;                          _enableDAC
+;;                             _setDAC
+;;                             _getADC
+;;                           _I2CWrite
+;; ---------------------------------------------------------------------------------
+;; (1) _I2CADCworker                                         4     4      0     244
 ;;                                              4 BANK0      4     4      0
 ;;                           _enableTS
 ;;                             _getADC
 ;;                           _I2CWrite
 ;; ---------------------------------------------------------------------------------
-;; (1) _init                                                 2     2      0      68
-;;                                              5 COMMON     2     2      0
+;; (1) _I2CEEworker                                          5     5      0     315
+;;                                              5 COMMON     1     1      0
+;;                                              0 BANK0      4     4      0
+;;                        _EEPROMwrite
+;;                         _EEPROMread
+;;                           _I2CWrite
+;; ---------------------------------------------------------------------------------
+;; (1) _init                                                 1     1      0      68
+;;                                              5 COMMON     1     1      0
 ;;                            _initSPI
 ;;                            _initI2C
 ;;                           _initUART
 ;; ---------------------------------------------------------------------------------
-;; (2) _UARTwrite                                            1     1      0      15
+;; (2) _UARTwrite                                            1     1      0      22
 ;;                                              3 COMMON     1     1      0
 ;; ---------------------------------------------------------------------------------
 ;; (2) _UARTread                                             2     2      0      23
 ;;                                              3 COMMON     2     2      0
+;; ---------------------------------------------------------------------------------
+;; (2) _setDAC                                               1     1      0      22
+;;                                              3 COMMON     1     1      0
+;; ---------------------------------------------------------------------------------
+;; (2) _enableDAC                                            0     0      0       0
 ;; ---------------------------------------------------------------------------------
 ;; (2) _getADC                                               9     7      2     102
 ;;                                              3 COMMON     5     3      2
@@ -1018,8 +1196,14 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;; (2) _enableTS                                             1     1      0       0
 ;;                                              3 COMMON     1     1      0
 ;; ---------------------------------------------------------------------------------
-;; (2) _I2CWrite                                             1     1      0      22
+;; (2) _I2CWrite                                             1     1      0      31
 ;;                                              3 COMMON     1     1      0
+;; ---------------------------------------------------------------------------------
+;; (2) _EEPROMread                                           1     1      0      31
+;;                                              3 COMMON     1     1      0
+;; ---------------------------------------------------------------------------------
+;; (2) _EEPROMwrite                                          2     1      1      62
+;;                                              3 COMMON     2     1      1
 ;; ---------------------------------------------------------------------------------
 ;; (2) _initUART                                             2     2      0      68
 ;;                                              3 COMMON     2     2      0
@@ -1029,9 +1213,9 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;; ---------------------------------------------------------------------------------
 ;; (2) _initSPI                                              0     0      0       0
 ;; ---------------------------------------------------------------------------------
-;; (1) _SPIworker                                            0     0      0       0
-;; ---------------------------------------------------------------------------------
 ;; (1) _isEE                                                 0     0      0       0
+;; ---------------------------------------------------------------------------------
+;; (1) _nullfunc1                                            0     0      0       0
 ;; ---------------------------------------------------------------------------------
 ;; Estimated maximum stack depth 2
 ;; ---------------------------------------------------------------------------------
@@ -1054,14 +1238,23 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;   _doEE
 ;;     _teletype
 ;;       _UARTwrite
-;;   _SPIworker
-;;   _I2Cworker
+;;   _I2CADCworker
 ;;     _enableTS
 ;;     _getADC
 ;;     _I2CWrite
 ;;   _UARTworker
 ;;     _UARTread
 ;;     _UARTwrite
+;;   _nullfunc1
+;;   _I2CEEworker
+;;     _EEPROMwrite
+;;     _EEPROMread
+;;     _I2CWrite
+;;   _I2CDACworker
+;;     _enableDAC
+;;     _setDAC
+;;     _getADC
+;;     _I2CWrite
 ;;
 ;; _isr (ROOT)
 ;;
@@ -1085,7 +1278,7 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;BITBANK0            50      0       0       4        0.0%
 ;;BITSFR3              0      0       0       4        0.0%
 ;;SFR3                 0      0       0       4        0.0%
-;;BANK0               50      A      1A       5       32.5%
+;;BANK0               50      9      2B       5       53.8%
 ;;BITSFR4              0      0       0       5        0.0%
 ;;SFR4                 0      0       0       5        0.0%
 ;;BITBANK1            50      0       0       6        0.0%
@@ -1132,7 +1325,7 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;SFR18                0      0       0      19        0.0%
 ;;BITSFR19             0      0       0      20        0.0%
 ;;SFR19                0      0       0      20        0.0%
-;;ABS                  0      0      25      20        0.0%
+;;ABS                  0      0      36      20        0.0%
 ;;BITBANK8            50      0       0      21        0.0%
 ;;BITSFR20             0      0       0      21        0.0%
 ;;SFR20                0      0       0      21        0.0%
@@ -1165,7 +1358,7 @@ I2Cworker@adc:	; 1 bytes @ 0x7
 ;;SFR29                0      0       0      30        0.0%
 ;;BITSFR30             0      0       0      31        0.0%
 ;;SFR30                0      0       0      31        0.0%
-;;DATA                 0      0      28      31        0.0%
+;;DATA                 0      0      39      31        0.0%
 ;;BITSFR31             0      0       0      32        0.0%
 ;;SFR31                0      0       0      32        0.0%
 
@@ -1176,13 +1369,13 @@ __pmaintext:
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 32 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+;;		line 69 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
 ;;		None
 ;; Return value:  Size  Location     Type
-;;                  2  1580[COMMON] int 
+;;                  2  1593[COMMON] int 
 ;; Registers used:
 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, btemp+1, pclath, cstack
 ;; Tracked objects:
@@ -1192,143 +1385,191 @@ __pmaintext:
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Temps:          0       2       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Totals:         0       2       0       0       0       0       0       0       0       0       0       0       0       0
-;;Total ram usage:        2 bytes
+;;      Temps:          0       1       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         0       1       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        1 bytes
 ;; Hardware stack levels required when called:    4
 ;; This function calls:
 ;;		_init
 ;;		_isEE
 ;;		_doEE
-;;		_SPIworker
-;;		_I2Cworker
+;;		_I2CADCworker
 ;;		_UARTworker
+;;		_nullfunc1
+;;		_I2CEEworker
+;;		_I2CDACworker
 ;; This function is called by:
 ;;		Startup code after reset
 ;; This function uses a non-reentrant model
 ;;
 psect	maintext
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
-	line	32
+	line	69
 	global	__size_of_main
 	__size_of_main	equ	__end_of_main-_main
 	
 _main:	
 	opt	stack 12
 ; Regs used in _main: [allreg]
-	line	33
+	line	70
 	
-l14502:	
-;main.c: 33: mode=0x02;
+l14608:	
+;main.c: 70: mode=0x02;
 	movlw	(02h)
 	movlb 0	; select bank0
 	movwf	(??_main+0)+0
 	movf	(??_main+0)+0,w
 	movwf	(_mode)
-	line	35
+	line	72
 	
-l14504:	
-;main.c: 35: init();
+l14610:	
+;main.c: 72: init();
 	fcall	_init
-	line	37
+	goto	l14612
+	line	74
+;main.c: 74: while(1){
 	
-l14506:	
-;main.c: 37: if(isEE()) doEE();
+l1594:	
+	line	76
+	
+l14612:	
+;main.c: 76: if(isEE()) doEE();
 	fcall	_isEE
 	xorlw	0&0ffh
 	skipnz
-	goto	u2741
-	goto	u2740
-u2741:
-	goto	l14518
-u2740:
+	goto	u2931
+	goto	u2930
+u2931:
+	goto	l14626
+u2930:
 	
-l14508:	
+l14614:	
 	fcall	_doEE
-	goto	l14518
+	goto	l14626
 	
-l1581:	
-	line	40
-;main.c: 40: switch(mode&0x03)
-	goto	l14518
-	line	41
-;main.c: 41: { case 0x00: SPIworker();
+l1595:	
+	line	79
+;main.c: 79: switch(mode_device)
+	goto	l14626
+	line	80
+;main.c: 80: { case 0x03: protos[mode_protocol].ADCworker();
 	
-l1583:	
+l1597:	
 	
-l14510:	
-	fcall	_SPIworker
-	line	42
-;main.c: 42: break;
-	goto	l1589
-	line	43
-;main.c: 43: case 0x02: I2Cworker();
-	
-l1585:	
-	
-l14512:	
-	fcall	_I2Cworker
-	line	44
-;main.c: 44: break;
-	goto	l1589
-	line	45
-;main.c: 45: case 0x01: UARTworker();
-	
-l1586:	
-	
-l14514:	
-	fcall	_UARTworker
-	line	46
-;main.c: 46: break;
-	goto	l1589
-	line	47
-;main.c: 47: case 0x03: break;
-	
-l1587:	
-	goto	l1589
-	line	48
-;main.c: 48: default: break;
-	
-l1588:	
-	goto	l1589
-	line	49
-	
-l14516:	
-;main.c: 49: }
-	goto	l1589
-	line	40
-	
-l1582:	
-	
-l14518:	
-	movf	(_mode),w
-	andlw	03h
+l14616:	
+	movf	(_mode_protocol),w
 	movlb 0	; select bank0
 	movwf	(??_main+0)+0
-	clrf	(??_main+0)+0+1
-	; Switch on 2 bytes has been partitioned into a top level switch of size 1, and 1 sub-switches
-; Switch size 1, requested type "space"
-; Number of cases is 1, Range of values is 0 to 0
-; switch strategies available:
-; Name         Instructions Cycles
-; simple_byte            4     3 (average)
-; direct_byte            8     6 (fixed)
-; jumptable            260     6 (fixed)
-; rangetable             5     4 (fixed)
-; spacedrange            7     6 (fixed)
-; locatedrange           1     3 (fixed)
-;	Chosen strategy is simple_byte
-
-	movf 1+(??_main+0)+0,w
-	opt asmopt_off
-	xorlw	0^0	; case 0
-	skipnz
-	goto	l14564
-	goto	l1589
-	opt asmopt_on
+	movlw	(02h)-1
+u2945:
+	lslf	(??_main+0)+0,f
+	addlw	-1
+	skipz
+	goto	u2945
+	lslf	(??_main+0)+0,w
+	addlw	_protos&0ffh
+	movwf	fsr1l
+	clrf fsr1h	
 	
-l14564:	
-; Switch size 1, requested type "space"
+	movf	indf1,w
+	fcall	fptable
+	line	81
+;main.c: 81: break;
+	goto	l14612
+	line	82
+;main.c: 82: case 0x01: protos[mode_protocol].EEPROMworker();
+	
+l1599:	
+	
+l14618:	
+	movf	(_mode_protocol),w
+	movlb 0	; select bank0
+	movwf	(??_main+0)+0
+	movlw	(02h)-1
+u2955:
+	lslf	(??_main+0)+0,f
+	addlw	-1
+	skipz
+	goto	u2955
+	lslf	(??_main+0)+0,w
+	addlw	02h
+	addlw	_protos&0ffh
+	movwf	fsr1l
+	clrf fsr1h	
+	
+	movf	indf1,w
+	fcall	fptable
+	line	83
+;main.c: 83: break;
+	goto	l14612
+	line	84
+;main.c: 84: case 0x02: protos[mode_protocol].DACworker();
+	
+l1600:	
+	
+l14620:	
+	movf	(_mode_protocol),w
+	movlb 0	; select bank0
+	movwf	(??_main+0)+0
+	movlw	(02h)-1
+u2965:
+	lslf	(??_main+0)+0,f
+	addlw	-1
+	skipz
+	goto	u2965
+	lslf	(??_main+0)+0,w
+	addlw	01h
+	addlw	_protos&0ffh
+	movwf	fsr1l
+	clrf fsr1h	
+	
+	movf	indf1,w
+	fcall	fptable
+	line	85
+;main.c: 85: break;
+	goto	l14612
+	line	86
+;main.c: 86: case 0x00: protos[mode_protocol].PWMworker();
+	
+l1601:	
+	
+l14622:	
+	movf	(_mode_protocol),w
+	movlb 0	; select bank0
+	movwf	(??_main+0)+0
+	movlw	(02h)-1
+u2975:
+	lslf	(??_main+0)+0,f
+	addlw	-1
+	skipz
+	goto	u2975
+	lslf	(??_main+0)+0,w
+	addlw	03h
+	addlw	_protos&0ffh
+	movwf	fsr1l
+	clrf fsr1h	
+	
+	movf	indf1,w
+	fcall	fptable
+	goto	l14612
+	line	87
+;main.c: 87: default: break;
+	
+l1602:	
+	goto	l14612
+	line	88
+	
+l14624:	
+;main.c: 88: }
+	goto	l14612
+	line	79
+	
+l1596:	
+	
+l14626:	
+	movlb 0	; select bank0
+	movf	(_mode_device),w
+	; Switch size 1, requested type "space"
 ; Number of cases is 4, Range of values is 0 to 3
 ; switch strategies available:
 ; Name         Instructions Cycles
@@ -1340,29 +1581,36 @@ l14564:
 ; locatedrange           4     3 (fixed)
 ;	Chosen strategy is simple_byte
 
-	movf 0+(??_main+0)+0,w
 	opt asmopt_off
 	xorlw	0^0	; case 0
 	skipnz
-	goto	l14510
+	goto	l14622
 	xorlw	1^0	; case 1
 	skipnz
-	goto	l14514
+	goto	l14618
 	xorlw	2^1	; case 2
 	skipnz
-	goto	l14512
+	goto	l14620
 	xorlw	3^2	; case 3
 	skipnz
-	goto	l1589
-	goto	l1589
+	goto	l14616
+	goto	l14612
 	opt asmopt_on
 
-	line	49
+	line	88
 	
-l1584:	
-	line	50
+l1598:	
+	goto	l14612
+	line	89
 	
-l1589:	
+l1603:	
+	line	74
+	goto	l14612
+	
+l1604:	
+	line	91
+	
+l1605:	
 	global	start
 	ljmp	start
 	opt stack 0
@@ -1372,9 +1620,9 @@ GLOBAL	__end_of_main
 
 	signat	_main,90
 	global	_doEE
-psect	text523,local,class=CODE,delta=2
-global __ptext523
-__ptext523:
+psect	text729,local,class=CODE,delta=2
+global __ptext729
+__ptext729:
 
 ;; *************** function _doEE *****************
 ;; Defined at:
@@ -1405,7 +1653,7 @@ __ptext523:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text523
+psect	text729
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
 	line	21
 	global	__size_of_doEE
@@ -1416,7 +1664,7 @@ _doEE:
 ; Regs used in _doEE: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
 	line	22
 	
-l14060:	
+l14428:	
 ;easteregg.c: 22: teletype("Hello, nice of you to drop by\r\n");
 	movlw	low(STR_1|8000h)
 	movwf	(?_teletype)
@@ -1486,19 +1734,19 @@ l14060:
 	movlw	high(STR_10|8000h)
 	movwf	((?_teletype))+1
 	fcall	_teletype
-	goto	l6390
+	goto	l6406
 	line	32
 ;easteregg.c: 32: while(1);
 	
-l6389:	
+l6405:	
 	
-l6390:	
-	goto	l6390
+l6406:	
+	goto	l6406
 	
-l6391:	
+l6407:	
 	line	33
 	
-l6392:	
+l6408:	
 	return
 	opt stack 0
 GLOBAL	__end_of_doEE
@@ -1507,9 +1755,9 @@ GLOBAL	__end_of_doEE
 
 	signat	_doEE,88
 	global	_teletype
-psect	text524,local,class=CODE,delta=2
-global __ptext524
-__ptext524:
+psect	text730,local,class=CODE,delta=2
+global __ptext730
+__ptext730:
 
 ;; *************** function _teletype *****************
 ;; Defined at:
@@ -1544,7 +1792,7 @@ __ptext524:
 ;;		_doEE
 ;; This function uses a non-reentrant model
 ;;
-psect	text524
+psect	text730
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
 	line	36
 	global	__size_of_teletype
@@ -1555,15 +1803,15 @@ _teletype:
 ; Regs used in _teletype: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
 	line	39
 	
-l14042:	
+l14410:	
 ;easteregg.c: 37: char c;
 ;easteregg.c: 39: while(*s)
-	goto	l14058
+	goto	l14426
 	
-l6396:	
+l6412:	
 	line	41
 	
-l14044:	
+l14412:	
 ;easteregg.c: 40: {
 ;easteregg.c: 41: UARTwrite(*(s++));
 	movf	(teletype@s),w
@@ -1573,80 +1821,80 @@ l14044:
 	movf	indf0,w ;code access
 	fcall	_UARTwrite
 	
-l14046:	
+l14414:	
 	movlw	low(01h)
 	addwf	(teletype@s),f
 	movlw	high(01h)
 	addwfc	(teletype@s+1),f
 	line	43
 	
-l14048:	
+l14416:	
 ;easteregg.c: 43: for(i=0; i<10000; i++) asm("nop");
 	clrf	(teletype@i)
 	clrf	(teletype@i+1)
 	
-l14050:	
+l14418:	
 	movf	(teletype@i+1),w
 	xorlw	80h
 	movwf	btemp+1
 	movlw	(high(02710h))^80h
 	subwf	btemp+1,w
 	skipz
-	goto	u2385
+	goto	u2695
 	movlw	low(02710h)
 	subwf	(teletype@i),w
-u2385:
+u2695:
 
 	skipc
-	goto	u2381
-	goto	u2380
-u2381:
-	goto	l6397
-u2380:
-	goto	l14058
+	goto	u2691
+	goto	u2690
+u2691:
+	goto	l6413
+u2690:
+	goto	l14426
 	
-l14052:	
-	goto	l14058
+l14420:	
+	goto	l14426
 	
-l6397:	
+l6413:	
 # 43 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
 nop ;#
-psect	text524
+psect	text730
 	
-l14054:	
+l14422:	
 	movlw	low(01h)
 	addwf	(teletype@i),f
 	movlw	high(01h)
 	addwfc	(teletype@i+1),f
 	
-l14056:	
+l14424:	
 	movf	(teletype@i+1),w
 	xorlw	80h
 	movwf	btemp+1
 	movlw	(high(02710h))^80h
 	subwf	btemp+1,w
 	skipz
-	goto	u2395
+	goto	u2705
 	movlw	low(02710h)
 	subwf	(teletype@i),w
-u2395:
+u2705:
 
 	skipc
-	goto	u2391
-	goto	u2390
-u2391:
-	goto	l6397
-u2390:
-	goto	l14058
+	goto	u2701
+	goto	u2700
+u2701:
+	goto	l6413
+u2700:
+	goto	l14426
 	
-l6398:	
-	goto	l14058
+l6414:	
+	goto	l14426
 	line	44
 	
-l6395:	
+l6411:	
 	line	39
 	
-l14058:	
+l14426:	
 	movf	(teletype@s),w
 	movwf	fsr0l
 	movf	((teletype@s+1)),w
@@ -1654,17 +1902,17 @@ l14058:
 	movf	indf0,w ;code access
 	iorlw	0
 	skipz
-	goto	u2401
-	goto	u2400
-u2401:
-	goto	l14044
-u2400:
-	goto	l6400
+	goto	u2711
+	goto	u2710
+u2711:
+	goto	l14412
+u2710:
+	goto	l6416
 	
-l6399:	
+l6415:	
 	line	45
 	
-l6400:	
+l6416:	
 	return
 	opt stack 0
 GLOBAL	__end_of_teletype
@@ -1673,80 +1921,13 @@ GLOBAL	__end_of_teletype
 
 	signat	_teletype,4216
 	global	_UARTworker
-psect	text525,local,class=CODE,delta=2
-global __ptext525
-__ptext525:
+	global	_nullfunc1
+	global	_I2CADCworker
+psect	text731,local,class=CODE,delta=2
+global __ptext731
+__ptext731:
 
-;; *************** function _UARTworker *****************
-;; Defined at:
-;;		line 47 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
-;; Parameters:    Size  Location     Type
-;;		None
-;; Auto vars:     Size  Location     Type
-;;  c               1    6[COMMON] unsigned char 
-;; Return value:  Size  Location     Type
-;;		None               void
-;; Registers used:
-;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
-;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;Total ram usage:        2 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    2
-;; This function calls:
-;;		_UARTread
-;;		_UARTwrite
-;; This function is called by:
-;;		_main
-;; This function uses a non-reentrant model
-;;
-psect	text525
-	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
-	line	47
-	global	__size_of_UARTworker
-	__size_of_UARTworker	equ	__end_of_UARTworker-_UARTworker
-	
-_UARTworker:	
-	opt	stack 13
-; Regs used in _UARTworker: [wreg+fsr1l-status,0+pclath+cstack]
-	line	50
-	
-l14348:	
-;uart.c: 48: unsigned char c;
-;uart.c: 50: c=UARTread();
-	fcall	_UARTread
-	movwf	(??_UARTworker+0)+0
-	movf	(??_UARTworker+0)+0,w
-	movwf	(UARTworker@c)
-	line	51
-	
-l14350:	
-;uart.c: 51: UARTwrite(c);
-	movf	(UARTworker@c),w
-	fcall	_UARTwrite
-	line	52
-	
-l4813:	
-	return
-	opt stack 0
-GLOBAL	__end_of_UARTworker
-	__end_of_UARTworker:
-;; =============== function _UARTworker ends ============
-
-	signat	_UARTworker,88
-	global	_I2Cworker
-psect	text526,local,class=CODE,delta=2
-global __ptext526
-__ptext526:
-
-;; *************** function _I2Cworker *****************
+;; *************** function _I2CADCworker *****************
 ;; Defined at:
 ;;		line 87 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
 ;; Parameters:    Size  Location     Type
@@ -1779,179 +1960,179 @@ __ptext526:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text526
+psect	text731
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
 	line	87
-	global	__size_of_I2Cworker
-	__size_of_I2Cworker	equ	__end_of_I2Cworker-_I2Cworker
+	global	__size_of_I2CADCworker
+	__size_of_I2CADCworker	equ	__end_of_I2CADCworker-_I2CADCworker
 	
-_I2Cworker:	
+_I2CADCworker:	
 	opt	stack 13
-; Regs used in _I2Cworker: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
+; Regs used in _I2CADCworker: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
 	line	89
 	
-l14470:	
+l14542:	
 ;i2c.c: 89: adc=0x00;
 	movlb 0	; select bank0
-	clrf	(I2Cworker@adc)
+	clrf	(I2CADCworker@adc)
 	line	90
 	
-l14472:	
+l14544:	
 ;i2c.c: 90: enableTS();
 	fcall	_enableTS
 	line	91
 	
-l14474:	
+l14546:	
 ;i2c.c: 91: SSP2ADD=0x10;
 	movlw	(010h)
 	movlb 4	; select bank4
 	movwf	(538)^0200h	;volatile
-	goto	l14476
+	goto	l14548
 	line	93
 ;i2c.c: 93: while(1)
 	
-l3201:	
+l3217:	
 	line	96
 	
-l14476:	
+l14548:	
 ;i2c.c: 94: {
 ;i2c.c: 96: if(SSP2IF)
 	movlb 0	; select bank0
 	btfss	(160/8),(160)&7
-	goto	u2711
-	goto	u2710
-u2711:
-	goto	l14476
-u2710:
+	goto	u2871
+	goto	u2870
+u2871:
+	goto	l14548
+u2870:
 	line	98
 	
-l14478:	
+l14550:	
 ;i2c.c: 97: {
 ;i2c.c: 98: token=SSP2STAT&0x25;
 	movlb 4	; select bank4
 	movf	(540)^0200h,w
 	andlw	025h
 	movlb 0	; select bank0
-	movwf	(??_I2Cworker+0)+0
-	movf	(??_I2Cworker+0)+0,w
-	movwf	(I2Cworker@token)
+	movwf	(??_I2CADCworker+0)+0
+	movf	(??_I2CADCworker+0)+0,w
+	movwf	(I2CADCworker@token)
 	line	100
 	
-l14480:	
+l14552:	
 ;i2c.c: 100: if(SSP2STATbits.S)
 	movlb 4	; select bank4
 	btfss	(540)^0200h,3	;volatile
-	goto	u2721
-	goto	u2720
-u2721:
-	goto	l3203
-u2720:
+	goto	u2881
+	goto	u2880
+u2881:
+	goto	l3219
+u2880:
 	line	101
 	
-l14482:	
+l14554:	
 ;i2c.c: 101: { RC5=1;;
 	movlb 0	; select bank0
 	bsf	(117/8),(117)&7
 	line	102
 ;i2c.c: 102: switch(token)
-	goto	l14498
+	goto	l14570
 	line	104
 ;i2c.c: 103: {
 ;i2c.c: 104: case 0x01:
 	
-l3205:	
+l3221:	
 	line	105
 	
-l14484:	
+l14556:	
 ;i2c.c: 105: temp=SSP2BUF;
 	movlb 4	; select bank4
 	movf	(537)^0200h,w	;volatile
 	movlb 0	; select bank0
-	movwf	(??_I2Cworker+0)+0
-	movf	(??_I2Cworker+0)+0,w
-	movwf	(I2Cworker@temp)
+	movwf	(??_I2CADCworker+0)+0
+	movf	(??_I2CADCworker+0)+0,w
+	movwf	(I2CADCworker@temp)
 	line	106
 ;i2c.c: 106: break;
-	goto	l3210
+	goto	l3226
 	line	107
 ;i2c.c: 107: case 0x21:
 	
-l3207:	
+l3223:	
 	line	108
 	
-l14486:	
+l14558:	
 ;i2c.c: 108: adc=SSP2BUF;
 	movlb 4	; select bank4
 	movf	(537)^0200h,w	;volatile
 	movlb 0	; select bank0
-	movwf	(??_I2Cworker+0)+0
-	movf	(??_I2Cworker+0)+0,w
-	movwf	(I2Cworker@adc)
+	movwf	(??_I2CADCworker+0)+0
+	movf	(??_I2CADCworker+0)+0,w
+	movwf	(I2CADCworker@adc)
 	line	109
 ;i2c.c: 109: break;
-	goto	l3210
+	goto	l3226
 	line	110
 ;i2c.c: 110: case 0x05:
 	
-l3208:	
+l3224:	
 	line	111
 	
-l14488:	
+l14560:	
 ;i2c.c: 111: temp=SSP2BUF;
 	movlb 4	; select bank4
 	movf	(537)^0200h,w	;volatile
 	movlb 0	; select bank0
-	movwf	(??_I2Cworker+0)+0
-	movf	(??_I2Cworker+0)+0,w
-	movwf	(I2Cworker@temp)
+	movwf	(??_I2CADCworker+0)+0
+	movf	(??_I2CADCworker+0)+0,w
+	movwf	(I2CADCworker@temp)
 	line	112
 	
-l14490:	
+l14562:	
 ;i2c.c: 112: I2CWrite(getADC(adc));
-	movf	(I2Cworker@adc),w
+	movf	(I2CADCworker@adc),w
 	fcall	_getADC
 	movf	(0+(?_getADC)),w
 	fcall	_I2CWrite
 	line	113
 ;i2c.c: 113: break;
-	goto	l3210
+	goto	l3226
 	line	114
 ;i2c.c: 114: case 0x24:
 	
-l3209:	
+l3225:	
 	line	115
 	
-l14492:	
+l14564:	
 ;i2c.c: 115: temp=SSP2BUF;
 	movlb 4	; select bank4
 	movf	(537)^0200h,w	;volatile
 	movlb 0	; select bank0
-	movwf	(??_I2Cworker+0)+0
-	movf	(??_I2Cworker+0)+0,w
-	movwf	(I2Cworker@temp)
+	movwf	(??_I2CADCworker+0)+0
+	movf	(??_I2CADCworker+0)+0,w
+	movwf	(I2CADCworker@temp)
 	line	116
 	
-l14494:	
+l14566:	
 ;i2c.c: 116: I2CWrite(getADC(adc));
-	movf	(I2Cworker@adc),w
+	movf	(I2CADCworker@adc),w
 	fcall	_getADC
 	movf	(0+(?_getADC)),w
 	fcall	_I2CWrite
 	line	117
 ;i2c.c: 117: break;
-	goto	l3210
+	goto	l3226
 	line	118
 	
-l14496:	
+l14568:	
 ;i2c.c: 118: }
-	goto	l3210
+	goto	l3226
 	line	102
 	
-l3204:	
+l3220:	
 	
-l14498:	
+l14570:	
 	movlb 0	; select bank0
-	movf	(I2Cworker@token),w
+	movf	(I2CADCworker@token),w
 	; Switch size 1, requested type "space"
 ; Number of cases is 4, Range of values is 1 to 36
 ; switch strategies available:
@@ -1964,52 +2145,52 @@ l14498:
 	opt asmopt_off
 	xorlw	1^0	; case 1
 	skipnz
-	goto	l14484
+	goto	l14556
 	xorlw	5^1	; case 5
 	skipnz
-	goto	l14488
+	goto	l14560
 	xorlw	33^5	; case 33
 	skipnz
-	goto	l14486
+	goto	l14558
 	xorlw	36^33	; case 36
 	skipnz
-	goto	l14492
-	goto	l3210
+	goto	l14564
+	goto	l3226
 	opt asmopt_on
 
 	line	118
 	
-l3206:	
+l3222:	
 	line	119
 ;i2c.c: 119: }
-	goto	l3210
+	goto	l3226
 	line	120
 	
-l3203:	
+l3219:	
 ;i2c.c: 120: else if(SSP2STATbits.P)
 	btfss	(540)^0200h,4	;volatile
-	goto	u2731
-	goto	u2730
-u2731:
-	goto	l3210
-u2730:
+	goto	u2891
+	goto	u2890
+u2891:
+	goto	l3226
+u2890:
 	line	121
 	
-l14500:	
+l14572:	
 ;i2c.c: 121: { RC5=0;;
 	movlb 0	; select bank0
 	bcf	(117/8),(117)&7
 	line	122
 # 122 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
 NOP ;#
-psect	text526
-	goto	l3210
+psect	text731
+	goto	l3226
 	line	123
 	
-l3211:	
+l3227:	
 	line	124
 	
-l3210:	
+l3226:	
 ;i2c.c: 123: }
 ;i2c.c: 124: SSP2IF=0;
 	movlb 0	; select bank0
@@ -2021,36 +2202,840 @@ l3210:
 	line	126
 ;i2c.c: 126: SSP2CON1bits.CKP=1;
 	bsf	(541)^0200h,4	;volatile
-	goto	l14476
+	goto	l14548
 	line	127
 	
-l3202:	
-	goto	l14476
+l3218:	
+	goto	l14548
 	line	128
 	
-l3212:	
+l3228:	
 	line	93
-	goto	l14476
+	goto	l14548
+	
+l3229:	
+	line	129
+	
+l3230:	
+	return
+	opt stack 0
+GLOBAL	__end_of_I2CADCworker
+	__end_of_I2CADCworker:
+;; =============== function _I2CADCworker ends ============
+
+	signat	_I2CADCworker,88
+	global	_I2CDACworker
+psect	text732,local,class=CODE,delta=2
+global __ptext732
+__ptext732:
+
+;; *************** function _I2CDACworker *****************
+;; Defined at:
+;;		line 134 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+;; Parameters:    Size  Location     Type
+;;		None
+;; Auto vars:     Size  Location     Type
+;;  dac             1    7[BANK0 ] unsigned char 
+;;  token           1    6[BANK0 ] unsigned char 
+;;  temp            1    5[BANK0 ] unsigned char 
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg, fsr0l, fsr0h, status,2, status,0, btemp+1, pclath, cstack
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         0       3       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       1       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         0       4       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        4 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    2
+;; This function calls:
+;;		_enableDAC
+;;		_setDAC
+;;		_getADC
+;;		_I2CWrite
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text732
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+	line	134
+	global	__size_of_I2CDACworker
+	__size_of_I2CDACworker	equ	__end_of_I2CDACworker-_I2CDACworker
+	
+_I2CDACworker:	
+	opt	stack 13
+; Regs used in _I2CDACworker: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
+	line	136
+	
+l14574:	
+;i2c.c: 136: dac=0x00;
+	movlb 0	; select bank0
+	clrf	(I2CDACworker@dac)
+	line	137
+	
+l14576:	
+;i2c.c: 137: enableDAC();
+	fcall	_enableDAC
+	line	138
+	
+l14578:	
+;i2c.c: 138: SSP2ADD=0x20;
+	movlw	(020h)
+	movlb 4	; select bank4
+	movwf	(538)^0200h	;volatile
+	goto	l14580
+	line	140
+;i2c.c: 140: while(1)
+	
+l3233:	
+	line	143
+	
+l14580:	
+;i2c.c: 141: {
+;i2c.c: 143: if(SSP2IF)
+	movlb 0	; select bank0
+	btfss	(160/8),(160)&7
+	goto	u2901
+	goto	u2900
+u2901:
+	goto	l14580
+u2900:
+	line	145
+	
+l14582:	
+;i2c.c: 144: {
+;i2c.c: 145: token=SSP2STAT&0x25;
+	movlb 4	; select bank4
+	movf	(540)^0200h,w
+	andlw	025h
+	movlb 0	; select bank0
+	movwf	(??_I2CDACworker+0)+0
+	movf	(??_I2CDACworker+0)+0,w
+	movwf	(I2CDACworker@token)
+	line	147
+	
+l14584:	
+;i2c.c: 147: if(SSP2STATbits.S)
+	movlb 4	; select bank4
+	btfss	(540)^0200h,3	;volatile
+	goto	u2911
+	goto	u2910
+u2911:
+	goto	l3235
+u2910:
+	line	148
+	
+l14586:	
+;i2c.c: 148: { RC5=1;;
+	movlb 0	; select bank0
+	bsf	(117/8),(117)&7
+	line	149
+;i2c.c: 149: switch(token)
+	goto	l14604
+	line	151
+;i2c.c: 150: {
+;i2c.c: 151: case 0x01:
+	
+l3237:	
+	line	152
+	
+l14588:	
+;i2c.c: 152: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movlb 0	; select bank0
+	movwf	(??_I2CDACworker+0)+0
+	movf	(??_I2CDACworker+0)+0,w
+	movwf	(I2CDACworker@temp)
+	line	153
+;i2c.c: 153: break;
+	goto	l3242
+	line	154
+;i2c.c: 154: case 0x21:
+	
+l3239:	
+	line	155
+	
+l14590:	
+;i2c.c: 155: dac=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movlb 0	; select bank0
+	movwf	(??_I2CDACworker+0)+0
+	movf	(??_I2CDACworker+0)+0,w
+	movwf	(I2CDACworker@dac)
+	line	156
+;i2c.c: 156: dac>>=3;
+	clrc
+	rrf	(I2CDACworker@dac),f
+	clrc
+	rrf	(I2CDACworker@dac),f
+	clrc
+	rrf	(I2CDACworker@dac),f
+
+	line	157
+	
+l14592:	
+;i2c.c: 157: setDAC(dac);
+	movf	(I2CDACworker@dac),w
+	fcall	_setDAC
+	line	158
+;i2c.c: 158: break;
+	goto	l3242
+	line	159
+;i2c.c: 159: case 0x05:
+	
+l3240:	
+	line	160
+	
+l14594:	
+;i2c.c: 160: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movlb 0	; select bank0
+	movwf	(??_I2CDACworker+0)+0
+	movf	(??_I2CDACworker+0)+0,w
+	movwf	(I2CDACworker@temp)
+	line	161
+	
+l14596:	
+;i2c.c: 161: I2CWrite(getADC(dac));
+	movf	(I2CDACworker@dac),w
+	fcall	_getADC
+	movf	(0+(?_getADC)),w
+	fcall	_I2CWrite
+	line	162
+;i2c.c: 162: break;
+	goto	l3242
+	line	163
+;i2c.c: 163: case 0x24:
+	
+l3241:	
+	line	164
+	
+l14598:	
+;i2c.c: 164: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movlb 0	; select bank0
+	movwf	(??_I2CDACworker+0)+0
+	movf	(??_I2CDACworker+0)+0,w
+	movwf	(I2CDACworker@temp)
+	line	165
+	
+l14600:	
+;i2c.c: 165: I2CWrite(getADC(dac));
+	movf	(I2CDACworker@dac),w
+	fcall	_getADC
+	movf	(0+(?_getADC)),w
+	fcall	_I2CWrite
+	line	166
+;i2c.c: 166: break;
+	goto	l3242
+	line	167
+	
+l14602:	
+;i2c.c: 167: }
+	goto	l3242
+	line	149
+	
+l3236:	
+	
+l14604:	
+	movlb 0	; select bank0
+	movf	(I2CDACworker@token),w
+	; Switch size 1, requested type "space"
+; Number of cases is 4, Range of values is 1 to 36
+; switch strategies available:
+; Name         Instructions Cycles
+; simple_byte           13     7 (average)
+; direct_byte           81     9 (fixed)
+; jumptable            263     9 (fixed)
+;	Chosen strategy is simple_byte
+
+	opt asmopt_off
+	xorlw	1^0	; case 1
+	skipnz
+	goto	l14588
+	xorlw	5^1	; case 5
+	skipnz
+	goto	l14594
+	xorlw	33^5	; case 33
+	skipnz
+	goto	l14590
+	xorlw	36^33	; case 36
+	skipnz
+	goto	l14598
+	goto	l3242
+	opt asmopt_on
+
+	line	167
+	
+l3238:	
+	line	168
+;i2c.c: 168: }
+	goto	l3242
+	line	169
+	
+l3235:	
+;i2c.c: 169: else if(SSP2STATbits.P)
+	btfss	(540)^0200h,4	;volatile
+	goto	u2921
+	goto	u2920
+u2921:
+	goto	l3242
+u2920:
+	line	170
+	
+l14606:	
+;i2c.c: 170: { RC5=0;;
+	movlb 0	; select bank0
+	bcf	(117/8),(117)&7
+	line	171
+# 171 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+NOP ;#
+psect	text732
+	goto	l3242
+	line	172
+	
+l3243:	
+	line	173
+	
+l3242:	
+;i2c.c: 172: }
+;i2c.c: 173: SSP2IF=0;
+	movlb 0	; select bank0
+	bcf	(160/8),(160)&7
+	line	174
+;i2c.c: 174: SSP2CON1bits.SSPEN=1;
+	movlb 4	; select bank4
+	bsf	(541)^0200h,5	;volatile
+	line	175
+;i2c.c: 175: SSP2CON1bits.CKP=1;
+	bsf	(541)^0200h,4	;volatile
+	goto	l14580
+	line	176
+	
+l3234:	
+	goto	l14580
+	line	177
+	
+l3244:	
+	line	140
+	goto	l14580
+	
+l3245:	
+	line	178
+	
+l3246:	
+	return
+	opt stack 0
+GLOBAL	__end_of_I2CDACworker
+	__end_of_I2CDACworker:
+;; =============== function _I2CDACworker ends ============
+
+	signat	_I2CDACworker,88
+	global	_I2CEEworker
+psect	text733,local,class=CODE,delta=2
+global __ptext733
+__ptext733:
+
+;; *************** function _I2CEEworker *****************
+;; Defined at:
+;;		line 29 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+;; Parameters:    Size  Location     Type
+;;		None
+;; Auto vars:     Size  Location     Type
+;;  addr            1    3[BANK0 ] unsigned char 
+;;  addressed       1    2[BANK0 ] unsigned char 
+;;  token           1    1[BANK0 ] unsigned char 
+;;  temp            1    0[BANK0 ] unsigned char 
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg, fsr0l, fsr0h, status,2, status,0, pclath, cstack
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         0       4       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         1       4       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        5 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    2
+;; This function calls:
+;;		_EEPROMwrite
+;;		_EEPROMread
+;;		_I2CWrite
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text733
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+	line	29
+	global	__size_of_I2CEEworker
+	__size_of_I2CEEworker	equ	__end_of_I2CEEworker-_I2CEEworker
+	
+_I2CEEworker:	
+	opt	stack 13
+; Regs used in _I2CEEworker: [wreg-fsr0h+status,2+status,0+pclath+cstack]
+	line	31
+	
+l14500:	
+;i2c.c: 31: addr=0x00;
+	movlb 0	; select bank0
+	clrf	(I2CEEworker@addr)
+	line	32
+;i2c.c: 32: addressed=0;
+	clrf	(I2CEEworker@addressed)
+	line	34
+	
+l14502:	
+;i2c.c: 34: SSP2ADD=0xA0;
+	movlw	(0A0h)
+	movlb 4	; select bank4
+	movwf	(538)^0200h	;volatile
+	goto	l14504
+	line	36
+;i2c.c: 36: while(1)
+	
+l3199:	
+	line	39
+	
+l14504:	
+;i2c.c: 37: {
+;i2c.c: 39: if(SSP2IF)
+	movlb 0	; select bank0
+	btfss	(160/8),(160)&7
+	goto	u2831
+	goto	u2830
+u2831:
+	goto	l14504
+u2830:
+	line	41
+	
+l14506:	
+;i2c.c: 40: {
+;i2c.c: 41: token=SSP2STAT&0x25;
+	movlb 4	; select bank4
+	movf	(540)^0200h,w
+	andlw	025h
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	movwf	(I2CEEworker@token)
+	line	43
+	
+l14508:	
+;i2c.c: 43: if(SSP2STATbits.S)
+	movlb 4	; select bank4
+	btfss	(540)^0200h,3	;volatile
+	goto	u2841
+	goto	u2840
+u2841:
+	goto	l3201
+u2840:
+	line	44
+	
+l14510:	
+;i2c.c: 44: { RC5=1;;
+	movlb 0	; select bank0
+	bsf	(117/8),(117)&7
+	line	45
+;i2c.c: 45: switch(token)
+	goto	l14538
+	line	47
+;i2c.c: 46: {
+;i2c.c: 47: case 0x01:
+	
+l3203:	
+	line	48
+	
+l14512:	
+;i2c.c: 48: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	movwf	(I2CEEworker@temp)
+	line	49
+;i2c.c: 49: break;
+	goto	l3210
+	line	50
+;i2c.c: 50: case 0x21:
+	
+l3205:	
+	line	51
+	
+l14514:	
+;i2c.c: 51: if(!addressed)
+	movf	(I2CEEworker@addressed),f
+	skipz
+	goto	u2851
+	goto	u2850
+u2851:
+	goto	l14520
+u2850:
+	line	52
+	
+l14516:	
+;i2c.c: 52: { addr=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	movwf	(I2CEEworker@addr)
+	line	53
+	
+l14518:	
+;i2c.c: 53: addressed=1;
+	clrf	(I2CEEworker@addressed)
+	bsf	status,0
+	rlf	(I2CEEworker@addressed),f
+	line	54
+;i2c.c: 54: }
+	goto	l3210
+	line	55
+	
+l3206:	
+	line	57
+	
+l14520:	
+;i2c.c: 55: else
+;i2c.c: 56: {
+;i2c.c: 57: EEPROMwrite(addr, SSP2BUF);
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movwf	(?_EEPROMwrite)
+	movlb 0	; select bank0
+	movf	(I2CEEworker@addr),w
+	fcall	_EEPROMwrite
+	line	58
+	
+l14522:	
+;i2c.c: 58: addr++;
+	movlw	(01h)
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	addwf	(I2CEEworker@addr),f
+	goto	l3210
+	line	59
+	
+l3207:	
+	line	61
+;i2c.c: 59: }
+;i2c.c: 61: break;
+	goto	l3210
+	line	62
+;i2c.c: 62: case 0x05:
+	
+l3208:	
+	line	63
+	
+l14524:	
+;i2c.c: 63: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	movwf	(I2CEEworker@temp)
+	line	64
+	
+l14526:	
+;i2c.c: 64: I2CWrite(EEPROMread(addr++));
+	movf	(I2CEEworker@addr),w
+	fcall	_EEPROMread
+	fcall	_I2CWrite
+	
+l14528:	
+	movlw	(01h)
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	addwf	(I2CEEworker@addr),f
+	line	65
+;i2c.c: 65: break;
+	goto	l3210
+	line	66
+;i2c.c: 66: case 0x24:
+	
+l3209:	
+	line	67
+	
+l14530:	
+;i2c.c: 67: temp=SSP2BUF;
+	movlb 4	; select bank4
+	movf	(537)^0200h,w	;volatile
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	movwf	(I2CEEworker@temp)
+	line	68
+	
+l14532:	
+;i2c.c: 68: I2CWrite(EEPROMread(addr++));
+	movf	(I2CEEworker@addr),w
+	fcall	_EEPROMread
+	fcall	_I2CWrite
+	
+l14534:	
+	movlw	(01h)
+	movwf	(??_I2CEEworker+0)+0
+	movf	(??_I2CEEworker+0)+0,w
+	movlb 0	; select bank0
+	addwf	(I2CEEworker@addr),f
+	line	69
+;i2c.c: 69: break;
+	goto	l3210
+	line	70
+	
+l14536:	
+;i2c.c: 70: }
+	goto	l3210
+	line	45
+	
+l3202:	
+	
+l14538:	
+	movf	(I2CEEworker@token),w
+	; Switch size 1, requested type "space"
+; Number of cases is 4, Range of values is 1 to 36
+; switch strategies available:
+; Name         Instructions Cycles
+; simple_byte           13     7 (average)
+; direct_byte           81     9 (fixed)
+; jumptable            263     9 (fixed)
+;	Chosen strategy is simple_byte
+
+	opt asmopt_off
+	xorlw	1^0	; case 1
+	skipnz
+	goto	l14512
+	xorlw	5^1	; case 5
+	skipnz
+	goto	l14524
+	xorlw	33^5	; case 33
+	skipnz
+	goto	l14514
+	xorlw	36^33	; case 36
+	skipnz
+	goto	l14530
+	goto	l3210
+	opt asmopt_on
+
+	line	70
+	
+l3204:	
+	line	71
+;i2c.c: 71: }
+	goto	l3210
+	line	72
+	
+l3201:	
+;i2c.c: 72: else if(SSP2STATbits.P)
+	btfss	(540)^0200h,4	;volatile
+	goto	u2861
+	goto	u2860
+u2861:
+	goto	l3210
+u2860:
+	line	73
+	
+l14540:	
+;i2c.c: 73: { RC5=0;;
+	movlb 0	; select bank0
+	bcf	(117/8),(117)&7
+	line	74
+;i2c.c: 74: addressed=0;
+	clrf	(I2CEEworker@addressed)
+	line	75
+# 75 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+NOP ;#
+psect	text733
+	goto	l3210
+	line	76
+	
+l3211:	
+	line	77
+	
+l3210:	
+;i2c.c: 76: }
+;i2c.c: 77: SSP2IF=0;
+	movlb 0	; select bank0
+	bcf	(160/8),(160)&7
+	line	78
+;i2c.c: 78: SSP2CON1bits.SSPEN=1;
+	movlb 4	; select bank4
+	bsf	(541)^0200h,5	;volatile
+	line	79
+;i2c.c: 79: SSP2CON1bits.CKP=1;
+	bsf	(541)^0200h,4	;volatile
+	goto	l14504
+	line	80
+	
+l3200:	
+	goto	l14504
+	line	81
+	
+l3212:	
+	line	36
+	goto	l14504
 	
 l3213:	
-	line	129
+	line	82
 	
 l3214:	
 	return
 	opt stack 0
-GLOBAL	__end_of_I2Cworker
-	__end_of_I2Cworker:
-;; =============== function _I2Cworker ends ============
+GLOBAL	__end_of_I2CEEworker
+	__end_of_I2CEEworker:
+;; =============== function _I2CEEworker ends ============
 
-	signat	_I2Cworker,88
+	signat	_I2CEEworker,88
+psect	text734,local,class=CODE,delta=2
+global __ptext734
+__ptext734:
+
+;; *************** function _nullfunc1 *****************
+;; Defined at:
+;;		line 66 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+;; Parameters:    Size  Location     Type
+;;		None
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		None
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        0 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text734
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+	line	66
+	global	__size_of_nullfunc1
+	__size_of_nullfunc1	equ	__end_of_nullfunc1-_nullfunc1
+	
+_nullfunc1:	
+	opt	stack 14
+; Regs used in _nullfunc1: []
+	
+l1591:	
+	return
+	opt stack 0
+GLOBAL	__end_of_nullfunc1
+	__end_of_nullfunc1:
+;; =============== function _nullfunc1 ends ============
+
+	signat	_nullfunc1,88
+psect	text735,local,class=CODE,delta=2
+global __ptext735
+__ptext735:
+
+;; *************** function _UARTworker *****************
+;; Defined at:
+;;		line 47 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
+;; Parameters:    Size  Location     Type
+;;		None
+;; Auto vars:     Size  Location     Type
+;;  c               1    6[COMMON] unsigned char 
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg, fsr1l, fsr1h, status,2, status,0, pclath, cstack
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        2 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    2
+;; This function calls:
+;;		_UARTread
+;;		_UARTwrite
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text735
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
+	line	47
+	global	__size_of_UARTworker
+	__size_of_UARTworker	equ	__end_of_UARTworker-_UARTworker
+	
+_UARTworker:	
+	opt	stack 13
+; Regs used in _UARTworker: [wreg+fsr1l-status,0+pclath+cstack]
+	line	50
+	
+l14406:	
+;uart.c: 48: unsigned char c;
+;uart.c: 50: c=UARTread();
+	fcall	_UARTread
+	movwf	(??_UARTworker+0)+0
+	movf	(??_UARTworker+0)+0,w
+	movwf	(UARTworker@c)
+	line	51
+	
+l14408:	
+;uart.c: 51: UARTwrite(c);
+	movf	(UARTworker@c),w
+	fcall	_UARTwrite
+	line	52
+	
+l4829:	
+	return
+	opt stack 0
+GLOBAL	__end_of_UARTworker
+	__end_of_UARTworker:
+;; =============== function _UARTworker ends ============
+
+	signat	_UARTworker,88
 	global	_init
-psect	text527,local,class=CODE,delta=2
-global __ptext527
-__ptext527:
+psect	text736,local,class=CODE,delta=2
+global __ptext736
+__ptext736:
 
 ;; *************** function _init *****************
 ;; Defined at:
-;;		line 54 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+;;		line 95 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -2066,9 +3051,9 @@ __ptext527:
 ;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
 ;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
 ;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Temps:          2       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;Total ram usage:        2 bytes
+;;      Temps:          1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        1 bytes
 ;; Hardware stack levels used:    1
 ;; Hardware stack levels required when called:    2
 ;; This function calls:
@@ -2079,196 +3064,232 @@ __ptext527:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text527
+psect	text736
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
-	line	54
+	line	95
 	global	__size_of_init
 	__size_of_init	equ	__end_of_init-_init
 	
 _init:	
 	opt	stack 13
 ; Regs used in _init: [wreg-status,0+pclath+cstack]
-	line	55
+	line	96
 	
-l14282:	
-;main.c: 55: OSCCON=0xEA;
+l14252:	
+;main.c: 96: OSCCON=0xEA;
 	movlw	(0EAh)
 	movlb 1	; select bank1
 	movwf	(153)^080h	;volatile
-	line	59
+	line	100
 	
-l14284:	
-;main.c: 59: PORTA=0x00;
+l14254:	
+;main.c: 100: PORTA=0x00;
 	movlb 0	; select bank0
 	clrf	(12)	;volatile
-	line	60
+	line	101
 	
-l14286:	
-;main.c: 60: LATA=0x00;
+l14256:	
+;main.c: 101: LATA=0x00;
 	movlb 2	; select bank2
 	clrf	(268)^0100h	;volatile
-	line	61
+	line	102
 	
-l14288:	
-;main.c: 61: ANSELA=0x00;
+l14258:	
+;main.c: 102: ANSELA=0x00;
 	movlb 3	; select bank3
 	clrf	(396)^0180h	;volatile
-	line	62
+	line	103
 	
-l14290:	
-;main.c: 62: TRISA=0xFF;
+l14260:	
+;main.c: 103: TRISA=0xFF;
 	movlw	(0FFh)
 	movlb 1	; select bank1
 	movwf	(140)^080h	;volatile
-	line	63
-;main.c: 63: WPUA=0x00;
+	line	104
+;main.c: 104: WPUA=0x00;
 	movlb 4	; select bank4
 	clrf	(524)^0200h	;volatile
-	line	66
-;main.c: 66: PORTB=0x00;
+	line	107
+;main.c: 107: PORTB=0x00;
 	movlb 0	; select bank0
 	clrf	(13)	;volatile
-	line	67
-;main.c: 67: LATB=0x00;
+	line	108
+;main.c: 108: LATB=0x00;
 	movlb 2	; select bank2
 	clrf	(269)^0100h	;volatile
-	line	68
-;main.c: 68: ANSELB=0x00;
+	line	109
+;main.c: 109: ANSELB=0x00;
 	movlb 3	; select bank3
 	clrf	(397)^0180h	;volatile
-	line	69
+	line	110
 	
-l14292:	
-;main.c: 69: TRISB=0xFF;
+l14262:	
+;main.c: 110: TRISB=0xFF;
 	movlw	(0FFh)
 	movlb 1	; select bank1
 	movwf	(141)^080h	;volatile
-	line	70
+	line	111
 	
-l14294:	
-;main.c: 70: WPUB=0x50;
+l14264:	
+;main.c: 111: WPUB=0x50;
 	movlw	(050h)
 	movlb 4	; select bank4
 	movwf	(525)^0200h	;volatile
-	line	73
-;main.c: 73: PORTC=0x00;
+	line	114
+;main.c: 114: PORTC=0x00;
 	movlb 0	; select bank0
 	clrf	(14)	;volatile
-	line	74
-;main.c: 74: LATC=0x00;
+	line	115
+;main.c: 115: LATC=0x00;
 	movlb 2	; select bank2
 	clrf	(270)^0100h	;volatile
-	line	75
-;main.c: 75: ANSELC=0x00;
+	line	116
+;main.c: 116: ANSELC=0x00;
 	movlb 3	; select bank3
 	clrf	(398)^0180h	;volatile
-	line	76
+	line	117
 	
-l14296:	
-;main.c: 76: TRISC=0xD7;
+l14266:	
+;main.c: 117: TRISC=0xD7;
 	movlw	(0D7h)
 	movlb 1	; select bank1
 	movwf	(142)^080h	;volatile
-	line	77
+	line	118
 	
-l14298:	
-;main.c: 77: WPUC=0x05;
+l14268:	
+;main.c: 118: WPUC=0x05;
 	movlw	(05h)
 	movlb 4	; select bank4
 	movwf	(526)^0200h	;volatile
-	line	79
+	line	120
 	
-l14300:	
-;main.c: 79: nWPUEN=0;
+l14270:	
+;main.c: 120: nWPUEN=0;
 	movlb 1	; select bank1
 	bcf	(1199/8)^080h,(1199)&7
-	line	82
-;main.c: 82: APFCON0=0x00;
+	line	123
+;main.c: 123: APFCON0=0x00;
 	movlb 2	; select bank2
 	clrf	(285)^0100h	;volatile
-	line	83
-;main.c: 83: APFCON1=0x00;
+	line	124
+;main.c: 124: APFCON1=0x00;
 	clrf	(286)^0100h	;volatile
-	line	94
-;main.c: 94: switch(mode&0x03)
-	goto	l14310
-	line	95
-;main.c: 95: { case 0x00: initSPI();
+	line	126
 	
-l1593:	
+l14272:	
+;main.c: 126: RC5=1;;
+	movlb 0	; select bank0
+	bsf	(117/8),(117)&7
+	line	127
 	
-l14302:	
-	fcall	_initSPI
-	line	96
-;main.c: 96: break;
-	goto	l1599
-	line	97
-;main.c: 97: case 0x02: initI2C();
+l14274:	
+;main.c: 127: RC3=1;;
+	bsf	(115/8),(115)&7
+	line	133
 	
-l1595:	
+l14276:	
+;main.c: 133: mode_device=0x00;
+	clrf	(_mode_device)
+	line	134
 	
-l14304:	
-	fcall	_initI2C
-	line	98
-;main.c: 98: break;
-	goto	l1599
-	line	99
-;main.c: 99: case 0x01: initUART();
+l14278:	
+;main.c: 134: mode_protocol=0x00;
+	clrf	(_mode_protocol)
+	line	135
 	
-l1596:	
-	
-l14306:	
-	fcall	_initUART
-	line	100
-;main.c: 100: break;
-	goto	l1599
-	line	101
-;main.c: 101: case 0x03: break;
-	
-l1597:	
-	goto	l1599
-	line	102
-;main.c: 102: default: break;
-	
-l1598:	
-	goto	l1599
-	line	103
-	
-l14308:	
-;main.c: 103: }
-	goto	l1599
-	line	94
-	
-l1592:	
-	
-l14310:	
-	movf	(_mode),w
-	andlw	03h
+l14280:	
+;main.c: 135: mode_device|=(RC2<<1);
+	movlw	0
+	btfsc	(114/8),(114)&7
+	movlw	(1 << (01h))
 	movwf	(??_init+0)+0
-	clrf	(??_init+0)+0+1
-	; Switch on 2 bytes has been partitioned into a top level switch of size 1, and 1 sub-switches
-; Switch size 1, requested type "space"
-; Number of cases is 1, Range of values is 0 to 0
-; switch strategies available:
-; Name         Instructions Cycles
-; simple_byte            4     3 (average)
-; direct_byte            8     6 (fixed)
-; jumptable            260     6 (fixed)
-; rangetable             5     4 (fixed)
-; spacedrange            7     6 (fixed)
-; locatedrange           1     3 (fixed)
-;	Chosen strategy is simple_byte
-
-	movf 1+(??_init+0)+0,w
-	opt asmopt_off
-	xorlw	0^0	; case 0
-	skipnz
-	goto	l14566
-	goto	l1599
-	opt asmopt_on
+	movf	(??_init+0)+0,w
+	iorwf	(_mode_device),f
+	line	136
 	
-l14566:	
-; Switch size 1, requested type "space"
+l14282:	
+;main.c: 136: mode_device|=(RC0);
+	movlw	0
+	btfsc	(112/8),(112)&7
+	movlw	1
+	movwf	(??_init+0)+0
+	movf	(??_init+0)+0,w
+	iorwf	(_mode_device),f
+	line	137
+	
+l14284:	
+;main.c: 137: mode_protocol|=(RB6<<1);
+	movlw	0
+	btfsc	(110/8),(110)&7
+	movlw	(1 << (01h))
+	movwf	(??_init+0)+0
+	movf	(??_init+0)+0,w
+	iorwf	(_mode_protocol),f
+	line	138
+	
+l14286:	
+;main.c: 138: mode_protocol|=(RB4);
+	movlw	0
+	btfsc	(108/8),(108)&7
+	movlw	1
+	movwf	(??_init+0)+0
+	movf	(??_init+0)+0,w
+	iorwf	(_mode_protocol),f
+	line	142
+;main.c: 142: switch(mode_protocol)
+	goto	l14296
+	line	143
+;main.c: 143: { case 0x03: initSPI();
+	
+l1609:	
+	
+l14288:	
+	fcall	_initSPI
+	line	144
+;main.c: 144: break;
+	goto	l1610
+	line	145
+;main.c: 145: case 0x02: initI2C();
+	
+l1611:	
+	
+l14290:	
+	fcall	_initI2C
+	line	146
+;main.c: 146: break;
+	goto	l1610
+	line	147
+;main.c: 147: case 0x01: initUART();
+	
+l1612:	
+	
+l14292:	
+	fcall	_initUART
+	line	148
+;main.c: 148: break;
+	goto	l1610
+	line	149
+;main.c: 149: case 0x00: break;
+	
+l1613:	
+	goto	l1610
+	line	150
+;main.c: 150: default: break;
+	
+l1614:	
+	goto	l1610
+	line	151
+	
+l14294:	
+;main.c: 151: }
+	goto	l1610
+	line	142
+	
+l1608:	
+	
+l14296:	
+	movf	(_mode_protocol),w
+	; Switch size 1, requested type "space"
 ; Number of cases is 4, Range of values is 0 to 3
 ; switch strategies available:
 ; Name         Instructions Cycles
@@ -2280,29 +3301,32 @@ l14566:
 ; locatedrange           4     3 (fixed)
 ;	Chosen strategy is simple_byte
 
-	movf 0+(??_init+0)+0,w
 	opt asmopt_off
 	xorlw	0^0	; case 0
 	skipnz
-	goto	l14302
+	goto	l1610
 	xorlw	1^0	; case 1
 	skipnz
-	goto	l14306
+	goto	l14292
 	xorlw	2^1	; case 2
 	skipnz
-	goto	l14304
+	goto	l14290
 	xorlw	3^2	; case 3
 	skipnz
-	goto	l1599
-	goto	l1599
+	goto	l14288
+	goto	l1610
 	opt asmopt_on
 
-	line	103
+	line	151
 	
-l1594:	
-	line	109
+l1610:	
+	line	153
+;main.c: 153: RC5=0;;
+	movlb 0	; select bank0
+	bcf	(117/8),(117)&7
+	line	159
 	
-l1599:	
+l1615:	
 	return
 	opt stack 0
 GLOBAL	__end_of_init
@@ -2311,9 +3335,9 @@ GLOBAL	__end_of_init
 
 	signat	_init,88
 	global	_UARTwrite
-psect	text528,local,class=CODE,delta=2
-global __ptext528
-__ptext528:
+psect	text737,local,class=CODE,delta=2
+global __ptext737
+__ptext737:
 
 ;; *************** function _UARTwrite *****************
 ;; Defined at:
@@ -2345,7 +3369,7 @@ __ptext528:
 ;;		_teletype
 ;; This function uses a non-reentrant model
 ;;
-psect	text528
+psect	text737
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
 	line	73
 	global	__size_of_UARTwrite
@@ -2358,42 +3382,42 @@ _UARTwrite:
 	movwf	(UARTwrite@c)
 	line	74
 	
-l13094:	
+l14246:	
 ;uart.c: 74: RC3=1;;
 	movlb 0	; select bank0
 	bsf	(115/8),(115)&7
 	line	76
 ;uart.c: 76: while(!TRMT);
-	goto	l4822
+	goto	l4838
 	
-l4823:	
+l4839:	
 	
-l4822:	
+l4838:	
 	movlb 3	; select bank3
 	btfss	(3313/8)^0180h,(3313)&7
-	goto	u201
-	goto	u200
-u201:
-	goto	l4822
-u200:
-	goto	l13096
+	goto	u2581
+	goto	u2580
+u2581:
+	goto	l4838
+u2580:
+	goto	l14248
 	
-l4824:	
+l4840:	
 	line	78
 	
-l13096:	
+l14248:	
 ;uart.c: 78: TXREG=c;
 	movf	(UARTwrite@c),w
 	movwf	(410)^0180h	;volatile
 	line	80
 	
-l13098:	
+l14250:	
 ;uart.c: 80: RC3=0;;
 	movlb 0	; select bank0
 	bcf	(115/8),(115)&7
 	line	81
 	
-l4825:	
+l4841:	
 	return
 	opt stack 0
 GLOBAL	__end_of_UARTwrite
@@ -2402,9 +3426,9 @@ GLOBAL	__end_of_UARTwrite
 
 	signat	_UARTwrite,4216
 	global	_UARTread
-psect	text529,local,class=CODE,delta=2
-global __ptext529
-__ptext529:
+psect	text738,local,class=CODE,delta=2
+global __ptext738
+__ptext738:
 
 ;; *************** function _UARTread *****************
 ;; Defined at:
@@ -2435,7 +3459,7 @@ __ptext529:
 ;;		_UARTworker
 ;; This function uses a non-reentrant model
 ;;
-psect	text529
+psect	text738
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
 	line	56
 	global	__size_of_UARTread
@@ -2446,33 +3470,33 @@ _UARTread:
 ; Regs used in _UARTread: [wreg+fsr1l-status,0]
 	line	59
 	
-l14268:	
+l14232:	
 ;uart.c: 57: unsigned char temp;
 ;uart.c: 59: while(rtail==rhead);
-	goto	l14270
+	goto	l14234
 	
-l4817:	
-	goto	l14270
+l4833:	
+	goto	l14234
 	
-l4816:	
+l4832:	
 	
-l14270:	
+l14234:	
 	movf	(_rtail),w	;volatile
 	xorwf	(_rhead),w	;volatile
 	skipnz
-	goto	u2591
-	goto	u2590
-u2591:
-	goto	l14270
-u2590:
+	goto	u2571
+	goto	u2570
+u2571:
+	goto	l14234
+u2570:
 	
-l4818:	
+l4834:	
 	line	62
 ;uart.c: 62: GIE=0;
 	bcf	(95/8),(95)&7
 	line	63
 	
-l14272:	
+l14236:	
 ;uart.c: 63: rtail++;
 	movlw	(01h)
 	movwf	(??_UARTread+0)+0
@@ -2486,7 +3510,7 @@ l14272:
 	andwf	(_rtail),f	;volatile
 	line	65
 	
-l14274:	
+l14238:	
 ;uart.c: 65: temp=ringbuff[rtail];
 	movf	(_rtail),w	;volatile
 	addwf	wreg,w
@@ -2500,20 +3524,20 @@ l14274:
 	movwf	(UARTread@temp)
 	line	66
 	
-l14276:	
+l14240:	
 ;uart.c: 66: GIE=1;
 	bsf	(95/8),(95)&7
 	line	68
 	
-l14278:	
+l14242:	
 ;uart.c: 68: return temp;
 	movf	(UARTread@temp),w
-	goto	l4819
+	goto	l4835
 	
-l14280:	
+l14244:	
 	line	69
 	
-l4819:	
+l4835:	
 	return
 	opt stack 0
 GLOBAL	__end_of_UARTread
@@ -2521,10 +3545,133 @@ GLOBAL	__end_of_UARTread
 ;; =============== function _UARTread ends ============
 
 	signat	_UARTread,89
+	global	_setDAC
+psect	text739,local,class=CODE,delta=2
+global __ptext739
+__ptext739:
+
+;; *************** function _setDAC *****************
+;; Defined at:
+;;		line 18 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.c"
+;; Parameters:    Size  Location     Type
+;;  dac             1    wreg     unsigned char 
+;; Auto vars:     Size  Location     Type
+;;  dac             1    3[COMMON] unsigned char 
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg, status,2
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        1 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_I2CDACworker
+;; This function uses a non-reentrant model
+;;
+psect	text739
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.c"
+	line	18
+	global	__size_of_setDAC
+	__size_of_setDAC	equ	__end_of_setDAC-_setDAC
+	
+_setDAC:	
+	opt	stack 13
+; Regs used in _setDAC: [wreg+status,2]
+;setDAC@dac stored from wreg
+	movwf	(setDAC@dac)
+	line	19
+	
+l14230:	
+;dac.c: 19: DACCON1=dac&0x1F;
+	movf	(setDAC@dac),w
+	andlw	01Fh
+	movlb 2	; select bank2
+	movwf	(281)^0100h	;volatile
+	line	20
+	
+l11107:	
+	return
+	opt stack 0
+GLOBAL	__end_of_setDAC
+	__end_of_setDAC:
+;; =============== function _setDAC ends ============
+
+	signat	_setDAC,4216
+	global	_enableDAC
+psect	text740,local,class=CODE,delta=2
+global __ptext740
+__ptext740:
+
+;; *************** function _enableDAC *****************
+;; Defined at:
+;;		line 8 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.c"
+;; Parameters:    Size  Location     Type
+;;		None
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        0 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_I2CDACworker
+;; This function uses a non-reentrant model
+;;
+psect	text740
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.c"
+	line	8
+	global	__size_of_enableDAC
+	__size_of_enableDAC	equ	__end_of_enableDAC-_enableDAC
+	
+_enableDAC:	
+	opt	stack 13
+; Regs used in _enableDAC: [wreg]
+	line	9
+	
+l14228:	
+;dac.c: 9: DACCON0=0b10100000;
+	movlw	(0A0h)
+	movlb 2	; select bank2
+	movwf	(280)^0100h	;volatile
+	line	10
+	
+l11101:	
+	return
+	opt stack 0
+GLOBAL	__end_of_enableDAC
+	__end_of_enableDAC:
+;; =============== function _enableDAC ends ============
+
+	signat	_enableDAC,88
 	global	_getADC
-psect	text530,local,class=CODE,delta=2
-global __ptext530
-__ptext530:
+psect	text741,local,class=CODE,delta=2
+global __ptext741
+__ptext741:
 
 ;; *************** function _getADC *****************
 ;; Defined at:
@@ -2553,11 +3700,11 @@ __ptext530:
 ;; This function calls:
 ;;		Nothing
 ;; This function is called by:
-;;		_I2Cworker
+;;		_I2CADCworker
 ;;		_I2CDACworker
 ;; This function uses a non-reentrant model
 ;;
-psect	text530
+psect	text741
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\adc.c"
 	line	16
 	global	__size_of_getADC
@@ -2570,7 +3717,7 @@ _getADC:
 	line	20
 	movwf	(getADC@adc)
 	
-l14414:	
+l14478:	
 ;adc.c: 17: int i;
 ;adc.c: 20: ADCON1=0b11000000;
 	movlw	(0C0h)
@@ -2578,7 +3725,7 @@ l14414:
 	movwf	(158)^080h	;volatile
 	line	21
 	
-l14416:	
+l14480:	
 ;adc.c: 21: adc&=0x1F;
 	movlw	(01Fh)
 	movlb 0	; select bank0
@@ -2587,104 +3734,104 @@ l14416:
 	andwf	(getADC@adc),f
 	line	22
 	
-l14418:	
+l14482:	
 ;adc.c: 22: ADCON0=0x01|(adc<<2);
 	movf	(getADC@adc),w
 	movwf	(??_getADC+0)+0
 	movlw	(02h)-1
-u2645:
+u2795:
 	lslf	(??_getADC+0)+0,f
 	addlw	-1
 	skipz
-	goto	u2645
+	goto	u2795
 	lslf	(??_getADC+0)+0,w
 	iorlw	01h
 	movlb 1	; select bank1
 	movwf	(157)^080h	;volatile
 	line	24
 	
-l14420:	
+l14484:	
 ;adc.c: 24: for(i=0; i<4; i++) asm("nop");
 	clrf	(getADC@i)
 	clrf	(getADC@i+1)
 	
-l14422:	
+l14486:	
 	movf	(getADC@i+1),w
 	xorlw	80h
 	movwf	btemp+1
 	movlw	(high(04h))^80h
 	subwf	btemp+1,w
 	skipz
-	goto	u2655
+	goto	u2805
 	movlw	low(04h)
 	subwf	(getADC@i),w
-u2655:
+u2805:
 
 	skipc
-	goto	u2651
-	goto	u2650
-u2651:
-	goto	l9520
-u2650:
-	goto	l9521
+	goto	u2801
+	goto	u2800
+u2801:
+	goto	l9536
+u2800:
+	goto	l9537
 	
-l14424:	
-	goto	l9521
+l14488:	
+	goto	l9537
 	
-l9520:	
+l9536:	
 # 24 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\adc.c"
 nop ;#
-psect	text530
+psect	text741
 	
-l14426:	
+l14490:	
 	movlw	low(01h)
 	addwf	(getADC@i),f
 	movlw	high(01h)
 	addwfc	(getADC@i+1),f
 	
-l14428:	
+l14492:	
 	movf	(getADC@i+1),w
 	xorlw	80h
 	movwf	btemp+1
 	movlw	(high(04h))^80h
 	subwf	btemp+1,w
 	skipz
-	goto	u2665
+	goto	u2815
 	movlw	low(04h)
 	subwf	(getADC@i),w
-u2665:
+u2815:
 
 	skipc
-	goto	u2661
-	goto	u2660
-u2661:
-	goto	l9520
-u2660:
+	goto	u2811
+	goto	u2810
+u2811:
+	goto	l9536
+u2810:
 	
-l9521:	
+l9537:	
 	line	26
 ;adc.c: 26: ADCON0bits.ADGO=1;
 	movlb 1	; select bank1
 	bsf	(157)^080h,1	;volatile
 	line	27
 ;adc.c: 27: while(ADCON0bits.ADGO);
-	goto	l9522
+	goto	l9538
 	
-l9523:	
+l9539:	
 	
-l9522:	
+l9538:	
 	btfsc	(157)^080h,1	;volatile
-	goto	u2671
-	goto	u2670
-u2671:
-	goto	l9522
-u2670:
-	goto	l14430
+	goto	u2821
+	goto	u2820
+u2821:
+	goto	l9538
+u2820:
+	goto	l14494
 	
-l9524:	
+l9540:	
 	line	29
 	
-l14430:	
+l14494:	
 ;adc.c: 29: ADCON0&=0xFE;
 	movlw	(0FEh)
 	movlb 0	; select bank0
@@ -2694,7 +3841,7 @@ l14430:
 	andwf	(157)^080h,f	;volatile
 	line	30
 	
-l14432:	
+l14496:	
 ;adc.c: 30: return (ADRESH<<8)|ADRESL;
 	movf	(155)^080h,w	;volatile
 	movlb 0	; select bank0
@@ -2714,12 +3861,12 @@ l14432:
 	movf	1+(??_getADC+0)+0,w
 	iorwf	1+(??_getADC+2)+0,w
 	movwf	1+(?_getADC)
-	goto	l9525
+	goto	l9541
 	
-l14434:	
+l14498:	
 	line	31
 	
-l9525:	
+l9541:	
 	return
 	opt stack 0
 GLOBAL	__end_of_getADC
@@ -2728,9 +3875,9 @@ GLOBAL	__end_of_getADC
 
 	signat	_getADC,4218
 	global	_enableTS
-psect	text531,local,class=CODE,delta=2
-global __ptext531
-__ptext531:
+psect	text742,local,class=CODE,delta=2
+global __ptext742
+__ptext742:
 
 ;; *************** function _enableTS *****************
 ;; Defined at:
@@ -2758,10 +3905,10 @@ __ptext531:
 ;; This function calls:
 ;;		Nothing
 ;; This function is called by:
-;;		_I2Cworker
+;;		_I2CADCworker
 ;; This function uses a non-reentrant model
 ;;
-psect	text531
+psect	text742
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\adc.c"
 	line	35
 	global	__size_of_enableTS
@@ -2772,13 +3919,13 @@ _enableTS:
 ; Regs used in _enableTS: [wreg+status,2+status,0]
 	line	36
 	
-l14208:	
+l14202:	
 ;adc.c: 36: FVRCON|=0b00100000;
 	movlb 2	; select bank2
 	bsf	(279)^0100h+(5/8),(5)&7	;volatile
 	line	37
 	
-l14210:	
+l14204:	
 ;adc.c: 37: FVRCON&=0b11101111;
 	movlw	(0EFh)
 	movwf	(??_enableTS+0)+0
@@ -2786,7 +3933,7 @@ l14210:
 	andwf	(279)^0100h,f	;volatile
 	line	38
 	
-l9528:	
+l9544:	
 	return
 	opt stack 0
 GLOBAL	__end_of_enableTS
@@ -2795,9 +3942,9 @@ GLOBAL	__end_of_enableTS
 
 	signat	_enableTS,88
 	global	_I2CWrite
-psect	text532,local,class=CODE,delta=2
-global __ptext532
-__ptext532:
+psect	text743,local,class=CODE,delta=2
+global __ptext743
+__ptext743:
 
 ;; *************** function _I2CWrite *****************
 ;; Defined at:
@@ -2825,12 +3972,12 @@ __ptext532:
 ;; This function calls:
 ;;		Nothing
 ;; This function is called by:
-;;		_I2Cworker
 ;;		_I2CEEworker
+;;		_I2CADCworker
 ;;		_I2CDACworker
 ;; This function uses a non-reentrant model
 ;;
-psect	text532
+psect	text743
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
 	line	182
 	global	__size_of_I2CWrite
@@ -2845,7 +3992,7 @@ _I2CWrite:
 	line	183
 ;i2c.c: 183: do
 	
-l3233:	
+l3249:	
 	line	185
 ;i2c.c: 184: {
 ;i2c.c: 185: SSP2CON1bits.WCOL=0;
@@ -2853,28 +4000,28 @@ l3233:
 	bcf	(541)^0200h,7	;volatile
 	line	186
 	
-l14204:	
+l14474:	
 ;i2c.c: 186: SSP2BUF=c;
 	movf	(I2CWrite@c),w
 	movwf	(537)^0200h	;volatile
 	line	187
 	
-l14206:	
+l14476:	
 ;i2c.c: 187: } while(SSP2CON1bits.WCOL);
 	btfsc	(541)^0200h,7	;volatile
-	goto	u2511
-	goto	u2510
-u2511:
-	goto	l3233
-u2510:
+	goto	u2781
+	goto	u2780
+u2781:
+	goto	l3249
+u2780:
 	
-l3234:	
+l3250:	
 	line	188
 ;i2c.c: 188: SSP2CON1bits.CKP=1;
 	bsf	(541)^0200h,4	;volatile
 	line	189
 	
-l3235:	
+l3251:	
 	return
 	opt stack 0
 GLOBAL	__end_of_I2CWrite
@@ -2882,10 +4029,214 @@ GLOBAL	__end_of_I2CWrite
 ;; =============== function _I2CWrite ends ============
 
 	signat	_I2CWrite,4216
+	global	_EEPROMread
+psect	text744,local,class=CODE,delta=2
+global __ptext744
+__ptext744:
+
+;; *************** function _EEPROMread *****************
+;; Defined at:
+;;		line 24 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+;; Parameters:    Size  Location     Type
+;;  addr            1    wreg     unsigned char 
+;; Auto vars:     Size  Location     Type
+;;  addr            1    3[COMMON] unsigned char 
+;; Return value:  Size  Location     Type
+;;                  1    wreg      unsigned char 
+;; Registers used:
+;;		wreg
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        1 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_I2CEEworker
+;; This function uses a non-reentrant model
+;;
+psect	text744
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+	line	24
+	global	__size_of_EEPROMread
+	__size_of_EEPROMread	equ	__end_of_EEPROMread-_EEPROMread
+	
+_EEPROMread:	
+	opt	stack 13
+; Regs used in _EEPROMread: [wreg]
+;EEPROMread@addr stored from wreg
+	movwf	(EEPROMread@addr)
+	line	25
+	
+l14464:	
+;eeprom.c: 25: EEADRL=addr;
+	movf	(EEPROMread@addr),w
+	movlb 3	; select bank3
+	movwf	(401)^0180h	;volatile
+	line	26
+	
+l14466:	
+;eeprom.c: 26: EECON1bits.CFGS=0;
+	bcf	(405)^0180h,6	;volatile
+	line	27
+	
+l14468:	
+;eeprom.c: 27: EECON1bits.EEPGD=0;
+	bcf	(405)^0180h,7	;volatile
+	line	28
+	
+l14470:	
+;eeprom.c: 28: EECON1bits.RD=1;
+	bsf	(405)^0180h,0	;volatile
+	line	30
+;eeprom.c: 30: return EEDATL;
+	movf	(403)^0180h,w	;volatile
+	goto	l7979
+	
+l14472:	
+	line	31
+	
+l7979:	
+	return
+	opt stack 0
+GLOBAL	__end_of_EEPROMread
+	__end_of_EEPROMread:
+;; =============== function _EEPROMread ends ============
+
+	signat	_EEPROMread,4217
+	global	_EEPROMwrite
+psect	text745,local,class=CODE,delta=2
+global __ptext745
+__ptext745:
+
+;; *************** function _EEPROMwrite *****************
+;; Defined at:
+;;		line 8 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+;; Parameters:    Size  Location     Type
+;;  addr            1    wreg     unsigned char 
+;;  data            1    3[COMMON] unsigned char 
+;; Auto vars:     Size  Location     Type
+;;  addr            1    4[COMMON] unsigned char 
+;; Return value:  Size  Location     Type
+;;		None               void
+;; Registers used:
+;;		wreg
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
+;;      Params:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Locals:         1       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;      Totals:         2       0       0       0       0       0       0       0       0       0       0       0       0       0
+;;Total ram usage:        2 bytes
+;; Hardware stack levels used:    1
+;; Hardware stack levels required when called:    1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_I2CEEworker
+;; This function uses a non-reentrant model
+;;
+psect	text745
+	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+	line	8
+	global	__size_of_EEPROMwrite
+	__size_of_EEPROMwrite	equ	__end_of_EEPROMwrite-_EEPROMwrite
+	
+_EEPROMwrite:	
+	opt	stack 13
+; Regs used in _EEPROMwrite: [wreg]
+;EEPROMwrite@addr stored from wreg
+	movwf	(EEPROMwrite@addr)
+	line	9
+	
+l14450:	
+;eeprom.c: 9: EEADRL=addr;
+	movf	(EEPROMwrite@addr),w
+	movlb 3	; select bank3
+	movwf	(401)^0180h	;volatile
+	line	10
+;eeprom.c: 10: EEDATL=data;
+	movf	(EEPROMwrite@data),w
+	movwf	(403)^0180h	;volatile
+	line	11
+	
+l14452:	
+;eeprom.c: 11: EECON1bits.CFGS=0;
+	bcf	(405)^0180h,6	;volatile
+	line	12
+	
+l14454:	
+;eeprom.c: 12: EECON1bits.EEPGD=0;
+	bcf	(405)^0180h,7	;volatile
+	line	13
+	
+l14456:	
+;eeprom.c: 13: EECON1bits.WREN=1;
+	bsf	(405)^0180h,2	;volatile
+	line	15
+	
+l14458:	
+;eeprom.c: 15: GIE=0;
+	bcf	(95/8),(95)&7
+	line	16
+;eeprom.c: 16: EECON2=0x55;
+	movlw	(055h)
+	movwf	(406)^0180h	;volatile
+	line	17
+;eeprom.c: 17: EECON2=0xAA;
+	movlw	(0AAh)
+	movwf	(406)^0180h	;volatile
+	line	18
+	
+l14460:	
+;eeprom.c: 18: EECON1bits.WR=1;
+	bsf	(405)^0180h,1	;volatile
+	line	19
+	
+l14462:	
+;eeprom.c: 19: GIE=1;
+	bsf	(95/8),(95)&7
+	line	20
+;eeprom.c: 20: while(EECON1bits.WR);
+	goto	l7973
+	
+l7974:	
+	
+l7973:	
+	btfsc	(405)^0180h,1	;volatile
+	goto	u2771
+	goto	u2770
+u2771:
+	goto	l7973
+u2770:
+	goto	l7976
+	
+l7975:	
+	line	21
+	
+l7976:	
+	return
+	opt stack 0
+GLOBAL	__end_of_EEPROMwrite
+	__end_of_EEPROMwrite:
+;; =============== function _EEPROMwrite ends ============
+
+	signat	_EEPROMwrite,8312
 	global	_initUART
-psect	text533,local,class=CODE,delta=2
-global __ptext533
-__ptext533:
+psect	text746,local,class=CODE,delta=2
+global __ptext746
+__ptext746:
 
 ;; *************** function _initUART *****************
 ;; Defined at:
@@ -2916,7 +4267,7 @@ __ptext533:
 ;;		_init
 ;; This function uses a non-reentrant model
 ;;
-psect	text533
+psect	text746
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
 	line	13
 	global	__size_of_initUART
@@ -2927,7 +4278,7 @@ _initUART:
 ; Regs used in _initUART: [wreg+fsr1l-status,0]
 	line	15
 	
-l14112:	
+l14124:	
 ;uart.c: 15: APFCON0|=0x04;
 	movlb 2	; select bank2
 	bsf	(285)^0100h+(2/8),(2)&7	;volatile
@@ -2944,81 +4295,81 @@ l14112:
 	bsf	(3314/8)^0180h,(3314)&7
 	line	22
 	
-l14114:	
+l14126:	
 ;uart.c: 22: SPBRGH=0x00;
 	clrf	(412)^0180h	;volatile
 	line	23
 	
-l14116:	
+l14128:	
 ;uart.c: 23: SPBRGL=25;
 	movlw	(019h)
 	movwf	(411)^0180h	;volatile
 	line	26
 	
-l14118:	
+l14130:	
 ;uart.c: 26: SYNC=0;
 	bcf	(3316/8)^0180h,(3316)&7
 	line	27
 	
-l14120:	
+l14132:	
 ;uart.c: 27: SPEN=1;
 	bsf	(3311/8)^0180h,(3311)&7
 	line	28
 	
-l14122:	
+l14134:	
 ;uart.c: 28: TXEN=1;
 	bsf	(3317/8)^0180h,(3317)&7
 	line	29
 	
-l14124:	
+l14136:	
 ;uart.c: 29: CREN=1;
 	bsf	(3308/8)^0180h,(3308)&7
 	line	32
 	
-l14126:	
+l14138:	
 ;uart.c: 32: RCIE=1;
 	movlb 1	; select bank1
 	bsf	(1165/8)^080h,(1165)&7
 	line	33
 	
-l14128:	
+l14140:	
 ;uart.c: 33: TXIE=0;
 	bcf	(1164/8)^080h,(1164)&7
 	line	36
 	
-l14130:	
+l14142:	
 ;uart.c: 36: rhead=0;
 	clrf	(_rhead)	;volatile
 	line	37
 	
-l14132:	
+l14144:	
 ;uart.c: 37: rtail=0;
 	clrf	(_rtail)	;volatile
 	line	38
 	
-l14134:	
+l14146:	
 ;uart.c: 38: for(i=0; i<(8-1); i++)
 	clrf	(initUART@i)
 	
-l14136:	
+l14148:	
 	movlw	(07h)
 	subwf	(initUART@i),w
 	skipc
-	goto	u2421
-	goto	u2420
-u2421:
-	goto	l14140
-u2420:
-	goto	l4809
+	goto	u2461
+	goto	u2460
+u2461:
+	goto	l14152
+u2460:
+	goto	l4825
 	
-l14138:	
-	goto	l4809
+l14150:	
+	goto	l4825
 	line	39
 	
-l4808:	
+l4824:	
 	line	40
 	
-l14140:	
+l14152:	
 ;uart.c: 39: {
 ;uart.c: 40: ringbuff[i]=0x00;
 	movf	(initUART@i),w
@@ -3033,23 +4384,23 @@ l14140:
 	movwi	[1]fsr1
 	line	38
 	
-l14142:	
+l14154:	
 	movlw	(01h)
 	movwf	(??_initUART+0)+0
 	movf	(??_initUART+0)+0,w
 	addwf	(initUART@i),f
 	
-l14144:	
+l14156:	
 	movlw	(07h)
 	subwf	(initUART@i),w
 	skipc
-	goto	u2431
-	goto	u2430
-u2431:
-	goto	l14140
-u2430:
+	goto	u2471
+	goto	u2470
+u2471:
+	goto	l14152
+u2470:
 	
-l4809:	
+l4825:	
 	line	43
 ;uart.c: 41: }
 ;uart.c: 43: RC5=1;;
@@ -3057,7 +4408,7 @@ l4809:
 	bsf	(117/8),(117)&7
 	line	44
 	
-l4810:	
+l4826:	
 	return
 	opt stack 0
 GLOBAL	__end_of_initUART
@@ -3066,9 +4417,9 @@ GLOBAL	__end_of_initUART
 
 	signat	_initUART,88
 	global	_initI2C
-psect	text534,local,class=CODE,delta=2
-global __ptext534
-__ptext534:
+psect	text747,local,class=CODE,delta=2
+global __ptext747
+__ptext747:
 
 ;; *************** function _initI2C *****************
 ;; Defined at:
@@ -3099,7 +4450,7 @@ __ptext534:
 ;;		_init
 ;; This function uses a non-reentrant model
 ;;
-psect	text534
+psect	text747
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
 	line	15
 	global	__size_of_initI2C
@@ -3110,31 +4461,31 @@ _initI2C:
 ; Regs used in _initI2C: [wreg+status,2+status,0]
 	line	18
 	
-l12886:	
+l14114:	
 ;i2c.c: 18: SSP2BUF=0x00;
 	movlb 4	; select bank4
 	clrf	(537)^0200h	;volatile
 	line	19
 	
-l12888:	
+l14116:	
 ;i2c.c: 19: SSP2STAT=0x80;
 	movlw	(080h)
 	movwf	(540)^0200h	;volatile
 	line	20
 	
-l12890:	
+l14118:	
 ;i2c.c: 20: SSP2MSK=0xFE;
 	movlw	(0FEh)
 	movwf	(539)^0200h	;volatile
 	line	21
 	
-l12892:	
+l14120:	
 ;i2c.c: 21: SSP2CON1=0x36;
 	movlw	(036h)
 	movwf	(541)^0200h	;volatile
 	line	22
 	
-l12894:	
+l14122:	
 ;i2c.c: 22: SSP2CON3|=0b11000000;
 	movlw	(0C0h)
 	movwf	(??_initI2C+0)+0
@@ -3142,7 +4493,7 @@ l12894:
 	iorwf	(543)^0200h,f	;volatile
 	line	23
 	
-l3180:	
+l3196:	
 	return
 	opt stack 0
 GLOBAL	__end_of_initI2C
@@ -3151,9 +4502,9 @@ GLOBAL	__end_of_initI2C
 
 	signat	_initI2C,88
 	global	_initSPI
-psect	text535,local,class=CODE,delta=2
-global __ptext535
-__ptext535:
+psect	text748,local,class=CODE,delta=2
+global __ptext748
+__ptext748:
 
 ;; *************** function _initSPI *****************
 ;; Defined at:
@@ -3184,7 +4535,7 @@ __ptext535:
 ;;		_init
 ;; This function uses a non-reentrant model
 ;;
-psect	text535
+psect	text748
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c"
 	line	6
 	global	__size_of_initSPI
@@ -3195,7 +4546,7 @@ _initSPI:
 ; Regs used in _initSPI: []
 	line	8
 	
-l3238:	
+l3254:	
 	return
 	opt stack 0
 GLOBAL	__end_of_initSPI
@@ -3203,63 +4554,10 @@ GLOBAL	__end_of_initSPI
 ;; =============== function _initSPI ends ============
 
 	signat	_initSPI,88
-	global	_SPIworker
-psect	text536,local,class=CODE,delta=2
-global __ptext536
-__ptext536:
-
-;; *************** function _SPIworker *****************
-;; Defined at:
-;;		line 11 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c"
-;; Parameters:    Size  Location     Type
-;;		None
-;; Auto vars:     Size  Location     Type
-;;		None
-;; Return value:  Size  Location     Type
-;;		None               void
-;; Registers used:
-;;		None
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMMON   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7   BANK8   BANK9  BANK10  BANK11  BANK12
-;;      Params:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Locals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Temps:          0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;      Totals:         0       0       0       0       0       0       0       0       0       0       0       0       0       0
-;;Total ram usage:        0 bytes
-;; Hardware stack levels used:    1
-;; Hardware stack levels required when called:    1
-;; This function calls:
-;;		Nothing
-;; This function is called by:
-;;		_main
-;; This function uses a non-reentrant model
-;;
-psect	text536
-	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c"
-	line	11
-	global	__size_of_SPIworker
-	__size_of_SPIworker	equ	__end_of_SPIworker-_SPIworker
-	
-_SPIworker:	
-	opt	stack 14
-; Regs used in _SPIworker: []
-	line	13
-	
-l3241:	
-	return
-	opt stack 0
-GLOBAL	__end_of_SPIworker
-	__end_of_SPIworker:
-;; =============== function _SPIworker ends ============
-
-	signat	_SPIworker,88
 	global	_isEE
-psect	text537,local,class=CODE,delta=2
-global __ptext537
-__ptext537:
+psect	text749,local,class=CODE,delta=2
+global __ptext749
+__ptext749:
 
 ;; *************** function _isEE *****************
 ;; Defined at:
@@ -3290,7 +4588,7 @@ __ptext537:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text537
+psect	text749
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
 	line	16
 	global	__size_of_isEE
@@ -3301,15 +4599,15 @@ _isEE:
 ; Regs used in _isEE: [wreg]
 	line	17
 	
-l12882:	
+l14110:	
 ;easteregg.c: 17: return 0;
 	movlw	(0)
-	goto	l6386
+	goto	l6402
 	
-l12884:	
+l14112:	
 	line	18
 	
-l6386:	
+l6402:	
 	return
 	opt stack 0
 GLOBAL	__end_of_isEE
@@ -3324,7 +4622,7 @@ __pintentry:
 
 ;; *************** function _isr *****************
 ;; Defined at:
-;;		line 114 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+;;		line 164 in file "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -3352,7 +4650,7 @@ __pintentry:
 ;;
 psect	intentry
 	file	"E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
-	line	114
+	line	164
 	global	__size_of_isr
 	__size_of_isr	equ	__end_of_isr-_isr
 	
@@ -3364,32 +4662,32 @@ psect	intentry
 	movlb 0	; select bank0
 	movf	btemp+1,w
 	movwf	(??_isr+2)
-	line	115
-;main.c: 115: do { if(RCIF) { RC3=1;; if(!(RCSTA&0b00000110)) { rhead++; rhead&=(8-1); ringbuff[rhead]=RCREG; } RCIF=0; RC3=0;; } if(TXIF) { TXIF=0; } } while(0);;
+	line	165
+;main.c: 165: do { if(RCIF) { RC3=1;; if(!(RCSTA&0b00000110)) { rhead++; rhead&=(8-1); ringbuff[rhead]=RCREG; } RCIF=0; RC3=0;; } if(TXIF) { TXIF=0; } } while(0);;
 	
-i1l1602:	
+i1l1618:	
 	btfss	(141/8),(141)&7
-	goto	u244_21
-	goto	u244_20
-u244_21:
-	goto	i1l14158
-u244_20:
+	goto	u248_21
+	goto	u248_20
+u248_21:
+	goto	i1l14170
+u248_20:
 	
-i1l14146:	
+i1l14158:	
 	bsf	(115/8),(115)&7
 	
-i1l14148:	
+i1l14160:	
 	movlb 3	; select bank3
 	movf	(413)^0180h,w
 	andlw	06h
 	btfss	status,2
-	goto	u245_21
-	goto	u245_20
-u245_21:
-	goto	i1l14154
-u245_20:
+	goto	u249_21
+	goto	u249_20
+u249_21:
+	goto	i1l14166
+u249_20:
 	
-i1l14150:	
+i1l14162:	
 	movlw	(01h)
 	movwf	(??_isr+0)+0
 	movf	(??_isr+0)+0,w
@@ -3399,7 +4697,7 @@ i1l14150:
 	movf	(??_isr+0)+0,w
 	andwf	(_rhead),f	;volatile
 	
-i1l14152:	
+i1l14164:	
 	movf	(409)^0180h,w	;volatile
 	movwf	(??_isr+0)+0
 	clrf	(??_isr+0)+0+1
@@ -3413,47 +4711,47 @@ i1l14152:
 	movwi	[0]fsr1
 	movf	1+(??_isr+0)+0,w
 	movwi	[1]fsr1
-	goto	i1l14154
+	goto	i1l14166
 	
-i1l1604:	
+i1l1620:	
 	
-i1l14154:	
+i1l14166:	
 	movlb 0	; select bank0
 	bcf	(141/8),(141)&7
 	
-i1l14156:	
+i1l14168:	
 	bcf	(115/8),(115)&7
-	goto	i1l14158
+	goto	i1l14170
 	
-i1l1603:	
+i1l1619:	
 	
-i1l14158:	
+i1l14170:	
 	btfss	(140/8),(140)&7
-	goto	u246_21
-	goto	u246_20
-u246_21:
-	goto	i1l1609
-u246_20:
+	goto	u250_21
+	goto	u250_20
+u250_21:
+	goto	i1l1625
+u250_20:
 	
-i1l14160:	
+i1l14172:	
 	bcf	(140/8),(140)&7
-	goto	i1l1609
+	goto	i1l1625
 	
-i1l1605:	
-	goto	i1l1609
+i1l1621:	
+	goto	i1l1625
 	
-i1l1606:	
-	goto	i1l1609
-	line	116
-;main.c: 116: do { ;} while(0);;
+i1l1622:	
+	goto	i1l1625
+	line	166
+;main.c: 166: do { ;} while(0);;
 	
-i1l1607:	
-	goto	i1l1609
+i1l1623:	
+	goto	i1l1625
 	
-i1l1608:	
-	line	119
+i1l1624:	
+	line	169
 	
-i1l1609:	
+i1l1625:	
 	movf	(??_isr+2),w
 	movwf	btemp+1
 	retfie
@@ -3463,7 +4761,40 @@ GLOBAL	__end_of_isr
 ;; =============== function _isr ends ============
 
 	signat	_isr,88
-psect	intentry
+	global	fptotal
+fptotal equ 21
+	file ""
+	line	#
+psect	functab,class=CODE,delta=2,reloc=256
+global __pfunctab
+__pfunctab:
+	global	fptable
+fptable:
+	movlp high(fptable)
+	addwf pc
+	global	fpbase
+fpbase:
+	goto fpbase	; Call via a null pointer and you will get stuck here.
+	file ""
+	line	#
+fp__UARTworker:
+	ljmp	_UARTworker
+	file ""
+	line	#
+fp__nullfunc1:
+	ljmp	_nullfunc1
+	file ""
+	line	#
+fp__I2CEEworker:
+	ljmp	_I2CEEworker
+	file ""
+	line	#
+fp__I2CDACworker:
+	ljmp	_I2CDACworker
+	file ""
+	line	#
+fp__I2CADCworker:
+	ljmp	_I2CADCworker
 	global	btemp
 	btemp set 07Eh
 
