@@ -1,0 +1,17 @@
+
+# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c"
+
+# 4 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./spi.h"
+void initSPI(void);
+void SPIworker(void);
+
+# 5 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c"
+void initSPI(void)
+{
+
+}
+
+void SPIworker(void)
+{
+
+}
