@@ -1,0 +1,25 @@
+Version 3.2 HI-TECH Software Intermediate Code
+[; ;spi.h: 4: void initSPI(void);
+[; ;spi.h: 5: void SPIworker(void);
+"6 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.c
+[v _initSPI `(v  1 ef ]
+{
+[; ;spi.c: 5: void initSPI(void)
+[; ;spi.c: 6: {
+[e :U _initSPI ]
+[f ]
+[; ;spi.c: 8: }
+"8
+[e :UE 1 ]
+}
+"11
+[v _SPIworker `(v  1 ef ]
+{
+[; ;spi.c: 10: void SPIworker(void)
+[; ;spi.c: 11: {
+[e :U _SPIworker ]
+[f ]
+[; ;spi.c: 13: }
+"13
+[e :UE 2 ]
+}

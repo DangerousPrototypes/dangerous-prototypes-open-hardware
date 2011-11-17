@@ -1,0 +1,18 @@
+_init: CODE, 847 0 83
+_UARTwrite: CODE, 1207 0 15
+_initSPI: CODE, 1286 0 1
+_UARTread: CODE, 1177 0 30
+_UARTworker: CODE, 1248 0 11
+_enableTS: CODE, 1270 0 7
+_main: CODE, 1003 0 62
+_doEE: CODE, 930 0 73
+_teletype: CODE, 1065 0 62
+_initUART: CODE, 1127 0 50
+_isEE: CODE, 1283 0 3
+_isr: CODE, 4 0 53
+_getADC: CODE, 758 0 89
+_I2CWrite: CODE, 1259 0 11
+_initI2C: CODE, 1235 0 13
+_I2Cworker: CODE, 651 0 107
+_SPIworker: CODE, 1287 0 1
+Total: 671
