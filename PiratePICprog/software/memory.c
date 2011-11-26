@@ -6,6 +6,8 @@
 
 #include "memory.h"
 
+static void MEM_PrintPage(struct mem_page_t *p);
+
 static struct mem_page_t *MEM_CreatePage(struct memory_t *mem, uint32_t base)
 {
 	struct mem_page_t *tmp = NULL;
@@ -203,18 +205,31 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 		MEM_PageTrim(pa);
 		MEM_PageTrim(pb);
 
-		if (pa->size != pb->size) {
-			printf("page data size differs page=0x%08x\n",pa->base);
-			return 1;
-		}
-
 		if (pa->base != pb->base) {
 			printf("page base differs\n");
 			return 1;
 		}
 
+		if (pa->size != pb->size) {
+			printf("page data size differs page=0x%08x\n",pa->base);
+			return 1;
+		}
+
 		if (memcmp(pa->data, pb->data, pa->size) != 0) {
+			uint32_t i;
+
 			printf("page data differs\n");
+			MEM_PrintPage(pa);
+			MEM_PrintPage(pb);
+
+			for (i = 0; i < pa->size; i++){
+				if (pa->data[i] != pb->data[i]) {
+					printf("offset %04x: %02x != %02x\n", i, pa->data[i], pb->data[i]);
+					printf("row: %d col: %d\n", (i >> 4) + 1 , (i & 0x0f) + 1);
+					break;
+				}
+			}
+
 			return 1;
 		}
 
@@ -268,6 +283,22 @@ void MEM_Optimize(struct memory_t *mem)
 
 }
 
+static void MEM_PrintPage(struct mem_page_t *p)
+{
+	printf("\npage @0x%08x (size 0x%04x)\n", p->base, p->size);
+
+	if (p->data !=NULL) {
+		int i;
+		for (i = 0; i < p->size; i++) {
+			printf("%02x ", p->data[i]);
+			if (((i % 16) == 15)) {
+				printf("\n");
+			}
+		}
+		printf("\n");
+	}
+}
+
 void MEM_Print(struct memory_t *mem)
 {
 	struct mem_page_t *cur = mem->page;
@@ -277,20 +308,8 @@ void MEM_Print(struct memory_t *mem)
 	while (cur != NULL) {
 		MEM_PageTrim(cur);
 		if (cur->size > 0) {
-			printf("\npage @0x%08x (size 0x%04x)\n", cur->base, cur->size);
 			size += cur->size;
-
-			if (cur->data !=NULL) {
-				int i;
-				//for (i = 0; i < mem->page_size; i++) {
-				for (i = 0; i < cur->size; i++) {
-					printf("%02x ", cur->data[i]);
-					if (((i % 16) == 15)) {
-						printf("\n");
-					}
-				}
-				printf("\n");
-			}
+			MEM_PrintPage(cur);
 		}
 		cur = cur->next;
 	}
