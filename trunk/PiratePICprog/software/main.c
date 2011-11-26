@@ -303,6 +303,7 @@ int main(int argc, char** argv) {
 			return -1;
 		}
 
+		MEM_Optimize(memread);
 		datafile->WriteFile(param_read_file, memread);
 	}
 
@@ -319,8 +320,7 @@ int main(int argc, char** argv) {
 	}
 
 	if (cmd & CMD_WRITE) {
-		//picops->Write(&picprog, 0x0000, buf_write, picchip->flash);
-		//picops->WriteFlash(&picprog, buf_write);
+		MEM_Optimize(memread);
 
 		PIC_WriteMemory(&picprog, memwrite);
 	}
@@ -340,13 +340,6 @@ int main(int argc, char** argv) {
 			printf("Verify OK :) !\n");
 		}
 
-//		for(i=0; i<picchip->flash; i++){
-//			if(buf_read[i]!=buf_write[i]){
-//				printf("Verify ERROR %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
-//			}/*else{
-//				printf("Verify OK %#X :%#X %#X \n",i, buf_read[i], buf_write[i]);
-//			}*/
-//		}
 		MEM_Destroy(memverify);
 	}
 

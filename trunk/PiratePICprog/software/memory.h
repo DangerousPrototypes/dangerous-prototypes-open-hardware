@@ -55,6 +55,7 @@ struct mem_page_t *MEM_GetNextPage(struct mem_page_t *page);
 
 int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b);
 int MEM_PageEmpty(struct mem_page_t *page);
+void MEM_Optimize(struct memory_t *mem);
 void MEM_Print(struct memory_t *mem);
 int MEM_Destroy(struct memory_t *);
 

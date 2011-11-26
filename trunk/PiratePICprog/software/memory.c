@@ -25,7 +25,7 @@ static struct mem_page_t *MEM_CreatePage(struct memory_t *mem, uint32_t base)
 
 static void MEM_PageTrim(struct mem_page_t *page)
 {
-	uint32_t i;
+	int32_t i;
 
 	if (page == NULL)
 		return;
@@ -34,11 +34,11 @@ static void MEM_PageTrim(struct mem_page_t *page)
 		return;
 
 	i = page->size - 1;
-	while (i > 0 && page->data[i] == MEM_EMPTY) {
+	while (i >= 0 && page->data[i] == MEM_EMPTY) {
 		i--;
 	}
 
-	page->size = i;
+	page->size = i + 1;
 
 }
 
@@ -257,29 +257,41 @@ int MEM_PageEmpty(struct mem_page_t *page)
 	return 1;
 }
 
+void MEM_Optimize(struct memory_t *mem)
+{
+	struct mem_page_t *cur = mem->page;
+
+	while (cur != NULL) {
+		MEM_PageTrim(cur);
+		cur = cur->next;
+	}
+
+}
+
 void MEM_Print(struct memory_t *mem)
 {
-	struct mem_page_t *next = NULL;
 	struct mem_page_t *cur = mem->page;
 
 	uint32_t size = 0;
 
 	while (cur != NULL) {
-		printf("\npage @0x%08x (size 0x%04x)\n", cur->base, cur->size);
-		size += cur->size;
+		MEM_PageTrim(cur);
+		if (cur->size > 0) {
+			printf("\npage @0x%08x (size 0x%04x)\n", cur->base, cur->size);
+			size += cur->size;
 
-		if (cur->data !=NULL) {
-			int i;
-			//for (i = 0; i < mem->page_size; i++) {
-			for (i = 0; i < cur->size; i++) {
-				printf("%02x ", cur->data[i]);
-				if (((i % 16) == 15)) {
-					printf("\n");
+			if (cur->data !=NULL) {
+				int i;
+				//for (i = 0; i < mem->page_size; i++) {
+				for (i = 0; i < cur->size; i++) {
+					printf("%02x ", cur->data[i]);
+					if (((i % 16) == 15)) {
+						printf("\n");
+					}
 				}
+				printf("\n");
 			}
-			printf("\n");
 		}
-
 		cur = cur->next;
 	}
 
