@@ -70,12 +70,18 @@ int main(int argc, char** argv) {
 	uint32_t i;
 	uint16_t PICidver, PICrev, PICid;
 
+#ifdef DEBUG
+// Without these, console output within Eclipse (and perhaps other IDEs) will be buffered
+	setvbuf(stdout, NULL, _IONBF, 0);
+	setvbuf(stderr, NULL, _IONBF, 0);
+#endif
+
 	char *param_write_file = NULL;
 	char *param_read_file = NULL;
 	char *param_prog = NULL;
 	char *param_port = NULL;
 	char *param_speed = NULL;
-	struct file_ops_t *datafile;
+	struct file_ops_t *datafile = NULL;
 	char *param_chip = NULL;
 	uint16_t cmd = 0;
 
@@ -88,7 +94,7 @@ int main(int argc, char** argv) {
 	struct memory_t *memwrite;
 
 
-	printf("(Bus) Pirate PIC Programer v0.2 \n\n");
+	printf("(Bus) Pirate PIC Programmer v0.2 \n\n");
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;

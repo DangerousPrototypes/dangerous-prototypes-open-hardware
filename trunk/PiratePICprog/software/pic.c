@@ -36,9 +36,28 @@ const struct pic_chip_t pic_chip[] = {
 				.base = 0x300000,
 				.size = 14
 			},
-/* TODO
+			/* TODO
 			[PIC_MEM_EEPROM] = {
 				.base = 
+			}*/
+		}
+	},
+	{
+		.name = "18F2553",
+		.ID = 0x152,
+		.family = FAMILY_18Fx5xx,
+		.memmap = {
+			[PIC_MEM_FLASH] = {
+				.base = 0x0000,
+				.size = 32*1024
+			},
+			[PIC_MEM_FUSE] = {
+				.base = 0x300000,
+				.size = 14
+			},
+/* TODO
+			[PIC_MEM_EEPROM] = {
+				.base =
 			}*/
 		}
 	},
@@ -184,9 +203,11 @@ int PIC_ReadMemory(struct picprog_t *p, struct memory_t *mem)
 	addr = pic->memmap[PIC_MEM_FUSE].base;
 	size = pic->memmap[PIC_MEM_FUSE].size;
 
-	printf("Reading config words %04lx size %02x... \n", (unsigned long)addr, size);
-	proto->Read(p, addr, data, size);
-	MEM_Write(mem, addr, data, size);
+	if (size > 0) {
+		printf("Reading config words %04lx size %02x... \n", (unsigned long)addr, size);
+		proto->Read(p, addr, data, size);
+		MEM_Write(mem, addr, data, size);
+	}
 
 	// TODO: read EEPROM once ready
 /*
