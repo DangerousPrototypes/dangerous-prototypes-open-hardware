@@ -19,7 +19,7 @@ enum proto_t {
 };
 
 struct proto_ops_t {
-//	enum proto_t type;
+	enum proto_t type;
 	uint32_t (*EnterICSP)(struct picprog_t *, enum icsp_t);
 	uint32_t (*ExitICSP)(struct picprog_t *, enum icsp_t);
 	uint32_t (*ReadID)(struct picprog_t*, uint16_t *id, uint16_t *rev);

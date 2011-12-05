@@ -33,7 +33,6 @@ int serial_setup(int fd, speed_t speed)
 		return -1;
 	}
 
-
 	timeouts.ReadIntervalTimeout = 100;
 	timeouts.ReadTotalTimeoutMultiplier = 10;
 	timeouts.ReadTotalTimeoutConstant = 100;

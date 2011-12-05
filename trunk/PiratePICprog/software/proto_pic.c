@@ -8,44 +8,22 @@
 
 #include "proto_pic.h"
 
-struct proto_ops_t proto_ops[] = {
-	[PROTO_PIC12] = {
-	},
-	[PROTO_PIC16] = {
-		.EnterICSP = PIC16_EnterICSP,
-		.ExitICSP = PIC16_ExitICSP,
-		.ReadID = PIC16_ReadID,
-		.Read = PIC16_Read,
-		.Write = PIC16_Write,
-		.Erase = PIC16_Erase,
-		.WriteFlash = PIC16_WriteFlash,
-		.ReadFlash = PIC16_ReadFlash,
-	},
-	[PROTO_PIC18] = {
-		.EnterICSP = PIC18_EnterICSP,
-		.ExitICSP = PIC18_ExitICSP,
-		.ReadID = PIC18_ReadID,
-		.Read = PIC18_Read,
-		.Write = PIC18_Write,
-		.Erase = PIC18_Erase,
-		.WriteFlash = PIC18_WriteFlash,
-		.ReadFlash = PIC18_ReadFlash,
-	},
-	[PROTO_PIC24] = {
-		.EnterICSP = PIC24_EnterICSP,
-		.ExitICSP = PIC24_ExitICSP,
-		.ReadID = PIC24_ReadID,
-		.Read = PIC24_Read,
-		.Write = PIC24_Write,
-		.Erase = PIC24_Erase,
-		.WriteFlash = PIC24_WriteFlash,
-		.ReadFlash = PIC24_ReadFlash,
-	}
+struct proto_ops_t *proto_ops[] = {
+	&pic12_proto,
+	&pic16_proto,
+	&pic18_proto,
+	&pic24_proto,
+	NULL
 };
 
 struct proto_ops_t *Proto_GetOps(enum proto_t protocol) {
-	if (protocol >= PROTO_LAST)
-		return NULL;
+	struct proto_ops_t *ops;
+	int i;
 
-	return &proto_ops[protocol];
+	for (i = 0; proto_ops[i] != NULL; i++) {
+		if (proto_ops[i]->type == protocol) {
+			return (struct proto_ops_t *)proto_ops[i];
+		}
+	}
+	return NULL;
 }
