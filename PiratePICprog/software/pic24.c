@@ -8,13 +8,16 @@
 #include "pic24.h"
 
 
-#define PIC24NOP() 	iface->PIC424Write(0x000000,0,0)
+#define PIC24NOP()   iface->PIC424Write(0x000000,0,0)
 
-uint32_t PIC24_EnterICSP(struct picprog_t *p, enum icsp_t type) {
+static uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length);
+
+static uint32_t PIC24_EnterICSP(struct picprog_t *p, enum icsp_t type)
+{
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
-	char	buffer[4];
+	char buffer[4];
 
 	//all programming operations are LSB first, but the ICSP entry key is MSB first.
 	// Reconfigure the mode for LSB order
@@ -56,7 +59,8 @@ uint32_t PIC24_EnterICSP(struct picprog_t *p, enum icsp_t type) {
 	return 0;
 }
 
-uint32_t PIC24_ExitICSP(struct picprog_t *p, enum icsp_t type) {
+static uint32_t PIC24_ExitICSP(struct picprog_t *p, enum icsp_t type)
+{
 	struct iface_t *iface = p->iface;
 
 	//exit programming mode
@@ -65,8 +69,9 @@ uint32_t PIC24_ExitICSP(struct picprog_t *p, enum icsp_t type) {
 	return 0;
 }
 
-uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
-    struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+static uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev)
+{
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
 //	struct iface_t *iface = p->iface;
 	uint32_t PICid;
@@ -78,16 +83,17 @@ uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev) {
 
 	PIC24_ExitICSP(p, f->icsp_type);
 
-	PICid=( buf[0] | (buf[1]<<8) | (buf[2]<<16) | (buf[3]<<24) );
+	PICid = (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24));
 
 	//determine device type
-	*rev=(uint16_t)(PICid>>16); //find PIC ID (lower 16 bits)
-	*id=(uint16_t)(PICid&(~0xFFFF0000)); //isolate revision (upper 16 bits)
+	*rev = (uint16_t)(PICid >> 16); //find PIC ID (lower 16 bits)
+	*id = (uint16_t)(PICid & (~0xFFFF0000)); //isolate revision (upper 16 bits)
 
-	return ( buf[0] | (buf[1]<<8) );
+	return (buf[0] | (buf[1] << 8));
 }
 
-uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length) {
+static uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length)
+{
 	struct iface_t *iface = p->iface;
 
 	iface->PIC424Write(0x200000 | ((addr & 0xffff0000) >> 12), 0, 0);//SIX,0x200FF0,5, N/A MOV #<SourceAddress23:16>, W0
@@ -106,13 +112,13 @@ uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t len
 }
 
 //18F setup write location and write length bytes of data to PIC
-uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length) {
+static uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length)
+{
 	struct iface_t *iface = p->iface;
 //	uint16_t DataByte;//, buffer[2]={0x00,0x00};
 	uint32_t ctr;//, tem, tem1;
 //	uint8_t	buffer[4] = {0};
 	//uint16_t VISI;
-
 
 	//set NVMCON
 	iface->PIC424Write(0x24001A, 0, 0); //MOV XXXX,W10 0x4001 (differs by PIC)
@@ -124,8 +130,7 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 	iface->PIC424Write(0x880190, 0, 1);//SIX,0x880190,5, N/AMOV W0, TBLPAG
 	iface->PIC424Write(0x200007 | ((tblptr & 0x000ffff) << 4), 0, 2);//SIX,0x200006,5, N/A MOV #<SourceAddress15:0>, W6
 
-	for(ctr = 0; ctr < 16; ctr++) //really this is fixed at 16
-	{
+	for(ctr = 0; ctr < 16; ctr++) { //really this is fixed at 16
 		//iface->PIC424Write(0x200000 | ((((uint16_t *)Data)[ctr])<< 4), 0, 0); //MOV XXXX,W0 (0x0000) X10
 		iface->PIC424Write(0x200000 | ((((uint8_t *)Data)[(ctr*16)+1])<< 12)|((((uint8_t *)Data)[(ctr*16)])<< 4), 0, 0);
 	//	iface->PIC424Write(0x200001 | ((((uint16_t *)Data)[ctr+1])<< 4), 0, 0); //MOV XXXX,W1 (0x0000) 2XX/3XX
@@ -159,20 +164,21 @@ uint32_t PIC24_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t 
 		//PIC24NOP();
 		//iface->PIC424Write(0x803B02, 0, 2);//MOV NVMCON,W2
 		//iface->PIC424Write(0x883C22, 0, 2);//MOV W2,VISI
-        //iface->flush();
+		//iface->flush();
 
 		//VISI = iface->PIC424Read(0xBA0BB6, Data, 1);//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
-		PIC24NOP();//SIX,0x000000,5, N/A
-		iface->PIC424Write(0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
-		iface->flush();
-		usleep(3000);
+	PIC24NOP();//SIX,0x000000,5, N/A
+	iface->PIC424Write(0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
+	iface->flush();
+	usleep(3000);
 		//if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
 	//}
 	return 0;
 }
 
-uint32_t PIC24_Erase(struct picprog_t *p) {
+static uint32_t PIC24_Erase(struct picprog_t *p)
+{
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);
 	struct iface_t *iface = p->iface;
@@ -201,12 +207,12 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
 
 		//VISI = iface->PIC424Read();//REGOUT,0x000000,5, read VISI register (PIC includes 2 NOPS after every read, may need to be updated later)
 		//printf("Read: %X \n",VISI); //REGOUT,0x000000,5, read VISI register
-		PIC24NOP();//SIX,0x000000,5, N/A
-		iface->PIC424Write(0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
-		iface->flush();
+	PIC24NOP();//SIX,0x000000,5, N/A
+	iface->PIC424Write(0x040200, 0, 2);//SIX,0xBA0BB6,5, N/A TBLRDH.B [W6++], [W7++] (this needs a pre-NOP)
+	iface->flush();
 
 		//if(!(VISI & 0x8000)) break; //bit15 will clear when erase is done
-		usleep(1000 * f->erase_delay);
+	usleep(1000 * f->erase_delay);
 	//}
 
 	PIC24_ExitICSP(p, f->icsp_type);
@@ -214,7 +220,8 @@ uint32_t PIC24_Erase(struct picprog_t *p) {
 	return 0;
 }
 
-uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
+/* TODO: unused - to be removed */
+static uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *fam = PIC_GetFamily(pic->family);
@@ -227,8 +234,7 @@ uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 
 	PIC24_EnterICSP(p, fam->icsp_type);
 
-	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++)
-	{
+	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++) {
 		u_addr = page * fam->page_size;
 		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
 		//u_addr = page * ( 2 * 32 );
@@ -280,7 +286,8 @@ uint32_t PIC24_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
 	return done;
 }
 
-uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
+/* TODO: unused - to be removed */
+static uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *fam = PIC_GetFamily(pic->family);
@@ -289,15 +296,14 @@ uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	uint32_t u_addr;
 	uint32_t page  = 0;
 	uint32_t done  = 0, ctr;
-    //uint8_t temp[pic->memmap[PIC_MEM_FLASH].size];
-    uint32_t i;
-    uint16_t r;
-    uint8_t buf[8];
+	//uint8_t temp[pic->memmap[PIC_MEM_FLASH].size];
+	uint32_t i;
+	uint16_t r;
+	uint8_t buf[8];
 
-    PIC24_EnterICSP(p, fam->icsp_type);
+	PIC24_EnterICSP(p, fam->icsp_type);
 
-	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++)
-	{
+	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++) {
 		u_addr = page * fam->page_size;
 		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
 		//u_addr = page * ( 2 * 32 );
@@ -397,3 +403,14 @@ uint32_t PIC24_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
 	return done;
 }
 
+struct proto_ops_t pic24_proto = {
+	.type = PROTO_PIC24,
+	.EnterICSP = PIC24_EnterICSP,
+	.ExitICSP = PIC24_ExitICSP,
+	.ReadID = PIC24_ReadID,
+	.Read = PIC24_Read,
+	.Write = PIC24_Write,
+	.Erase = PIC24_Erase,
+	.ReadFlash = PIC24_ReadFlash,
+	.WriteFlash = PIC24_WriteFlash
+};

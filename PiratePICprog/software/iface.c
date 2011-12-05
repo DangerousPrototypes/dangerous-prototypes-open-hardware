@@ -19,5 +19,5 @@ struct iface_t *Iface_GetByName(char *name) {
 			return (struct iface_t *)iface[i];
 		}
 	}
-	return 0;
+	return NULL;
 }
