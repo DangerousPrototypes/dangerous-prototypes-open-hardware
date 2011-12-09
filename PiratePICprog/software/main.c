@@ -67,7 +67,6 @@ int main(int argc, char** argv) {
 
 	int opt;
 //	int	res = -1;
-	uint32_t i;
 	uint16_t PICidver, PICrev, PICid;
 
 #ifdef DEBUG

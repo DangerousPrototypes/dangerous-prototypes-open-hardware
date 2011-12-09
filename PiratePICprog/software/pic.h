@@ -43,11 +43,14 @@ struct pic_family_t {
 	uint32_t erase_delay;
 };
 
+typedef uint32_t (*pic_rw_func)(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length);
+
 int16_t PIC_GetChipIdx(char *name);
 int16_t PIC_GetFamilyIdx(uint16_t chip_idx);
 struct pic_chip_t *PIC_GetChip(uint16_t i);
 struct pic_family_t *PIC_GetFamily(uint16_t i);
 struct proto_ops_t *PIC_GetProtoOps(uint16_t i);
+extern const struct pic_chip_t pic_chip[];
 
 void PIC_PreserveConfig(struct picprog_t *p, struct memory_t *mem);
 int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem);

@@ -32,15 +32,6 @@ static uint32_t PIC16_Erase(struct picprog_t *p)
 	return 1;
 }
 
-static uint32_t PIC16_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
-{
-	return 1;
-}
-
-static uint32_t PIC16_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
-{
-	return 1;
-}
 
 struct proto_ops_t pic16_proto = {
 	.type = PROTO_PIC16,
@@ -49,7 +40,5 @@ struct proto_ops_t pic16_proto = {
 	.ReadID = PIC16_ReadID,
 	.Read = PIC16_Read,
 	.Write = PIC16_Write,
-	.Erase = PIC16_Erase,
-	.ReadFlash = PIC16_ReadFlash,
-	.WriteFlash = PIC16_WriteFlash
+	.Erase = PIC16_Erase
 };

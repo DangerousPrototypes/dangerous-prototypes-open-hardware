@@ -245,6 +245,7 @@ int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem)
 
 	proto->ExitICSP(p, fam->icsp_type); 
 
+	return 0;
 }
 
 // TODO: this code assumes that config lies in single page!

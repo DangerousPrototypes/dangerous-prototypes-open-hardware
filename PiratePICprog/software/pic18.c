@@ -7,6 +7,13 @@
 
 static uint8_t writesetup=0;
 
+static uint32_t PIC18_Read_Fuse(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+static uint32_t PIC18_Read_Flash(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+static uint32_t PIC18_Read_EEPROM(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+static uint32_t PIC18_Write_Fuse(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+static uint32_t PIC18_Write_Flash(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+static uint32_t PIC18_Write_EEPROM(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length);
+
 static uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type)
 {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
@@ -46,16 +53,6 @@ static uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type)
 	buffer[2] = f->icsp_key >> 8;
 	buffer[3] = f->icsp_key;
 
-  //reverse the bits in the PC so we save asking the PIC to do it...
-  /*
-    for(j=0; j<4; j++){
-        for(i=0b1; i!=0; i=i<<1){
-            r=r<<1;
-            if(buffer[j]&i)r|=0b1;
-        }
-        buffer[j]=r;
-    }
-*/
 	iface->SendBytes(4, buffer);
 	iface->DataLow();
 	iface->MCLRHigh();
@@ -153,26 +150,6 @@ static uint32_t PIC18_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev)
 	return PICid;
 }
 
-static uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length)
-{
-	struct iface_t *iface = p->iface;
-	//uint32_t ctr;
-
-	//setup read
-	PIC18_settblptr(p, tblptr);
-	iface->flush();
-	//read device
-	iface->PIC416Read(0x09, Data, length);
-
-//	for (ctr = 0; ctr < length; ctr++)
-//	{
-//		//printf("%X ", PIC416Read(0x09) );
-//		((uint8_t*)Data)[ctr] = iface->PIC416Read(0x09);
-//	}
-
-	return 0;
-}
-
 //a few things need to be done once at the beginning of a sequence of write operations
 //this configures the PIC, and enables page writes
 //call it once, then call PIC18F_write() as needed
@@ -185,17 +162,133 @@ static void PIC18_setupwrite(struct picprog_t *p)
 	iface->PIC416Write(0x00, 0x84A6); //enable page writes
 }
 
+pic_rw_func write_mem_table[PIC_MEM_LAST] = {
+	[PIC_MEM_FUSE] = PIC18_Write_Fuse,
+	[PIC_MEM_FLASH] = PIC18_Write_Flash,
+	[PIC_MEM_EEPROM] = PIC18_Write_EEPROM
+};
+
+pic_rw_func read_mem_table[PIC_MEM_LAST] = {
+	[PIC_MEM_FUSE] = PIC18_Read_Fuse,
+	[PIC_MEM_FLASH] = PIC18_Read_Flash,
+	[PIC_MEM_EEPROM] = PIC18_Read_EEPROM
+};
+
+
 //18F setup write location and write length bytes of data to PIC
-static uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, uint32_t length)
+static uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	struct pic_memmap_t *m = (struct pic_memmap_t *)pic_chip[p->chip_idx].memmap;
+	pic_rw_func fnc;
+	int i;
+
+
+	for (i = PIC_MEM_FUSE; i < PIC_MEM_LAST; i++) {
+		if ((tblptr >= m[i].base) && (tblptr < (m[i].base + m[i].size))) {
+			fnc = write_mem_table[i];
+			if (fnc != NULL) {
+				return fnc(p, tblptr, data, length);
+			} else {
+				printf("Unimplemented write to mem_type %d\n", i);
+				return 0;
+			}
+		}
+	}
+
+	return 0; // ERROR!
+}
+
+static uint32_t PIC18_Read(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	struct pic_memmap_t *m = (struct pic_memmap_t *)pic_chip[p->chip_idx].memmap;
+	pic_rw_func fnc;
+	int i;
+
+
+	for (i = PIC_MEM_FUSE; i < PIC_MEM_LAST; i++) {
+		if ((tblptr >= m[i].base) && (tblptr < (m[i].base + m[i].size))) {
+			fnc = read_mem_table[i];
+			if (fnc != NULL) {
+				return fnc(p, tblptr, data, length);
+			} else {
+				printf("Unimplemented read from mem_type %d\n", i);
+				return 0;
+			}
+		}
+	}
+
+	return 0; // ERROR!
+}
+
+// Fuse is the same as Flash for reads.
+static uint32_t PIC18_Read_Fuse(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	return PIC18_Read_Flash(p, tblptr, data, length);
+}
+
+static uint32_t PIC18_Read_Flash(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
-	uint16_t DataByte;//, buffer[2]={0x00,0x00};
-	uint32_t ctr;
-//	uint8_t	buffer[4] = {0};
+	//uint32_t ctr;
 
-	if (writesetup == 0) {
+	//setup read
+	PIC18_settblptr(p, tblptr);
+	iface->flush();
+	//read device
+	iface->PIC416Read(0x09, data, length);
+
+//	for (ctr = 0; ctr < length; ctr++)
+//	{
+//		//printf("%X ", PIC416Read(0x09) );
+//		((uint8_t*)data)[ctr] = iface->PIC416Read(0x09);
+//	}
+
+	return 0;
+}
+
+static uint32_t PIC18_Read_EEPROM(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	return 0; // unimplemented yet!
+}
+
+static uint32_t PIC18_Write_Fuse(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	struct iface_t *iface = p->iface;
+	uint16_t databyte;//, buffer[2]={0x00,0x00};
+	uint32_t ctr;
+
+	if (writesetup != PIC_MEM_FUSE) {
+		iface->PIC416Write(0x00, 0x8EA6); //setup PIC - BSF   EECON1, EEPGD
+		iface->PIC416Write(0x00, 0x8CA6); //setup PIC - BSF   EECON1, CFGS
+		//iface->PIC416Write(0x00, 0x84A6); //enable page writes -
+		writesetup = PIC_MEM_FUSE;
+	}
+
+	// set TBLPTR
+	PIC18_settblptr(p, tblptr);
+
+	for(ctr = 0; ctr < length; ctr++) {
+		if ((ctr & 1) == 0)
+			databyte = (((uint8_t *)data)[ctr + 1] << 8) + ((uint8_t *)data)[ctr];
+		iface->PIC416Write(0x00, 0x0E00 | ctr);
+		iface->PIC416Write(0x00, 0x6EF6);
+		iface->PIC416Write(0x0F, databyte);
+		iface->PIC416Write(0x40, 0x0000); // see PIC18_Write_Flash below
+		iface->flush();
+	}
+
+	return 0;
+}
+
+static uint32_t PIC18_Write_Flash(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
+{
+	struct iface_t *iface = p->iface;
+	uint16_t databyte;//, buffer[2]={0x00,0x00};
+	uint32_t ctr;
+
+	if (writesetup != PIC_MEM_FLASH) {
 		PIC18_setupwrite(p);
-		writesetup = 1;
+		writesetup = PIC_MEM_FLASH;
 	}
 
 	// set TBLPTR
@@ -207,16 +300,14 @@ static uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, ui
 	iface->PIC416Write(0x00, 0x88A6);
 
 	for(ctr = 0; ctr < length - 2; ctr += 2) {
-		DataByte = ((uint8_t *)Data)[ctr + 1];
-		DataByte = DataByte << 8;
-		DataByte |= ((uint8_t *)Data)[ctr];
-		iface->PIC416Write(0x0D, DataByte);
+		databyte = (((uint8_t *)data)[ctr + 1] << 8) + ((uint8_t *)data)[ctr];
+		iface->PIC416Write(0x0D, databyte);
 	}
 
-	DataByte = ((uint8_t *)Data)[length - 1];
-	DataByte = DataByte << 8;
-	DataByte |= ((uint8_t *)Data)[length - 2];
-	iface->PIC416Write(0x0F, DataByte);
+	databyte = ((uint8_t *)data)[length - 1];
+	databyte = databyte << 8;
+	databyte |= ((uint8_t *)data)[length - 2];
+	iface->PIC416Write(0x0F, databyte);
 
 	//delay the 4th clock bit of the 20bit command to allow programming....
 	//use upper bits of 4bit command to configure the delay
@@ -228,113 +319,9 @@ static uint32_t PIC18_Write(struct picprog_t *p, uint32_t tblptr, void *Data, ui
 	return 0;
 }
 
-/* TODO: unused - to be removed */
-static uint32_t PIC18_WriteFlash(struct picprog_t *p, uint8_t *fw_data)
+static uint32_t PIC18_Write_EEPROM(struct picprog_t *p, uint32_t tblptr, void *data, uint32_t length)
 {
-
-	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct pic_family_t *fam = PIC_GetFamily(pic->family);
-
-	//struct iface_t *iface = p->iface;
-	//unsigned char buffer[2];
-
-	uint32_t u_addr;
-	uint32_t page = 0;
-	uint32_t done = 0;
-	uint8_t used = 0;
-	uint16_t i = 0;//, ctr;
-
-	//proto->EnterICSP(p, fam->icsp_type);
-	PIC18_EnterICSP(p, fam->icsp_type);
-
-	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++) {
-		u_addr = page * fam->page_size;
-		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
-		//u_addr = page * ( 2 * 32 );
-
-		// check used page
-		used = 0;
-		for (i = 0; i < fam->page_size; i++) {
-
-			//t=fw_data[u_addr+i];
-			if (fw_data[u_addr+i] != PIC_EMPTY) {
-				used = 1;
-				break;
-			}
-		}
-
-		// skip unused
-		if (used == 0 ) {
-			if (u_addr < pic->memmap[PIC_MEM_FLASH].size) {
-				fprintf(stdout, "Skipping page %ld [ 0x%06lx ], not used\n", (unsigned long)page, (unsigned long)u_addr);
-			}
-			continue;
-		}
-
-		if (u_addr >= pic->memmap[PIC_MEM_FLASH].size) {
-			fprintf(stderr, "Address out of flash\n");
-			continue;
-		}
-
-		printf("Writing page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
-
-//		if (p->debug) {
-//			dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-//		}
-
-		PIC18_Write(p, u_addr, &fw_data[page * fam->page_size], fam->page_size); //&fw_data[page * fam->page_size]
-
-		//usleep(fam->write_delay * 1000);
-
-		done += fam->page_size;
-	}
-
-	PIC18_ExitICSP(p, fam->icsp_type);
-	//proto->ExitICSP(p, fam->icsp_type);
-
-	return done;
-}
-
-/* TODO: unised - to be removed */
-static uint32_t PIC18_ReadFlash(struct picprog_t *p, uint8_t *fw_data)
-{
-	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct pic_family_t *fam = PIC_GetFamily(pic->family);
-
-//	struct proto_ops_t *proto = Proto_GetOps(fam->proto);
-
-	uint32_t u_addr;
-	uint32_t page  = 0;
-	uint32_t done  = 0;
-
-	//proto->EnterICSP(p, fam->icsp_type);
-	PIC18_EnterICSP(p, fam->icsp_type);
-
-	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++) {
-		u_addr = page * fam->page_size;
-		//( PIC_NUM_WORDS_IN_ROW * 2 * PIC_NUM_ROWS_IN_PAGE );
-		//u_addr = page * ( 2 * 32 );
-
-		if (u_addr >= pic->memmap[PIC_MEM_FLASH].size) {
-			fprintf(stderr, "Address out of flash\n");
-			continue;
-		}
-
-		printf("Reading page %ld, %04lx... \n", (unsigned long)page, (unsigned long)u_addr);
-
-		PIC18_Read(p, u_addr, &fw_data[page * fam->page_size], fam->page_size);
-
-		//if (p->debug) {
-		//	dumpHex(&fw_data[page * fam->page_size], fam->page_size);
-		//}
-
-		done += fam->page_size;
-	}
-
-	PIC18_ExitICSP(p, fam->icsp_type);
-	//proto->ExitICSP(p, fam->icsp_type);
-
-	return done;
+	return 0;
 }
 
 struct proto_ops_t pic18_proto = {
@@ -344,7 +331,5 @@ struct proto_ops_t pic18_proto = {
 	.ReadID = PIC18_ReadID,
 	.Read = PIC18_Read,
 	.Write = PIC18_Write,
-	.Erase = PIC18_Erase,
-	.ReadFlash = PIC18_ReadFlash,
-	.WriteFlash = PIC18_WriteFlash
+	.Erase = PIC18_Erase
 };
