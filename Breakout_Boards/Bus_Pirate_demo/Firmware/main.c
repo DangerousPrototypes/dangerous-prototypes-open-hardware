@@ -52,10 +52,10 @@ proto protos[4] = { //first is UNK
 		nullfunc1,				// PWM
 	}
 	,							//SPI
-	{	nullfunc1,				// ADC
-		nullfunc1,				// DAC
-		nullfunc1,				// EEPROM
-		nullfunc1,				// PWM
+	{	SPIworker,				// ADC
+		SPIworker,				// DAC
+		SPIworker,				// EEPROM
+		SPIworker,				// PWM
 	}
 
 };
