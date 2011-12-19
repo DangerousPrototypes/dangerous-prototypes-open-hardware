@@ -15,3 +15,7 @@ Change Size 2.54;
 Change Ratio 8;
 Change Font Proportional;
 Text 'PCB' R0 (2.54 2.54);
+Pin 'P$1' Pas None Middle R0 Off 0 (-5.08 5.08);
+Pin 'P$2' Pas None Middle R0 Off 0 (-5.08 2.54);
+Pin 'P$3' Pas None Middle R180 Off 0 (17.78 5.08);
+Pin 'P$4' Pas None Middle R180 Off 0 (17.78 2.54);
