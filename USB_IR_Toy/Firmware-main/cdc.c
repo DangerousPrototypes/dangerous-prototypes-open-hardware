@@ -499,40 +499,47 @@ void DisArmCDCInDB(void) {
 }
 
 void ArmCDCOutDB(void) {
-	BYTE i;
-	IsOutBufferA = 0xFF;
-	OutPtr = cdc_Out_bufferA;
-	i = Outbdp->BDSTAT;
-	i &= DTS;
-	Outbdp->BDSTAT = i;
-	Outbdp->BDADDR = &cdc_Out_bufferA[0];
-	i |= (UOWN | DTSEN);
-	Outbdp->BDSTAT = i;
-		
-	/*
-	Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
-	Outbdp->BDADDR = &cdc_Out_bufferA[0];
-	Outbdp->BDCNT = CDC_BUFFER_SIZE;
-	Outbdp->BDSTAT |= UOWN;
-	*/
+    BYTE i;
+    IsOutBufferA = 0xFF;
+    OutPtr = cdc_Out_bufferA;
+    i = Outbdp->BDSTAT;
+    i &= DTS;
+    Outbdp->BDSTAT = i;
+    Outbdp->BDADDR = &cdc_Out_bufferA[0];
+    Outbdp->BDCNT = CDC_BUFFER_SIZE; //updated
+    i |= (UOWN | DTSEN);
+    Outbdp->BDSTAT = i;
+
+    /*
+    Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
+    Outbdp->BDADDR = &cdc_Out_bufferA[0];
+    Outbdp->BDCNT = CDC_BUFFER_SIZE;
+    Outbdp->BDSTAT |= UOWN;
+     */
 }
 
 void DisArmCDCOutDB(void) {
-	BYTE i;
-	i = Outbdp->BDSTAT;
-	i &= DTS;
-	Outbdp->BDSTAT = i;
-	Outbdp->BDADDR = &cdc_Out_buffer[0];
-	i |= (UOWN | DTSEN);
-	Outbdp->BDSTAT = i;
-	
-	/*
-	// WaitOutReady();
-	Outbdp->BDSTAT &= ~UOWN; // JTR3 immediately reclaim out buffer
-	Outbdp->BDADDR = &cdc_Out_buffer[0];
-	//Outbdp->BDCNT = CDC_BUFFER_SIZE;
-	Outbdp->BDSTAT |= UOWN;
-	*/
+    BYTE i;
+
+    if (!(Outbdp->BDSTAT & UOWN)) {
+        i = Outbdp->BDSTAT;
+        i &= DTS;
+        i ^= DTS;
+        //Outbdp->BDSTAT = i;
+        Outbdp->BDADDR = &cdc_Out_buffer[0];
+        i |= (UOWN | DTSEN);
+        Outbdp->BDCNT = CDC_BUFFER_SIZE;
+        Outbdp->BDSTAT = i;
+    } else {
+        i = Outbdp->BDSTAT;
+        i &= DTS;
+        //Outbdp->BDSTAT = i;
+        Outbdp->BDADDR = &cdc_Out_buffer[0];
+        i |= (UOWN | DTSEN);
+        Outbdp->BDCNT = CDC_BUFFER_SIZE;
+        Outbdp->BDSTAT = i;
+
+    }
 }
 
 void SendZLP(void) {
@@ -554,25 +561,24 @@ BYTE getInReady(void) {
 }
 
 /************************************************************************/
-
 BYTE getsUSBUSART(BYTE *buffer, BYTE len) {
     cdc_Out_len = 0;
     if (0 == (Outbdp->BDSTAT & UOWN)) // Do we have a packet from host?
     {
+        if (0 != Outbdp->BDCNT) {
+            // Adjust the expected number of BYTEs to equal
+            // the actual number of BYTEs received.
 
-        // Adjust the expected number of BYTEs to equal
-        // the actual number of BYTEs received.
+            if (len > Outbdp->BDCNT)
+                len = Outbdp->BDCNT;
 
-        if (len > Outbdp->BDCNT)
-            len = Outbdp->BDCNT;
+            // Copy data from dual-ram buffer to user's buffer
 
-        // Copy data from dual-ram buffer to user's buffer
+            for (cdc_Out_len = 0; cdc_Out_len < len; cdc_Out_len++)
+                buffer[cdc_Out_len] = cdc_Out_buffer[cdc_Out_len];
 
-        for (cdc_Out_len = 0; cdc_Out_len < len; cdc_Out_len++)
-            buffer[cdc_Out_len] = cdc_Out_buffer[cdc_Out_len];
-
-        // Prepare dual-ram buffer for next OUT transaction
-
+            // Prepare dual-ram buffer for next OUT transaction
+        }
         if (!TestUsbInterruptEnabled()) {
             FAST_usb_handler(); // JTR2 Pop non-EP0 (USB IN) tranfers from the FIFO and also give SETUP PACKETs a chance.
         }
