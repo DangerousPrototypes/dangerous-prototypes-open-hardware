@@ -95,12 +95,12 @@ class MonoBookTemplate extends QuickTemplate {
 							<!-- Begin Widget TODO: remove this Crap, make real Header //-->
 							<div class="widget-container widget_text logo" id="text-4">
 								<div class="textwidget">
-									<a href="/"><img alt="Dangerous Prototypes" src="http://dangerousprototypes.com/wp-content/themes/cwantwm-child/logo.png" /></a>
+									<a href="/"><img alt="Dangerous Prototypes" src="http://dangerousprototypes.com/theme/logo.png" /></a>
 								</div>
 							</div><!--//End Widget -->
 							<!-- Begin Widget //-->
 							<div class="widget-container widget_text banner" id="text-11">
-								<div id="announce" class="textwidget"><?php include('/home/dp/www/announce/announce.php');?></div>
+								<div id="announce" class="textwidget"><?php include('/home/dp/webroot/announce/announce.php');?></div>
 							</div><!--// End Widget -->
 						</div><!--// End Region -->
 					</div><!--// inner -->
