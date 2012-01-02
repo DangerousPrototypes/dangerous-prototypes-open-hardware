@@ -72,10 +72,10 @@ if (!isset($flag_disable_header) || !$flag_disable_header) {
  <div class="clearfix" id="header-inner">
   <div class="region region-header" id="header-blocks">
    <div class="widget-container widget_text logo" id="text-4">
-    <div class="textwidget"><a href="/"><img alt="Dangerous Prototypes" src="http://dangerousprototypes.com/wp-content/themes/cwantwm-child/logo.png"></a></div>
+    <div class="textwidget"><a href="/"><img alt="Dangerous Prototypes" src="http://dangerousprototypes.com/theme/logo.png"></a></div>
    </div>
    <div class="widget-container widget_text banner" id="text-11">
-    <div id="announce" class="textwidget"><?php include('/home/dp/www/announce/announce.php');?></div>
+    <div id="announce" class="textwidget"><?php include('/home/dp/webroot/announce/announce.php');?></div>
    </div>
   </div>
  </div>
