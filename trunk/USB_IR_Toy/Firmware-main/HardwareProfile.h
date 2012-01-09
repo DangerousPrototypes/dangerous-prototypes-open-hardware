@@ -163,8 +163,8 @@ struct _irtoy {
 #define T2_RXsampleperiod() PR2 = 150; T2CON = PRE_x4 + POST_x2 //10040.1Hz
 
 //RC5 bit and half bit period with TIMER2
-#define T2_RC5halfbitperiod() PR2=222; T2CON=PRE_x4+POST_x6 //setup to hit in the middle of next bit period
-#define T2_RC5bitperiod() PR2=222; T2CON=PRE_x4+POST_x12 //full bit values from now on
+#define T2_RC5halfbitperiod() PR2=221; T2CON=PRE_x4+POST_x6 //setup to hit in the middle of next bit period
+#define T2_RC5bitperiod() PR2=221; T2CON=PRE_x4+POST_x12 //full bit values from now on
 
 #define PWMon() TMR2=0;CCP1CON |=0b1100
 #define PWMoff() CCP1CON &=(~0b1100)
