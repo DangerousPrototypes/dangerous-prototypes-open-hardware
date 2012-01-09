@@ -1,5 +1,7 @@
+#units are in mil
+grid mil;
 #wire, pad and drill settings
-change width 10;
+change width 12;
 change shape ROUND;
-#change drill 20; #20 for power
-change drill 15; #15 for signals
+#change drill 35; #35 for power
+change drill 20; #20 for signals
