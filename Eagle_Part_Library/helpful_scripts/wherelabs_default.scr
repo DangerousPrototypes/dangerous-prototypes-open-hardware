@@ -1,0 +1,5 @@
+#wire, pad and drill settings
+change width 10;
+change shape ROUND;
+#change drill 20; #20 for power
+change drill 15; #15 for signals
