@@ -14,3 +14,6 @@ Add FUSE_PTC 'G$1' Next 0 (0 0);
 Package '0805_PTC' '-0805';
 Technology '';
 Connect  'G$1.1' '1'  'G$1.2' '2';
+Package '1812L_PTC' '-1812';
+Technology '';
+Connect  'G$1.1' '1'  'G$1.2' '2';
