@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="Cpld" num="0" delta="new" >Unable to retrieve the path to the iSE Project Repository. Will use the default filename of &apos;<arg fmt="%s" index="1">Top.ise</arg>&apos;.
+</msg>
+
+<msg type="info" file="Cpld" num="0" delta="new" >Inferring BUFG constraint for signal &apos;<arg fmt="%s" index="1">A10</arg>&apos; based upon the LOC constraint &apos;<arg fmt="%s" index="2">P27</arg>&apos;. It is recommended that you declare this BUFG explicitedly in your design. Note that for certain device families the output of a BUFG constraint can not drive a gated clock, and the BUFG constraint will be ignored.
+</msg>
+
+<msg type="info" file="Cpld" num="0" delta="new" >Inferring BUFG constraint for signal &apos;<arg fmt="%s" index="1">A7</arg>&apos; based upon the LOC constraint &apos;<arg fmt="%s" index="2">P22</arg>&apos;. It is recommended that you declare this BUFG explicitedly in your design. Note that for certain device families the output of a BUFG constraint can not drive a gated clock, and the BUFG constraint will be ignored.
+</msg>
+
+<msg type="info" file="Cpld" num="0" delta="new" >Inferring BUFG constraint for signal &apos;<arg fmt="%s" index="1">A8</arg>&apos; based upon the LOC constraint &apos;<arg fmt="%s" index="2">P23</arg>&apos;. It is recommended that you declare this BUFG explicitedly in your design. Note that for certain device families the output of a BUFG constraint can not drive a gated clock, and the BUFG constraint will be ignored.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_590</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_682</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_683</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_688</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_689</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_690</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_694</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_696</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_706</arg>&apos; has no outputs and will be deleted.
+</msg>
+
+<msg type="warning" file="Cpld" num="1239" delta="old" >The global <arg fmt="%s" index="1">clock</arg> designation (BUFG) on signal &apos;<arg fmt="%s" index="2">iA8</arg>&apos; is ignored. Most likely the signal is gated and therefore cannot be used as a global control signal.
+</msg>
+
+<msg type="warning" file="Cpld" num="1239" delta="old" >The global <arg fmt="%s" index="1">clock</arg> designation (BUFG) on signal &apos;<arg fmt="%s" index="2">iA7</arg>&apos; is ignored. Most likely the signal is gated and therefore cannot be used as a global control signal.
+</msg>
+
+</messages>
+
