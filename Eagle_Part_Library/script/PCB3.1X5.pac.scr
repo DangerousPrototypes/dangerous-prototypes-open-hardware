@@ -8,11 +8,12 @@ Grid mm;
 
 Edit 'PCB3.1X5.pac';
 Description '';
-Layer 21;
+Layer 20;
 Wire  0 (4 0) (46 0);
 Wire  0 (50 4) (50 27);
 Wire  0 (46 31) (4 31);
 Wire  0 (0 27) (0 4);
+Layer 21;
 Wire  0.127 (-1.67 31) (-1.67 0);
 Wire  0.127 (-2.305 31) (-0.4 31);
 Wire  0.127 (-2.305 0) (0.87 0);
