@@ -1,5 +1,5 @@
 #units are in mil
-grid mil 50 ALT 12.5;
+grid ON mil 50 ALT mil 12.5;
 #wire, pad and drill settings
 change width 12;
 change shape ROUND;
