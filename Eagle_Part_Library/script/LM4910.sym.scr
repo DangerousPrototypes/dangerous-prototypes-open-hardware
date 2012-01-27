@@ -8,7 +8,8 @@ Grid mm;
 
 Edit 'LM4910.sym';
 Layer 94;
-Wire  0.254 (-12.7 5.08) (-12.7 -7.62) (10.16 -7.62) (10.16 5.08) \
+Wire  0.4064 \
+      (-12.7 5.08) (-12.7 -7.62) (10.16 -7.62) (10.16 5.08) \
       (-12.7 5.08);
 Pin 'IN1' In None Middle R0 Both 0 (-17.78 2.54);
 Pin 'IN2' In None Middle R0 Both 0 (-17.78 0);
@@ -21,7 +22,6 @@ Pin 'VDD' Pwr None Middle R180 Both 0 (15.24 -5.08);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Change Font Proportional;
 Text '>NAME' R0 (-12.7 5.842);
 Layer 96;
 Change Size 1.778;

@@ -14,12 +14,12 @@ Layer 94;
 Wire  0.4064 (-7.62 2.54) (7.62 2.54) (7.62 -5.08) (-7.62 -5.08) \
       (-7.62 2.54);
 Layer 95;
-Change Size 1.4224;
-Change Ratio 10;
+Change Size 1.778;
+Change Ratio 8;
 Text '>NAME' R0 (-7.62 5.842);
 Layer 96;
-Change Size 1.4224;
-Change Ratio 10;
+Change Size 1.778;
+Change Ratio 8;
 Text '>VALUE' R0 (-7.62 3.556);
 Layer 95;
 Change Size 1.6764;

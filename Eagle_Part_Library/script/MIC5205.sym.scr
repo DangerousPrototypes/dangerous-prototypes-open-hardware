@@ -22,4 +22,4 @@ Text '>VALUE' R0 (-7.62 -10.16);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-7.62 8.89);
+Text '>NAME' R0 (-7.62 8.255);

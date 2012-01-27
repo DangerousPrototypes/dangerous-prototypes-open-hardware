@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'FT232RL.sym';
 Layer 94;
-Wire  0.254 (-17.78 17.78) (17.78 17.78) (17.78 -20.32) (-17.78 -20.32) \
+Wire  0.4064 (-17.78 17.78) (17.78 17.78) (17.78 -20.32) (-17.78 -20.32) \
       (-17.78 17.78);
 Pin '3V3OUT' I/O None Middle R0 Both 0 (-22.86 -10.16);
 Pin 'USBDM' I/O None Middle R0 Both 0 (-22.86 12.7);
@@ -39,9 +39,9 @@ Pin '!SLEEP' I/O Dot Middle R180 Both 0 (22.86 -17.78);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-17.78 20.32);
+Text '>NAME' R0 (-17.78 22.86);
 Layer 96;
 Change Size 1.778;
 Change Ratio 8;
 Change Font Proportional;
-Text '>VALUE' R0 (10.16 -22.86);
+Text '>VALUE' R0 (-17.78 20.32);

@@ -9,8 +9,8 @@ Grid mm;
 Edit 'SW_MEMBRANE.pac';
 Description '';
 Layer 21;
-Wire  0.127 (-3 3) (-3 -3) (3 -3) \
-      (3 3) (-3 3);
+Wire  0.1524 (-3 3) (-3 -3) (3 -3) (3 3) \
+      (-3 3);
 Layer 1;
 Circle 1 (0 0) (2.5 0);
 Layer 1;
@@ -20,3 +20,8 @@ Circle 1.2 (0 0) (2.5 0);
 Layer 31;
 Circle 1 (0 0) (2.5 0);
 Change Drill 0.5;Pad 'P$1' Round 2.5 R0 (0 0);
+Layer 21;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>NAME' R0 (-2.8575 3.81);

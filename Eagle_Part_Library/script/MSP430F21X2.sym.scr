@@ -44,5 +44,5 @@ Pin 'UCA0SIMO/UCA0TXD/P3.4' I/O None Short R180 Both 0 (43.18 -15.24);
 Pin 'UCA0SOMI/UCA0RXD/P3.5' I/O None Short R180 Both 0 (43.18 -12.7);
 Pin 'A6/TA1.0/P3.6' I/O None Short R180 Both 0 (43.18 -10.16);
 Layer 94;
-Wire  0.254 (-40.64 20.32) (40.64 20.32) (40.64 -17.78) (-40.64 -17.78) \
+Wire  0.4064 (-40.64 20.32) (40.64 20.32) (40.64 -17.78) (-40.64 -17.78) \
       (-40.64 20.32);

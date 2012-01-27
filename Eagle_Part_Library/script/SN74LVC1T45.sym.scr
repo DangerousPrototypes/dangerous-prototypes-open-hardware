@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'SN74LVC1T45.sym';
 Layer 94;
-Wire  0.254 (-10.16 5.08) (-10.16 -5.08) (10.16 -5.08) (10.16 5.08) \
+Wire  0.4064 (-10.16 5.08) (-10.16 -5.08) (10.16 -5.08) (10.16 5.08) \
       (-10.16 5.08);
 Pin 'VCCA' Pwr None Middle R0 Both 0 (-15.24 2.54);
 Pin 'GND' Pwr None Middle R0 Both 0 (-15.24 0);
@@ -19,7 +19,7 @@ Pin 'VCCB' Pwr None Middle R180 Both 0 (15.24 2.54);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-9.906 6.35);
+Text '>NAME' R0 (-10.16 5.715);
 Layer 96;
 Change Size 1.778;
 Change Ratio 8;

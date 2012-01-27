@@ -30215,5 +30215,4 @@ Rect R0 (25.2603 49.6189) (25.5143 49.6443);
 Layer 21;
 Change Size 0.0508;
 Change Ratio 8;
-Change Font Vector;
 Text 'C:/Users/Jer/Desktop/art/2x2.bmp' R0 (0 -0.127);

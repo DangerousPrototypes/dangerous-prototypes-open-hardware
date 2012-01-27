@@ -7,22 +7,18 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'HEADER1X8.sym';
-Pin '1' I/O None Middle R0 Both 0 (-7.62 10.16);
-Pin '2' I/O None Middle R0 Both 0 (-7.62 7.62);
-Pin '3' I/O None Middle R0 Both 0 (-7.62 5.08);
-Pin '4' I/O None Middle R0 Both 0 (-7.62 2.54);
-Pin '5' I/O None Middle R0 Both 0 (-7.62 0);
-Pin '6' I/O None Middle R0 Both 0 (-7.62 -2.54);
-Pin '7' I/O None Middle R0 Both 0 (-7.62 -5.08);
-Pin '8' I/O None Middle R0 Both 0 (-7.62 -7.62);
+Pin '1' Pas Dot Short R0 Pad 0 (0 7.62);
+Pin '2' Pas Dot Short R0 Pad 0 (0 5.08);
+Pin '3' Pas Dot Short R0 Pad 0 (0 2.54);
+Pin '4' Pas Dot Short R0 Pad 0 (0 0);
+Pin '5' Pas Dot Short R0 Pad 0 (0 -2.54);
+Pin '6' Pas Dot Short R0 Pad 0 (0 -5.08);
+Pin '7' Pas Dot Short R0 Pad 0 (0 -7.62);
+Pin '8' Pas Dot Short R0 Pad 0 (0 -10.16);
 Layer 94;
-Wire  0.254 (-2.54 12.7) (5.08 12.7) (5.08 -10.16) (-2.54 -10.16) \
-      (-2.54 12.7);
+Wire  0.4064 (-1.27 10.16) (3.81 10.16) (3.81 -12.7) (-1.27 -12.7) \
+      (-1.27 10.16);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-2.54 -12.7);
-Layer 96;
-Change Size 1.27;
-Change Ratio 8;
-Text '>VALUE' R0 (-2.54 -15.24);
+Text '>NAME' R0 (-1.27 10.795);

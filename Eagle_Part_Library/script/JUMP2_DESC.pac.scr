@@ -42,11 +42,11 @@ Wire  0.127 (-3.3338 1.4288) (-3.0163 1.4288) (-3.0163 1.143);
 Wire  0.127 (-3.0163 1.1113) (-3.3338 1.1113);
 Layer 21;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
 Text '>ON' R0 (0 -1.27);
 Layer 21;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
 Text '>OFF' R0 (0 0.635);
 Layer 21;
 Wire  0.127 (-3.81 -1.27) (-3.81 0) (-1.27 0) (-1.27 -1.27) \

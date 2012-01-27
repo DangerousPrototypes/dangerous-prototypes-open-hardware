@@ -52,13 +52,13 @@ Pin 'VCCINT1' I/O None Middle R90 Both 0 (-5.08 -35.56);
 Pin 'VCCINT2' I/O None Middle R270 Both 0 (10.16 35.56);
 Pin 'VCCIO' I/O None Middle R180 Both 0 (35.56 -5.08);
 Layer 95;
-Change Size 1.397;
-Change Ratio 10;
-Text '>NAME' R0 (-30.48 -33.02);
+Change Size 1.778;
+Change Ratio 8;
+Text '>NAME' R0 (-30.48 31.4325);
 Layer 96;
-Change Size 1.397;
-Change Ratio 10;
-Text '>VALUE' R0 (-30.48 -35.56);
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-30.48 -33.02);
 Layer 94;
 Change Size 3.81;
 Change Ratio 10;
@@ -76,7 +76,7 @@ Change Size 3.81;
 Change Ratio 10;
 Text 'FB4' R0 (7.62 -10.16);
 Layer 94;
-Wire  0.254 (-30.48 27.94) (-30.48 -30.48) (30.48 -30.48) (30.48 30.48) \
+Wire  0.4064 (-30.48 27.94) (-30.48 -30.48) (30.48 -30.48) (30.48 30.48) \
       (-27.94 30.48) (-30.48 27.94);
 Wire  0.254 (-20.32 3.81) (1.27 3.81) (3.81 3.81);
 Wire  0.254 (1.27 3.81) (1.27 20.32);

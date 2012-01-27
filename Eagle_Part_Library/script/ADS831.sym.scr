@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'ADS831.sym';
 Layer 94;
-Wire  0.254 (-12.7 22.86) (12.7 22.86) (12.7 -22.86) (-12.7 -22.86) \
+Wire  0.4064 (-12.7 22.86) (12.7 22.86) (12.7 -22.86) (-12.7 -22.86) \
       (-12.7 22.86);
 Pin 'CLK' In Clk Middle R180 Both 0 (17.78 17.78);
 Pin 'BIT1' I/O None Middle R180 Both 0 (17.78 12.7);
@@ -33,6 +33,7 @@ Pin 'VDRV' Pwr None Middle R270 Both 0 (2.54 27.94);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
+Change Font Vector;
 Text '>NAME' R0 (5.08 -25.4);
 Layer 96;
 Change Size 1.778;

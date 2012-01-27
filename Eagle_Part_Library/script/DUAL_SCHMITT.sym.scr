@@ -14,5 +14,14 @@ Pin '2Y' I/O None Middle R180 Both 0 (17.78 -2.54);
 Pin 'VCC' I/O None Middle R180 Both 0 (17.78 2.54);
 Pin '1Y' I/O None Middle R180 Both 0 (17.78 7.62);
 Layer 94;
-Wire  0.254 (-2.54 10.16) (12.7 10.16) (12.7 -5.08) (-2.54 -5.08) \
+Wire  0.4064 (-2.54 10.16) (12.7 10.16) (12.7 -5.08) (-2.54 -5.08) \
       (-2.54 10.16);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Change Font Proportional;
+Text '>NAME' R0 (-2.54 11.43);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-2.54 -7.62);

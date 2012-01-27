@@ -13,13 +13,13 @@ Smd '-' 2 1.5 -0 R0 (-1.3 0);
 Layer 1;
 Smd '+' 2 1.5 -0 R0 (1.3 0);
 Layer 25;
-Change Size 1.016;
-Change Ratio 8;
+Change Size 1.27;
+Change Ratio 10;
 Text '>NAME' R0 (-1.65 1.75);
 Layer 27;
-Change Size 1.016;
-Change Ratio 8;
-Text '>VALUE' R0 (-1.65 -2.825);
+Change Size 1.27;
+Change Ratio 10;
+Text '>VALUE' R0 (-1.65 -3.1425);
 Layer 51;
 Wire  0.1016 (-1.6 1.6) (0.8 1.6) (1.6 0.8) (1.6 -0.8) \
       (0.8 -1.6) (-1.6 -1.6) (-1.6 1.6);

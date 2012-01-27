@@ -55,3 +55,8 @@ Layer 22;
 Change Size 1.27;
 Change Ratio 8;
 Text '8' MR0 (-3 2.5);
+Layer 25;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>NAME' R0 (-3.175 4.7625);

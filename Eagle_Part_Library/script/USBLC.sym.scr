@@ -14,13 +14,13 @@ Pin 'I/O2' I/O None Middle R180 Both 0 (5.08 2.54);
 Pin 'VBUS' I/O None Middle R180 Both 0 (5.08 7.62);
 Pin 'I/O1' I/O None Middle R180 Both 0 (5.08 12.7);
 Layer 94;
-Wire  0.254 (-17.78 15.24) (-17.78 0) (0 0) (0 15.24) \
+Wire  0.4064 (-17.78 15.24) (-17.78 0) (0 0) (0 15.24) \
       (-17.78 15.24);
 Layer 95;
 Change Size 1.778;
 Change Ratio 10;
-Text '>NAME' R0 (-17.78 -2.54);
+Text '>NAME' R0 (-17.78 15.875);
 Layer 96;
 Change Size 1.778;
 Change Ratio 10;
-Text '>VALUE' R0 (-17.78 -5.08);
+Text '>VALUE' R0 (-17.78 -2.54);

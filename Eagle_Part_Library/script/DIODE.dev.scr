@@ -14,7 +14,7 @@ Add DIODE 'G$1' Next 0 (0 0);
 Package 'DO323' '-DO323';
 Technology '';
 Connect  'G$1.C' 'C'  'G$1.A' 'A';
-Package 'SOT23' '-SOT23';
+Package 'SOT-23' '-SOT23';
 Technology '';
 Connect  'G$1.C' '3'  'G$1.A' '1';
 Package 'SOD-123' '-SOD-123';

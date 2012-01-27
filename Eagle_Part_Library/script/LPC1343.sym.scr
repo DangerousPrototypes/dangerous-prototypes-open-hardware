@@ -8,15 +8,15 @@ Grid mm;
 
 Edit 'LPC1343.sym';
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-25.4 28.956);
+Text '>NAME' R0 (-25.4 28.6385);
 Layer 96;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
 Text '>VALUE' R0 (-25.4 -27.94);
 Layer 94;
-Wire  0.254 (-25.4 27.94) (27.94 27.94) (27.94 -25.4) (-25.4 -25.4) \
+Wire  0.4064 (-25.4 27.94) (27.94 27.94) (27.94 -25.4) (-25.4 -25.4) \
       (-25.4 27.94);
 Pin 'PIO2_6' I/O None Short R0 Both 0 (-27.94 15.24);
 Pin 'PIO2_0' I/O None Short R0 Both 0 (-27.94 12.7);

@@ -10,8 +10,8 @@ Edit 'MRF24WBOMA.pac';
 Description '';
 Layer 21;
 Wire  0.127 (10.5 0) (10.5 12);
-Wire  0.127 (10.5 15.5) (10.5 -15.5) (4 -15.5) (-10.5 -15.5) \
-      (-10.5 15.5) (10.5 15.5);
+Wire  0.127 (10.5 15.5) (10.5 -15.5) (-10.5 -15.5) (-10.5 15.5) \
+      (10.5 15.5);
 Layer 1;
 Smd '18' 0.8 0.95 -0 R270 (-9.865 -7.88);
 Layer 1;
@@ -100,3 +100,8 @@ Layer 51;
 Change Size 2.1844;
 Change Ratio 12;
 Text 'No Copper' R0 (-17 -20);
+Layer 25;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>NAME' R0 (-10.4775 16.51);

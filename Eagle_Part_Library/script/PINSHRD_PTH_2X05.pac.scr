@@ -41,11 +41,7 @@ Rect R0 (4.826 -1.524) (5.334 -1.016);
 Layer 25;
 Change Size 1.27;
 Change Ratio 10;
-Text '>NAME' R0 (-11.43 5.08);
-Layer 27;
-Change Size 1.27;
-Change Ratio 8;
-Text '>VALUE' R0 (-11.43 -6.35);
+Text '>NAME' R0 (-8.89 5.08);
 Layer 21;
 Wire  0.1524 (-8.83 4.4) (8.83 4.4) (8.83 -4.4) (2.25 -4.4) \
       (-2.25 -4.4) (-8.83 -4.4) (-8.83 4.4);

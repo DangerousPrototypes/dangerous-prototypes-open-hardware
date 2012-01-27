@@ -30,5 +30,5 @@ Pin 'P1.2/TA0.1/A2' I/O None Short R0 Both 0 (-43.18 0);
 Pin 'P1.3/ADC10CLK/A3/VREF-/VEREF-' I/O None Short R0 Both 0 (-43.18 -2.54);
 Pin 'P1.4/SMCLK/A4/VREF+/VEREF+/TCK' I/O None Short R0 Both 0 (-43.18 -5.08);
 Layer 94;
-Wire  0.254 (-40.64 10.16) (40.64 10.16) (40.64 -10.16) (-40.64 -10.16) \
+Wire  0.4064 (-40.64 10.16) (40.64 10.16) (40.64 -10.16) (-40.64 -10.16) \
       (-40.64 10.16);

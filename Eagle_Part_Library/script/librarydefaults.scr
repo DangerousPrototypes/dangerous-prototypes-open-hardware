@@ -50,13 +50,14 @@ Layer  91 Nets;
 Layer  92 Busses;
 Layer  93 Pins;
 Layer  94 Symbols;
-Layer  95 Names;
+Layer  95 NAMES;
 Layer  96 Values;
 Layer  97 Info;
 Layer  98 Guide;
 Layer 100 Muster;
 Layer 101 Patch_Top;
 Layer 102 Vscore;
+Layer 103 ATT_MISO;
 Layer 104 Name;
 Layer 105 Beschreib;
 Layer 106 BGA-Top;
@@ -80,6 +81,6 @@ Layer 250 Descript;
 Layer 251 SMDround;
 Layer 254 cooling;
 Description '\
-Dangerous Prototypes common devices\n\
+Dangerous Prototypes Standard PCB sizes\n\
 http://dangerousprototypes.com';
 

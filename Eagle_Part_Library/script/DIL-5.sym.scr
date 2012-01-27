@@ -12,11 +12,15 @@ Pin '2' Pas None Short R0 Pad 0 (-7.62 0);
 Pin '3' Pas None Short R0 Pad 0 (-7.62 -2.54);
 Pin '4' Pas None Short R180 Pad 0 (7.62 -2.54);
 Layer 94;
-Wire  0.254 (-5.08 3.81) (-5.08 -3.81) (5.08 -3.81) (5.08 3.81) \
+Wire  0.4064 (-5.08 3.81) (-5.08 -3.81) (5.08 -3.81) (5.08 3.81) \
       (2.54 3.81);
-Wire  0.254 (-5.08 3.81) (-2.54 3.81) +180 (2.54 3.81);
+Wire  0.4064 (-5.08 3.81) (-2.54 3.81) +180 (2.54 3.81);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-4.445 4.445);
+Text '>NAME' R0 (-5.08 4.445);
 Pin '5' Pas None Short R180 Pad 0 (7.62 2.54);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-5.08 -6.35);

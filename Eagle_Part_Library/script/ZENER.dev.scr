@@ -7,7 +7,7 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'ZENER.dev';
-Prefix 'D';
+Prefix 'ZD';
 Description 'Zener Diode SOD-323';
 Value On;
 Add ZENER 'G$1' Next 0 (0 0);

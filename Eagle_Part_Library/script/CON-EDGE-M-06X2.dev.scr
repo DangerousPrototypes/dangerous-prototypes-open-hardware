@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'CON-EDGE-M-06X2.dev';
 Prefix 'CON';
-Description '';
+Description 'Male 6x2 PCB Edge connector';
 Value On;
 Add EDGE_CONNECTOR_6X2 'G$1' Next 0 (0 0);
 Package 'PCB_EDGE_CONNECTOR_6X2' '''''';

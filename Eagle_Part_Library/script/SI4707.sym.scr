@@ -8,8 +8,7 @@ Grid mm;
 
 Edit 'SI4707.sym';
 Layer 94;
-Change Style Continuous;
-Wire  0.254 (-15.24 -15.24) (15.24 -15.24) (15.24 15.24) (-15.24 15.24) \
+Wire  0.4064 (-15.24 -15.24) (15.24 -15.24) (15.24 15.24) (-15.24 15.24) \
       (-15.24 -15.24);
 Pin 'NC1' I/O None Middle R0 Both 0 (-20.32 5.08);
 Pin 'FMI' I/O None Middle R0 Both 0 (-20.32 2.54);
@@ -32,12 +31,12 @@ Pin 'GPO2/!INT' I/O None Middle R270 Both 0 (0 20.32);
 Pin 'GPO1' I/O None Middle R270 Both 0 (-2.54 20.32);
 Pin 'NC2' I/O None Middle R270 Both 0 (-5.08 20.32);
 Layer 95;
-Change Size 1.016;
-Change Ratio 12;
+Change Size 1.778;
+Change Ratio 8;
 Change Font Vector;
-Text '>NAME' R0 (-15.24 17.78);
+Text '>NAME' R0 (6.0325 18.415);
 Layer 96;
-Change Size 1.016;
-Change Ratio 12;
-Text '>VALUE' R0 (-15.24 16.002);
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (6.0325 16.002);
 Pin 'PAD' I/O None Middle R180 Both 0 (20.32 -12.7);

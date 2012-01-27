@@ -8,8 +8,8 @@ Grid mm;
 
 Edit 'SN74LVC8T245.sym';
 Layer 94;
-Wire  0.254 (-10.16 20.32) (10.16 20.32) (10.16 -22.86) (-10.16 -22.86) \
-      (-10.16 20.32);
+Wire  0.4064 (-10.16 17.78) (10.16 17.78) (10.16 -20.32) (-10.16 -20.32) \
+      (-10.16 17.78);
 Pin 'VCCA' Pwr None Middle R0 Both 0 (-15.24 -7.62);
 Pin 'DIR' In None Middle R0 Both 0 (-15.24 -17.78);
 Pin 'A1' I/O None Middle R0 Both 0 (-15.24 15.24);
@@ -35,10 +35,10 @@ Pin 'OE' In None Middle R180 Both 0 (15.24 -17.78);
 Pin 'VCCB2' Pwr None Middle R180 Both 0 (15.24 -10.16);
 Pin 'VCCB1' Pwr None Middle R180 Both 0 (15.24 -7.62);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-10.16 22.86);
+Text '>NAME' R0 (-10.16 18.415);
 Layer 96;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (-10.16 20.828);
+Text '>VALUE' R0 (-10.16 -22.86);

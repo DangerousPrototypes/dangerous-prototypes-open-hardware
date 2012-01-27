@@ -7,4 +7,7 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'HEADER1X1.sym';
-Pin '1' I/O None Middle R270 Both 0 (0 5.08);
+Pin '1' Pas Dot Short R0 Pad 0 (0 0);
+Layer 94;
+Wire  0.254 (3.81 2.54) (3.81 -2.54) (-1.27 -2.54) (-1.27 2.54) \
+      (3.81 2.54);
