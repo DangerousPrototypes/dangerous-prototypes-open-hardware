@@ -8,8 +8,8 @@ Grid mm;
 
 Edit 'DS1085.sym';
 Layer 94;
-Wire  0.254 (-10.16 5.08) (-10.16 -7.62) (10.16 -7.62) (10.16 5.08) \
-      (-10.16 5.08);
+Wire  0.4064 (-10.16 5.08) (-10.16 -7.62) (10.16 -7.62) \
+      (10.16 5.08) (-10.16 5.08);
 Pin 'OUT1' Out None Middle R0 Both 0 (-15.24 2.54);
 Pin 'OUT0' Out None Middle R0 Both 0 (-15.24 0);
 Pin 'VCC' Pwr None Middle R0 Both 0 (-15.24 -2.54);
@@ -21,8 +21,8 @@ Pin 'SCL' In None Middle R180 Both 0 (15.24 2.54);
 Layer 95;
 Change Size 1.778;
 Change Ratio 8;
-Text '>name' R0 (-10.16 5.588);
+Text '>NAME' R0 (-10.16 5.588);
 Layer 96;
 Change Size 1.778;
 Change Ratio 8;
-Text '>value' R0 (-10.16 -10.16);
+Text '>VALUE' R0 (-10.16 -10.16);

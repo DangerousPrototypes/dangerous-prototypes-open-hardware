@@ -13,8 +13,8 @@ Rect R0 (-1.6 -0.6) (-1.4 0.6);
 Layer 51;
 Rect R180 (1.4 -0.6) (1.6 0.6);
 Layer 51;
-Wire  0.1016 (-1.45 0.75) (1.45 0.75) (1.45 -0.75) (-1.45 -0.75) \
-      (-1.45 0.75);
+Wire  0.1016 (-1.45 0.75) (1.45 0.75) (1.45 -0.75) \
+      (-1.45 -0.75) (-1.45 0.75);
 Layer 51;
 Rect R0 (-1.45 -0.75) (-0.8 0.75);
 Layer 1;
@@ -22,10 +22,10 @@ Smd '+' 1.6 1.4 -0 R0 (-1.5 0);
 Layer 1;
 Smd '-' 1.6 1.4 -0 R180 (1.5 0);
 Layer 25;
-Change Size 1.016;
-Change Ratio 8;
-Text '>NAME' R0 (-1.6 0.975);
+Change Size 1.27;
+Change Ratio 10;
+Text '>NAME' R0 (-2.54 1.27);
 Layer 27;
-Change Size 1.016;
-Change Ratio 8;
-Text '>VALUE' R0 (-1.6 -2);
+Change Size 1.27;
+Change Ratio 10;
+Text '>VALUE' R0 (-2.54 -2.54);

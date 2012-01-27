@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'PIC24FJ128GA.sym';
 Layer 94;
-Wire  0.254 (-30.48 35.56) (30.48 35.56) (30.48 -45.72) (-30.48 -45.72) \
+Wire  0.4064 (-30.48 35.56) (30.48 35.56) (30.48 -45.72) (-30.48 -45.72) \
       (-30.48 35.56);
 Pin 'RB0/AN0/CN2/VR+/PGD1/RP0' I/O None Short R0 Both 0 (-33.02 33.02);
 Pin 'RB1/AN1/CN3/VR-/PGC1/RP1' I/O None Short R0 Both 0 (-33.02 30.48);
@@ -83,13 +83,13 @@ Change Size 1.778;
 Change Ratio 8;
 Text 'VSS' R0 (-2.54 -44.45);
 Layer 95;
-Change Size 2.1844;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-30.48 38.1);
+Text '>NAME' R0 (-30.48 36.5125);
 Layer 96;
-Change Size 2.1844;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (10.16 -50.8);
+Text '>VALUE' R0 (-30.48 -48.26);
 Layer 95;
 Change Size 1.4224;
 Change Ratio 10;

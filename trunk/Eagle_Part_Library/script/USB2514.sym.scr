@@ -36,16 +36,16 @@ Pin 'XTAL2' I/O None Middle R180 Both 0 (27.94 -15.24);
 Pin '!RESET' I/O None Middle R180 Both 0 (27.94 -20.32);
 Pin 'TEST' I/O None Middle R180 Both 0 (27.94 -22.86);
 Layer 94;
-Wire  0.254 (-27.94 27.94) (22.86 27.94) (22.86 -25.4) (-27.94 -25.4) \
+Wire  0.4064 (-27.94 27.94) (22.86 27.94) (22.86 -25.4) (-27.94 -25.4) \
       (-27.94 27.94);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-27.94 -27.94);
+Text '>NAME' R0 (-27.94 28.8925);
 Layer 96;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (-27.94 -30.48);
+Text '>VALUE' R0 (-27.94 -27.94);
 Pin 'VSS' I/O None Middle R90 Both 0 (7.62 -30.48);
 Pin 'VDD18' I/O None Middle R270 Both 0 (-12.7 33.02);
 Pin 'VDD33PLL' I/O None Middle R270 Both 0 (-10.16 33.02);

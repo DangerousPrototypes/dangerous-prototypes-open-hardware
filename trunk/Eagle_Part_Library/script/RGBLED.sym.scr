@@ -7,10 +7,18 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'RGBLED.sym';
-Pin 'A' I/O None Middle R180 Both 0 (10.16 0);
-Pin 'R' I/O None Middle R0 Both 0 (-12.7 2.54);
-Pin 'G' I/O None Middle R0 Both 0 (-12.7 0);
-Pin 'B' I/O None Middle R0 Both 0 (-12.7 -2.54);
+Pin 'A' I/O None Middle R180 Both 0 (12.7 0);
+Pin 'R' I/O None Middle R0 Both 0 (-10.16 2.54);
+Pin 'G' I/O None Middle R0 Both 0 (-10.16 0);
+Pin 'B' I/O None Middle R0 Both 0 (-10.16 -2.54);
 Layer 94;
-Wire  0.254 (-7.62 -5.08) (-7.62 5.08) (5.08 5.08) (5.08 -5.08) \
-      (-7.62 -5.08);
+Wire  0.4064 (-5.08 -5.08) (-5.08 5.08) (7.62 5.08) (7.62 -5.08) \
+      (-5.08 -5.08);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text '>NAME' R0 (-5.08 5.715);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-5.08 -7.62);

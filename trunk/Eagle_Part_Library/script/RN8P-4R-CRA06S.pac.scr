@@ -9,8 +9,8 @@ Grid mm;
 Edit 'RN8P-4R-CRA06S.pac';
 Description '';
 Layer 51;
-Wire  0.2032 (-1.6 0.75) (1.6 0.75) (1.6 -0.75) (-1.6 -0.75) \
-      (-1.6 0.75);
+Wire  0.1524 (-1.6 0.75) (1.6 0.75) (1.6 -0.75) \
+      (-1.6 -0.75) (-1.6 0.75);
 Layer 1;
 Smd '3' 0.44 1.15 -0 R0 (0.4 -0.975);
 Layer 1;
@@ -29,11 +29,12 @@ Layer 1;
 Smd '4' 0.63 1.15 -0 R0 (1.295 -0.975);
 Layer 25;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
+Change Font Vector;
 Text '>NAME' R0 (-2 2);
 Layer 27;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
 Text '>VALUE' R0 (-2 -3);
 Layer 51;
 Rect R0 (-1.6 0.4) (-1 0.7);

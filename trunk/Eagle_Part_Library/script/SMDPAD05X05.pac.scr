@@ -10,3 +10,8 @@ Edit 'SMDPAD05X05.pac';
 Description '';
 Layer 1;
 Smd '1' 1.27 1.27 -0 R90 (0 0);
+Layer 25;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>NAME' R0 (-2.54 1.27);

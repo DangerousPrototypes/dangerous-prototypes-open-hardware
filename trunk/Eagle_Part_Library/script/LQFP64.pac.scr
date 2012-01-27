@@ -137,16 +137,16 @@ Smd '2' 1.45 0.27 -0 R180 (-5.625 3.25);
 Layer 1;
 Smd '1' 1.45 0.27 -0 R180 (-5.625 3.75);
 Layer 21;
-Wire  0.1 (-5.1 4.5) (-4.5 5.1) (4.5 5.1) (5.1 4.5) \
+Wire  0.1524 (-5.1 4.5) (-4.5 5.1) (4.5 5.1) (5.1 4.5) \
       (5.1 -4.6) (4.6 -5.1) (-4.6 -5.1) (-5.1 -4.6) \
       (-5.1 4.5);
 Layer 21;
-Circle 0.1 (-4.4 4.2) (-4.0395 4.2);
-Layer 21;
+Circle 0.1524 (-4.4 4.2) (-4.0395 4.2);
+Layer 25;
 Change Size 1.27;
-Change Ratio 12;
-Text '>NAME' R0 (-3.1 0.3);
-Layer 21;
+Change Ratio 10;
+Text '>NAME' R0 (-3.81 6.985);
+Layer 27;
 Change Size 1.27;
-Change Ratio 12;
-Text '>VALUE' R0 (-3.2 -1.4);
+Change Ratio 10;
+Text '>VALUE' R0 (-3.81 -7.9375);

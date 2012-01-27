@@ -108,7 +108,7 @@ Pin 'P98' I/O None Middle R270 Both 0 (-25.4 53.34);
 Pin 'PUDC_B' In None Middle R270 Both 0 (-27.94 53.34);
 Pin 'TDI' In None Middle R270 Both 0 (-30.48 53.34);
 Layer 94;
-Wire  0.254 (-48.26 -48.26) (48.26 -48.26) (48.26 48.26) (-48.26 48.26) \
+Wire  0.4064 (-48.26 -48.26) (48.26 -48.26) (48.26 48.26) (-48.26 48.26) \
       (-48.26 -48.26);
 Layer 95;
 Change Size 1.778;

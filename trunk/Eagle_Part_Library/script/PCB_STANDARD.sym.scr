@@ -8,10 +8,13 @@ Grid mm;
 
 Edit 'PCB_STANDARD.sym';
 Layer 94;
+Change Size 2.54;
+Change Ratio 8;
+Text 'PCB' R0 (2.54 2.54);
+Layer 94;
 Wire  0.254 (0 7.62) (0 0) (12.7 0) (12.7 7.62) \
       (0 7.62);
 Layer 94;
 Change Size 2.54;
 Change Ratio 8;
-Change Font Proportional;
 Text 'PCB' R0 (2.54 2.54);

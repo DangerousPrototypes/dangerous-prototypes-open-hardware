@@ -41,13 +41,19 @@ Smd '8' 0.4 0.8 -0 R0 (3.2 -0.8);
 Layer 1;
 Smd '9' 0.4 0.8 -0 R0 (3.2 0.8);
 Layer 51;
-Wire  0.127 (-2.8 -0.8) (3.6 -0.8) (3.6 0.8) (-2.8 0.8) \
+Wire  0.127 \
+      (-2.8 -0.8) (3.6 -0.8) (3.6 0.8) (-2.8 0.8) \
       (-2.8 -0.8);
 Layer 21;
 Wire  0.3048 (-2.8 0.8) (-2.8 -0.8);
 Wire  0.127 (3.6 0.8) (3.6 -0.8);
 Layer 25;
-Change Size 1.016;
-Change Ratio 12;
+Change Size 1.27;
+Change Ratio 10;
 Change Font Vector;
 Text '>NAME' R0 (-2.54 1.524);
+Layer 27;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>VALUE' R0 (-2.54 -2.8575);

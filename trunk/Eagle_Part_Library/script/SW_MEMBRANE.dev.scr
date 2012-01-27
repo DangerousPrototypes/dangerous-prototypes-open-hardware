@@ -7,11 +7,10 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'SW_MEMBRANE.dev';
-Prefix '';
+Prefix 'SW';
 Description '';
 Value Off;
 Add SW_MEMBRANE 'G$1' Next 0 (0 0);
 Package 'SW_MEMBRANE' '''''';
 Technology '';
 Connect  'G$1.2' 'P$2'  'G$1.1' 'P$1';
-Grid inch;

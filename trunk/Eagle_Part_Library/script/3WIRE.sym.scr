@@ -16,13 +16,14 @@ Pin 'DC' I/O None Middle R180 Pin 0 (15.24 2.54);
 Pin 'ORG' I/O None Middle R180 Pin 0 (15.24 0);
 Pin 'GND' I/O None Middle R180 Pin 0 (15.24 -2.54);
 Layer 94;
-Wire  0.254 (-5.08 7.62) (10.16 7.62) (10.16 -5.08) (-5.08 -5.08) \
+Wire  0.4064 (-5.08 7.62) (10.16 7.62) (10.16 -5.08) (-5.08 -5.08) \
       (-5.08 7.62);
 Layer 95;
-Change Size 1.4224;
-Change Ratio 10;
-Text '>NAME' R0 (-5.08 -7.62);
+Change Size 1.778;
+Change Ratio 8;
+Change Font Vector;
+Text '>NAME' R0 (-5.08 8.255);
 Layer 96;
-Change Size 1.4224;
-Change Ratio 10;
-Text '>VALUE' R0 (-5.08 -10.16);
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-5.08 -7.62);

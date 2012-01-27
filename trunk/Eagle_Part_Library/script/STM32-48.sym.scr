@@ -56,13 +56,13 @@ Pin 'PB2' I/O None Middle R180 Both 0 (43.18 20.32);
 Pin 'PB1' I/O None Middle R180 Both 0 (43.18 22.86);
 Pin 'PB0' I/O None Middle R180 Both 0 (43.18 25.4);
 Layer 94;
-Wire  0.254 (-17.78 33.02) (-17.78 -38.1) (38.1 -38.1) (38.1 33.02) \
+Wire  0.4064 (-17.78 33.02) (-17.78 -38.1) (38.1 -38.1) (38.1 33.02) \
       (-17.78 33.02);
 Layer 95;
-Change Size 1.9304;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (15.24 35.56);
+Text '>NAME' R0 (7.9375 33.9725);
 Layer 96;
-Change Size 1.9304;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (15.24 33.02);
+Text '>VALUE' R0 (7.62 -40.64);

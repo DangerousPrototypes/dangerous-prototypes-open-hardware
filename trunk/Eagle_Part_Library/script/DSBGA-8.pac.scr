@@ -28,8 +28,13 @@ Layer 21;
 Wire  0.127 (-1 -1) (1 -1) (1 1) (-1 1) \
       (-1 -1);
 Layer 25;
-Change Size 1.016;
-Change Ratio 12;
-Text '>NAME' R0 (-2 1.5);
+Change Size 1.27;
+Change Ratio 10;
+Text '>NAME' R0 (-2.54 1.27);
 Layer 21;
 Rect R0 (-1 0.5) (-0.5 1);
+Layer 27;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>VALUE' R0 (-2.54 -2.54);

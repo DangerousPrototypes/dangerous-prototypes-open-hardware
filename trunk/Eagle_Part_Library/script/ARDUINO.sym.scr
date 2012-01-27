@@ -36,21 +36,21 @@ Pin '5V' I/O None Middle R180 Pin 0 (20.32 -7.62);
 Pin '3V3' I/O None Middle R180 Pin 0 (20.32 -10.16);
 Pin 'RESET' In None Middle R180 Pin 0 (20.32 -12.7);
 Layer 94;
-Wire  0.254 (-17.78 20.32) (15.24 20.32) (15.24 -22.86) (-17.78 -22.86) \
+Wire  0.4064 (-17.78 20.32) (15.24 20.32) (15.24 -22.86) (-17.78 -22.86) \
       (-17.78 20.32);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
 Text 'Arduino' R0 (0 -17.78);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
 Text 'Duemilanove' R0 (-2.54 -20.32);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-17.78 -25.4);
+Text '>NAME' R0 (-17.78 21.59);
 Layer 96;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (-17.78 -27.94);
+Text '>VALUE' R0 (-17.78 -25.4);

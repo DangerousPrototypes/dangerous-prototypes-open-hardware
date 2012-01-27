@@ -16,13 +16,9 @@ Change Drill 0.8;Pad '5' Round 0 R0 (10.16 0);
 Change Drill 0.8;Pad '6' Round 0 R0 (12.7 0);
 Layer 21;
 Change Size 1.27;
-Change Ratio 8;
-Text '>NAME' R0 (-1.27 -2.54);
+Change Ratio 10;
+Text '>NAME' R0 (-1.27 1.5875);
 Layer 21;
-Wire  0.127 (-1.27 -1.27) (1.27 -1.27) (13.97 -1.27) (13.97 1.27) \
+Wire  0.1524 (-1.27 -1.27) (1.27 -1.27) (13.97 -1.27) (13.97 1.27) \
       (1.27 1.27) (-1.27 1.27) (-1.27 -1.27);
-Wire  0.127 (1.27 1.27) (1.27 -1.27);
-Layer 27;
-Change Size 1.27;
-Change Ratio 8;
-Text '>VALUE' R0 (-1.27 -3.81);
+Wire  0.1524 (1.27 1.27) (1.27 -1.27);

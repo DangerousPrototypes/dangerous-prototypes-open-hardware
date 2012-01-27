@@ -20,6 +20,7 @@ Wire  0.127 (-5.48 100) (-4.21 100) (-0.4 100);
 Layer 47;
 Change Size 2.54;
 Change Ratio 8;
+Change Font Proportional;
 Text '50mm' R90 (-4.845 45.32);
 Layer 47;
 Wire  0.127 (100 104.21) (0 104.21);

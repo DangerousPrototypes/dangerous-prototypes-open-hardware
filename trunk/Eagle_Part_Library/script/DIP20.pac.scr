@@ -30,8 +30,14 @@ Change Drill 0.8;Pad '19' Round 0 R0 (-8.89 3.81);
 Change Drill 0.8;Pad '20' Round 0 R0 FIRST (-11.43 3.81);
 Layer 25;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
+Change Font Vector;
 Text '>NAME' R90 (-13.335 -2.54);
 Layer 21;
-Wire  0.127 (-12.7 -1.27) (-12.7 -5.08) (12.7 -5.08) (12.7 5.08) \
+Wire  0.1524 (-12.7 -1.27) (-12.7 -5.08) (12.7 -5.08) (12.7 5.08) \
       (-12.7 5.08) (-12.7 1.27) -180 (-12.7 -1.27);
+Layer 27;
+Change Size 1.27;
+Change Ratio 10;
+Change Font Proportional;
+Text '>VALUE' R0 (-10.795 -0.635);

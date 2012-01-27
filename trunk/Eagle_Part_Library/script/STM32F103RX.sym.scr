@@ -56,16 +56,16 @@ Pin 'BOOT1/5V/PB2' I/O None Middle R180 Both 0 (68.58 35.56);
 Pin 'TIM3_CH4/ADC9/PB1' I/O None Middle R180 Both 0 (68.58 38.1);
 Pin 'TIM3_CH3/ADC8/PB0' I/O None Middle R180 Both 0 (68.58 40.64);
 Layer 94;
-Wire  0.254 (-63.5 43.18) (-63.5 -43.18) (63.5 -43.18) (63.5 43.18) \
+Wire  0.4064 (-63.5 43.18) (-63.5 -43.18) (63.5 -43.18) (63.5 43.18) \
       (-63.5 43.18);
 Layer 95;
-Change Size 1.9304;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-63.5 48.26);
+Text '>NAME' R0 (-63.5 44.1325);
 Layer 96;
-Change Size 1.9304;
+Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (-63.5 45.72);
+Text '>VALUE' R0 (-63.5 -45.72);
 Pin 'ADC10/PC0' I/O None Middle R180 Both 0 (68.58 -2.54);
 Pin 'ADC11/PC1' I/O None Middle R180 Both 0 (68.58 -5.08);
 Pin 'ADC12/PC2' I/O None Middle R180 Both 0 (68.58 -7.62);

@@ -14,5 +14,13 @@ Pin 'AG' I/O None Middle R180 Both 0 (12.7 -2.54);
 Pin 'AR' I/O None Middle R180 Both 0 (12.7 0);
 Pin 'AB' I/O None Middle R180 Both 0 (12.7 2.54);
 Layer 94;
-Wire  0.254 (-7.62 5.08) (-7.62 -5.08) (7.62 -5.08) (7.62 5.08) \
+Wire  0.4064 (-7.62 5.08) (-7.62 -5.08) (7.62 -5.08) (7.62 5.08) \
       (-7.62 5.08);
+Layer 95;
+Change Size 1.778;
+Change Ratio 8;
+Text '>NAME' R0 (-7.62 5.715);
+Layer 96;
+Change Size 1.778;
+Change Ratio 8;
+Text '>VALUE' R0 (-7.62 -7.62);

@@ -17,7 +17,7 @@ Text '>NAME' R0 (-3.048 1.524);
 Layer 27;
 Change Size 1.27;
 Change Ratio 10;
-Text '>VALUE' R0 (-2.2606 -0.635);
+Text '>VALUE' R0 (-3.175 -2.8575);
 Layer 51;
 Wire  0.6096 (5.08 0) (4.064 0);
 Wire  0.6096 (-5.08 0) (-4.064 0);

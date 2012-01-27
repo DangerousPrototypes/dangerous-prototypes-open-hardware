@@ -53,11 +53,11 @@ Wire  0.127 (-1.7462 1.1112) (-2.0637 1.1112) (-2.0637 1.397);
 Wire  0.127 (-2.0637 1.4287) (-1.7462 1.4287);
 Layer 51;
 Change Size 1.27;
-Change Ratio 12;
+Change Ratio 10;
 Text '>RIGHT' R0 (0 -1.27);
 Layer 51;
 Change Size 1.27;
-Change Ratio 12;
+Change Ratio 10;
 Text '>LEFT' R0 (0 0.635);
 Layer 51;
 Wire  0.127 (-5.08 -1.27) (-5.08 0) (-1.27 0) (-1.27 -1.27) \

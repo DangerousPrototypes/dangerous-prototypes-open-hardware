@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'FT232RL-VER2.sym';
 Layer 94;
-Wire  0.254 (-17.78 20.32) (-17.78 -20.32) (17.78 -20.32) (17.78 20.32) \
+Wire  0.4064 (-17.78 20.32) (-17.78 -20.32) (17.78 -20.32) (17.78 20.32) \
       (-17.78 20.32);
 Pin 'VCCIO' Pwr None Middle R0 Both 0 (-22.86 15.24);
 Pin 'VCC' Pwr None Middle R0 Both 0 (-22.86 12.7);
@@ -39,10 +39,10 @@ Pin 'GND2' Pwr None Middle R90 Both 0 (0 -25.4);
 Pin 'GND3' Pwr None Middle R90 Both 0 (2.54 -25.4);
 Pin 'TEST' In None Middle R90 Both 0 (5.08 -25.4);
 Layer 95;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
-Text '>NAME' R0 (-17.78 22.86);
+Text '>NAME' R0 (-17.78 23.1775);
 Layer 96;
-Change Size 1.27;
+Change Size 1.778;
 Change Ratio 8;
 Text '>VALUE' R0 (-17.78 21.082);

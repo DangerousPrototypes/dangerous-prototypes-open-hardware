@@ -20,11 +20,11 @@ Wire  0.3048 (-2.111 1) (-2.111 -1) (-0.6541 -1) (0.6541 -1) \
       (-2.111 1);
 Layer 21;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
 Text '>J12' SR270 (-1.75 -1.75);
 Layer 21;
 Change Size 1.27;
-Change Ratio 8;
+Change Ratio 10;
 Text '>J23' SR270 (0.5 -1.75);
 Layer 21;
 Wire  0.3048 (-0.6541 -1) (-0.6541 -0.75);

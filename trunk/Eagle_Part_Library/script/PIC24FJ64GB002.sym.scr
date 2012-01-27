@@ -36,7 +36,7 @@ Pin 'RB15' I/O None Middle R180 Both 0 (30.48 10.16);
 Pin 'VSS@2' Pwr None Middle R180 Both 0 (30.48 12.7);
 Pin 'VDD@2' Pwr None Middle R180 Both 0 (30.48 15.24);
 Layer 94;
-Wire  0.254 (-25.4 -20.32) (25.4 -20.32) (25.4 17.78) (-25.4 17.78) \
+Wire  0.4064 (-25.4 -20.32) (25.4 -20.32) (25.4 17.78) (-25.4 17.78) \
       (-25.4 -20.32);
 Layer 95;
 Change Size 1.778;
