@@ -50,7 +50,7 @@ Layer  91 Nets;
 Layer  92 Busses;
 Layer  93 Pins;
 Layer  94 Symbols;
-Layer  95 NAMES;
+Layer  95 Names;
 Layer  96 Values;
 Layer  97 Info;
 Layer  98 Guide;
