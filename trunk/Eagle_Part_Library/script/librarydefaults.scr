@@ -62,6 +62,7 @@ Layer 104 Name;
 Layer 105 Beschreib;
 Layer 106 BGA-Top;
 Layer 107 BD-Top;
+Layer 108 centerline;
 Layer 116 Patch_BOT;
 Layer 121 _tsilk;
 Layer 122 _bsilk;
