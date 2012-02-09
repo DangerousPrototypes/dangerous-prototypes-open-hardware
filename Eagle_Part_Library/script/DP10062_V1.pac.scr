@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'PCB6.2X10.pac';
+Edit 'DP10062_V1.pac';
 Description '';
 Layer 47;
 Change Size 2.54;
@@ -122,3 +122,103 @@ Layer 20;
 Wire  0 (96 0) +90 (100 4);
 Wire  0 (100 58) +90 (96 62);
 Wire  0 (4 62) +90 (0 58);
+Layer 39;
+Wire  1.7 (0.85 4) (0.85 58) -90 (4 61.15) (96 61.15) -90 \
+      (99.15 58) (99.15 4) -90 (96 0.85) (4 0.85) -90 \
+      (0.85 4);
+Layer 40;
+Wire  1.7 (0.85 4) (0.85 58) -90 (4 61.15) (96 61.15) -90 \
+      (99.15 58) (99.15 4) -90 (96 0.85) (4 0.85) -90 \
+      (0.85 4);
+Layer 41;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (7 62) (7 58) -90 (4 55) (0 55) \
+      (0 58) -90 (4 62) (7 62);
+Layer 42;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (7 62) (7 58) -90 (4 55) (0 55) \
+      (0 58) -90 (4 62) (7 62);
+Layer 43;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (7 62) (7 58) -90 (4 55) (0 55) \
+      (0 58) -90 (4 62) (7 62);
+Layer 41;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (0 7) (4 7) -90 (7 4) (7 0) \
+      (4 0) -90 (0 4) (0 7);
+Layer 42;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (0 7) (4 7) -90 (7 4) (7 0) \
+      (4 0) -90 (0 4) (0 7);
+Layer 43;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (0 7) (4 7) -90 (7 4) (7 0) \
+      (4 0) -90 (0 4) (0 7);
+Layer 41;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (93 0) (93 4) -90 (96 7) (100 7) \
+      (100 4) -90 (96 0) (93 0);
+Layer 42;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (93 0) (93 4) -90 (96 7) (100 7) \
+      (100 4) -90 (96 0) (93 0);
+Layer 43;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (93 0) (93 4) -90 (96 7) (100 7) \
+      (100 4) -90 (96 0) (93 0);
+Layer 42;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (100 55) (96 55) -90 (93 58) (93 62) \
+      (96 62) -90 (100 58) (100 55);
+Layer 43;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (100 55) (96 55) -90 (93 58) (93 62) \
+      (96 62) -90 (100 58) (100 55);
+Layer 41;
+Change Spacing 1.27;
+Change Pour Solid;
+Change Rank 0;
+Polygon 0  (100 55) (96 55) -90 (93 58) (93 62) \
+      (96 62) -90 (100 58) (100 55);
+Layer 49;
+Wire  0 (0 31) \
+      (100 31);
+Wire  0 (50 62) (50 0);
+Wire  0 (5.25 33) (5.25 29);
+Wire  0 (94.75 33) (94.75 29);
+Wire  0 (4 30) (-7 19) (-16 19);
+Wire  0 (96 32) (104 40) (113 40);
+Layer 49;
+Change Size 1.27;
+Change Ratio 12;
+Text 'Center' R0 (105 41);
+Layer 49;
+Change Size 1.27;
+Change Ratio 12;
+Text 'Center' R0 (-14 19);
+Layer 26;
+Change Size 1.27;
+Change Ratio 12;
+Text 'DP10062_v1' MR0 (93 1);
