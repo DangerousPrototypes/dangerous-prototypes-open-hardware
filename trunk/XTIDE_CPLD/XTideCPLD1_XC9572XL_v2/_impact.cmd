@@ -4,6 +4,7 @@ setMode -bs
 setMode -bs
 setCable -port xsvf -file "C:/Xilinx/Projects/XTideCPLD1_XC9572XL_v2/XTideCPLD1_XC9572XL_v2.xsvf"
 addDevice -p 1 -file "C:/Xilinx/Projects/XTideCPLD1_XC9536_5V_v1/Top.jed"
+assignFile -p 1 -file "C:/Xilinx/Projects/XTideCPLD1_XC9572XL_v2/Top.jed"
 Program -p 1 -e -v 
 setMode -bs
 setMode -bs

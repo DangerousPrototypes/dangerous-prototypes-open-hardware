@@ -20,28 +20,28 @@
 <msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_590</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_682</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_682</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_683</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_683</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_688</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_688</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_689</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_689</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_690</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_690</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_694</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_694</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_696</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_696</arg>&apos; has no outputs and will be deleted.
 </msg>
 
-<msg type="warning" file="Cpld" num="945" delta="new" >The component &apos;<arg fmt="%s" index="1">XLXI_706</arg>&apos; has no outputs and will be deleted.
+<msg type="warning" file="Cpld" num="945" delta="old" >The component &apos;<arg fmt="%s" index="1">XLXI_706</arg>&apos; has no outputs and will be deleted.
 </msg>
 
 <msg type="warning" file="Cpld" num="1239" delta="old" >The global <arg fmt="%s" index="1">clock</arg> designation (BUFG) on signal &apos;<arg fmt="%s" index="2">iA8</arg>&apos; is ignored. Most likely the signal is gated and therefore cannot be used as a global control signal.
