@@ -1,0 +1,34 @@
+{| class="wikitable" border="1"
+|+ C:/Users/Filip/Desktop/dangerous-prototypes-open-hardware/Microcontrollers/PIC32_DIP/hardware/PIC32DIP.brd
+!Part!!Quantity!!Value!!Package
+|-
+|C1-C9||9||27pf||DEC
+|-
+|D1||1||1N4148DO35-7||DO35-7
+|-
+|ICSP||1||HEADER_PRG_PIC_ICSPB||HEADER_PRG_1X05_ICSP_B
+|-
+|J1||1||||SPC4077
+|-
+|R1,R2||2||||RTH025W
+|-
+|RESET||1||||B3F-10XX
+|-
+|U$1||1||PIC32DIP||SOCKET-28-3
+|-
+|U$2||1||DINA4_L||DP_LOGO
+|-
+|U$3,U$6||2||HEADER1X3PTH||M1X3
+|-
+|U$4,U$7,U$8||3||HEADER1X2PTH||M1X2
+|-
+|U$5||1||HEADER1X6PTH||M1X6
+|-
+|U$9||1||||DP_LOGO_ART_0.5X0.5
+|-
+|USB||1||USB||USB-B-H
+|-
+|VR1||1||MCP1701-3.3||TO92-EBC
+|-
+|XTAL1||1||20Mhz||HC49U70
+|}
