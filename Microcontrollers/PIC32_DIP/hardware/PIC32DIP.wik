@@ -2,7 +2,13 @@
 |+ C:/Users/Filip/Desktop/dangerous-prototypes-open-hardware/Microcontrollers/PIC32_DIP/hardware/PIC32DIP.brd
 !Part!!Quantity!!Value!!Package
 |-
-|C1-C9||9||27pf||DEC
+|C1,C3,C4,C9||4||0.1u||DEC
+|-
+|C2||1||10u||DEC
+|-
+|C5,C6||2||27pf||DEC
+|-
+|C7,C8||2||1u||DEC
 |-
 |D1||1||1N4148DO35-7||DO35-7
 |-
