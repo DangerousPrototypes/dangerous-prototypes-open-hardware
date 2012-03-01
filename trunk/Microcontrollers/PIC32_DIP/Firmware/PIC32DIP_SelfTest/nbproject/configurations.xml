@@ -63,13 +63,6 @@
       </C32-LD>
       <C32Global>
       </C32Global>
-      <PICkit2PlatformTool>
-        <property key="pk2settings.userpgmexec" value="true"/>
-        <property key="pk2settings.setvddvoltage" value="${pk2settings.setvddvoltage}"/>
-        <property key="pk2settings.3state" value="false"/>
-        <property key="pk2settings.preserveee" value="false"/>
-        <property key="pk2settings.usetargetpower" value="false"/>
-      </PICkit2PlatformTool>
       <PICkit3PlatformTool>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
@@ -77,8 +70,8 @@
         <property key="CHANGE NOTICE" value="true"/>
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
         <property key="memories.eeprom" value="false"/>
+        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
         <property key="COMPARATOR" value="true"/>
         <property key="REAL TIME CLOCK" value="true"/>
         <property key="programoptions.usehighvoltageonmclr" value="false"/>
@@ -100,8 +93,8 @@
         <property key="OUTPUT COMPARE 1" value="true"/>
         <property key="poweroptions.powerenable" value="false"/>
         <property key="memories.programmemory.start" value="0x1d000000"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="programoptions.preserveprogramrange.start" value="0x1d000000"/>
+        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="voltagevalue" value="3.25"/>
         <property key="memories.programmemory.end" value="0x1d007fff"/>
@@ -110,15 +103,15 @@
         <property key="TIMER3" value="true"/>
         <property key="TIMER2" value="true"/>
         <property key="TIMER1" value="true"/>
-        <property key="programmertogo.imagename" value=""/>
         <property key="CTMU" value="true"/>
+        <property key="programmertogo.imagename" value=""/>
         <property key="I2C2" value="true"/>
         <property key="I2C1" value="true"/>
         <property key="INTERRUPT CONTROL" value="true"/>
         <property key="UART2" value="true"/>
-        <property key="Freeze All Other Peripherals" value="true"/>
-        <property key="UART1" value="true"/>
         <property key="programoptions.preserveprogramrange.end" value="0x1d0001ff"/>
+        <property key="UART1" value="true"/>
+        <property key="Freeze All Other Peripherals" value="true"/>
       </PICkit3PlatformTool>
     </conf>
   </confs>
