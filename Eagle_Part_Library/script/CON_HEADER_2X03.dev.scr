@@ -7,7 +7,7 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'CON_HEADER_2X03.dev';
-Prefix '';
+Prefix 'J';
 Description '';
 Value Off;
 Add HEADER2X3 'G$1' Next 0 (2.54 0);
