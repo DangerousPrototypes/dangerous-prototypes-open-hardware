@@ -38,11 +38,11 @@ static void BP_EnableRaw2Wire(int fd)
 	char tmp[21] = { [0 ... 20] = 0x00 };
 	int done = 0;
 	int cmd_sent = 0;
-	
+
 	printf("Entering binary mode");
 	serial_write(fd, tmp, 20);
 	usleep(10000);
-	
+
 	/* reads 1 to n "BBIO1"s and one "OCD1" */
 	while (!done) {
 		ret = serial_read(fd, tmp, 4);
@@ -95,7 +95,8 @@ static uint32_t BP_VPPLow()
 static uint32_t BP_Init(struct picprog_t *p, char *port, char *speed)
 {
 	int fd;
-	printf("%s\n",speed);
+
+	printf("%s\n", speed);
 	fd = serial_open(port);
 
 	if (disable_comport !=1)
@@ -203,6 +204,7 @@ static uint32_t BP_BulkBitWrite(uint8_t bit_count, char val)
 	BP_WriteToPirate(fd, &opcode);
 	//serial_write(fd, &val, 1);
 	BP_WriteToPirate(fd, &val);
+
 	return 0;
 }
 
@@ -404,13 +406,17 @@ static uint32_t BP_Flush()
 	char buffer[1] = {0};
 	int res = -1;
 
+	if (pBP->bufcnt <= 2) {
+		return 0;
+	}
+
 	serial_write(fd, pBP->buf, pBP->bufcnt);
 	res = serial_read(fd, buffer, 1);
 	if (buffer[0] != '\x01') {
-		printf("ERROR: %#X",buffer[0]);
+		printf("ERROR: 0x%02X", buffer[0]);
 		return -1;
 	}
-	pBP->bufcnt=2;//reset counter to data area
+	pBP->bufcnt = 2;//reset counter to data area
 
 	return 0;
 }
