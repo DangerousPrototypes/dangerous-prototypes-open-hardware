@@ -106,7 +106,6 @@ static uint32_t BP_Init(struct picprog_t *p, char *port, char *speed)
 			return -1;
 		}
 
-
 		serial_setup(fd, B115200);
 		BP_EnableRaw2Wire(fd);
 
@@ -130,7 +129,7 @@ static uint32_t BP_Init(struct picprog_t *p, char *port, char *speed)
 			return -1;
 		}
 	}	else {
-	    printf("bypassing port\n");
+	  printf("bypassing port\n");
 	}
 	printf("(OK) \n");
 
@@ -171,7 +170,7 @@ static uint32_t BP_Deinit(struct picprog_t *p)
 static uint32_t BP_SetBitOrder(uint8_t lsb)
 {
 	int fd = pBP->fd;
-	if(BP_WriteToPirate(fd, (lsb==1)?"\x8A":"\x88")){
+	if (BP_WriteToPirate(fd, (lsb==1)?"\x8A":"\x88")) {
 		printf("Set bit order (%s)...ERROR", (lsb==1)?"LSB":"MSB");
 		return -1;
 	}
@@ -187,7 +186,7 @@ static uint32_t BP_BulkByteWrite(uint8_t bwrite, char* val)
 	opcode |= (bwrite - 1);
 
 	BP_WriteToPirate(fd, &opcode);
-	for (i = 0; i < bwrite; i++){
+	for (i = 0; i < bwrite; i++) {
 		BP_WriteToPirate(fd, &val[i]);
 	}
 
@@ -241,7 +240,7 @@ static uint8_t BP_reversebyte(uint8_t c)
 {
 	uint8_t r, i;
 
-	for(i = 0x1; i != 0; i = i << 1){
+	for (i = 0x1; i != 0; i = i << 1) {
 		r = r << 1;
 		if (c & i)
 			r |= 0x1;
@@ -260,7 +259,7 @@ static int BP_SetPicMode(enum BP_picmode_t mode)
 
 	serial_write(fd, "\xA0", 1);
 
-	if(BP_WriteToPirate(fd, &m)){
+	if (BP_WriteToPirate(fd, &m)) {
 		puts("ERROR");
 		return -1;
 	}
@@ -274,7 +273,6 @@ static uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data)
 	//int res = -1;
 
 	BP_SetPicMode(BP_PIC416);
-
 
 //	buffer[0] = '\xA4';
 //	buffer[1] = cmd;
@@ -291,10 +289,9 @@ static uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data)
 
 	pBP->buf[1]=((pBP->bufcnt-2)/3);
 
-	if(pBP->bufcnt>(3*100)){
-        return BP_Flush(pBP);
+	if (pBP->bufcnt>(3*100)) {
+		return BP_Flush(pBP);
 	}
-
 
 /*	serial_write(fd, buffer, 4);
 	res = serial_read(fd, buffer, 1);
@@ -310,8 +307,8 @@ static void BPdr(char *Data, uint32_t length)
 {
 	uint32_t i;
 	//swap bit order
-	for(i=0; i<length; i++){
-        Data[i]=BP_reversebyte((uint8_t)(Data[i]));
+	for (i=0; i<length; i++) {
+		Data[i]=BP_reversebyte((uint8_t)(Data[i]));
 	}
 
 }
@@ -388,8 +385,8 @@ static uint32_t BP_PIC424Write(uint32_t data, uint8_t prenop, uint8_t postnop)
 
 	pBP->buf[1]=((pBP->bufcnt-2)/4);
 
-	if(pBP->bufcnt>(4*100)){
-        return BP_Flush(pBP);
+	if (pBP->bufcnt>(4*100)) {
+		return BP_Flush(pBP);
 	}
 
 //	serial_write(fd, buffer, 5);

@@ -4,6 +4,13 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include "iface.h"
+
+#ifdef VERSION
+#define PICPROG_VER VERSION
+#else
+#define PICPROG_VER "v0.3"
+#endif
+
 struct picprog_t {
 	struct iface_t *iface;
 	void *iface_data;

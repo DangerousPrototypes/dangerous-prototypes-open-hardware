@@ -144,7 +144,7 @@ int serial_read(int fd, char *buf, int size)
 	if (disable_comport!=1)
 	{
 		if (len != size)
-			fprintf(stderr, "Error sending data");
+			fprintf(stderr, "Error reading data");
 		return len;
 	} else
 		return len;

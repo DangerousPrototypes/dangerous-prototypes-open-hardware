@@ -1,6 +1,7 @@
 EXE=picprog
 CC = gcc
-CFLAGS = -g -O0 -std=gnu99
+CFLAGS = -g -O0 -std=gnu99 -DVERSION=\"r$(shell svn info | grep 'Last Changed Rev:' | sed 's/[^0-9]//g')\"
+
 LDFLAGS =
 
 OBJS_COMMON = memory.o data_file.o common.o
@@ -10,6 +11,7 @@ OBJS += pic.o proto_pic.o pic12.o pic16.o pic18.o pic24.o
 OBJS += iface.o buspirate.o serial.o
 
 all: $(EXE) compare
+
 
 $(EXE):  $(OBJS) main.o
 	$(CC) $(CFLAGS) -o $(EXE) $(OBJS) main.o $(LFD_OBJS) $(LDFLAGS)

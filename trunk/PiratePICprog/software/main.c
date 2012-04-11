@@ -34,7 +34,6 @@ enum {
 
 
 void print_usage(char* name) {
-		printf("Pirate Pic Programmer v0.2\n");
 		printf("USAGE: \n");
 		printf(" %s -p PROG -u PORT -s SPEED -c CHIP -t TYPE -w | -r FILE  -E | -W | -R | -V \n" ,name);
 
@@ -93,7 +92,7 @@ int main(int argc, char** argv) {
 	struct memory_t *memwrite;
 
 
-	printf("(Bus) Pirate PIC Programmer v0.2 \n\n");
+	printf("(Bus) Pirate Pic Programmer " PICPROG_VER "\n\n");
 
 #ifdef DEBUG
 	cmd |= CMD_ERASE;
@@ -276,7 +275,7 @@ int main(int argc, char** argv) {
 	    printf("\nWrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
 	    return -1;
 	}
-	printf ("Found %s (%#X, ID: %#X REV: %#X) \n", picchip->name, PICidver, PICid, PICrev);
+	printf ("Found %s (0x%04x, ID: 0x%04x REV: 0x%04x) \n", picchip->name, PICidver, PICid, PICrev);
 
 	// prepare data file
 	if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
@@ -325,7 +324,7 @@ int main(int argc, char** argv) {
 	}
 
 	if (cmd & CMD_WRITE) {
-		MEM_Optimize(memread);
+		MEM_Optimize(memwrite);
 
 		PIC_WriteMemory(&picprog, memwrite);
 	}
