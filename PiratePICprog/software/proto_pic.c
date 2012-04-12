@@ -5,6 +5,7 @@
 #include "pic16.h"
 #include "pic18.h"
 #include "pic24.h"
+#include "pic32.h"
 
 #include "proto_pic.h"
 
@@ -13,6 +14,7 @@ struct proto_ops_t *proto_ops[] = {
 	&pic16_proto,
 	&pic18_proto,
 	&pic24_proto,
+	&pic32_proto,
 	NULL
 };
 

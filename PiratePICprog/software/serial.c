@@ -11,7 +11,7 @@
 #include <fcntl.h>
 
 #include <string.h>
-
+#include "debug.h"
 #include "serial.h"
 extern int disable_comport;
 
@@ -71,6 +71,9 @@ int serial_setup(int fd, speed_t speed)
 int serial_write(int fd, char *buf, int size)
 {
 	int ret = 0;
+
+	dbg_buf_verbose(buf, size);
+
 #ifdef WIN32
 	HANDLE hCom = (HANDLE)fd;
 	int res = 0;
@@ -138,6 +141,8 @@ int serial_read(int fd, char *buf, int size)
 		len += ret;
 	}
 #endif
+	dbg_buf_verbose(buf, len);
+
 	//printf("should have read = %i actual size = %i \n", size, len);
 	//fprintf(stderr, "should have read = %d actual size = %d \n", size, len);
 	//buspirate_print_buffer(buf, len);
@@ -146,9 +151,10 @@ int serial_read(int fd, char *buf, int size)
 		if (len != size)
 			fprintf(stderr, "Error reading data");
 		return len;
-	} else
+	} else {
 		return len;
 	}
+}
 
 int serial_open(char *port)
 {

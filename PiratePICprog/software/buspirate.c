@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "common.h"
+#include "debug.h"
 #include "serial.h"
 #include "buspirate.h"
 
@@ -19,6 +20,7 @@ static uint32_t BP_WriteToPirate(int fd, char * val)
 	int res = -1;
 	char ret = 0;
 
+	dbg_verbose("val = %02x\n", ((uint8_t)*val));
 	if (disable_comport== 1)
 		return 0;
 
@@ -77,18 +79,21 @@ static void BP_EnableRaw2Wire(int fd)
 static uint32_t BP_MCLRLow()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x04");
 }
 
 static uint32_t BP_VPPHigh()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x4B");
 }
 
 static uint32_t BP_VPPLow()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x49");
 }
 
@@ -150,6 +155,8 @@ static uint32_t BP_Deinit(struct picprog_t *p)
 	char tmp[6];
 	int ret;
 
+	dbg_info("\n");
+
 	tmp[0] = 0x00;
 	serial_write(fd, tmp, 1);
 
@@ -171,6 +178,9 @@ static uint32_t BP_Deinit(struct picprog_t *p)
 static uint32_t BP_SetBitOrder(uint8_t lsb)
 {
 	int fd = pBP->fd;
+	
+	dbg_info("lsb = %02x\n", lsb);
+
 	if (BP_WriteToPirate(fd, (lsb==1)?"\x8A":"\x88")) {
 		printf("Set bit order (%s)...ERROR", (lsb==1)?"LSB":"MSB");
 		return -1;
@@ -184,6 +194,8 @@ static uint32_t BP_BulkByteWrite(uint8_t bwrite, char* val)
 	int fd = pBP->fd;
 	int i;
 	char opcode = 0x10;
+
+	dbg_info("bwrite = %02x, val = %02x\n", bwrite, *val);
 	opcode |= (bwrite - 1);
 
 	BP_WriteToPirate(fd, &opcode);
@@ -199,6 +211,7 @@ static uint32_t BP_BulkBitWrite(uint8_t bit_count, char val)
 	int fd = pBP->fd;
 	char opcode = 0x30;
 
+	dbg_info("bit_count = %02x, val = %02x\n", bit_count, val);
 	opcode |= (bit_count - 1);
 
 	BP_WriteToPirate(fd, &opcode);
@@ -211,30 +224,35 @@ static uint32_t BP_BulkBitWrite(uint8_t bit_count, char val)
 static uint32_t BP_DataLow()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x0C");
 }
 
 static uint32_t BP_DataHigh()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x0D");
 }
 
 static uint32_t BP_ClockLow()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x0A");
 }
 
 static uint32_t BP_ClockHigh()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x0B");
 }
 
 static uint32_t BP_MCLRHigh()
 {
 	int fd = pBP->fd;
+	dbg_info("\n");
 	return BP_WriteToPirate(fd, "\x05");
 }
 
@@ -255,6 +273,7 @@ static int BP_SetPicMode(enum BP_picmode_t mode)
 	int fd = pBP->fd;
 	char m = mode;
 
+	dbg_info("mode = %02x\n", mode);
 	if (pBP->picmode == mode) {
 		return 0;
 	}
@@ -275,6 +294,8 @@ static uint32_t BP_PIC416Write(uint8_t cmd, uint16_t data)
 	//int res = -1;
 
 	BP_SetPicMode(BP_PIC416);
+
+	dbg_info("cmd = 0x%02x, data = 0x%04x\n", cmd, data);
 
 //	buffer[0] = '\xA4';
 //	buffer[1] = cmd;
@@ -333,6 +354,9 @@ static uint32_t BP_PIC416Read(uint8_t cmd, void *Data, uint32_t length)
 	//swap bit order
 	BPdr(Data, length);
 
+	dbg_info("length = 0x%08x\n", length);
+	dbg_buf_info((uint8_t*)Data, length);
+
 	//return BP_reversebyte(buffer[0]);
 	return 0;
 }
@@ -344,7 +368,6 @@ static uint32_t BP_PIC424Read(uint32_t cmd, void *Data, uint32_t length)
 	int res = -1;
 
 	BP_SetPicMode(BP_PIC424);
-
 
 	buffer[0]='\xA5';
 	buffer[1]=length; //2;
@@ -358,6 +381,18 @@ static uint32_t BP_PIC424Read(uint32_t cmd, void *Data, uint32_t length)
 	//swap bit order
 	BPdr(Data, (length*6));
 
+	dbg_info("length = 0x%08x\n", length);
+	dbg_buf_info((uint8_t *)Data, length * 6);
+
+	// BP does send the bytes in wrong order
+	for (uint32_t i = 0; i < length * 6; i+=2) {
+		uint8_t tmp;
+		uint8_t *data = Data;
+		tmp = data[i + 0];
+		data[i + 0] = data[i + 1];
+		data[i + 1] = tmp;
+	}
+	
 	return 0; //BP_reversebyte(buffer[0]) | BP_reversebyte(buffer[1]) << 8;	//upper 8 bits
 }
 
@@ -368,6 +403,8 @@ static uint32_t BP_PIC424Write(uint32_t data, uint8_t prenop, uint8_t postnop)
 	//int res = -1;
 
 	BP_SetPicMode(BP_PIC424);
+
+	dbg_info("data = 0x%08x, prenop = 0x%02x, postnop = 0x%02x\n", data, prenop, postnop);
 
 //	buffer[0] = '\xA4';
 //	buffer[1] = (uint8_t)(data);
@@ -406,9 +443,13 @@ static uint32_t BP_Flush()
 	char buffer[1] = {0};
 	int res = -1;
 
+	dbg_info("bufcnt = %d\n", pBP->bufcnt);
+
 	if (pBP->bufcnt <= 2) {
 		return 0;
 	}
+
+	dbg_info("Flushing...\n");
 
 	serial_write(fd, pBP->buf, pBP->bufcnt);
 	res = serial_read(fd, buffer, 1);

@@ -14,6 +14,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "debug.h"
 #include "pic.h"
 #include "proto_pic.h"
 #include "data_file.h"
@@ -47,7 +48,7 @@ void print_usage(char* name) {
 		printf("-t TYPE - input/output file type HEX, BIN\n");
 		printf("-w FILE - file to be uploaded to PIC\n");
 		printf("-r FILE - file to be downloaded from PIC\n");
-//		printf("-v      - be noisy\n");
+		printf("-v      - add verbosity level\n");
 		printf("commands:\n");
 		printf("-E  - erases Flash\n");
 		printf("-W  - writes data to Flash\n");
@@ -66,7 +67,9 @@ int main(int argc, char** argv) {
 
 	int opt;
 //	int	res = -1;
-	uint16_t PICidver, PICrev, PICid;
+	//uint16_t PICidver, PICrev, PICid;
+	uint32_t PICidver, PICid;
+	uint16_t PICrev;
 
 #ifdef DEBUG
 // Without these, console output within Eclipse (and perhaps other IDEs) will be buffered
@@ -190,7 +193,9 @@ int main(int argc, char** argv) {
 				param_speed=strdup("115200"); //dummy
 				param_port=strdup("COM12");    //dummy
 				break;
-
+			case 'v':
+				if (debug_level < DEBUG_VERBOSE) debug_level ++;
+				break;
 			default:
 				printf("Invalid argument %c", opt);
 				print_usage(argv[0]);
@@ -220,22 +225,7 @@ int main(int argc, char** argv) {
 	    exit(-1);
 	}
 
-	picprog.iface = Iface_GetByName(param_prog);
-
-	if (picprog.iface == NULL) {
-		printf("Unknown interface '%s' !\n", param_prog);
-		return -1;
-	}
-
-	printf("Initializing interface \n");
-
-	if (param_speed != NULL && param_port != NULL) {   //added to check if port is null to avoid crash
-
-		if(picprog.iface->Init(&picprog, param_port, param_speed)){
-			printf("ERROR: interface not responding \n");
-			exit(-1);
-		}
-	} else {
+	if (param_speed == NULL || param_port == NULL) {   //added to check if port is null to avoid crash
 		printf("ERROR: Port name or port speed not specified \n");
 		printf("parameter -u and  -s must be specified: e.g -u com12 -s 115200\n");
 		exit(-1);
@@ -257,13 +247,24 @@ int main(int argc, char** argv) {
 	picchip = PIC_GetChip(picprog.chip_idx);
 	picfamily = PIC_GetFamily(picchip->family);
 
-	memread = MEM_Init(picfamily->page_size);
-	memwrite = MEM_Init(picfamily->page_size);
+	picprog.iface = Iface_GetByName(param_prog);
+	if (picprog.iface == NULL) {
+		printf("Unknown interface '%s' !\n", param_prog);
+		return -1;
+	}
 
+	printf("Initializing interface \n");
+	if(picprog.iface->Init(&picprog, param_port, param_speed)){
+		printf("ERROR: interface not responding \n");
+		exit(-1);
+	}
 
 //check chip
 	printf("Checking for %s attached to programmer... \n", param_chip);
 	PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
+
+	memread = MEM_Init(picfamily->page_size);
+	memwrite = MEM_Init(picfamily->page_size);
 
 //determine device type
 //if comport is disable make PICid=picchip->ID
@@ -272,10 +273,10 @@ int main(int argc, char** argv) {
 	}
 
 	if(PICid!=picchip->ID) {
-	    printf("\nWrong device: %#X (ID: %#X REV: %#X) \n", PICidver, PICid, PICrev);
-	    return -1;
+	    printf("\nWrong device: 0x%04x (ID: 0x%04x REV: 0x%02x) \n", PICidver, PICid, PICrev);
+			goto deinit;
 	}
-	printf ("Found %s (0x%04x, ID: 0x%04x REV: 0x%04x) \n", picchip->name, PICidver, PICid, PICrev);
+	printf ("Found %s (0x%04x, ID: 0x%04x REV: 0x%02x) \n", picchip->name, PICidver, PICid, PICrev);
 
 	// prepare data file
 	if ((cmd & CMD_WRITE) || (cmd & CMD_VERIFY)) {
@@ -283,13 +284,13 @@ int main(int argc, char** argv) {
 
 		if (param_write_file == NULL) {
 			printf("No write file specified\n");
-			return -1;
+			goto deinit;
 		}
 
 		read_size = datafile->ReadFile(param_write_file, memwrite);
 		if (read_size == 0) {
 			printf("Error!\n");
-			return -1;
+			goto deinit;
 		}
 
 		printf("Read binary size = %ld\n", (long int)read_size);
@@ -304,7 +305,7 @@ int main(int argc, char** argv) {
 
 		if (param_read_file == NULL) {
 			printf("No read file specified\n");
-			return -1;
+			goto deinit;
 		}
 
 		MEM_Optimize(memread);
@@ -347,6 +348,7 @@ int main(int argc, char** argv) {
 		MEM_Destroy(memverify);
 	}
 
+deinit:
 	picprog.iface->Deinit(&picprog);
 
 	MEM_Destroy(memwrite);
