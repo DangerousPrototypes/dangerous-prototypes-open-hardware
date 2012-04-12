@@ -17,6 +17,7 @@ enum {
 	FAMILY_24FJxxGAxxx,
 	FAMILY_24FJxxGBxxx,
 	FAMILY_18Fx5xx,
+	FAMILY_32MX12x, // fixme
 	FAMILY_LAST
 };
 
@@ -121,6 +122,48 @@ const struct pic_chip_t pic_chip[] = {
 			}
 		}
 	},
+	{
+		.name = "PIC32MX120F032B",
+		//.ID = 0x053, // lower 3 is some form of family id? it's always 053
+		.ID = 0x04A06000,
+		.family = FAMILY_32MX12x,
+		//PIC32MX120F032B
+		//32 Row Size (Instr. Words)
+		//256 Page Size (Instr. Words)
+		//0x1FC00000-0x1FC00BFF (3 KB) Boot Flash Memory Address (Bytes)
+		//0x1D000000-0x1D007FFF (32 KB) Program Flash Memory Address (Bytes)
+		.memmap = {
+			[PIC_MEM_FLASH] = {
+				.base = 0x0000,
+				.size = 256*1024, // 32KB ?
+			},
+			[PIC_MEM_EEPROM] = {
+				.base = 0x1D000000,
+				.size = 3
+			}
+		}
+	},
+	{
+		.name = "PIC32MX220F032D",
+		//.ID = 0x053, // lower 3 is some form of family id? it's always 053
+		.ID = 0x04A04000,
+		.family = FAMILY_32MX12x,
+		//PIC32MX120F032B
+		//32 Row Size (Instr. Words)
+		//256 Page Size (Instr. Words)
+		//0x1FC00000-0x1FC00BFF (3 KB) Boot Flash Memory Address (Bytes)
+		//0x1D000000-0x1D007FFF (32 KB) Program Flash Memory Address (Bytes)
+		.memmap = {
+			[PIC_MEM_FLASH] = {
+				.base = 0x0000,
+				.size = 256*1024, // 32KB ?
+			},
+			[PIC_MEM_EEPROM] = {
+				.base = 0x1D000000,
+				.size = 3
+			}
+		}
+	},
 
 };
 
@@ -172,6 +215,24 @@ const struct pic_family_t pic_family[] = {
 		.write_delay = 1,
 		.erase_delay = 524,
 	},
+
+	[FAMILY_32MX12x] = {
+		.proto = PROTO_PIC32,
+		.ID_addr = 0xBF80F220,
+	// bytes per word
+		.word_size = 4, // 32bit
+		//"Each erase block, or page, contains 1K
+		//instructions (4 Kbytes) or 256 instructions (1
+		//Kbytes) and each program block, or row, contains
+		//128 instructions (512 bytes) or 32
+		//instructions (128 bytes).
+		.page_size = 256, //
+		.icsp_type = ICSP_LVPP,
+		.icsp_key = 0x4D434851,
+		.erase_key = { 0x3f3f, 0x8f8f },
+		.write_delay = 1,
+		.erase_delay = 524,
+	},
 };
 
 int PIC_ReadMemory(struct picprog_t *p, struct memory_t *mem)
@@ -187,8 +248,8 @@ int PIC_ReadMemory(struct picprog_t *p, struct memory_t *mem)
 
 	data = safe_malloc(fam->page_size);
 
-	proto->EnterICSP(p, fam->icsp_type); 
-	
+	proto->EnterICSP(p, fam->icsp_type);
+
 	for (page = 0; page < pic->memmap[PIC_MEM_FLASH].size / fam->page_size; page++) {
 		addr = page * fam->page_size;
 		size = fam->page_size;
@@ -232,7 +293,7 @@ int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem)
 
 	struct mem_page_t * page;
 
-	proto->EnterICSP(p, fam->icsp_type); 
+	proto->EnterICSP(p, fam->icsp_type);
 
 	page = MEM_GetFirstPage(mem);
 	while (page != NULL) {
@@ -243,7 +304,7 @@ int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem)
 		page = MEM_GetNextPage(page);
 	}
 
-	proto->ExitICSP(p, fam->icsp_type); 
+	proto->ExitICSP(p, fam->icsp_type);
 
 	return 0;
 }

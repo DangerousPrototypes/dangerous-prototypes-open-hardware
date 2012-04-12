@@ -5,8 +5,8 @@ CPP  = gcc.exe
 CC   = gcc.exe
 WINDRES = windres.exe
 RES  = 
-OBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o proto_pic.o serial.o $(RES)
-LINKOBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o proto_pic.o serial.o $(RES)
+OBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o pic32.o proto_pic.o serial.o $(RES)
+LINKOBJ  = buspirate.o common.o data_file.o iface.o main.o pic.o pic12.o pic16.o pic18.o pic24.o pic32.o proto_pic.o serial.o $(RES)
 LIBS =  -L"c:\Dev-Cpp\lib\"  
 INCS =  -I"include" 
 CXXINCS =  -I"include" 
@@ -55,6 +55,9 @@ pic18.o: pic18.c
 
 pic24.o: pic24.c
 	$(CPP) -c pic24.c -o pic24.o $(CXXFLAGS)
+
+pic32.o: pic32.c
+	$(CPP) -c pic32.c -o pic32.o $(CXXFLAGS)
 
 proto_pic.o: proto_pic.c
 	$(CPP) -c proto_pic.c -o proto_pic.o $(CXXFLAGS)

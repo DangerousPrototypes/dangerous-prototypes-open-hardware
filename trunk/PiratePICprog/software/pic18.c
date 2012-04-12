@@ -122,7 +122,7 @@ static uint32_t PIC18_Erase(struct picprog_t *p)
 	return 0;
 }
 
-static uint32_t PIC18_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev)
+static uint32_t PIC18_ReadID(struct picprog_t *p, uint32_t *id, uint16_t *rev)
 {
 	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
 	struct pic_family_t *f = PIC_GetFamily(pic->family);

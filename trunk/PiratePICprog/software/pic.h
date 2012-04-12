@@ -23,7 +23,7 @@ struct pic_memmap_t {
 
 struct pic_chip_t {
 	const char *name;
-	uint16_t ID;
+	uint32_t ID;
 	uint16_t family;
 
 	struct pic_memmap_t memmap[PIC_MEM_LAST];

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "common.h"
+#include "debug.h"
 #include "pic.h"
 #include "iface.h"
 #include "pic24.h"
@@ -69,30 +70,7 @@ static uint32_t PIC24_ExitICSP(struct picprog_t *p, enum icsp_t type)
 	return 0;
 }
 
-static uint32_t PIC24_ReadID(struct picprog_t *p, uint16_t *id, uint16_t *rev)
-{
-	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
-	struct pic_family_t *f = PIC_GetFamily(pic->family);
-//	struct iface_t *iface = p->iface;
-	uint32_t PICid;
-	uint8_t buf[6];
-
-	PIC24_EnterICSP(p, f->icsp_type);
-
-	PIC24_Read(p, 0x00FF0000, &buf, 1); //give it the ID addres
-
-	PIC24_ExitICSP(p, f->icsp_type);
-
-	PICid = (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24));
-
-	//determine device type
-	*rev = (uint16_t)(PICid >> 16); //find PIC ID (lower 16 bits)
-	*id = (uint16_t)(PICid & (~0xFFFF0000)); //isolate revision (upper 16 bits)
-
-	return (buf[0] | (buf[1] << 8));
-}
-
-static uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length)
+static uint32_t PIC24_ReadRaw(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length)
 {
 	struct iface_t *iface = p->iface;
 
@@ -107,6 +85,62 @@ static uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint3
 	PIC24NOP();//SIX,0x000000,5, N/A
 	iface->PIC424Write(0x040200, 0, 2);
 	iface->flush();
+
+	return 0;
+}
+
+static uint32_t PIC24_ReadID(struct picprog_t *p, uint32_t *id, uint16_t *rev)
+{
+	struct pic_chip_t *pic = PIC_GetChip(p->chip_idx);
+	struct pic_family_t *f = PIC_GetFamily(pic->family);
+//	struct iface_t *iface = p->iface;
+	uint32_t PICid;
+	uint8_t buf[6];
+
+	PIC24_EnterICSP(p, f->icsp_type);
+
+	PIC24_ReadRaw(p, 0x00FF0000, &buf, 1); //give it the ID addres
+
+	PIC24_ExitICSP(p, f->icsp_type);
+
+	//PICid = (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24));
+	PICid = (buf[1] | (buf[0] << 8) | (buf[3] << 16) | (buf[2] << 24));
+
+	dbg_buf_info(buf, 6);
+	//determine device type
+	*rev = (uint16_t)(PICid >> 16); //find PIC ID (lower 16 bits)
+	*id = (PICid & (~0xFFFF0000)); //isolate revision (upper 16 bits)
+
+	return (buf[0] | (buf[1] << 8));
+}
+
+static uint32_t PIC24_Read(struct picprog_t *p, uint32_t addr, void* Data, uint32_t length)
+{
+	uint8_t buf[6];
+	uint8_t *data = Data;
+	uint32_t instr;
+
+	instr = (length+7)/8; // number of instruction pairs (3bytes per instruction) 
+
+	PIC24_ReadRaw(p, addr/2, Data + (instr*2), instr); // reads 2 instructions, packed
+
+	// unpack instruction pairs
+	for (uint32_t i = 0; i < instr; i ++) {
+		memcpy(buf, Data + (instr*2) + (i*6), 6);
+
+		// unpack according to DS
+ 		data[i*8+3] = 0;
+		data[i*8+7] = 0;
+
+		data[i*8+1] = buf[0];
+		data[i*8+0] = buf[1];
+
+		data[i*8+6] = buf[2];
+		data[i*8+2] = buf[3];
+
+		data[i*8+5] = buf[4];
+		data[i*8+4] = buf[5];
+	}
 
 	return 0;
 }

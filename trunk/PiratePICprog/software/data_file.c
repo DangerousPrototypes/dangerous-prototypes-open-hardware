@@ -94,7 +94,7 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 		const char *p;
 
 		if (raw_line[0] != ':') {
-			printf("File '%s' is note a hex file !\n", file);
+			printf("File '%s' is not a hex file !\n", file);
 			return 0;
 		}
 
