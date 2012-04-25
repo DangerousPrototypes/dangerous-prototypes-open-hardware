@@ -24,6 +24,11 @@
 
 #define MEM_EMPTY 0xFF
 
+struct mem_empty_t {
+	uint8_t len;
+	uint8_t *pattern;
+};
+
 struct mem_page_t {
 	/* base address of page */
 	uint32_t base;
@@ -42,10 +47,13 @@ struct memory_t {
 	/* size of pages in memory */
 	uint32_t page_size;
 
+	uint8_t word_size;
+
 	struct mem_page_t *page;
+	struct mem_empty_t *empty;
 };
 
-struct memory_t *MEM_Init();
+struct memory_t *MEM_Init(uint32_t page_size, uint8_t word_size);
 int MEM_Write(struct memory_t *mem, uint32_t addr, uint8_t *data, uint32_t len);
 int MEM_Read(struct memory_t *mem, uint32_t addr, uint8_t **data, uint32_t len);
 int MEM_PageExists(struct memory_t *mem, uint32_t addr);
@@ -54,7 +62,7 @@ struct mem_page_t *MEM_GetFirstPage(struct memory_t *mem);
 struct mem_page_t *MEM_GetNextPage(struct mem_page_t *page);
 
 int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b);
-int MEM_PageEmpty(struct mem_page_t *page);
+int MEM_PageEmpty(struct memory_t *mem, struct mem_page_t *page);
 void MEM_Optimize(struct memory_t *mem);
 void MEM_Print(struct memory_t *mem);
 int MEM_Destroy(struct memory_t *);

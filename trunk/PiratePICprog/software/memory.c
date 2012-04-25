@@ -2,15 +2,29 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "debug.h"
+
 #include "common.h"
 
 #include "memory.h"
+
+
+
+struct mem_empty_t MEM_EmptyPattern[] = {
+	[8] = {.len = 1, .pattern = "\xFF"},
+	[14] = {.len = 2, .pattern = "\xFF\x3F"},
+	[16] = {.len = 2, .pattern = "\xFF\xFF"},
+	[24] = {.len = 4, .pattern = "\xFF\xFF\xFF\x00"},
+	[32] = {.len = 4, .pattern = "\xFF\xFF\xFF\xFF"},
+};
+
 
 static void MEM_PrintPage(struct mem_page_t *p);
 
 static struct mem_page_t *MEM_CreatePage(struct memory_t *mem, uint32_t base)
 {
 	struct mem_page_t *tmp = NULL;
+	int i;
 
 	tmp = safe_malloc(sizeof(struct mem_page_t));
 
@@ -22,12 +36,17 @@ static struct mem_page_t *MEM_CreatePage(struct memory_t *mem, uint32_t base)
 	tmp->data = safe_malloc(mem->page_size);
 	memset(tmp->data, MEM_EMPTY, mem->page_size);
 
+	for (i = 0; i < mem->page_size; i += mem->empty->len) {
+		memcpy(&tmp->data[i], mem->empty->pattern, mem->empty->len);
+	}
+
 	return tmp;
 }
 
-static void MEM_PageTrim(struct mem_page_t *page)
+static void MEM_PageTrim(struct memory_t *mem, struct mem_page_t *page)
 {
 	int32_t i;
+	uint32_t rest;
 
 	if (page == NULL)
 		return;
@@ -35,23 +54,42 @@ static void MEM_PageTrim(struct mem_page_t *page)
 	if (page->data == NULL)
 		return;
 
-	i = page->size - 1;
-	while (i >= 0 && page->data[i] == MEM_EMPTY) {
-		i--;
+	rest = page->size % mem->empty->len;
+	if (rest > 0) {
+		if (memcmp(&page->data[page->size - rest], mem->empty->pattern, rest)) {
+			return; // valid data at the end
+		}
+	}
+
+	i = page->size - 1 - rest;
+	while (i >= 0 && memcmp(&page->data[i], mem->empty->pattern, mem->empty->len) == 0) {
+		i -= mem->empty->len;
 	}
 
 	page->size = i + 1;
 
 }
 
-struct memory_t *MEM_Init(uint32_t page_size)
+struct memory_t *MEM_Init(uint32_t page_size, uint8_t word_size)
 {
 	struct memory_t *tmp;
+
+	if ((word_size > ARY_SIZE(MEM_EmptyPattern) - 1) || (MEM_EmptyPattern[word_size].len == 0)) {
+		dbg_err("Unsupported word_size\n");
+		return NULL;
+	}
+
+	if (page_size % MEM_EmptyPattern[word_size].len) {
+		dbg_err("Page size not word aligned\n");
+		return NULL;
+	}
 
 	tmp = safe_malloc(sizeof(struct memory_t));
 
 	tmp->page = NULL;
 	tmp->page_size = page_size;
+	tmp->word_size = word_size;
+	tmp->empty = &MEM_EmptyPattern[word_size];
 
 	return tmp;
 }
@@ -193,6 +231,7 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 {
 	struct mem_page_t *pa;
 	struct mem_page_t *pb;
+	uint8_t differ = 0;
 
 	pa = mem_a->page;
 	pb = mem_b->page;
@@ -202,8 +241,8 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 	}
 
 	while ((pa != NULL) && (pb != NULL)) {
-		MEM_PageTrim(pa);
-		MEM_PageTrim(pb);
+		MEM_PageTrim(mem_a, pa);
+		MEM_PageTrim(mem_b, pb);
 
 		if (pa->base != pb->base) {
 			printf("page base differs\n");
@@ -230,17 +269,17 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 				}
 			}
 
-			return 1;
+			differ = 1;
 		}
 
 		/* fastforward to non-empty pages */
 		do {
 			pa = MEM_GetNextPage(pa);
-		} while ((pa != NULL) && MEM_PageEmpty(pa));
+		} while ((pa != NULL) && MEM_PageEmpty(mem_a, pa));
 
 		do {
 			pb = MEM_GetNextPage(pb);
-		} while ((pb != NULL) && MEM_PageEmpty(pb));
+		} while ((pb != NULL) && MEM_PageEmpty(mem_b, pb));
 	}
 
 	if ((pa != NULL) || (pb != NULL)) {
@@ -252,21 +291,20 @@ int MEM_Compare(struct memory_t *mem_a, struct memory_t *mem_b)
 			printf(" page a @0x%08x\n", pa->base);
 		}
 #endif
-		return 1;
+		differ = 1;
 	}
 
-	return 0;
+	return differ;
 
 }
 
-int MEM_PageEmpty(struct mem_page_t *page)
+int MEM_PageEmpty(struct memory_t *mem, struct mem_page_t *page)
 {
 	uint32_t i;
 
-	for (i = 0; i < page->size; i++) {
-		if (page->data[i] != MEM_EMPTY) {
+	for (i = 0; i < page->size; i += mem->empty->len) {
+		if (memcmp(&page->data[i], mem->empty->pattern, mem->empty->len))
 			return 0;
-		}
 	}
 
 	return 1;
@@ -277,7 +315,7 @@ void MEM_Optimize(struct memory_t *mem)
 	struct mem_page_t *cur = mem->page;
 
 	while (cur != NULL) {
-		MEM_PageTrim(cur);
+		MEM_PageTrim(mem, cur);
 		cur = cur->next;
 	}
 
@@ -306,8 +344,8 @@ void MEM_Print(struct memory_t *mem)
 	uint32_t size = 0;
 
 	while (cur != NULL) {
-		MEM_PageTrim(cur);
-		if (cur->size > 0) {
+		MEM_PageTrim(mem, cur);
+		if (!MEM_PageEmpty(mem, cur) && (cur->size > 0)) {
 			size += cur->size;
 			MEM_PrintPage(cur);
 		}

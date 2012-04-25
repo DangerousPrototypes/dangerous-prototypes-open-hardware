@@ -78,7 +78,7 @@ int main(int argc, char** argv)
 	}
 
 	if (argc > 1) {
-		mem1 = MEM_Init(chunk);
+		mem1 = MEM_Init(chunk, 1);
 
 		parse_file(argv[1], &fo1, &filename);
 		max = fo1->ReadFile(filename, mem1);
@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 	}
 
 	if (argc > 2) {
-		mem2 = MEM_Init(chunk);
+		mem2 = MEM_Init(chunk, 1);
 
 		parse_file(argv[2], &fo2, &filename);
 		max = fo2->ReadFile(filename, mem2);

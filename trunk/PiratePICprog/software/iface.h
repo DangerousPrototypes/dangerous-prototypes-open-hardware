@@ -28,7 +28,7 @@ struct iface_t {
 	uint32_t (*SendBytes)(uint8_t, char *);
 	uint32_t (*SendBits)(uint8_t, char);
 
-	uint32_t (*PIC614Read)(uint8_t);
+	uint32_t (*PIC614Read)(uint8_t, void *, uint32_t);
 	uint32_t (*PIC614Write)(uint8_t, uint16_t);
 
 	uint32_t (*PIC416Read)(uint8_t, void *, uint32_t);
@@ -37,10 +37,15 @@ struct iface_t {
 	uint32_t (*PIC424Read)(uint32_t, void *, uint32_t);
 	uint32_t (*PIC424Write)(uint32_t, uint8_t, uint8_t);
 
+	uint32_t (*GetData)(uint8_t *, uint32_t);
+
 	uint32_t (*flush)();
 
 	uint32_t (*VPPHigh)();
 	uint32_t (*VPPLow)();
+
+	uint32_t (*VCCHigh)();
+	uint32_t (*VCCLow)();
 
 };
 

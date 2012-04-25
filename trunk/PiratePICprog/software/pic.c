@@ -13,6 +13,7 @@
 #include "common.h"
 
 enum {
+	FAMILY_16F88x,
 	FAMILY_18F2xJxx, // also 18F4xJxx
 	FAMILY_24FJxxGAxxx,
 	FAMILY_24FJxxGBxxx,
@@ -24,6 +25,21 @@ enum {
 #define CHIP_CNT (sizeof(pic_chip)/sizeof(struct pic_chip_t))
 
 const struct pic_chip_t pic_chip[] = {
+	{
+		.name = "16F887",
+		.ID = 0x104,
+		.family = FAMILY_16F88x,
+		.memmap = {
+			[PIC_MEM_FLASH] = {
+				.base = 0x0000,
+				.size = 0x2000*2,
+			},
+			[PIC_MEM_FUSE] = {
+				.base = 0x2007*2, // 0x2000, but 0x4000 in hex file, also pic16_write does addr/2
+				.size = 2*2,
+			},
+		},
+	},
 	{
 		.name = "18F2550",
 		.ID = 0x92,
@@ -168,10 +184,20 @@ const struct pic_chip_t pic_chip[] = {
 };
 
 const struct pic_family_t pic_family[] = {
+	[FAMILY_16F88x] = {
+		.proto = PROTO_PIC16,
+		.ID_addr = 0x2006,
+		.word_size = 14,
+		.page_size = 16*2, // row-size
+		.icsp_type = ICSP_HVPP,
+		.write_delay = 6,
+		.erase_delay = 6,
+	},
+
 	[FAMILY_18F2xJxx] = {
 		.proto = PROTO_PIC18,
 		.ID_addr = 0x3ffffe,
-		.word_size = 2, //bytes
+		.word_size = 16, //bytes
 		.page_size = 64, //bytes (32 words)
 		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4d434850,
@@ -183,7 +209,7 @@ const struct pic_family_t pic_family[] = {
 	[FAMILY_24FJxxGAxxx] = {
 		.proto = PROTO_PIC24,
 		.ID_addr = 0x00FF0000,
-		.word_size = 2,
+		.word_size = 16, // FIXME: ? probably wrong
 		.page_size = 256,
 		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4D434851,
@@ -195,7 +221,7 @@ const struct pic_family_t pic_family[] = {
 	[FAMILY_24FJxxGBxxx] = {
 		.proto = PROTO_PIC24,
 		.ID_addr = 0x00FF0000,
-		.word_size = 2,
+		.word_size = 24,
 		.page_size = 256,
 		.icsp_type = ICSP_LVPP,
 		.icsp_key = 0x4D434851,
@@ -207,7 +233,7 @@ const struct pic_family_t pic_family[] = {
 	[FAMILY_18Fx5xx] = {
 		.proto = PROTO_PIC18,
 		.ID_addr = 0x3ffffe,
-		.word_size = 2, //bytes
+		.word_size = 8, //bits
 		.page_size = 32, //bytes (32 words)
 		.icsp_type = ICSP_HVPP,
 		.icsp_key = 0x00000000,
@@ -220,7 +246,7 @@ const struct pic_family_t pic_family[] = {
 		.proto = PROTO_PIC32,
 		.ID_addr = 0xBF80F220,
 	// bytes per word
-		.word_size = 4, // 32bit
+		.word_size = 32, // 32bit
 		//"Each erase block, or page, contains 1K
 		//instructions (4 Kbytes) or 256 instructions (1
 		//Kbytes) and each program block, or row, contains
@@ -297,10 +323,11 @@ int PIC_WriteMemory(struct picprog_t *p, struct memory_t *mem)
 
 	page = MEM_GetFirstPage(mem);
 	while (page != NULL) {
-		printf("Writing page %04lx... \n", (unsigned long)page->base);
-
-		// TODO: check address against pic memory map! EEPROM and Fuses might need separate handling
-		proto->Write(p, page->base, page->data, page->size);
+		if (!MEM_PageEmpty(mem, page)) {
+			printf("Writing page %04lx... \n", (unsigned long)page->base);
+			// TODO: check address against pic memory map! EEPROM and Fuses might need separate handling
+			proto->Write(p, page->base, page->data, page->size);
+		}
 		page = MEM_GetNextPage(page);
 	}
 

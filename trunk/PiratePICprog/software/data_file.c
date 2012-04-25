@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "common.h"
+#include "debug.h"
 
 #include "data_file.h"
 
@@ -94,7 +95,7 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 		const char *p;
 
 		if (raw_line[0] != ':') {
-			printf("File '%s' is not a hex file !\n", file);
+			dbg_err("File '%s' is not a hex file !\n", file);
 			return 0;
 		}
 
@@ -133,6 +134,7 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 
 				//MEM_Write(mem, addr + i, &tmp[tmp_len-1], 1);
 			}
+			dbg_verbose("write addr=%04x count=%d\n", addr, byte_count);
 			MEM_Write(mem, addr, &tmp[tmp_len-byte_count], byte_count);
 		} else if (rec_type == 0x04) {
 			// extended linear: base addr
@@ -147,14 +149,12 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 			}
 
 			base_addr <<= 16;
-#ifdef DEBUG
-			fprintf(stderr, "new (linear) base addr = %08x\n", base_addr);
-#endif
+			dbg_verbose("new (linear) base addr = %08x\n", base_addr);
 		} else if (rec_type == 0x01) {
 			// end record
 			break;
 		} else {
-			fprintf(stderr, "Unknown record type on line %d\n", line);
+			dbg_warn("Unknown record type on line %d\n", line);
 			return 0;
 		}
 
@@ -163,7 +163,7 @@ static uint32_t HEX_ReadFile(const char *file, struct memory_t *mem)
 
 		// calculate checksum after line was parsed
 		if (Data_Checksum(tmp, tmp_len) != chksum) {
-			fprintf(stderr, "Checksum error on line %d\n", line);
+			dbg_err("Checksum error on line %d\n", line);
 			return 0;
 		}
 	}
@@ -208,9 +208,7 @@ static void HEX_WriteRec(FILE *fp, uint8_t rec_id, uint8_t byte_count, uint16_t 
 	}
 	res += sprintf(raw_line + res, "\n");
 
-#ifdef DEBUG
-	printf(raw_line);
-#endif
+	dbg_verbose("%s", raw_line);
 
 	// output to file
 	res = fwrite(raw_line, sizeof(char), res, fp);
@@ -247,7 +245,7 @@ static int HEX_WriteFile(const char *file, struct memory_t *mem)
 	while (page != NULL) {
 		written = 0;
 
-		if (MEM_PageEmpty(page)) {
+		if (MEM_PageEmpty(mem, page)) {
 			page = MEM_GetNextPage(page);
 			continue;
 		}
@@ -359,23 +357,19 @@ static int BIN_WriteFile(const char *file, struct memory_t *mem)
 	page = MEM_GetFirstPage(mem);
 	addr = 0;
 	while (page != NULL) {
-		if (MEM_PageEmpty(page)) {
+		if (MEM_PageEmpty(mem, page)) {
 			page = MEM_GetNextPage(page);
 			continue;
 		}
 
-#ifdef DEBUG
-		printf("pagebase %08x addr %08x size %02x\n", page->base, addr, page->size);
-#endif
+		dbg_verbose("pagebase %08x addr %08x size %02x\n", page->base, addr, page->size);
 
 		// fill difference with MEM_EMPTYs
 		if (page->base > addr) {
 			uint32_t i;
 			uint8_t tmp = MEM_EMPTY;
 
-#ifdef DEBUG
-			printf("adding empty (%ld)\n", page->base -addr);
-#endif
+			dbg_verbose("adding empty (%ld)\n", (long int)page->base - addr);
 			for (i = 0; i < page->base - addr; i++) {
 				fwrite(&tmp, sizeof(uint8_t), 1, fp);
 			}
