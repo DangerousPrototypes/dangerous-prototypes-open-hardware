@@ -22,6 +22,8 @@ static uint32_t PIC18_EnterICSP(struct picprog_t *p, enum icsp_t type)
 
 	char buffer[4];
 
+	iface->VCCHigh();
+
 	iface->ClockLow();
 	iface->DataLow();
 	//AUX low...
@@ -78,11 +80,15 @@ static uint32_t PIC18_ExitICSP(struct picprog_t *p, enum icsp_t type)
 		iface->VPPLow(); //Turn off AUX, remove 13V (CS=1)
 		//iface->MCLRHigh();//makes 0
 		iface->MCLRLow(); //lets go high
+
+		iface->VCCLow();
 		return 0;
 	}
 
 	iface->MCLRLow();
 	iface->MCLRHigh();
+
+	iface->VCCLow();
 	return 0;
 }
 
@@ -137,6 +143,7 @@ static uint32_t PIC18_ReadID(struct picprog_t *p, uint32_t *id, uint16_t *rev)
 	iface->flush();
 	//read device ID, two bytes takes 2 read operations, each gets a byte
 	iface->PIC416Read(0x09, buffer, 2 );	//lower 8 bits
+	iface->GetData(buffer, 2);
 
 	PIC18_ExitICSP(p, f->icsp_type);
 
@@ -234,14 +241,11 @@ static uint32_t PIC18_Read_Flash(struct picprog_t *p, uint32_t tblptr, void *dat
 	//setup read
 	PIC18_settblptr(p, tblptr);
 	iface->flush();
+
 	//read device
 	iface->PIC416Read(0x09, data, length);
 
-//	for (ctr = 0; ctr < length; ctr++)
-//	{
-//		//printf("%X ", PIC416Read(0x09) );
-//		((uint8_t*)data)[ctr] = iface->PIC416Read(0x09);
-//	}
+	iface->GetData(data, length);
 
 	return 0;
 }

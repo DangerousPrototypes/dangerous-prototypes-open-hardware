@@ -5,11 +5,11 @@ CFLAGS = -g -O0 -std=gnu99 -DVERSION=\"r$(shell svn info | grep 'Last Changed Re
 
 LDFLAGS =
 
-OBJS_COMMON = memory.o data_file.o common.o
+OBJS_COMMON = memory.o data_file.o common.o debug.o
 
 OBJS = $(OBJS_COMMON)
 OBJS += pic.o proto_pic.o pic12.o pic16.o pic18.o pic24.o pic32.o
-OBJS += iface.o buspirate.o serial.o debug.o
+OBJS += iface.o buspirate.o serial.o
 
 all: $(EXECS)
 

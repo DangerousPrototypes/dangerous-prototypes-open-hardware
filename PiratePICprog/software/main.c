@@ -263,8 +263,8 @@ int main(int argc, char** argv) {
 	printf("Checking for %s attached to programmer... \n", param_chip);
 	PICidver=picops->ReadID(&picprog, &PICid, &PICrev);
 
-	memread = MEM_Init(picfamily->page_size);
-	memwrite = MEM_Init(picfamily->page_size);
+	memread = MEM_Init(picfamily->page_size, picfamily->word_size);
+	memwrite = MEM_Init(picfamily->page_size, picfamily->word_size);
 
 //determine device type
 //if comport is disable make PICid=picchip->ID
@@ -309,14 +309,19 @@ int main(int argc, char** argv) {
 		}
 
 		MEM_Optimize(memread);
+
+		if (debug_level == DEBUG_VERBOSE) {
+			MEM_Print(memread);
+		}
+
 		datafile->WriteFile(param_read_file, memread);
 	}
 
 	if (cmd & CMD_ERASE) {
 		// TODO: make user choose
 		if (cmd & CMD_WRITE) {
-			printf("Saving configuration words... ");
-			PIC_PreserveConfig(&picprog, memwrite);
+			//printf("Saving configuration words... ");
+			//PIC_PreserveConfig(&picprog, memwrite);
 		}
 
 		printf("Erasing chip... ");
@@ -327,6 +332,10 @@ int main(int argc, char** argv) {
 	if (cmd & CMD_WRITE) {
 		MEM_Optimize(memwrite);
 
+		if (debug_level == DEBUG_VERBOSE) {
+			MEM_Print(memwrite);
+		}
+
 		PIC_WriteMemory(&picprog, memwrite);
 	}
 
@@ -334,7 +343,7 @@ int main(int argc, char** argv) {
 		//if (cmd & CMD_READ == 0) { // read only when necessary
 			//picops->ReadFlash(&picprog, buf_read);
 		//}
-		struct memory_t *memverify = MEM_Init(picfamily->page_size);
+		struct memory_t *memverify = MEM_Init(picfamily->page_size, picfamily->word_size);
 
 		printf("Verifing ... \n");
 		PIC_ReadMemory(&picprog, memverify);

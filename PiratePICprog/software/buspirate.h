@@ -15,6 +15,7 @@ struct BP_t {
 	int fd;
 	enum BP_picmode_t picmode;
 	char buf[4096];
+	uint8_t per; // peripheral
 	int bufcnt;
 };
 

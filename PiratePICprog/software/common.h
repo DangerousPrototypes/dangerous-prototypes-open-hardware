@@ -11,6 +11,8 @@
 #define PICPROG_VER "v0.3"
 #endif
 
+#define ARY_SIZE(x) (sizeof(x)/sizeof(x[0]))
+
 struct picprog_t {
 	struct iface_t *iface;
 	void *iface_data;
