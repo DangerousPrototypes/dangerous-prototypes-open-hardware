@@ -1,0 +1,3 @@
+Please see:
+
+http://dangerousprototypes.com/docs/ATX_breakout_board_manufacturing_notes
