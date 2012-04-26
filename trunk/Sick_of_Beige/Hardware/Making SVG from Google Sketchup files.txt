@@ -1,0 +1,2 @@
+We use the folowing plugin for Google Sletchup to export model faces to SVG files.
+http://code.google.com/p/sketchup-svg-outline-plugin/wiki/InstallPlugin
