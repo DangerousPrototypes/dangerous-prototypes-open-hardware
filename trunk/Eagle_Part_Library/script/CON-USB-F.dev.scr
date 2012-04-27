@@ -16,3 +16,7 @@ Package 'CONN_USB_MINI-B' '-MINI-B';
 Technology '';
 Connect  'BODY.BODY@2' 'BODY@2'  'BODY.BODY@1' 'BODY@1'  'BODY.BODY@3' 'BODY@3'  'BODY.BODY@4' 'BODY@4'  'USB.D+' 'D+' \
          'USB.USBID' 'ID'  'USB.D-' 'D-'  'USB.VUSB' 'VUSB'  'USB.GND' 'GND';
+Package 'CONN_USB_MICRO-B' '-MICRO-B';
+Technology '';
+Connect  'BODY.BODY@1' 'BODY@1'  'BODY.BODY@2' 'BODY@2'  'BODY.BODY@3' 'BODY@3'  'BODY.BODY@4' 'BODY@4'  'USB.VUSB' 'P1' \
+         'USB.GND' 'P5'  'USB.D-' 'P2'  'USB.USBID' 'P4'  'USB.D+' 'P3';
