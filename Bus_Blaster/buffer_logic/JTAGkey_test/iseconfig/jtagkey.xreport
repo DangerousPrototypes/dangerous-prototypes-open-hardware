@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2011-07-14T18:01:16</DateModified>
+  <DateModified>2012-05-02T18:22:01</DateModified>
   <ModuleName>jtagkey</ModuleName>
-  <SummaryTimeStamp>Unknown</SummaryTimeStamp>
-  <SavedFilePath>E:/Work/dp/Bus_Blaster/buffer_logic/JTAGkey_test/iseconfig/jtagkey.xreport</SavedFilePath>
-  <ImplementationReportsDirectory>E:/Work/dp/Bus_Blaster/buffer_logic/JTAGkey_test\</ImplementationReportsDirectory>
+  <SummaryTimeStamp>2012-05-02T17:24:07</SummaryTimeStamp>
+  <SavedFilePath>E:/Work/dp2/Bus_Blaster/buffer_logic/JTAGkey_test/iseconfig/jtagkey.xreport</SavedFilePath>
+  <ImplementationReportsDirectory>E:/Work/dp2/Bus_Blaster/buffer_logic/JTAGkey_test\</ImplementationReportsDirectory>
   <DateInitialized>2011-07-14T17:54:00</DateInitialized>
   <EnableMessageFiltering>false</EnableMessageFiltering>
  </header>
