@@ -10,7 +10,7 @@
 #include "descriptors.h"	// JTR Only included in main.c
 #include "configwords.h"	// JTR only included in main.c
 
-//Move reset vectors for bootloader compatibility
+// PIC18F Move reset vectors for bootloader compatibility
 #ifdef __18CXX
 	#define REMAPPED_RESET_VECTOR_ADDRESS		0x800
 	#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808

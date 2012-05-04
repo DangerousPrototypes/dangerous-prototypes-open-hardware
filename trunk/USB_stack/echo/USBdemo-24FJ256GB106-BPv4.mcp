@@ -31,6 +31,10 @@ file_003=.
 file_004=.
 file_005=.
 file_006=.
+file_007=.
+file_008=.
+file_009=.
+file_010=.
 [GENERATED_FILES]
 file_000=no
 file_001=no
@@ -39,6 +43,10 @@ file_003=no
 file_004=no
 file_005=no
 file_006=no
+file_007=no
+file_008=no
+file_009=no
+file_010=no
 [OTHER_FILES]
 file_000=no
 file_001=no
@@ -47,6 +55,10 @@ file_003=no
 file_004=no
 file_005=no
 file_006=no
+file_007=no
+file_008=no
+file_009=no
+file_010=no
 [FILE_INFO]
 file_000=main.c
 file_001=..\dp_usb\cdc.c
@@ -54,7 +66,11 @@ file_002=..\dp_usb\usb_stack.c
 file_003=descriptors.h
 file_004=configwords.h
 file_005=prj_usb_config.h
-file_006=p24FJ256GB106.gld
+file_006=E:\Work\dp2\USB_stack\dp_usb\cdc.h
+file_007=E:\Work\dp2\USB_stack\dp_usb\picusb.h
+file_008=E:\Work\dp2\USB_stack\dp_usb\usb_stack.h
+file_009=E:\Work\dp2\USB_stack\dp_usb\usb_stack_globals.h
+file_010=p24FJ256GB106.gld
 [SUITE_INFO]
 suite_guid={479DDE59-4D56-455E-855E-FFF59A3DB57E}
 suite_state=
