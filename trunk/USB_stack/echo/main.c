@@ -131,6 +131,23 @@ void SetupBoard(void) {
     ADCON1 |= 0b1111; //all pins digital
     CVRCON = 0b00000000;
 
+#elif defined(LOGICSNIFFER) 
+	unsigned int cnt = 2048;
+
+	//all pins digital
+    ANCON0 = 0xFF;                  
+    ANCON1 = 0b00011111;// updated for lower power consumption. See datasheet page 343                  
+
+	//there are some sensative FPGA pins, 
+	//make sure everything is input (should be on startup, but just in case)
+	TRISA=0xff;
+	TRISB=0xff;
+	TRISC=0b11111011; //LED out
+
+	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
+	OSCTUNEbits.PLLEN = 1;  //enable PLL
+	while(cnt--); //wait for lock
+
 #endif
 
 }
@@ -155,7 +172,7 @@ void __attribute__((interrupt, auto_psv)) _USB1Interrupt() {
 #endif
 
 //PIC18F style interrupts with remapping for bootloader
-#if defined(__18CXX)
+#if defined(IRTOY)
 //	Interrupt remap chain
 //
 //This function directs the interrupt to

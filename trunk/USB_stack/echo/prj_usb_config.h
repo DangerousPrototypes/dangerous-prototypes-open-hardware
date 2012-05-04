@@ -56,6 +56,8 @@
 	#define BUSPIRATEV4 
 #elif defined (__18F2550)
 	#define IRTOY
+#elif defined(__18F24J50) 
+	#define LOGICSNIFFER
 #endif
 
 #ifdef IRTOY
@@ -75,7 +77,7 @@
 	#define LedOff()  LED_LAT &=(~LED_PIN)  //JTR TODO uncomment
 	#define LedOn() LED_LAT|=LED_PIN //JTR TODO uncomment
 	#define LedToggle() LED_LAT ^=LED_PIN
-	//#define USB_INTERRUPTS //use interrupts instead of polling
+	#define USB_INTERRUPTS //use interrupts instead of polling
 	
 #elif defined (BUSPIRATEV4)
 
@@ -108,6 +110,16 @@
 	#define vLedToggle() LATBbits.LATB9 ^= LATBbits.LATB9
 	
 	#define USB_INTERRUPTS //use interrupts instead of polling
+
+#elif defined(LOGICSNIFFER) 
+	#define CDC_BUFFER_SIZE 64u
+	
+	#define CLOCK_FREQ 48000000
+	#define BAUDCLOCK_FREQ 12000000 // (48000000 /4) required for baud rate calculations
+	#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
+	#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
+
+	//#define USB_INTERRUPTS //use interrupts instead of polling
 
 #elif defined (__18F14K50)
 

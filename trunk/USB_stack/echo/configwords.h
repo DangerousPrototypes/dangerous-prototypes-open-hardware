@@ -69,11 +69,13 @@
 
       
 
-#elif defined(__18F24J50) 
+#elif defined(__18F24J50) //Logic Sniffer
 
-     #pragma config WDTEN = OFF       
+    #pragma config WDTEN = OFF       
 
      #pragma config PLLDIV = 5           //Divide by 5 (20 MHz oscillator input) 
+     //#pragma config PLLDIV = 4           //Divide by 4 (16 MHz oscillator input) 
+
      #pragma config STVREN = ON         
      #pragma config XINST = OFF          
      #pragma config CPUDIV = OSC1        
