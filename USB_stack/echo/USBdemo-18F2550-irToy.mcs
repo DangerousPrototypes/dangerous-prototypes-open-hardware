@@ -1,0 +1,136 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=c:\00DP\00 echo test final for DP\main.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\MCC18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File001]
+Location=c:\00DP\00 echo test final for DP\usb_stack.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\MCC18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File002]
+Location=c:\00DP\00 echo test final for DP\cdc.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\MCC18\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File003]
+Location=E:\Work\dp2\USB_stack\echo\main.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=
+[File004]
+Location=E:\Work\dp2\USB_stack\echo\usb_stack.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=
+[File005]
+Location=E:\Work\dp2\USB_stack\echo\cdc.o
+Folder=Intermediary
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mcc18.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=
+[File006]
+Location=c:\00DP\00 echo test final for DP\echo v2 pic18.cof
+Folder=Output
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\MCC18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File007]
+Location=c:\00DP\00 echo test final for DP\echo v2 pic18.hex
+Folder=Output
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\MCC18\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File008]
+Location=E:\Work\dp2\USB_stack\echo\echo v2 pic18.cof
+Folder=Output
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=
+[File009]
+Location=E:\Work\dp2\USB_stack\echo\echo v2 pic18.hex
+Folder=Output
+DeviceName=PIC18F2550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mplink.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)|C:\MCC18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|..\dp_usb\usb_stack.c|..\dp_usb\cdc.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\Program Files (x86)\Microchip\mplabc18\v3.41\bin\mcc18.exe
