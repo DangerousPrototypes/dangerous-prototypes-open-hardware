@@ -8,15 +8,10 @@
 
 #ifndef CONFIG_H
 #define CONFIG_H
-
-
-        #if defined(__PIC24FJ64GB106__) || defined(__PIC24FJ128GB106__) || defined(__PIC24FJ192GB106__) || defined(__PIC24FJ256GB106__) || defined(__PIC24FJ64GB108__) || defined(__PIC24FJ128GB108__) || defined(__PIC24FJ192GB108__) || defined(__PIC24FJ256GB108__) || defined(__PIC24FJ64GB110__) || defined(__PIC24FJ128GB110__) || defined(__PIC24FJ192GB110__) || defined(__PIC24FJ256GB110__) 
-        _CONFIG1( JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2) 
-        _CONFIG2( IESO_OFF & FCKSM_CSDCMD & OSCIOFNC_ON & POSCMOD_HS & FNOSC_PRIPLL & PLLDIV_DIV3 & IOL1WAY_ON & PLL_96MHZ_ON & DISUVREG_OFF)
-
-
-        #elif defined(__18F2450) || defined(__18F2455) || defined(__18F2458) || defined(__18F2550) || defined(__18F2553)|| defined(__18F4450) || defined(__18F4455) || defined(__18F4458) || defined(__18F4550) || defined(__18F4553)
-        
+	#if defined(__PIC24FJ64GB106__) || defined(__PIC24FJ128GB106__) || defined(__PIC24FJ192GB106__) || defined(__PIC24FJ256GB106__) || defined(__PIC24FJ64GB108__) || defined(__PIC24FJ128GB108__) || defined(__PIC24FJ192GB108__) || defined(__PIC24FJ256GB108__) || defined(__PIC24FJ64GB110__) || defined(__PIC24FJ128GB110__) || defined(__PIC24FJ192GB110__) || defined(__PIC24FJ256GB110__) 
+		_CONFIG1( JTAGEN_OFF & GCP_OFF & GWRP_OFF & COE_OFF & FWDTEN_OFF & ICS_PGx2) 
+		_CONFIG2( IESO_OFF & FCKSM_CSDCMD & OSCIOFNC_ON & POSCMOD_HS & FNOSC_PRIPLL & PLLDIV_DIV3 & IOL1WAY_ON & PLL_96MHZ_ON & DISUVREG_OFF)
+	#elif defined(__18F2450) || defined(__18F2455) || defined(__18F2458) || defined(__18F2550) || defined(__18F2553)|| defined(__18F4450) || defined(__18F4455) || defined(__18F4458) || defined(__18F4550) || defined(__18F4553)    
                 #pragma config PLLDIV   = 5         
                 #pragma config CPUDIV   = OSC1_PLL2   
                 #pragma config USBDIV   = 2         
@@ -152,35 +147,32 @@
         #pragma config EBTR1 = OFF 
 
 // configword 0x30000d
-        #pragma config EBTRB = OFF
-        
+        #pragma config EBTRB = OFF      
 #elif defined(__18F27J53)
-
-     #pragma config WDTEN = OFF          //WDT disabled (enabled by SWDTEN bit)
-     #pragma config PLLDIV = 1           //Divide by 1 (4 MHz oscillator input)
-     #pragma config STVREN = ON          //stack overflow/underflow reset enabled
-     #pragma config XINST = OFF          //Extended instruction set disabled
-     #pragma config CPUDIV = OSC1        //No CPU system clock divide
-     #pragma config CP0 = OFF            //Program memory is not code-protected
-     #pragma config OSC = HSPLL          //HS oscillator, PLL enabled, HSPLL used by USB
-     #pragma config FCMEN = OFF          //Fail-Safe Clock Monitor disabled
-     #pragma config IESO = OFF           //Two-Speed Start-up disabled
-     #prabma config SOSCSEL = LOW        // Low power timer1
-     #pragma config WDTPS = 32768        //1:32768
-     #pragma config DSWDTOSC = INTOSCREF //DSWDT uses INTOSC/INTRC as clock
-     #pragma config RTCOSC = T1OSCREF    //RTCC uses T1OSC/T1CKI as clock
-     #pragma config DSBOREN = OFF        //Zero-Power BOR disabled in Deep Sleep
-     #pragma config DSWDTEN = OFF        //Disabled
-     #pragma config DSWDTPS = 8192       //1:8,192 (8.5 seconds)
-     #pragma config IOL1WAY = OFF        //IOLOCK bit can be set and cleared
-     #pragma config MSSP7B_EN = MSK7     //7 Bit address masking
-     #pragma config WPFP = PAGE_1        //Write Protect Program Flash Page 0
-     #pragma config WPEND = PAGE_0       //Start protection at page 0
-     #pragma config WPCFG = OFF          //Write/Erase last page protect Disabled
-     #pragma config WPDIS = OFF          //WPFP[5:0], WPEND, and WPCFG bits ignored  
-
+	#pragma config WDTEN = OFF          //WDT disabled (enabled by SWDTEN bit)
+	#pragma config PLLDIV = 1           //Divide by 1 (4 MHz oscillator input)
+	#pragma config STVREN = ON          //stack overflow/underflow reset enabled
+	#pragma config XINST = OFF          //Extended instruction set disabled
+	#pragma config CPUDIV = OSC1        //No CPU system clock divide
+	#pragma config CP0 = OFF            //Program memory is not code-protected
+	#pragma config OSC = HSPLL          //HS oscillator, PLL enabled, HSPLL used by USB
+	#pragma config FCMEN = OFF          //Fail-Safe Clock Monitor disabled
+	#pragma config IESO = OFF           //Two-Speed Start-up disabled
+	#pragma config SOSCSEL = LOW        // Low power timer1
+	#pragma config WDTPS = 32768        //1:32768
+	#pragma config DSWDTOSC = INTOSCREF //DSWDT uses INTOSC/INTRC as clock
+	#pragma config RTCOSC = T1OSCREF    //RTCC uses T1OSC/T1CKI as clock
+	#pragma config DSBOREN = OFF        //Zero-Power BOR disabled in Deep Sleep
+	#pragma config DSWDTEN = OFF        //Disabled
+	#pragma config DSWDTPS = 8192       //1:8,192 (8.5 seconds)
+	#pragma config IOL1WAY = OFF        //IOLOCK bit can be set and cleared
+	#pragma config MSSP7B_EN = MSK7     //7 Bit address masking
+	#pragma config WPFP = PAGE_1        //Write Protect Program Flash Page 0
+	#pragma config WPEND = PAGE_0       //Start protection at page 0
+	#pragma config WPCFG = OFF          //Write/Erase last page protect Disabled
+	#pragma config WPDIS = OFF          //WPFP[5:0], WPEND, and WPCFG bits ignored  
 #else
-error "no configword"
+	error "no configword"
 #endif
 #endif
 

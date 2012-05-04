@@ -42,94 +42,92 @@
  * be drawn from bus i suspend mode */
 //#define usb_low_power_request() Nop()
 
+
+/*Choose your hardware configuration
+*
+*  Defaults are:
+* 	PIC24FJ256GB106 - Bus Pirate v4
+*	PIC18F2550 - Infrated Toy v1 or v2
+*	PIC18F24J50 - Logic Sniffer
+* 	PIC18F14K50 - ???
+*/
+
 #if defined (__PIC24FJ256GB106__)
-#define BUSPIRATEV4
+	#define BUSPIRATEV4 
+#elif defined (__18F2550)
+	#define IRTOY
 #endif
-#if defined (__18F2550)
-#define IRTOY
-#endif
-//#define EA14k //Embedded adventures PIC18F14K50 module
-//#define JTR_PIC24GB002        // JTR's PIC24..GB002 mockup
-//#define IANS18FJ      //Ian's PIC18F24J50 test bed
-//#define LPC14K  // Microchip low pin count demo board
-//JTR_18FXXJ53 // JTR PIC18F27J53
 
 #ifdef IRTOY
 
-#define CDC_BUFFER_SIZE 64u
+	#define CDC_BUFFER_SIZE 64u
+	
+	#define CLOCK_FREQ 48000000
+	#define BAUDCLOCK_FREQ 12000000 // (48000000 /4) required for baud rate calculations
+	#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
+	#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
+	
+	// LED A0 (2)
+	#define LED_LAT  LATA
+	#define LED_TRIS TRISA
+	#define LED_PIN  0b1
+	
+	#define LedOff()  LED_LAT &=(~LED_PIN)  //JTR TODO uncomment
+	#define LedOn() LED_LAT|=LED_PIN //JTR TODO uncomment
+	#define LedToggle() LED_LAT ^=LED_PIN
+	//#define USB_INTERRUPTS //use interrupts instead of polling
+	
+#elif defined (BUSPIRATEV4)
 
-#define CLOCK_FREQ 48000000
-#define BAUDCLOCK_FREQ 12000000 // (48000000 /4) required for baud rate calculations
-#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
-#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
+	#define CDC_BUFFER_SIZE 64u
+	
+	#define CLOCK_FREQ 32000000
+	#define BAUDCLOCK_FREQ 16000000 //  required for baud rate calculations
+	#define UART_BAUD_setup(x)  U1BRG = x 
+	#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
 
-        // LED A0 (2)
-        #define LED_LAT  LATA
-        #define LED_TRIS TRISA
-        #define LED_PIN  0b1
+	//RB10
+	#define LED_LAT  LATB
+	#define LED_TRIS TRISB
+	#define LED_PIN  0b10000000000
+	
+	#define LedOn()  LED_TRIS &=(~LED_PIN)  //JTR TODO uncomment
+	#define LedOff() LED_TRIS|=LED_PIN //JTR TODO uncomment
+	#define LedToggle() LED_LAT ^=LED_PIN
+	
+	#define uLedOn() LATBbits.LATB10 = 0
+	#define uLedOff() LATBbits.LATB10 = 1
+	#define uLedToggle() LATBbits.LATB10 ^= LATBbits.LATB10
+	
+	#define mLedOn() LATBbits.LATB8 = 1
+	#define mLedOff() LATBbits.LATB8 = 0
+	#define mLedToggle() LATBbits.LATB8 ^= LATBbits.LATB8
+	
+	#define vLedOn() LATBbits.LATB9 = 1
+	#define vLedOff() LATBbits.LATB9 = 0
+	#define vLedToggle() LATBbits.LATB9 ^= LATBbits.LATB9
+	
+	#define USB_INTERRUPTS //use interrupts instead of polling
 
-        #define LedOff()  LED_LAT &=(~LED_PIN)  //JTR TODO uncomment
-        #define LedOn() LED_LAT|=LED_PIN //JTR TODO uncomment
-        #define LedToggle() LED_LAT ^=LED_PIN
-        //#define USB_INTERRUPTS //use interrupts instead of polling
+#elif defined (__18F14K50)
+
+	#define CDC_BUFFER_SIZE 32u
+	
+	#define CLOCK_FREQ 48000000
+	#define BAUDCLOCK_FREQ 12000000 // (48000000 /4) required for baud rate calculations
+	#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
+	#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
+	
+	#define LED_LAT  LATA
+	#define LED_TRIS TRISA
+	#define LED_PIN  0b1
+	
+	#define LedOff()  LED_LAT &=(~LED_PIN)   
+	#define LedOn() LED_LAT|=LED_PIN 
+	#define LedToggle() LED_LAT ^=LED_PIN
         
+	#define USB_INTERRUPTS //use interrupts instead of polling  
+#endif //end processor setup
 
-#endif
-
-#ifdef BUSPIRATEV4
-
-#define CDC_BUFFER_SIZE 64u
-
-#define CLOCK_FREQ 32000000
-#define BAUDCLOCK_FREQ 16000000 //  required for baud rate calculations
-#define UART_BAUD_setup(x)  U1BRG = x 
-#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
-
-        //RB10
-        #define LED_LAT  LATB
-        #define LED_TRIS TRISB
-        #define LED_PIN  0b10000000000
-
-        #define LedOn()  LED_TRIS &=(~LED_PIN)  //JTR TODO uncomment
-        #define LedOff() LED_TRIS|=LED_PIN //JTR TODO uncomment
-        #define LedToggle() LED_LAT ^=LED_PIN
-
-#define uLedOn() LATBbits.LATB10 = 0
-#define uLedOff() LATBbits.LATB10 = 1
-#define uLedToggle() LATBbits.LATB10 ^= LATBbits.LATB10
-
-#define mLedOn() LATBbits.LATB8 = 1
-#define mLedOff() LATBbits.LATB8 = 0
-#define mLedToggle() LATBbits.LATB8 ^= LATBbits.LATB8
-
-#define vLedOn() LATBbits.LATB9 = 1
-#define vLedOff() LATBbits.LATB9 = 0
-#define vLedToggle() LATBbits.LATB9 ^= LATBbits.LATB9
-
-        //#define USB_INTERRUPTS //use interrupts instead of polling
-
-#endif
-
-#if defined (__18F14K50)
-
-#define CDC_BUFFER_SIZE 32u
-
-#define CLOCK_FREQ 48000000
-#define BAUDCLOCK_FREQ 12000000 // (48000000 /4) required for baud rate calculations
-#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
-#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
-
-//        #define LED_LAT  LATA
-//        #define LED_TRIS TRISA
-//        #define LED_PIN  0b1
-
-//        #define LedOff()  LED_LAT &=(~LED_PIN)   
-//        #define LedOn() LED_LAT|=LED_PIN 
-//        #define LedToggle() LED_LAT ^=LED_PIN
-        
-#define USB_INTERRUPTS //use interrupts instead of polling
-        
-
-#endif
 
 #endif

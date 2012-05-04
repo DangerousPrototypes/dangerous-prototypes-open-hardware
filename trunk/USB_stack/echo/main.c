@@ -1,15 +1,20 @@
-
+// Open source PIC USB stack echo demo
+// USB stack by JTR and Honken
+// CC-BY
+//
+// USB driver files should be in '..\dp_usb\'
+// Enter a USB VID and PID in prj_usb_config.h
 
 //USB stack
 #include "..\dp_usb\usb_stack_globals.h"    // USB stack only defines Not function related.
 #include "descriptors.h"	// JTR Only included in main.c
 #include "configwords.h"	// JTR only included in main.c
 
-
+//Move reset vectors for bootloader compatibility
 #ifdef __18CXX
-#define REMAPPED_RESET_VECTOR_ADDRESS		0x800
-#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
-#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
+	#define REMAPPED_RESET_VECTOR_ADDRESS		0x800
+	#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
+	#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
 #endif
 
 void SetupBoard(void);
@@ -17,26 +22,22 @@ void InterruptHandlerHigh();
 void InterruptHandlerLow();
 void USBSuspend(void);
 
-extern BYTE usb_device_state;
-
-
 #pragma udata
-
+extern BYTE usb_device_state;
 
 #pragma code
 #ifdef PIC_18F
 void main(void)
 #else
-
 int main(void)
 #endif
 {
     BYTE RecvdByte;
 
-    initCDC(); // JTR this function has been highly modified It no longer sets up CDC endpoints.
-    SetupBoard(); //setup the hardware, USB
-    usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, USB_NUM_STRINGS); // TODO: Remove magic with macro
-    usb_start();
+    initCDC(); // setup the CDC state machine
+    SetupBoard(); //setup the hardware, customize for your hardware
+    usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, USB_NUM_STRINGS); // initialize USB. TODO: Remove magic with macro
+    usb_start(); //start the USB peripheral
 
 // PIC18 INTERRUPTS
 // It is the users resposibility to set up high, low or legacy mode
@@ -56,7 +57,7 @@ int main(void)
 
 #if defined USB_INTERRUPTS // See the prj_usb_config.h file.
     EnableUsbPerifInterrupts(USB_TRN + USB_SOF + USB_UERR + USB_URST);
-#if defined __18CXX
+#if defined __18CXX //turn on interrupts for PIC18
     INTCONbits.PEIE = 1;
     INTCONbits.GIE = 1;
 #endif
@@ -64,6 +65,7 @@ int main(void)
 #endif
 
 
+// Wait for USB to connect
     do {
 #ifndef USB_INTERRUPTS
         usb_handler();
@@ -72,30 +74,43 @@ int main(void)
 
     usb_register_sof_handler(CDCFlushOnTimeout); // Register our CDC timeout handler after device configured
 
-
+// Main echo loop
     do {
-        //If USB_INTERRUPT is not defined each loop should have at least one additional call to the usb handler to allow for control transfers.
 
+// If USB_INTERRUPT is not defined each loop should have at least one additional call to the usb handler to allow for control transfers.
 #ifndef USB_INTERRUPTS
         usb_handler();
 #endif
-        // The CDC module will call usb_handler each time a BULK CDC packet is sent or received.
 
-        if (poll_getc_cdc(&RecvdByte)) // If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
-            putc_cdc(RecvdByte); //
+// Receive and send method 1
+// The CDC module will call usb_handler each time a BULK CDC packet is sent or received.
+// If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
+        if (poll_getc_cdc(&RecvdByte)) 
+            putc_cdc(RecvdByte+1); //
 
-        if (peek_getc_cdc(&RecvdByte)) { // Same as poll_getc_cdc except that byte is NOT removed from queue.
-            RecvdByte = getc_cdc(); // This function will wait for a byte and return and remove it from the queue when it arrives.
-            putc_cdc(RecvdByte);
+// Receive and send method 2
+// Same as poll_getc_cdc except that byte is NOT removed from queue.
+// This function will wait for a byte and return and remove it from the queue when it arrives.
+        if (peek_getc_cdc(&RecvdByte)) { 
+            RecvdByte = getc_cdc(); 
+            putc_cdc(RecvdByte+1);
         }
-        if (poll_getc_cdc(&RecvdByte)) { // If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
-            putc_cdc(RecvdByte); //
-            CDC_Flush_In_Now(); // when it has to be sent immediately and not wait for a timeout condition.
+
+// Receive and send method 3
+// If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
+// use CDC_Flush_In_Now(); when it has to be sent immediately and not wait for a timeout condition.
+        if (poll_getc_cdc(&RecvdByte)) { 
+            putc_cdc(RecvdByte+1); //
+            CDC_Flush_In_Now(); 
         }
     } while (1);
+
 } //end main
 
+//board hardware setup
+//add your hardware here
 void SetupBoard(void) {
+
 #if defined (BUSPIRATEV4)
     INTCON1bits.NSTDIS = 1;
     volatile unsigned long delay = 0xffff;
@@ -110,24 +125,25 @@ void SetupBoard(void) {
     TRISBbits.TRISB8 = 0;
     TRISBbits.TRISB9 = 0;
     while (delay--);
-#endif
 
-#if defined (IRTOY)
+#elif defined (IRTOY)
     //disable some defaults
     ADCON1 |= 0b1111; //all pins digital
     CVRCON = 0b00000000;
+
 #endif
-    //visual indicator LED config
-    //LedOn(); //start with LED ON till USB connect
-    //LedTris()
+
 }
 
+// USB suspend not yet enabled
 void USBSuspend(void) {}
 
+//interrupt routines for PIC 18 and PIC24
 #if defined(USB_INTERRUPTS)
+
+//PIC 24F type USB interrupts
 #if defined(BUSPIRATEV4)
 #pragma interrupt _USB1Interrupt
-
 void __attribute__((interrupt, auto_psv)) _USB1Interrupt() {
     //USB interrupt
     //IRQ enable IEC5bits.USB1IE
@@ -138,6 +154,7 @@ void __attribute__((interrupt, auto_psv)) _USB1Interrupt() {
 }
 #endif
 
+//PIC18F style interrupts with remapping for bootloader
 #if defined(__18CXX)
 //	Interrupt remap chain
 //
