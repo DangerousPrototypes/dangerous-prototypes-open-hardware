@@ -16,7 +16,7 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 // JTR v0.2a Jan 26th 2012
 
 
-#include "usb_stack_globals.h"     // USB stack only defines Not function related.
+#include "..\dp_usb\usb_stack_globals.h"     // USB stack only defines Not function related.
 
 #if USB_EP0_BUFFER_SIZE == 8u
 #elif USB_EP0_BUFFER_SIZE == 16u
@@ -263,7 +263,9 @@ void usb_handle_setup(void) {
             if (class_setup_handler) class_setup_handler();
             break;
         case USB_bmRequestType_Vendor:
-            if (vendor_setup_handler) class_setup_handler();
+			//ROBOTS FIX: http://dangerousprototypes.com/forum/viewtopic.php?f=39&t=3849&view=unread#unread
+			// did call class_setup_handler();
+            if (vendor_setup_handler) vendor_setup_handler();
             break;
         default:
             usb_RequestError();
