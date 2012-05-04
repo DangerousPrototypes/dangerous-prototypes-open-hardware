@@ -1,0 +1,215 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.5.4	//
+!_TAG_REVISION_NAME	MCHPTags	//
+!_TAG_REVISION_VERSION	6.0.1	//
+BAUDCLOCK_FREQ::12000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	118;"	d	line:118
+BAUDCLOCK_FREQ::12000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	62;"	d	line:62
+BAUDCLOCK_FREQ::16000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	84;"	d	line:84
+BUSPIRATEV4	C:\00DP\00 echo test final for DP\prj_usb_config.h	46;"	d	line:46
+CDCFlushOnTimeout	C:\00DP\dp_usb\cdc.c	324;"	f	line:324	signature:(void)
+CDCFunctionError	C:\00DP\dp_usb\cdc.c	64;"	v	line:64
+CDC_BUFFER_SIZE::32u	C:\00DP\00 echo test final for DP\prj_usb_config.h	115;"	d	line:115
+CDC_BUFFER_SIZE::64u	C:\00DP\00 echo test final for DP\prj_usb_config.h	59;"	d	line:59
+CDC_BUFFER_SIZE::64u	C:\00DP\00 echo test final for DP\prj_usb_config.h	81;"	d	line:81
+CDC_FLUSH_MS::4	C:\00DP\00 echo test final for DP\prj_usb_config.h	120;"	d	line:120
+CDC_FLUSH_MS::4	C:\00DP\00 echo test final for DP\prj_usb_config.h	64;"	d	line:64
+CDC_FLUSH_MS::4	C:\00DP\00 echo test final for DP\prj_usb_config.h	86;"	d	line:86
+CDC_Flush_In_Now	C:\00DP\dp_usb\cdc.c	309;"	f	line:309	signature:(void)
+CDC_Inbdp	C:\00DP\dp_usb\cdc.c	63;"	v	line:63
+CDC_NOTICE_BUFFER_SIZE::10u	C:\00DP\00 echo test final for DP\prj_usb_config.h	36;"	d	line:36
+CDC_Outbdp	C:\00DP\dp_usb\cdc.c	63;"	v	line:63
+CLOCK_FREQ::32000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	83;"	d	line:83
+CLOCK_FREQ::48000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	117;"	d	line:117
+CLOCK_FREQ::48000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	61;"	d	line:61
+ClearUSBtoDefault	C:\00DP\dp_usb\usb_stack.c	133;"	f	line:133	signature:(void)
+EP0_Inbdp	C:\00DP\dp_usb\usb_stack.c	84;"	v	line:84
+EP0_Outbdp	C:\00DP\dp_usb\usb_stack.c	84;"	v	line:84
+High_ISR	C:\00DP\00 echo test final for DP\main.c	187;"	f	line:187	signature:(void)
+IRTOY	C:\00DP\00 echo test final for DP\prj_usb_config.h	49;"	d	line:49
+InPtr	C:\00DP\dp_usb\cdc.c	56;"	v	line:56
+InterruptHandlerHigh	C:\00DP\00 echo test final for DP\main.c	149;"	f	line:149	signature:(void)
+InterruptHandlerHigh	C:\00DP\00 echo test final for DP\main.c	16;"	p	line:16	file:
+InterruptHandlerLow	C:\00DP\00 echo test final for DP\main.c	158;"	f	line:158	signature:(void)
+InterruptHandlerLow	C:\00DP\00 echo test final for DP\main.c	17;"	p	line:17	file:
+IsInBufferA	C:\00DP\dp_usb\cdc.c	54;"	v	line:54
+IsOutBufferA	C:\00DP\dp_usb\cdc.c	55;"	v	line:55
+IsSuspended	C:\00DP\dp_usb\usb_stack.c	85;"	v	line:85
+LED_LAT::LATA	C:\00DP\00 echo test final for DP\prj_usb_config.h	67;"	d	line:67
+LED_LAT::LATB	C:\00DP\00 echo test final for DP\prj_usb_config.h	89;"	d	line:89
+LED_PIN::0b1	C:\00DP\00 echo test final for DP\prj_usb_config.h	69;"	d	line:69
+LED_PIN::0b10000000000	C:\00DP\00 echo test final for DP\prj_usb_config.h	91;"	d	line:91
+LED_TRIS::TRISA	C:\00DP\00 echo test final for DP\prj_usb_config.h	68;"	d	line:68
+LED_TRIS::TRISB	C:\00DP\00 echo test final for DP\prj_usb_config.h	90;"	d	line:90
+LedOff::LED_LAT&=(~LED_PIN)	C:\00DP\00 echo test final for DP\prj_usb_config.h	71;"	d	line:71
+LedOff::LED_TRIS|=LED_PIN	C:\00DP\00 echo test final for DP\prj_usb_config.h	94;"	d	line:94
+LedOn::LED_LAT|=LED_PIN	C:\00DP\00 echo test final for DP\prj_usb_config.h	72;"	d	line:72
+LedOn::LED_TRIS&=(~LED_PIN)	C:\00DP\00 echo test final for DP\prj_usb_config.h	93;"	d	line:93
+LedToggle::LED_LAT^=LED_PIN	C:\00DP\00 echo test final for DP\prj_usb_config.h	73;"	d	line:73
+LedToggle::LED_LAT^=LED_PIN	C:\00DP\00 echo test final for DP\prj_usb_config.h	95;"	d	line:95
+LineStateUpdated	C:\00DP\dp_usb\cdc.c	58;"	v	line:58
+Low_ISR	C:\00DP\00 echo test final for DP\main.c	192;"	f	line:192	signature:(void)
+MAX_EPNUM_USED::2u	C:\00DP\00 echo test final for DP\prj_usb_config.h	19;"	d	line:19
+OutPtr	C:\00DP\dp_usb\cdc.c	57;"	v	line:57
+REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS::0x808	C:\00DP\00 echo test final for DP\main.c	11;"	d	line:11	file:
+REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS::0x818	C:\00DP\00 echo test final for DP\main.c	12;"	d	line:12	file:
+REMAPPED_RESET_VECTOR_ADDRESS::0x800	C:\00DP\00 echo test final for DP\main.c	10;"	d	line:10	file:
+RecvdByte	C:\00DP\00 echo test final for DP\main.c	34;"	l	line:34
+Remapped_High_ISR	C:\00DP\00 echo test final for DP\main.c	167;"	f	line:167	signature:(void)
+Remapped_Low_ISR	C:\00DP\00 echo test final for DP\main.c	173;"	f	line:173	signature:(void)
+SendZLP	C:\00DP\dp_usb\cdc.c	304;"	f	line:304	signature:(void)
+SetupBoard	C:\00DP\00 echo test final for DP\main.c	15;"	p	line:15	file:	signature:(void)
+SetupBoard	C:\00DP\00 echo test final for DP\main.c	98;"	f	line:98	signature:(void)
+UART_BAUD_setup::(x)SPBRG=x&0xFFu;SPBRGH=(x>>8)	C:\00DP\00 echo test final for DP\prj_usb_config.h	119;"	d	line:119
+UART_BAUD_setup::(x)SPBRG=x&0xFFu;SPBRGH=(x>>8)	C:\00DP\00 echo test final for DP\prj_usb_config.h	63;"	d	line:63
+UART_BAUD_setup::(x)U1BRG=x	C:\00DP\00 echo test final for DP\prj_usb_config.h	85;"	d	line:85
+USBSuspend	C:\00DP\00 echo test final for DP\main.c	125;"	f	line:125	signature:(void)
+USBSuspend	C:\00DP\00 echo test final for DP\main.c	18;"	p	line:18	file:	signature:(void)
+USB_BUS_POWERED::1	C:\00DP\00 echo test final for DP\prj_usb_config.h	21;"	d	line:21
+USB_CONFIG_DESC_TOT_LENGTH::(9+9+5+4+5+5+7+9+7+7)	C:\00DP\00 echo test final for DP\descriptors.h	47;"	d	line:47
+USB_DEV::0x0002	C:\00DP\00 echo test final for DP\prj_usb_config.h	12;"	d	line:12
+USB_EP0_BUFFER_SIZE::8u	C:\00DP\00 echo test final for DP\prj_usb_config.h	35;"	d	line:35
+USB_FULL_SPEED_DEVICE::1	C:\00DP\00 echo test final for DP\prj_usb_config.h	25;"	d	line:25
+USB_HARDWARE_PROFILE_H	C:\00DP\00 echo test final for DP\prj_usb_config.h	2;"	d	line:2
+USB_INTERNAL_PULLUPS::1	C:\00DP\00 echo test final for DP\prj_usb_config.h	23;"	d	line:23
+USB_INTERNAL_TRANSCIEVER::1	C:\00DP\00 echo test final for DP\prj_usb_config.h	22;"	d	line:22
+USB_INTERNAL_VREG::1	C:\00DP\00 echo test final for DP\prj_usb_config.h	24;"	d	line:24
+USB_INTERRUPTS::	C:\00DP\00 echo test final for DP\prj_usb_config.h	130;"	d	line:130
+USB_NUM_CONFIGURATIONS::1u	C:\00DP\00 echo test final for DP\prj_usb_config.h	14;"	d	line:14
+USB_NUM_ENDPOINTS::3u	C:\00DP\00 echo test final for DP\prj_usb_config.h	16;"	d	line:16
+USB_NUM_INTERFACES::2u	C:\00DP\00 echo test final for DP\prj_usb_config.h	15;"	d	line:15
+USB_NUM_STRINGS::4u	C:\00DP\00 echo test final for DP\descriptors.h	23;"	d	line:23
+USB_PID::(0x000a)	C:\00DP\00 echo test final for DP\prj_usb_config.h	11;"	d	line:11
+USB_PP_BUF_MODE::0	C:\00DP\00 echo test final for DP\prj_usb_config.h	34;"	d	line:34
+USB_VID::(0x4d8)	C:\00DP\00 echo test final for DP\prj_usb_config.h	10;"	d	line:10
+USB_iManufacturer::1u	C:\00DP\00 echo test final for DP\descriptors.h	20;"	d	line:20
+USB_iProduct::2u	C:\00DP\00 echo test final for DP\descriptors.h	21;"	d	line:21
+USB_iSerialNum::3u	C:\00DP\00 echo test final for DP\descriptors.h	22;"	d	line:22
+WaitInReady	C:\00DP\dp_usb\cdc.c	242;"	f	line:242
+WaitOutReady	C:\00DP\dp_usb\cdc.c	235;"	f	line:235
+ZLPpending	C:\00DP\dp_usb\cdc.c	60;"	v	line:60
+_USB1Interrupt	C:\00DP\00 echo test final for DP\main.c	131;"	f	line:131
+__DESCRIPTORS_H__	C:\00DP\00 echo test final for DP\descriptors.h	15;"	d	line:15
+_reset	C:\00DP\00 echo test final for DP\main.c	181;"	f	line:181	signature:(void)
+_startup	C:\00DP\00 echo test final for DP\main.c	178;"	p	line:178	file:	signature:(void)
+bCharFormat	C:\00DP\dp_usb\cdc.c	34;"	m	line:34	struct:cdc_LineCodeing	file:
+bDataBits	C:\00DP\dp_usb\cdc.c	36;"	m	line:36	struct:cdc_LineCodeing	file:
+bParityType	C:\00DP\dp_usb\cdc.c	35;"	m	line:35	struct:cdc_LineCodeing	file:
+c	C:\00DP\dp_usb\cdc.c	371;"	l	line:371
+cdc_In_bufferA	C:\00DP\dp_usb\cdc.c	44;"	v	line:44
+cdc_In_bufferB	C:\00DP\dp_usb\cdc.c	45;"	v	line:45
+cdc_In_len	C:\00DP\dp_usb\cdc.c	52;"	v	line:52
+cdc_LineCodeing	C:\00DP\dp_usb\cdc.c	32;"	s	line:32	file:
+cdc_Out_bufferA	C:\00DP\dp_usb\cdc.c	46;"	v	line:46
+cdc_Out_bufferB	C:\00DP\dp_usb\cdc.c	47;"	v	line:47
+cdc_Out_len	C:\00DP\dp_usb\cdc.c	53;"	v	line:53
+cdc_acm_in_buffer	C:\00DP\dp_usb\cdc.c	41;"	v	line:41
+cdc_config_descriptor	C:\00DP\00 echo test final for DP\descriptors.h	48;"	v	line:48
+cdc_device_descriptor	C:\00DP\00 echo test final for DP\descriptors.h	25;"	v	line:25
+cdc_get_line_coding	C:\00DP\dp_usb\cdc.c	191;"	f	line:191	signature:(void)
+cdc_set_control_line_state_status	C:\00DP\dp_usb\cdc.c	230;"	f	line:230	signature:(void)
+cdc_set_line_coding_data	C:\00DP\dp_usb\cdc.c	195;"	f	line:195	signature:(void)
+cdc_set_line_coding_status	C:\00DP\dp_usb\cdc.c	226;"	f	line:226	signature:(void)
+cdc_setup	C:\00DP\dp_usb\cdc.c	132;"	f	line:132	signature:(void)
+cdc_str_descs	C:\00DP\00 echo test final for DP\descriptors.h	128;"	v	line:128
+cdc_timeout_count	C:\00DP\dp_usb\cdc.c	59;"	v	line:59
+cdc_trf_state	C:\00DP\dp_usb\cdc.c	66;"	v	line:66
+class_setup_handler	C:\00DP\dp_usb\usb_stack.c	36;"	v	line:36
+cls	C:\00DP\dp_usb\cdc.c	51;"	v	line:51
+delay	C:\00DP\00 echo test final for DP\main.c	101;"	l	line:101
+dir	C:\00DP\dp_usb\usb_stack.c	440;"	l	line:440
+dwBaud	C:\00DP\dp_usb\cdc.c	196;"	l	line:196
+dwBaudrem	C:\00DP\dp_usb\cdc.c	196;"	l	line:196
+dwDTERate	C:\00DP\dp_usb\cdc.c	33;"	m	line:33	struct:cdc_LineCodeing	file:
+endpoints	C:\00DP\dp_usb\usb_stack.c	39;"	v	line:39
+epbd	C:\00DP\dp_usb\usb_stack.c	441;"	l	line:441
+epnum	C:\00DP\dp_usb\usb_stack.c	439;"	l	line:439
+even	C:\00DP\dp_usb\cdc.c	28;"	e	line:28	enum:parity	file:
+getInReady	C:\00DP\dp_usb\cdc.c	254;"	f	line:254	signature:(void)
+getOutReady	C:\00DP\dp_usb\cdc.c	248;"	f	line:248	signature:(void)
+getc_cdc	C:\00DP\dp_usb\cdc.c	370;"	f	line:370	signature:(void)
+getda_cdc	C:\00DP\dp_usb\cdc.c	260;"	f	line:260	signature:(void)
+i	C:\00DP\dp_usb\usb_stack.c	134;"	l	line:134
+i	C:\00DP\dp_usb\usb_stack.c	287;"	l	line:287
+i	C:\00DP\dp_usb\usb_stack.c	577;"	l	line:577
+in_handler	C:\00DP\dp_usb\usb_stack.c	509;"	p	line:509	file:
+initCDC	C:\00DP\dp_usb\cdc.c	68;"	f	line:68	signature:(void)
+linecodeing	C:\00DP\dp_usb\cdc.c	37;"	v	line:37
+lock	C:\00DP\dp_usb\cdc.c	61;"	v	line:61
+mLedOff::LATBbits.LATB8=0	C:\00DP\00 echo test final for DP\prj_usb_config.h	102;"	d	line:102
+mLedOn::LATBbits.LATB8=1	C:\00DP\00 echo test final for DP\prj_usb_config.h	101;"	d	line:101
+mLedToggle::LATBbits.LATB8^=LATBbits.LATB8	C:\00DP\00 echo test final for DP\prj_usb_config.h	103;"	d	line:103
+main	C:\00DP\00 echo test final for DP\main.c	28;"	f	line:28	signature:(void)
+mark	C:\00DP\dp_usb\cdc.c	28;"	e	line:28	enum:parity	file:
+none	C:\00DP\dp_usb\cdc.c	28;"	e	line:28	enum:parity	file:
+odd	C:\00DP\dp_usb\cdc.c	28;"	e	line:28	enum:parity	file:
+one	C:\00DP\dp_usb\cdc.c	24;"	e	line:24	enum:stopbits	file:
+oneandahalf	C:\00DP\dp_usb\cdc.c	24;"	e	line:24	enum:stopbits	file:
+out_handler	C:\00DP\dp_usb\usb_stack.c	515;"	p	line:515	file:
+pUEP	C:\00DP\dp_usb\usb_stack.c	442;"	l	line:442
+packet	C:\00DP\dp_usb\cdc.c	133;"	l	line:133
+packet	C:\00DP\dp_usb\usb_stack.c	286;"	l	line:286
+packet	C:\00DP\dp_usb\usb_stack.c	407;"	l	line:407
+packet	C:\00DP\dp_usb\usb_stack.c	438;"	l	line:438
+packet_len	C:\00DP\dp_usb\usb_stack.c	578;"	l	line:578
+parity	C:\00DP\dp_usb\cdc.c	27;"	g	line:27	file:
+parity_str	C:\00DP\dp_usb\cdc.c	30;"	v	line:30
+peek_getc_cdc	C:\00DP\dp_usb\cdc.c	419;"	f	line:419	signature:(BYTE * c)
+poll_getc_cdc	C:\00DP\dp_usb\cdc.c	391;"	f	line:391	signature:(BYTE * c)
+putc_cdc	C:\00DP\dp_usb\cdc.c	350;"	f	line:350	signature:(BYTE c)
+putda_cdc	C:\00DP\dp_usb\cdc.c	283;"	f	line:283	signature:(BYTE count)
+reply_len	C:\00DP\dp_usb\cdc.c	134;"	l	line:134
+sof_handler	C:\00DP\dp_usb\usb_stack.c	35;"	v	line:35
+space	C:\00DP\dp_usb\cdc.c	28;"	e	line:28	enum:parity	file:
+stopbits	C:\00DP\dp_usb\cdc.c	23;"	g	line:23	file:
+trn_status	C:\00DP\dp_usb\usb_stack.c	83;"	v	line:83
+two	C:\00DP\dp_usb\cdc.c	24;"	e	line:24	enum:stopbits	file:
+uLedOff::LATBbits.LATB10=1	C:\00DP\00 echo test final for DP\prj_usb_config.h	98;"	d	line:98
+uLedOn::LATBbits.LATB10=0	C:\00DP\00 echo test final for DP\prj_usb_config.h	97;"	d	line:97
+uLedToggle::LATBbits.LATB10^=LATBbits.LATB	C:\00DP\00 echo test final for DP\prj_usb_config.h	99;"	d	line:99
+usb_RequestError	C:\00DP\dp_usb\usb_stack.c	550;"	f	line:550	signature:(void)
+usb_ack_dat1	C:\00DP\dp_usb\usb_stack.c	545;"	f	line:545	signature:(int bdcnt)
+usb_addr_pending	C:\00DP\dp_usb\usb_stack.c	82;"	v	line:82
+usb_bdt	C:\00DP\dp_usb\usb_stack.c	57;"	v	line:57
+usb_bdt	C:\00DP\dp_usb\usb_stack.c	69;"	v	line:69
+usb_config_descriptor	C:\00DP\dp_usb\usb_stack.c	31;"	v	line:31
+usb_current_cfg	C:\00DP\dp_usb\usb_stack.c	80;"	v	line:80
+usb_device_descriptor	C:\00DP\dp_usb\usb_stack.c	30;"	v	line:30
+usb_device_state	C:\00DP\dp_usb\usb_stack.c	81;"	v	line:81
+usb_device_status	C:\00DP\dp_usb\usb_stack.c	79;"	v	line:79
+usb_ep0_in_buf	C:\00DP\dp_usb\usb_stack.c	62;"	v	line:62
+usb_ep0_in_buf	C:\00DP\dp_usb\usb_stack.c	72;"	v	line:72
+usb_ep0_out_buf	C:\00DP\dp_usb\usb_stack.c	61;"	v	line:61
+usb_ep0_out_buf	C:\00DP\dp_usb\usb_stack.c	71;"	v	line:71
+usb_handle_StandardDeviceRequest	C:\00DP\dp_usb\usb_stack.c	285;"	f	line:285	signature:(BDentry *bdp)
+usb_handle_StandardEndpointRequest	C:\00DP\dp_usb\usb_stack.c	437;"	f	line:437	signature:(BDentry *bdp)
+usb_handle_StandardInterfaceRequest	C:\00DP\dp_usb\usb_stack.c	406;"	f	line:406	signature:(BDentry *bdp)
+usb_handle_error	C:\00DP\dp_usb\usb_stack.c	116;"	f	line:116	signature:(void)
+usb_handle_in	C:\00DP\dp_usb\usb_stack.c	507;"	f	line:507	signature:(void)
+usb_handle_out	C:\00DP\dp_usb\usb_stack.c	513;"	f	line:513	signature:(void)
+usb_handle_reset	C:\00DP\dp_usb\usb_stack.c	121;"	f	line:121	signature:(void)
+usb_handle_setup	C:\00DP\dp_usb\usb_stack.c	240;"	f	line:240	signature:(void)
+usb_handle_transaction	C:\00DP\dp_usb\usb_stack.c	217;"	f	line:217	signature:(void)
+usb_handler	C:\00DP\dp_usb\usb_stack.c	184;"	f	line:184	signature:(void)
+usb_init	C:\00DP\dp_usb\usb_stack.c	90;"	f	line:90	signature:(ROMPTR const BYTE *device_descriptor, ROMPTR const BYTE *config_descriptor, ROMPTR const BYTE *string_descriptor, int num_string_descriptors)
+usb_num_string_descriptors	C:\00DP\dp_usb\usb_stack.c	33;"	v	line:33
+usb_register_class_setup_handler	C:\00DP\dp_usb\usb_stack.c	523;"	f	line:523	signature:(usb_handler_t handler)
+usb_register_sof_handler	C:\00DP\dp_usb\usb_stack.c	519;"	f	line:519	signature:(usb_handler_t handler)
+usb_register_vendor_setup_handler	C:\00DP\dp_usb\usb_stack.c	527;"	f	line:527	signature:(usb_handler_t handler)
+usb_rom_len	C:\00DP\dp_usb\usb_stack.c	87;"	v	line:87
+usb_rom_ptr	C:\00DP\dp_usb\usb_stack.c	86;"	v	line:86
+usb_send_rom	C:\00DP\dp_usb\usb_stack.c	575;"	f	line:575	signature:(void)
+usb_set_address	C:\00DP\dp_usb\usb_stack.c	564;"	f	line:564	signature:(void)
+usb_set_in_handler	C:\00DP\dp_usb\usb_stack.c	531;"	f	line:531	signature:(int ep, usb_handler_t in_handler)
+usb_set_out_handler	C:\00DP\dp_usb\usb_stack.c	535;"	f	line:535	signature:(int ep, usb_handler_t out_handler)
+usb_start	C:\00DP\dp_usb\usb_stack.c	109;"	f	line:109	signature:(void)
+usb_string_descriptor	C:\00DP\dp_usb\usb_stack.c	32;"	v	line:32
+usbrequesterrorflag	C:\00DP\dp_usb\usb_stack.c	88;"	v	line:88
+user_configured_init	C:\00DP\dp_usb\cdc.c	85;"	f	line:85	signature:(void)
+vLedOff::LATBbits.LATB9=0	C:\00DP\00 echo test final for DP\prj_usb_config.h	106;"	d	line:106
+vLedOn::LATBbits.LATB9=1	C:\00DP\00 echo test final for DP\prj_usb_config.h	105;"	d	line:105
+vLedToggle::LATBbits.LATB9^=LATBbits.LATB9	C:\00DP\00 echo test final for DP\prj_usb_config.h	107;"	d	line:107
+vendor_setup_handler	C:\00DP\dp_usb\usb_stack.c	36;"	v	line:36
