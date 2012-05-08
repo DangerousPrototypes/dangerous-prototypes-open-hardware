@@ -119,7 +119,7 @@
 	#define UART_BAUD_setup(x)  SPBRG = x & 0xFFu; SPBRGH = (x >> 8) & 0xFFu
 	#define CDC_FLUSH_MS 4 // how many ms timeout before cdc in to host is sent
 
-	//#define USB_INTERRUPTS //use interrupts instead of polling
+	#define USB_INTERRUPTS //use interrupts instead of polling
 
 #elif defined (__18F14K50)
 
