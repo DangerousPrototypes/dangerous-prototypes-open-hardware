@@ -1,0 +1,29 @@
+This following information is for USB POV Toy developers and hackers:
+--------------------------------------------------------------------
+
+0.If you are new to MPLAB-C18 compiler, first read the user manual (FAQ) and understand how it implements
+various features of C. This is very important to avoid few suprises. For example: integer promotion are not
+enabled by default, string literals are stored in ROM by default -- hence dereference a pointer to a string
+will not yeild the expected results.
+
+1.This application is designed to be as modular as possible. All software drivers (modules like SPI, MMA7544L)
+are packaged into its own folders for easy maintanance.
+
+2.Intendation of source files are automatically corrected with QtCreator IDE (Use the latest version)
+
+3.Function names and variables follow a <Modulename>_<variable name> convention. This is to help identify
+function/variable belonging to diffrent modules. Use this convention until a better way is standardized. 
+QtCreator IDE can be used to refractor code (i.e search and replace variable / function name).
+
+4.SPI and Serial Flash driveris implemented based on USB POV Toy hardware configuration.
+
+5.About Accelerometer data: A calibrated accelerometer is critical for correct functioning. Modify MMA7455L_X_OFFSET
+in MMA7455L.h suitably.
+
+6.The display refresh happens adaptively based on the speed of waving. It can be configured to work with fixed frequency
+by uncommenting #define POVTOY_FIXED_FREQ_REFESH in POVToy.h. In this case, #define POVTOY_FIXED_FREQ_RELOAD_VALUE need
+to be set with the desired reflod value of Timer0.
+
+7. Uncomment / comment #define POVTOY_DISABLE_BIDIRECTIONAL in POVToy.h to use unidirectional display or 
+bidirectional display.
+
