@@ -1,0 +1,136 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\usb_descriptors.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File001]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\main.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File002]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\usb_function_cdc.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File003]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\usb_device.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File004]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\hal_accelerometer.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File005]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\hal_pov.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File006]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\hal_spi.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File007]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\work\hal_eeprom.o
+Folder=Intermediary
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG
+[File008]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\output\usb-pov-toy.cof
+Folder=Output
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mplink.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[File009]
+Location=C:\Microchip Solutions v2010-10-19\USB_POV_Toy\output\usb-pov-toy.hex
+Folder=Output
+DeviceName=PIC18F24J50
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files\Microchip\mplabc18\v3.38\bin\mplink.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|C:\Program Files\Microchip\mplabc18\v3.38\h;.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\Program Files\Microchip\mplabc18\v3.38\lib;C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|usb_descriptors.c|main.c|..\Microchip\Usb\CDC Device Driver\usb_function_cdc.c|..\Microchip\Usb\usb_device.c|hal_accelerometer.c|hal_pov.c|hal_spi.c|hal_eeprom.c||<obj>||<lib>||<lkr>|rm18f24j50_g.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\Program Files\Microchip\mplabc18\v3.38\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\Program Files\Microchip\mplabc18\v3.38\bin\mcc18.exe
