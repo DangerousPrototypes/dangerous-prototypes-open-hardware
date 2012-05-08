@@ -159,7 +159,7 @@ void USBSuspend(void) {}
 #if defined(USB_INTERRUPTS)
 
 //PIC 24F type USB interrupts
-#if defined(BUSPIRATEV4)
+#if defined(__PIC24FJ64GB106__) || defined(__PIC24FJ128GB106__) || defined(__PIC24FJ192GB106__) || defined(__PIC24FJ256GB106__) || defined(__PIC24FJ64GB108__) || defined(__PIC24FJ128GB108__) || defined(__PIC24FJ192GB108__) || defined(__PIC24FJ256GB108__) || defined(__PIC24FJ64GB110__) || defined(__PIC24FJ128GB110__) || defined(__PIC24FJ192GB110__) || defined(__PIC24FJ256GB110__) 
 #pragma interrupt _USB1Interrupt
 void __attribute__((interrupt, auto_psv)) _USB1Interrupt() {
     //USB interrupt
@@ -169,27 +169,22 @@ void __attribute__((interrupt, auto_psv)) _USB1Interrupt() {
     usb_handler();
     ClearGlobalUsbInterruptFlag();
 }
-#endif
-
-//PIC18F style interrupts with remapping for bootloader
-#if defined(IRTOY)
+#elif defined (__18CXX) //PIC18F style interrupts with remapping for bootloader
 //	Interrupt remap chain
 //
 //This function directs the interrupt to
 // the proper function depending on the mode
 // set in the mode variable.
-#pragma interrupt InterruptHandlerHigh nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
-
-void InterruptHandlerHigh(void) { //Also legacy mode interrupt.
-	usb_handler();
+//USB stack on low priority interrupts,
+#pragma interruptlow InterruptHandlerLow nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
+void InterruptHandlerLow(void) {
+    usb_handler();
     ClearGlobalUsbInterruptFlag();
 }
 
-//USB stack on low priority interrupts,
-#pragma interruptlow InterruptHandlerLow nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
-
-void InterruptHandlerLow(void) {
-    usb_handler();
+#pragma interrupt InterruptHandlerHigh nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
+void InterruptHandlerHigh(void) { //Also legacy mode interrupt.
+	usb_handler();
     ClearGlobalUsbInterruptFlag();
 }
 
