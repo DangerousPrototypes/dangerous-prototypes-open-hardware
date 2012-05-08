@@ -6,6 +6,13 @@
  *	http://dangerousprototypes.com
  *
  */
+
+/* *****************************************************************************
+ IR TOY 2012. A folked version by JTR. Please see changelog.txt for details.
+
+ * JTR Version 0.1 beta
+********************************************************************************/
+
 //
 // IRman compatible RC decoder for RC5, RC5x
 // Sends a 6 byte packet:
@@ -17,11 +24,8 @@
 //
 //#ifdef RC_DECODER
 
-#include "globals.h"
-#include "PICUSB.h"
-
-extern BYTE cdc_In_buffer[64];
-extern BDentry *Inbdp;
+#include "prj_globals.h"
+#include "..\dp_usb\usb_stack_globals.h"    // USB stack only defines Not function related.
 
 static enum _RC5STATE { //struct of variable to decode RC5
     IDLE = 0,
@@ -32,11 +36,13 @@ static enum _RC5STATE { //struct of variable to decode RC5
 } decoderState = IDLE;
 
 static struct _RC5decoder { //bits to trach the manchester encoding bit periods
-    unsigned char bp0; //manchester period 0
-    unsigned char bp1; //manchester period 1
-    unsigned char bcnt; //bit count
+    BYTE bp0; //manchester period 0
+    BYTE bp1; //manchester period 1
+    BYTE bcnt; //bit count
 } RC5;
 
+extern BYTE HardwareVersion;
+BYTE DecoderBuffer[8];
 //disable timers, setup IR activity interrupt
 
 void SetupRC5(void) {
@@ -49,19 +55,17 @@ void SetupRC5(void) {
     T2IF = 0;
     IRRXIF = 0;
     IRRXIE = 1; //enable RX interrupts for data ACQ
-
-    //IRman protocol: respond to IR with OK...
 }
 
 //IR signals are first captured in the interrupt loop below
 //when the capture is complete, the bits are decoded into bytes and sent to USB from this function
 
 void ProcessIR(void) {
-    static unsigned char i;
+    static BYTE i;
+    BYTE temp;
+    if (decoderState == SEND) {
 
-    if ((decoderState == SEND) && (getInReady())) { 
-
-        //process IR data (decode RC5) in irToy.s[]
+        //process IR data (decode RC5) in DecoderBuffer[]
         //byte# | description
         //0 second start bit, use as bit 6 in command byte for RC5x protocol support
         //1 toggle bit, discard
@@ -77,41 +81,52 @@ void ProcessIR(void) {
         //byte 3-6 (unused)
 
         //first byte of USB data is the RC5 address (lower 5 bits of first byte)
-        //loop through irToy.s[] and shift the 5bit address into the USB output buffer
+        //loop through DecoderBuffer[] and shift the 5bit address into the USB output buffer
         //5 address bits, 5-0, MSB first
-        cdc_In_buffer[0] = 0; //clear USB buffer byte to 0
+
+        //        cdc_In_buffer[0] = 0; //clear USB buffer byte to 0
+
+        temp = 0;
+
         for (i = 2; i < 7; i++) { //loop through and assemble 5 address bits into a byte, bit 4 to bit 0, MSB first
-            cdc_In_buffer[0] <<= 1; //shift last bit up
-            cdc_In_buffer[0] |= irToy.s[i]; //set bit 0 to value of irToy.s[i]
+
+            temp <<= 1; //shift last bit up
+            temp |= DecoderBuffer[i]; //set bit 0 to value of DecoderBuffer[i]
         }
+        putc_cdc(temp);
 
         //second byte of USB data is the RC5 command (lower 6 or 7 bits of second byte)
         //for RC5x, the second start bit is used as the MSB of the command (bit 6)
-        cdc_In_buffer[1] = irToy.s[0]; //start with the value of the RC5x bit (bit 6),
-        //cdc_In_buffer[1]=(~irToy.s[0]);		//technically this should be inversed, but that would ruin compatibility for exisitng remote profiles
-        //loop through irToy.s[] and shift the 'normal' 6 command bits, bit 5 to bit 0, into the USB output buffer
+        //cdc_In_buffer[1]=(~DecoderBuffer[0]);		//technically this should be inversed, but that would ruin compatibility for exisitng remote profiles
+        temp = ~(DecoderBuffer[0]); //start with the value of the RC5x bit (bit 6),
+
+        //loop through DecoderBuffer[] and shift the 'normal' 6 command bits, bit 5 to bit 0, into the USB output buffer
         //6 command bits, 5-0, MSB first
         for (i = 7; i < 13; i++) { //loop through and assemble 6 command bits into a byte, bit 5 to bit 0, MSB first
-            cdc_In_buffer[1] <<= 1; //shift last bit up
-            cdc_In_buffer[1] |= irToy.s[i]; //set bit 0 to value of irToy.s[i]
+            temp <<= 1; //shift last bit up
+            temp |= DecoderBuffer[i]; //set bit 0 to value of DecoderBuffer[i]
         }
-        cdc_In_buffer[2] = 0x00; //four extra bytes for 6 byte IRMAN format
-        cdc_In_buffer[3] = 0x00;
-        cdc_In_buffer[4] = 0x00;
-        cdc_In_buffer[5] = 0x00;
-        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 6);
+        putc_cdc(temp);
+
+        //four extra bytes for 6 byte IRMAN format
+        putc_cdc(0x00);
+        putc_cdc(0x00);
+        putc_cdc(0x00);
+        putc_cdc(0x00);
+        CDC_Flush_In_Now();
+
         decoderState = IDLE; //wait for more RC commands....
         IRRXIE = 1; //interrupts back on
-		//LedOff(); //LED OFF!
+        //LedOff(); //LED OFF!
     }
 }
 
-//high priority interrupt routine
-//#pragma interrupt IRdecoderInterruptHandlerHigh
+//high priority interrupt routine dispatched from main.c
+
 void IRdecoderInterruptHandlerHigh(void) {
     //RC5 decoder
     if (IRRXIE == 1 && IRRXIF == 1) { //if RB Port Change Interrupt
-       
+
         if (decoderState == IDLE && ((IRRX_PORT & IRRX_PIN) == 0)) {//only if idle and pin state == 0
             IRRXIE = 0; //disable port b interrupt
             LedOn(); //LED ON! (off after .5 bit period)
@@ -145,9 +160,9 @@ void IRdecoderInterruptHandlerHigh(void) {
                 RC5.bp1 = IRX;
 
                 if (RC5.bp0 == 1 && RC5.bp1 == 0) {
-                    irToy.s[RC5.bcnt] = 1;
+                    DecoderBuffer[RC5.bcnt] = 1;
                 } else if (RC5.bp0 == 0 && RC5.bp1 == 1) {
-                    irToy.s[RC5.bcnt] = 0;
+                    DecoderBuffer[RC5.bcnt] = 0;
                 } else {//error
                     decoderState = IDLE; //reset
                     T2ON = 0; //timer off
