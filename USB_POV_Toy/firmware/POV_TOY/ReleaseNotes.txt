@@ -1,0 +1,6 @@
+Revision	Date		Author		Comments
+________________________________________________________
+
+
+
+1		27-Feb-2012	Visweswara R	USB POV Toy first version: Supports adaptive and fixed freq display refresh. USB is not supported yet.	
