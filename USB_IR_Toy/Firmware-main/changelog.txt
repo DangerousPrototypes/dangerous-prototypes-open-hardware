@@ -1,0 +1,74 @@
+// Made all references to IN and OUT correct to USB nomenclature. I.E inbyte changed to outbyte where applicable.
+// Removed single CDC buffer option. All CDC ops are now double buffered with no switching between modes.
+// Removed all "side" buffers used for CDC transfers. All CDC IN and OUT ops occur directly with the USB RAM.
+// Removed global irtoy structure due to lack of requirement, only hardware byte is being used and this is now a global byte in main.c
+// Updated function prototypes in header files to be current and meaningful.
+// Reworked IRs.c, RCdecoder.c, sump.c, usb2uart.c, IRWidget.c to use the new CDC stack functions.
+// Massive tidy up of comments and removal of dead code.
+// Added very experimental USB suspend support.
+// Reduced RAM usage by 33%
+
+// Completely rewrote usb2uart.c to Add effective USB2UART mode.
+//      Fully double buffered and real time. Should easily support 1 Mbit/s transfers.
+//      Optional compile time enable/disable of CDC handshake signals DTR and RTS, both directly from host
+//      Supports polarity inversion of RX/TX and handshake via pin strapping on RB3 and RB5 respectively.
+//      Added Auto flush on timeout.
+//      Auto ZLP handling for both IN and OUT transfers.
+//      Baud rate set by host via SET_LINECODING in cdc.c
+//      Works like a typical USB to RS232 chip except that some signals are not supported and there is no BREAK command.
+
+
+// Reworked IRs.c to:
+//       Separate the parameter handling from the main state machine. Far simpler, less code easier to understand and maintain.
+//       Removed top level sate machine as it was no longer required.
+//       Changed code flow so that it does not return to main.c until a RESET (0x00) command is received.
+//       Removed N/A structures and enums.
+//       Changed all references from old IRIO to IRs.
+
+
+// Also Reworked sump.c as above to:
+//       Separate the parameter handling from the main state machine. Far simpler, less code easier to understand and maintain.
+//       Removed top level state machine as it was no longer required.
+//       Removed the interrupt and instead run the code in a tight loop for increased bandwidth.
+//       Corrected timing error, it was out by one count.
+//       Changed code flow so that it does not return to main.c until a RESET (0x00) command is received.
+//       Removed N/A structures and enums.
+
+// IR Widget:
+//       small Correction to the timings, it was out by one count.
+
+
+
+USB2UART CUSTOM FIRMWARE INSTRUCTIONS
+
+1) Installation
+
+There are no specific installation procedures. The USB2UART mode uses the same VID/PID
+as the IR TOY and therefore the required drivers should already be installed.
+
+2) Signals
+
+By default the polarity of the TX and TX signals will be normal. To invert the logic of
+the TX and RX pull PORTB-RB3 LOW.
+
+The same applies for the DTR and RTS signals. To invert pull PORTB RB5 LOW.
+
+The polarity is set ONCE IMMEDIATELY AFTER A RESET.
+
+The DTR signal is outputted on PORTA RA2
+
+The RTS signal is outputted on PORTA RA1
+
+Note: Due to a bug in the windows CDC driver the RTS signal is only updated when
+the DTR signal is also updated. This bug applies to all versions of windows but not
+to other O/S's
+
+
+
+
+
+
+
+
+
+

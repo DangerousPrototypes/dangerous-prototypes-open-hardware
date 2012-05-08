@@ -9,18 +9,8 @@
 #ifndef SUMP_H
 #define SUMP_H
 
-//void SUMPlogicCommand(void);
-//unsigned char SUMPlogicService(void);
-void SUMPInterruptHandlerHigh (void);
+unsigned char irSUMPservice(void); //pass this command SUMP
 
-#define SUMP_8CH
+#define SUMP_SAMPLE_PKT_CNT 0x40  //( * 64 byte packets)
 
-#ifdef SUMP_8CH
-#define SUMP_SAMPLE_SIZExx 0x1000 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
-#endif
-
-#ifndef SUMP_8CH
-#define SUMP_SAMPLE_ARRAY_SIZE 0x0080 //0x0010
-#define SUMP_SAMPLE_SIZE 0x0400 //0x0080 //(SAMPLE_ARRAY_SIZE*0x0008)
-#endif
 #endif

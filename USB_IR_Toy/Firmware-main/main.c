@@ -6,6 +6,13 @@
  *	http://dangerousprototypes.com
  *
  */
+
+/* *****************************************************************************
+ IR TOY 2012. A folked version by JTR. Please see changelog.txt for details.
+
+ * JTR Version 0.1 beta
+********************************************************************************/
+
 //
 //Depending on the install location you may need to tweak the include paths under Project->build options.
 //
@@ -21,79 +28,58 @@
 #define IRTOY
 
 //USB stack
-#include "globals.h"
+#include "prj_globals.h"
+#include "..\dp_usb\usb_stack_globals.h"    // USB stack only defines Not function related.
 #include "configwords.h"	// JTR only included in main.c
 #include "descriptors.h"	// JTR Only included in main.c
 
-extern unsigned char usb_device_state; // JTR2 corrected type
-extern unsigned char cdc_trf_state;
-extern BYTE cdc_In_buffer[64];
-extern BDentry *Inbdp;
 
-unsigned char d=0;
 
-void user_configured_init(void);
-void usb_start(void);
-void initCDC(void);
-void usb_init(ROMPTR const unsigned char*, ROMPTR const unsigned char*, ROMPTR const unsigned char*, int);
-BYTE FAST_usb_handler(void);
+extern BYTE usb_device_state; // JTR2 corrected type
+extern BYTE cdc_In_len;
+//extern BYTE IsSuspended;
 
 #pragma udata
 
 static enum _mode {
-    IR_MAIN = 0,
-    IR_DECODER, //IRMAN IR RC decoder
+    IR_DECODER = 0, //IRMAN IR RC decoder
     IR_SUMP, //SUMP logic analyzer
     IR_S, //IR Sampling mode
     USB_UART,
     IRWIDGET
     //IR_RECORDER //record IR signal to EEPROM, playback
-} mode = IR_MAIN; //mode variable tracks the IR Toy mode
+} mode = IR_DECODER; //mode variable tracks the IR Toy mode
 
-
-struct _irtoy irToy;
-BYTE inByte; // JTR3 Global
-void SetupBoard(void);
-void InterruptHandlerHigh();
-void InterruptHandlerLow();
-void SelfTest(void);
-void GetUsbIrToyVersion(void);
-void USBDeviceTasks(void);
-void cleanup(void);
-void ProcessDefaultMainMode(void);
-void SetUpDefaultMainMode(void);
-void IrSumpSetup(void);
-void DefaultISR(void);
-BYTE irSUMPservice(void); //pass this command SUMP
-void DispatchISR(void);
-
+BYTE HardwareVersion;
 
 #pragma code
 
 void main(void) {
-	static unsigned char ledtrig;
+    static BYTE ledtrig;
+    BYTE OutByte;
 
-    initCDC(); // JTR this function has been highly modified It no longer sets up CDC endpoints.
     SetupBoard(); //setup the hardware, USB
+    SetupRC5();
     usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, USB_NUM_STRINGS); // TODO: Remove magic with macro
+    initCDC(); // JTR this function has been highly modified It no longer sets up CDC endpoints.
     usb_start();
-    usbbufflush(); //flush USB input buffer system
-    SetUpDefaultMainMode();
-	ledtrig=1; //only shut LED off once
+    //usbbufflush(); //flush USB input buffer system
+
+    ledtrig = 1; //only shut LED off once
     //	Never ending loop services each task in small increments
     while (1) {
         do {
-            if (!TestUsbInterruptEnabled()) //JTR3 added
-                USBDeviceTasks(); ////service USB tasks Guaranteed one pass in polling mode even when usb_device_state == CONFIGURED_STATE
+           // if (!TestGlobalUsbInterruptEnabled()) //JTR3 added
+                usb_handler(); ////service USB tasks Guaranteed one pass in polling mode even when usb_device_state == CONFIGURED_STATE
             if ((usb_device_state < DEFAULT_STATE)) { // JTR2 no suspendControl available yet || (USBSuspendControl==1) ){
                 LedOff();
             } else if (usb_device_state < CONFIGURED_STATE) {
-                LedOn();
-            }else if((ledtrig==1) && (usb_device_state == CONFIGURED_STATE)){
-				LedOff();
-				ledtrig=0;
-			}
-        } while (usb_device_state < CONFIGURED_STATE);
+                LedOff();
+            } else if ((ledtrig == 1) && (usb_device_state == CONFIGURED_STATE)) {
+               // LedOn();
+                ledtrig = 0;
+            }
+        } while(usb_device_state < CONFIGURED_STATE);
 
         //TRISB &= 0x7f;
         //TRISB |= 0x40;
@@ -102,99 +88,86 @@ void main(void) {
         //mode = IRWIDGET;
         //irWidgetservice();
 
-        switch (mode) { //periodic service routines
-            case IR_SUMP:
-                //SUMPlogicCommand();
-                if (irSUMPservice() != 0) SetUpDefaultMainMode();
+#ifdef UARTONLY
+        //mode = USB_UART;
+        Usb2UartService(); // Never returns
+#endif
 
-                break;
-            case IR_S:
-                if (irsService() != 0) SetUpDefaultMainMode();
+        // Test for commands: 0, 1, 2 (Entry to SUMP MODE.)
+        // Do not remove from input buffer, just take a PEEK.
+        // SUMPLogicCommand will remove from input buffer
+        // (Standardized coding)
 
-                break;
-            case USB_UART:
-                if (Usb2UartService() != 0) SetUpDefaultMainMode();
+        if (peek_getc_cdc(&OutByte)) {
+            switch (OutByte) {
+                case 0: //SUMP clear
+                case 1: //SUMP run
+                case 2: //SUMP ID
+                    mode = IR_SUMP; //put IR Toy in IR_SUMP mode
+                    irSUMPservice(); // Fully self contained, does not return until exited via 0x00 command.
+                    cdc_In_len = 0;
+                    mode = IR_DECODER;
+                    SetupRC5();
+                    break;
 
-                break;
+                case 'r': //IRMAN decoder mode
+                case 'R':
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    SetupRC5();
+                    mode = IR_DECODER;
+                    putc_cdc('O');
+                    putc_cdc('K');
+                    CDC_Flush_In_Now();
+                    break;
+                case 'S': //IRs Sampling Mode
+                case 's':
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    mode = IR_S;
+                    irsService(); // Fully self contained, does not return until exited via 0x00 command.
+                    cdc_In_len = 0;
+                    mode = IR_DECODER;
+                    SetupRC5();
+                    break;
+                case 'U':
+                case 'u':
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    mode = USB_UART;
+                    Usb2UartService();
+                    break;
+                case 'P':
+                case 'p':// IR Widget mode
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    mode = IRWIDGET;
+                    GetPulseFreq(); // Never returns
+                    //GetPulseTime();
+                    break;
 
-                //case IR_RECORDER: 				//save IR wave to EEPROM for playback
-                // Not currently supported
-            // case IR_DECODER:
-            default:
+                case 'T':
+                case 't'://self test
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    SelfTest(); //run the self-test
+                    break;
+                case 'V':
+                case 'v':// Acquire Version
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    GetUsbIrToyVersion();
+                    break;
+                case '$'://bootloader jump
+                    OutByte = getc_cdc(); // now ok to remove byte from the USB buffer
+                    BootloaderJump();
+                    break;
 
-                ProcessIR(); //increment IR decoder state machine
+                default:
+                    OutByte = getc_cdc();
 
-                usbbufservice(); //service USB buffer system
-                // Kludge entry to SUMP MODE. Test for commands: 0, 1, 2
-                // Do not remove from input buffer, just take a PEEK.
-                // SUMPLogicCommand will remove from input buffer
-                // (Standardized coding)
-                if (PEEKusbbufgetbyte(&inByte) > 0) {
-                    switch (inByte) {
-                        case 0: //SUMP clear
-                        case 1: //SUMP run
-                        case 2: //SUMP ID
-                            mode = IR_SUMP; //put IR Toy in IR_SUMP mode
-                            IrSumpSetup();
-                            if (irSUMPservice() != 0) SetUpDefaultMainMode(); //pass this command SUMP
-                            break;
-                    }
-                }
-
-                if (usbbufgetbyte(&inByte) == 1) { //break; //get (and remove!) a single byte from the USB buffer
-                    switch (inByte) {
-                        case 'r': //IRMAN decoder mode
-                        case 'R':
-                            SetupRC5();
-                            mode = IR_DECODER;
-                            WaitInReady();  //it's always ready, but this could be done better
-                                cdc_In_buffer[0] = 'O'; //answer OK
-                                cdc_In_buffer[1] = 'K';
-                                putUnsignedCharArrayUsbUsart(cdc_In_buffer, 2);
-                            break;
-
-                        case 'S': //IRIO Sampling Mode
-                        case 's':
-                            mode = IR_S;
-                            irsSetup();
-                            break;
-                        case 'U':
-                        case 'u':
-                            mode = USB_UART;
-                            Usb2UartSetup();
-                            break;
-                        case 'T':
-                        case 't'://self test
-                            SelfTest(); //run the self-test
-                            break;
-                        case 'V':
-                        case 'v':// Acquire Version
-                            GetUsbIrToyVersion();
-                            break;
-
-                        case 'P':
-                        case 'p':// IR Widget mode
-                            mode = IRWIDGET;
-                            GetPulseFreq();
-                            SetUpDefaultMainMode();
-                            //GetPulseTime();
-                            break;
-
-                        case '$'://bootloader jump
-                            BootloaderJump();
-                            break;
-                    }//switch(c)
-                }//if byte
-
-                break;
-        } //switch(mode)
-    }//end while
+            }//switch(OutByte
+        } // if peek OutByte == 1
+        ProcessIR(); //increment IR decoder state machine
+    }//end while(1)
 }//end main
 
-//exits with IR LED on for visual inspection with a camera
-
 void SelfTest(void) {
-    unsigned char err = 0; //error flag starts with ASCII 0
+    BYTE err = 0; //error flag starts with ASCII 0
     unsigned int cnt;
 
 #ifndef USBIRTOY
@@ -217,7 +190,7 @@ void SelfTest(void) {
     while (cnt--);
     if (!(IRRX_PORT & IRRX_PIN)) err |= ERROR_RXPULLUP; //test IR RX pullup, should be high
 
-    if (irToy.HardwareVersion == 2) {
+    if (HardwareVersion == 2) {
         if (IRFREQ_CAP == 0) err |= ERROR_FREQPULLUP; //test IR Frequency detector pullup, should be high
 
         //turn IR LED solid on to test frequency detector
@@ -258,74 +231,26 @@ void SelfTest(void) {
     CCPR1L = 0b00101001; //upper 8 bits of duty cycte
     CCP1CON = 0b00011100; //we leave this on for visual inspection (5-4 two LSB of duty, 3-0 set PWM)
 
-    cnt = 200000;
+    cnt = 40000;
     while (cnt--);
 
     if (IRRX_PORT & IRRX_PIN)
         err |= ERROR_RXACT; //IR LED should activate RX
-    WaitInReady();  //it's always ready, but this could be done better
-        if (err) {
-            LedOff(); //LED off
-            cdc_In_buffer[0] = 'F'; //answer fail
-            cdc_In_buffer[1] = 'A';
-            cdc_In_buffer[2] = ((err & 0b1100) >> 2) + 0x30; //frequency detector error code
-            cdc_In_buffer[3] = (err & 0b11) + 0x30; //receiver error code
-            putUnsignedCharArrayUsbUsart(cdc_In_buffer, 4); // JTR3 moved this up to stop version number being send twice.
-        } else {
-            GetUsbIrToyVersion();
-        }
+
+    if (err) {
+        LedOff(); //LED off
+        putc_cdc('F'); //answer fail
+        putc_cdc('A');
+        putc_cdc(((err & 0b1100) >> 2) + 0x30); //frequency detector error code
+        putc_cdc((err & 0b11) + 0x30); //receiver error code
+        CDC_Flush_In_Now();
+    } else {
+        GetUsbIrToyVersion();
     }
+}
 //
 // Initial configuration
 //
-
-void ProcessDefaultMainMode(void) {
-    /*
-     *  ADD your IR_MAIN (DEFAULT) MODE HANDLER HERE
-     * Currently this is the IR MAN DECODER
-     */
-    ProcessIR(); //increment IR decoder state machine
-}
-
-void SetUpDefaultMainMode(void) {
-    //    switch (DefaultMode) {
-    //        case IR_DECODER:
-    SetupRC5();
-    //            break;
-    //        case IR_SUMP:
-    //            IrSumpSetup();
-    //            break;
-    //      case IR_IO: //increment IR_IO module dump state machine
-    //        mode = IR_IO;
-    //      break;
-    //case IR_S:
-    //  irsSetup();
-    //break;
-    //    case IR_REFLECT:
-    //    IrReflectSetup();
-    //    break;
-    //    case USB_UART:
-    //    Usb2UartSetup();
-    //    break;
-    //}
-    mode = IR_MAIN;
-}
-
-void AbortHandler(void) {
-    unsigned int i, i2;
-
-    SetupBoard();
-    usbbufflush(); //flush USB input buffer system
-    cleanup();
-    SetUpDefaultMainMode();
-    user_configured_init();
-    for (i = 0; i < 6; i++) {
-        LedOff();
-        for (i2 = 0; i2 < 65535; i2++);
-        LedOn();
-        for (i2 = 0; i2 < 32684; i2++);
-    }
-}
 
 void SetupBoard(void) {
     unsigned int cnt;
@@ -355,9 +280,9 @@ void SetupBoard(void) {
     //on v1 the pullups just hold RB1 high (INT==1)
     //on v2 RB1 and C0/C1 are connected INT will be 0
     if (IRFREQ_INT == 1) {
-        irToy.HardwareVersion = 1;
+        HardwareVersion = 1;
     } else {
-        irToy.HardwareVersion = 2;
+        HardwareVersion = 2;
     }
 
     //cleanup
@@ -365,7 +290,7 @@ void SetupBoard(void) {
     TRISB = 0xff; //all inputs
     IRFREQ_PIN_SETUP(); //all inputs
 #else
-    irToy.HardwareVersion = 0;
+    HardwareVersion = 0;
 #endif
     //
     // SETUP
@@ -406,41 +331,42 @@ void SetupBoard(void) {
     CCP1_IP = 1;
     EnableIRTOY_HI_IP();
 
-    //INTCONbits.GIEL = 1; //enable peripheral interrupts
     INTCONbits.GIEH = 1; //enable HIGH proirity interrupts
 }
 
 void GetUsbIrToyVersion(void) {
-    WaitInReady();
-        cdc_In_buffer[0] = 'V'; //answer OK
-        cdc_In_buffer[1] = (irToy.HardwareVersion + 0x30);
-        cdc_In_buffer[2] = FIRMWARE_VERSION_H;
-        cdc_In_buffer[3] = FIRMWARE_VERSION_L;
-        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 4);
+    putc_cdc('V');
+    putc_cdc((HardwareVersion + 0x30));
+    putc_cdc(FIRMWARE_VERSION_H);
+    putc_cdc(FIRMWARE_VERSION_L);
+    CDC_Flush_In_Now();
+}
+
+void USBSuspend(void) {
 
 }
+
+void USBWakeFromSuspend(void) {
+
+
+}//end USBWakeFromSuspend
 
 //	Interrupt remap chain
 //
 //This function directs the interrupt to
 // the proper function depending on the mode
 // set in the mode variable.
-#pragma interrupt InterruptHandlerHigh nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
+#pragma interrupt InterruptHandlerHigh nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section("MATH_DATA"), section (".tmpdata")
 
 void InterruptHandlerHigh(void) {
-    //   DispatchISR();
-    ////   }
-    //#pragma code
-    //    void DispatchISR(void) {
+
+#ifndef UARTONLY
     switch (mode) {
         case IRWIDGET:
             _asm call irWInterruptHandlerHigh, 0 _endasm
             break;
         case IR_S:
-            _asm call irsInterruptHandlerHigh, 0 _endasm //see IRIO.c
-            break;
-        case IR_SUMP:
-            _asm call SUMPInterruptHandlerHigh, 0 _endasm //see SUMP.c
+            _asm call irsInterruptHandlerHigh, 0 _endasm //see IRs.c
             break;
         case IR_DECODER:
             _asm call IRdecoderInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
@@ -448,20 +374,15 @@ void InterruptHandlerHigh(void) {
         case USB_UART:
             _asm call Usb2UartInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
             break;
-        case IR_MAIN:
-            _asm call DefaultISR, 0 _endasm
-            break;
         default:
             break;
     }
-}
-
-//#pragma interrupt DefaultISR
-
-void DefaultISR(void) {
-    _asm goto IRdecoderInterruptHandlerHigh _endasm //see RCdecoder.c
+#else
+            _asm call Usb2UartInterruptHandlerHigh, 0 _endasm //see RCdecoder.c
+#endif
 
 }
+
 //We didn't use the low priority interrupts,
 // but you could add your own code here
 #pragma interruptlow InterruptHandlerLow

@@ -6,6 +6,13 @@
  *	http://dangerousprototypes.com
  *
  */
+
+/* *****************************************************************************
+ IR TOY 2012. A forked version by JTR. Please see changelog.txt for details.
+
+ * JTR Version 0.1 beta
+ ********************************************************************************/
+
 //
 //	IR sampler
 //
@@ -14,37 +21,27 @@
 // the values are returned Pulse-h P-l Blank-h B-l P-h P-l etc.
 // the last value will be 0xff 0xff, representing 1.7seconds of blank
 
-#include "globals.h"
-#include "PICUSB.h"
-
-BYTE FAST_usb_handler(void);
-void USBDeviceTasks(void);
+#include "prj_globals.h"
+#include "..\dp_usb\usb_stack_globals.h"    // USB stack only defines Not function related.
 
 #define IRS_TRANSMIT_HI	0
 #define IRS_TRANSMIT_LO	1
 
-extern struct _irtoy irToy;
-extern BYTE cdc_In_buffer[64];
-extern BYTE cdc_Out_buffer[64];
-//extern BYTE cdc_Out_bufferA[64];
-//extern BYTE cdc_Out_bufferB[64];
-//extern BYTE cdc_In_bufferA[64];
-//extern BYTE cdc_In_bufferB[64];
+extern BYTE HardwareVersion;
 extern BYTE *InPtr;
 extern BYTE *OutPtr;
+extern volatile BYTE cdc_Out_len;
 
-static unsigned char h, l, tmr0_buf[3]; //JTR3 note swapped tmr0buf H/L bytes Now [0] = low [1] = high [2] = end of data byte
-static unsigned char modFreq[8];
-static unsigned char modFreqCnt;
+static BYTE h, l, tmr0_buf[3]; //JTR3 note swapped tmr0buf H/L bytes Now [0] = low [1] = high [2] = end of data byte
+static BYTE modFreq[8];
+static BYTE modFreqCnt;
 
-void cleanup(void);
-
-#define TRUE 1
+//#define TRUE 1
 
 ///////////////////////// THIS IS FOR SETTING THE PORT
 
 void IrS_SetPortEqual(BYTE HiByte, BYTE LoByte) {
-    if (irToy.HardwareVersion < 2) {
+    if (HardwareVersion < 2) {
         LATC = (LATC & 0x3F) | (LoByte & 0xC0);
     } else {
         LATA = (LATA & (~0x3C)) | (LoByte & 0x3C);
@@ -53,7 +50,7 @@ void IrS_SetPortEqual(BYTE HiByte, BYTE LoByte) {
 }
 
 void IrS_SetPortTrisEqual(BYTE HiByte, BYTE LoByte) {
-    if (irToy.HardwareVersion < 2) {
+    if (HardwareVersion < 2) {
         TRISC = (TRISC & 0x3F) | (LoByte & 0xC0);
     } else {
         TRISA = (TRISA & (~0x3C)) | (LoByte & 0x3C);
@@ -62,7 +59,7 @@ void IrS_SetPortTrisEqual(BYTE HiByte, BYTE LoByte) {
 }
 
 BYTE IrS_ReadPort(void) {
-    if (irToy.HardwareVersion < 2) {
+    if (HardwareVersion < 2) {
         return PORTC & 0xC0;
     } else {
         return
@@ -75,36 +72,32 @@ BYTE IrS_ReadPort(void) {
     }
 }
 
-////////////////////////
-
 static struct {
-    unsigned char RXsamples;
-    unsigned char TXsamples;
-    unsigned char timeout;
-    unsigned char TX : 1;
-    unsigned char rxflag : 1;
-    unsigned char txflag : 1;
-    unsigned char flushflag : 1;
-    unsigned char overflow : 1;
-    unsigned char TXInvert : 1;
-    unsigned char handshake : 1;
-    unsigned char sendcount : 1;
-    unsigned char sendfinish : 1;
-    unsigned char RXcompleted : 1;
-	unsigned char txerror : 1;
+    BYTE RXsamples;
+    BYTE timeout;
+    BYTE TX : 1;
+    BYTE rxflag : 1;
+    BYTE txflag : 1;
+    BYTE flushflag : 1;
+    BYTE overflow : 1;
+    BYTE TXInvert : 1;
+    BYTE handshake : 1;
+    BYTE sendcount : 1;
+    BYTE sendfinish : 1;
+    BYTE RXcompleted : 1;
+    BYTE txerror : 1;
 } irS;
 
 void irsSetup(void) {
     BYTE dummy;
     T2IE = 0; //disable any Timer 2 interrupt
     IRRXIE = 0; //enable RX interrupts for data ACQ
-    
-	//send version string
-	WaitInReady();
-	cdc_In_buffer[0] = 'S'; //answer OK
-	cdc_In_buffer[1] = '0';
-	cdc_In_buffer[2] = '1';
-	putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3);
+
+    //send version string
+    putc_cdc('S');
+    putc_cdc('0');
+    putc_cdc('1');
+    CDC_Flush_In_Now();
 
     //setup for IR TX
     /*
@@ -152,14 +145,12 @@ void irsSetup(void) {
     irS.flushflag = 0;
     irS.timeout = 0;
     irS.RXsamples = 0;
-    irS.TXsamples = 0;
     irS.TX = 0;
     irS.overflow = 0;
     irS.sendcount = 0;
     irS.sendfinish = 0;
     irS.handshake = 0;
     irS.RXcompleted = 0;
-
 
     //setup timer 0
     T0CON = 0;
@@ -190,480 +181,419 @@ void irsSetup(void) {
 
 }
 
-typedef enum { //in out data state machine
-    I_IDLE = 0,
-    I_PARAMETERS,
-    I_PROCESS,
-    I_DATA_L,
-    I_DATA_H,
-    I_TX_STATE,
-    I_LAST_PACKET //JTR3 New! For 0x07 command
-} _smio;
+enum {
+    I_LAST_PACKET = 1,
+    I_TX_STATE = 2
+};
 
 typedef struct _smCommand {
-    unsigned char command[5];
-    unsigned char parameters;
-    unsigned char parCnt;
+    BYTE command[5];
+    BYTE parCnt;
 } _smCommand;
 
 //
 // COMMANDS
 //
-#define IRIO_RESET 		0x00
+#define IRS_RESET 		0x00
 //1 and 2 reserved for SUMP RUN and ID
-//#define IRIO_TRANSMIT           0x03
-#define IRIO_FREQ 		0x04
-#define IRIO_SETUP_SAMPLETIMER  0x05
-#define IRIO_SETUP_PWM          0x06
-//#define IRIO_TRANSMIT_2 	0x07
-#define IRIO_LEDMUTEON          0x10
-#define IRIO_LEDMUTEOFF         0x11
-#define IRIO_LEDON 		0x12
-#define IRIO_LEDOFF             0x13
 
-#define IRIO_DESCRIPTOR         0x23
-#define IRIO_RETURNTXCNT        0x24
-#define IRIO_NOTIFYONCOMPLETE   0X25
-#define IRIO_HANDSHAKE          0x26
+#define IRS_TRANSMIT_unit       0x03
+#define IRS_FREQ 		0x04
+#define IRS_SETUP_SAMPLETIMER   0x05
+#define IRS_SETUP_PWM           0x06
+#define IRS_LEDMUTEON           0x10
+#define IRS_LEDMUTEOFF          0x11
+#define IRS_LEDON 		0x12
+#define IRS_LEDOFF              0x13
 
-#define IRIO_TRANSMIT_unit      0x3
+#define IRS_DESCRIPTOR          0x23
+#define IRS_RETURNTX_totalcnt   0x24
+#define IRS_NOTIFYONCOMPLETE    0X25
+#define IRS_HANDSHAKE           0x26
 
-#define IRIO_IO_WRITE           0x30
-#define IRIO_IO_DIR		0x31
-#define IRIO_IO_READ            0x32
-#define IRIO_GETCNT             0x33
-#define IRIO_UART_SETUP 	0x40
-#define IRIO_UART_CLOSE		0x41
-#define IRIO_UART_WRITE		0x42
-#define IRIO_IRW_FREQ           0x43
-//
+#define IRS_IO_WRITE            0x30
+#define IRS_IO_DIR		0x31
+#define IRS_IO_READ             0x32
+#define IRS_GETCNT              0x33
+#define IRS_UART_SETUP 	        0x40
+#define IRS_UART_CLOSE		0x41
+#define IRS_UART_WRITE		0x42
+#define IRS_IRW_FREQ            0x43
 
-static unsigned char TxBuffCtr; //this is a total hack, needed for updated getUSBbyte function
+BYTE irsService(void) {
+    static BYTE i;
+    static unsigned int TX_totalcnt;
+    BYTE TX_packetcnt;
+    BYTE irs_mode;
+    BYTE irs_TX_state;
 
-// irIO periodic service routine
-// moves bytes in and out
-//
+    BYTE outbyte;
 
-unsigned char irsService(void) {
-    static unsigned char i;
-    static unsigned int txcnt;
-    static _smio irIOstate = I_IDLE;
-    static _smCommand irIOcommand;
-    unsigned char j;
+    irsSetup();
 
-    if (irS.TXsamples == 0) {
-        irS.TXsamples = getUnsignedCharArrayUsbUart(irToy.s, CDC_BUFFER_SIZE);
-        TxBuffCtr = 0;
-    }
+    irs_mode = TRUE;
 
-    WaitInReady();
+    do {
+        if (poll_getc_cdc(&outbyte)) {
+            switch (outbyte) {
 
-    if (irS.TXsamples > 0) {
+                case IRS_TRANSMIT_unit: //start transmitting
 
-        switch (irIOstate) {
-            case I_IDLE:
+                    //setup for transmit mode:
+                    //disable timer 0, 1, 2, etc
+                    TX_totalcnt = 0; //reset transmit byte counter, used for diagnostic
+                    T0_IE = 0;
+                    T1IE = 0;
+                    IRRXIE = 0;
+                    irS.TX = 0;
+                    //setup the PWM pin, frequency etc.
+                    //setup timer 0
+                    irS.txflag = 0; //transmit flag =0 reset the transmit flag
+                    irS.flushflag = 0;
+                    irS.rxflag = 0;
+                    irs_TX_state = I_TX_STATE; //change to transmit data processing state
+                    tmr0_buf[2] = 0x00; //last data packet flag
+                    irS.txerror = 0; //reset error message
 
-                switch (irToy.s[TxBuffCtr]) {
+                    LedOff();
 
-                    case IRIO_TRANSMIT_unit: //start transmitting
+                    if (irS.handshake) {
+                        putc_cdc(CDC_BUFFER_SIZE - 2);
+                        CDC_Flush_In_Now();
+                        usb_handler();
+                    }
 
-                        //setup for transmit mode:
-                        //disable timer 0, 1, 2, etc
-                        ArmCDCOutDB();
-                        txcnt = 0; //reset transmit byte counter, used for diagnostic
-                        T0_IE = 0;
-                        T1IE = 0;
-                        IRRXIE = 0;
-                        irS.TX = 0;
-                        //setup the PWM pin, frequency etc.
-                        //setup timer 0
-                        irS.txflag = 0; //transmit flag =0 reset the transmit flag
-                        irIOstate = I_TX_STATE; //change to transmit data processing state
-						tmr0_buf[2]=0x00; //last data packet flag
-						irS.txerror=0; //reset error message
+                    do {
+                        TX_packetcnt = getda_cdc(); // Controls  OutPtr, cdc_Out_len
+                        cdc_Out_len = 0; // Not using this here. Must be cleared before exiting the transmitter.
+                        if (TX_packetcnt) { // host may have sent a ZLP skip transmit if so.
+                            if (irS.handshake) {
+                                putc_cdc(CDC_BUFFER_SIZE - 2);
+                                CDC_Flush_In_Now();
+                                usb_handler();
+                            }
 
-                        LedOff();
+                            for (i = 0; i < TX_packetcnt; i += 2, OutPtr += 2) {
 
-                        if (irS.handshake) {
-                            WaitInReady();
-                            cdc_In_buffer[0] = (CDC_BUFFER_SIZE - 2);
-                            putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1); //Ask for first packet
-                            FAST_usb_handler();
-                            FAST_usb_handler(); //probably overkill.
-                        }
+                                // JTR 3 The idea here is to preprocess the "OVERHEAD"
+                                // In what is otherwise dead time. I.E. waiting for the
+                                // IR Tx Timer to timeout.
+                                //check here for 0xff 0xff and return to IDLE state
 
-                        do {
-                            irS.TXsamples = getCDC_Out_ArmNext();
-                            if (irS.TXsamples) { // host may have sent a ZLP skip transmit if so.
-
-                                if (irS.handshake) {
-                                    WaitInReady();
-                                    cdc_In_buffer[0] = CDC_BUFFER_SIZE - 2;
-                                    putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1); //Ask for first packet
-                                    FAST_usb_handler();
+                                if (((*(OutPtr) == 0xFF) && (*(OutPtr + 1)) == 0xff)) {
+                                    tmr0_buf[2] = 0xff; //flag end of data
+                                    irs_TX_state = I_LAST_PACKET;
+                                    i = TX_packetcnt;
+                                    *(OutPtr + 1) = 0; // JTR3 replace 0xFFFF with 0020 (Ian's value)
+                                    *(OutPtr) = 20;
                                 }
 
-                                for (i = 0; i < irS.TXsamples; i += 2, OutPtr += 2) {
+                                // This cute code calculates the two's compliment (subtract from zero)
+                                // The quick way to do this in invert and add 1.
+                                *OutPtr = ~*OutPtr;
+                                *(OutPtr + 1) = ~*(OutPtr + 1);
 
-                                    // JTR 3 The idea here is to preprocess the "OVERHEAD"
-                                    // In what is otherwise dead time. I.E. waiting for the
-                                    // IR Tx Timer to timeout.
-                                    //check here for 0xff 0xff and return to IDLE state
+                                *(OutPtr + 1) += 1;
+                                if (*(OutPtr + 1) == 0) // did we get rollover in LSB?
+                                    *(OutPtr) += 1; // then must add the carry to MSB
 
-                                    if (((*(OutPtr) == 0xFF) && (*(OutPtr + 1)) == 0xff)) {
-										tmr0_buf[2]=0xff; //flag end of data
-                                        irIOstate = I_LAST_PACKET;
-                                        i = irS.TXsamples;
-                                        *(OutPtr + 1) = 0; // JTR3 replace 0xFFFF with 0020 (Ian's value)
-                                        *(OutPtr) = 20;
+                                while (irS.txflag == 1) {
+                                    usb_handler();
+                                }
 
+                                tmr0_buf[1] = *(OutPtr); //put the second byte in the buffer
+                                tmr0_buf[0] = *(OutPtr + 1); //put the first byte in the buffer
+
+                                TX_totalcnt += 2; //total bytes transmitted
+
+                                if (irS.TX == 0) {//enable interrupt if this is the first time
+                                    if (!TestGlobalUsbInterruptEnable()) {
+                                        usb_handler();
                                     }
 
-                                    // This cute code calculates the two's compliment (subtract from zero)
-                                    // The quick way to do this in invert and add 1.
-                                    *OutPtr = ~*OutPtr;
-                                    *(OutPtr + 1) = ~*(OutPtr + 1);
+                                    irS.TX = 1;
+                                    TMR0H = tmr0_buf[1]; //first set the high byte
+                                    TMR0L = tmr0_buf[0]; //set low byte copies high byte too
+                                    T0_IF = 0;
+                                    T0_IE = 1;
+                                    T0ON = 1; //enable the timer
+                                    //enable the PWM
+                                    PWMon(); //TMR2 = 0; CCP1CON |= 0b1100;
+                                    irS.TXInvert = IRS_TRANSMIT_LO;
+                                    LedOn();
+                                } else {
+                                    //only set AFTER 1st packet or the first packet is sent twice
+                                    irS.txflag = 1; //reset the interrupt buffer full flag
+                                }
 
-                                    *(OutPtr + 1) += 1;
-                                    if (*(OutPtr + 1) == 0) // did we get rollover in LSB?
-                                        *(OutPtr) += 1; // then must add the carry to MSB
+                                if (irs_TX_state == I_LAST_PACKET)
+                                    break;
+                            }//for
+                        } // if ZLP
+                    } while (irs_TX_state != I_LAST_PACKET);
 
-                                    while (irS.txflag == 1) {
-                                        FAST_usb_handler();
-                                        //dbLedToggle();
-                                    }
+                    // JTR3 all done!
 
-                                    tmr0_buf[1] = *(OutPtr); //put the second byte in the buffer
-                                    tmr0_buf[0] = *(OutPtr + 1); //put the first byte in the buffer
-                                    
-                                    txcnt += 2; //total bytes transmitted
+                    usb_handler();
 
-                                    if (irS.TX == 0) {//enable interrupt if this is the first time
-                                        if (!TestUsbInterruptEnabled()) {
-                                            FAST_usb_handler();
-                                        }
-
-                                        irS.TX = 1;
-                                        TMR0H = tmr0_buf[1]; //first set the high byte
-                                        TMR0L = tmr0_buf[0]; //set low byte copies high byte too
-                                        T0_IF = 0;
-                                        T0_IE = 1;
-                                        T0ON = 1; //enable the timer
-                                        //enable the PWM
-                                        PWMon(); //TMR2 = 0; CCP1CON |= 0b1100;
-                                        irS.TXInvert = IRS_TRANSMIT_LO;
-                                        LedOn();
-                                    }else{
-										//only set AFTER 1st packet or the first packet is sent twice
-                                    	irS.txflag = 1; //reset the interrupt buffer full flag
-									}
-
-                                    if (irIOstate == I_LAST_PACKET)
-                                        break;
-                                }//for
-                            } // if ZLP
-                        } while (irIOstate != I_LAST_PACKET);
-
-                        // JTR3 all done! 
-
-                        irIOstate = I_IDLE;
-                        DisArmCDCOutDB();
-                            FAST_usb_handler();
-                            FAST_usb_handler();
-
-                        if (irS.sendcount) { //return the total number of bytes transmitted if required
-                            WaitInReady();
-                            cdc_In_buffer[0] = 't';
-                            cdc_In_buffer[1] = (txcnt >> 8)&0xff;
-                            cdc_In_buffer[2] = (txcnt & 0xff);
-                            putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3); //send current buffer to USB
+                    if (irS.sendcount) { //return the total number of bytes transmitted if required
+                        putc_cdc('t');
+                        putc_cdc((TX_totalcnt >> 8)&0xff);
+                        putc_cdc((TX_totalcnt)&0xff);
+                        CDC_Flush_In_Now();
+                    }
+                    while (irS.txflag == 1);
+                    LedOff();
+                    if (irS.sendfinish) { // Really redundant giving we can send a count above.
+                        if (irS.txerror) {
+                            putc_cdc('F');
+                        } else {
+                            putc_cdc('C');
                         }
-                        while (irS.txflag == 1);
-                        LedOff();
-                        if (irS.sendfinish) { // Really redundant giving we can send a count above.
-                            WaitInReady();
-                            cdc_In_buffer[0] = 'C';
-							if(irS.txerror) cdc_In_buffer[0] = 'F';
-                            putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1); //send current buffer to USB
+                        CDC_Flush_In_Now();
+                    }
+                    break;
+
+                case IRS_RESET: //reset, return to RC5 (same as SUMP)
+                    T0_IE = 0;
+                    T0CON = 0;
+                    T2ON = 0;
+                    T3CON = 0;
+                    IRFREQ_CCPxCON = 0;
+                    T1ON = 0;
+                    T1IE = 0;
+                    IRRXIE = 0;
+                    IRTX_TRIS |= IRTX_PIN; //digital INPUT (no PWM until active)
+                    IRTX_LAT &= (~IRTX_PIN); //direction 0
+                    LedOff();
+                    LedOut();
+                    irs_mode = FALSE; // This is the only way out of the IRs mode
+                    break;
+
+                case IRS_FREQ:
+                    if ((HardwareVersion > 1)) { // end of capture flush
+                        for (i = 0; i < 5; i++) {
+                            putc_cdc(modFreq[i]);
                         }
-                        irS.TXsamples = 1; //will be zeroed at end, super hack yuck!  //JTR3 super yuck!
-                        break;
+                        putc_cdc(TMR3L);
+                        putc_cdc(TMR3H);
+                        CDC_Flush_In_Now();
+                    }
+
+                    break;
+                case IRS_LEDMUTEON:
+                    LedIn();
+                    break;
+                case IRS_LEDMUTEOFF:
+                    LedOut();
+                    break;
+                case IRS_LEDON:
+                    LedOn();
+                    break;
+                case IRS_LEDOFF:
+                    LedOff();
+                    break;
+
+                    // JTR3 New commands for unified transmit protocol.
+                case IRS_HANDSHAKE:
+                    irS.handshake = 1;
+
+                    break;
+                case IRS_NOTIFYONCOMPLETE:
+                    irS.sendfinish = 1;
+                    break;
+                case IRS_GETCNT:
+                    putc_cdc('t');
+                    putc_cdc((TX_totalcnt >> 8)&0xff);
+                    putc_cdc((TX_totalcnt)&0xff);
+                    CDC_Flush_In_Now();
+
+                    break;
+                case IRS_RETURNTX_totalcnt:
+                    irS.sendcount = 1;
+                    break;
+                    // JTR3 End of new commands
+
+                case IRS_DESCRIPTOR:
+                    putc_cdc(PR2);
+                    putc_cdc(CCPR1L);
+                    putc_cdc(T2CON);
+                    putc_cdc(T0CON);
+                    putc_cdc(0x2);
+                    putc_cdc(0xDC);
+                    putc_cdc(0x6C);
+                    putc_cdc(0x0);
+                    CDC_Flush_In_Now();
+                    break;
+
+                case IRS_IO_READ: //return the port read
+                    putc_cdc(IrS_ReadPort());
+                    CDC_Flush_In_Now();
+
+                    break;
+
+                case IRS_IRW_FREQ:
+                    IRRAWINTIF = 0;
+                    IRRAWINTIE = 1;
+                    break;
+
+                case IRS_UART_SETUP: //setup UART using CDC settings
+                    Usb2Uart_InitUart();
+                    break;
+                case IRS_UART_CLOSE: //close UART
+                    Usb2Uart_CloseUart();
+                    break;
 
 
+                case IRS_IO_WRITE: //Write this to pins
+                case IRS_UART_WRITE: //write to the UART, get byte to write
+                case IRS_SETUP_SAMPLETIMER: //setup sample timer prescaler
+                    IRs_HandleParms(1, outbyte);
+                    break;
 
-                    case IRIO_RESET: //reset, return to RC5 (same as SUMP)
-                        cleanup();
-                        LedOff();
-                        LedOut();
-                        return 1; //need to flag exit!
-                        break;
+                case IRS_IO_DIR: //Setup direction IO
+                case IRS_SETUP_PWM: //setup PWM frequency
+                    IRs_HandleParms(2, outbyte);
+                    break;
 
-                    case IRIO_FREQ:
-                        if ((irToy.HardwareVersion > 1)) { // end of capture flush
-                            WaitInReady();
-
-                            for (j = 0; j < 5; j++) {
-                                cdc_In_buffer[j] = modFreq[j];
-                            }
-                            cdc_In_buffer[7] = TMR3L;
-                            cdc_In_buffer[6] = TMR3H;
-                            putUnsignedCharArrayUsbUsart(cdc_In_buffer, 8); //send current buffer to USB
-                        }
-                        break;
-                    case IRIO_LEDMUTEON:
-                        LedIn();
-                        break;
-                    case IRIO_LEDMUTEOFF:
-                        LedOut();
-                        break;
-                    case IRIO_LEDON:
-                        LedOn();
-                        break;
-                    case IRIO_LEDOFF:
-                        LedOff();
-                        break;
-
-                        // JTR3 New commands for unified transmit protocol.
-                    case IRIO_HANDSHAKE:
-                        irS.handshake = 1;
-                        break;
-                    case IRIO_NOTIFYONCOMPLETE:
-                        irS.sendfinish = 1;
-                        break;
-                    case IRIO_GETCNT:
-                        WaitInReady();
-                        cdc_In_buffer[0] = 't';
-                        cdc_In_buffer[1] = (txcnt >> 8)&0xff;
-                        cdc_In_buffer[2] = (txcnt & 0xff);
-                        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 3); //send current buffer to USB
-                        break;
-                    case IRIO_RETURNTXCNT:
-                        irS.sendcount = 1;
-                        break;
-                        // JTR3 End of new commands
-
-                    case IRIO_DESCRIPTOR:
-                        WaitInReady();
-                        cdc_In_buffer[0] = PR2; //PWM
-                        cdc_In_buffer[1] = CCPR1L; //duty cycle
-                        cdc_In_buffer[2] = T2CON; //PWM prescaler, 2 extra bits of duty cycle
-                        cdc_In_buffer[3] = T0CON; //transmit timer prescaler
-                        cdc_In_buffer[4] = 0x2; //48000000Hz (4 bytes)
-                        cdc_In_buffer[5] = 0xdc; //add to USB send buffer
-                        cdc_In_buffer[6] = 0x6c; //add to USB send buffer
-                        cdc_In_buffer[7] = 0x00; //add to USB send buffer
-                        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 8); //send current buffer to USB
-                        break;
-
-                    case IRIO_SETUP_PWM: //setup PWM frequency
-                        irIOcommand.command[0] = irToy.s[TxBuffCtr];
-                        irIOcommand.parameters = 2;
-                        irIOstate = I_PARAMETERS;
-                        break;
-                    case IRIO_SETUP_SAMPLETIMER: //setup sample timer prescaler
-                        irIOcommand.command[0] = irToy.s[TxBuffCtr];
-                        irIOcommand.parameters = 1;
-                        irIOstate = I_PARAMETERS;
-                        break;
-
-                    case IRIO_IO_WRITE: //Write this to pins
-                    case IRIO_IO_DIR: //Setup direction IO
-                        irIOcommand.command[0] = irToy.s[TxBuffCtr];
-                        irIOcommand.parameters = 2; //1;
-                        //irIOcommand.parCnt=1;
-                        irIOstate = I_PARAMETERS;
-                        break;
-                    case IRIO_IO_READ: //return the port read
-                        WaitInReady();
-                        //cdc_In_buffer[0]=PORTB; //not just portB, but the IO pins in the correct order....
-                        cdc_In_buffer[0] = IrS_ReadPort(); //not just portB, but the IO pins in the correct order....
-                        putUnsignedCharArrayUsbUsart(cdc_In_buffer, 1); //send current buffer to USB
-                        break;
-
-                    case IRIO_UART_SETUP: //setup UART using CDC settings
-                        Usb2Uart_InitUart(FALSE);
-                        break;
-                    case IRIO_UART_CLOSE: //close UART
-                        Usb2Uart_CloseUart();
-                        break;
-                    case IRIO_UART_WRITE: //write to the UART, get byte to write
-                        irIOcommand.command[0] = irToy.s[TxBuffCtr];
-                        irIOcommand.parameters = 1;
-                        //irIOcommand.parCnt=1;
-                        irIOstate = I_PARAMETERS;
-                        break;
-
-                    case IRIO_IRW_FREQ:
-                        IRRAWINTIF = 0;
-                        IRRAWINTIE = 1;
-                        break;
-
-                    default:
-                        break;
-                }
-                irS.TXsamples--;
-                TxBuffCtr++;
-                irIOcommand.parCnt = 0;
-                break;
-
-            case I_PARAMETERS://get optional parameters
-                irIOcommand.parCnt++;
-                irIOcommand.command[irIOcommand.parCnt] = irToy.s[TxBuffCtr]; //store each parameter
-                irS.TXsamples--;
-                TxBuffCtr++;
-                if (irIOcommand.parCnt < (irIOcommand.parameters)) break; //if not all parameters, quit
-            case I_PROCESS: //process long commands
-                switch (irIOcommand.command[0]) {
-                    case IRIO_SETUP_PWM: //setup user defined PWM frequency
-                        //stop timer
-                        T2CON = 0;
-
-                        //setup the user defined period
-                        PR2 = irIOcommand.command[1]; //user period
-#define DUTY irIOcommand.command[1]
-                        //setup the duty cycle
-                        if (irIOcommand.command[2] > 0) {
-                            ; //user duty?
-                            DUTY = irIOcommand.command[2]; //move to variable
-                        }
-
-                        CCPR1L = (DUTY >> 1); //upper 8 bits of duty cycle, 50% of period by binary division
-                        if ((DUTY & 0b1) != 0)//if LSB is set, set bit 1 in CCP1CON
-                            CCP1CON |= 0b100000; //5-4 two LSB of duty, 3-0 set PWM
-                        else
-                            CCP1CON &= (~0b100000); //5-4 two LSB of duty, 3-0 set PWM
-
-                        T2CON = 0b00000101; //enable timer again, 4x prescaler
-                        break;
-#undef DUTY
-                    case IRIO_SETUP_SAMPLETIMER:
-                        T0CON = 0; //setup timer 0
-                        IRRXIE = 0; //IR RX interrupt off
-                        //configure prescaler
-                        //bit 2-0 T0PS2:T0PS0: Timer0 Prescaler Select bits
-                        T0CON |= (irIOcommand.command[1]&0b111); //set new prescaler bits
-                        IRRXIF = 0; //IR RX interrupt on
-                        IRRXIE = 1; //IR RX interrupt on
-                        IRRXIF = 0; //IR RX interrupt on
-                        break;
-
-#define  IRIO_COMMAND_PARAM irIOcommand.command[1],irIOcommand.command[2] // so it will be easy to adjust who is MSB and who is LSB hehe
-#if 0
-                    case IRIO_IO_SET: //set these IO bits
-                        //PORTB|=irIOcommand.command[1];
-                        IrS_SetPortOr(IRIO_COMMAND_PARAM);
-                        break;
-                    case IRIO_IO_CLR: //clear these IO bits
-                        //PORTB&=(~irIOcommand.command[1]);
-                        IrS_SetPortAnd(IRIO_COMMAND_PARAM); //
-                        break;
-#endif
-                    case IRIO_IO_WRITE: //clear these IO bits
-                        //PORTB=(irIOcommand.command[1]);
-                        IrS_SetPortEqual(IRIO_COMMAND_PARAM);
-                        break;
-                    case IRIO_IO_DIR: //Setup direction IO
-                        //TRISB=irIOcommand.command[1];
-                        IrS_SetPortTrisEqual(IRIO_COMMAND_PARAM);
-                        break;
-#undef IRIO_COMMAND_PARAM
-                    case IRIO_UART_WRITE:
-                        if (TxIf) // If Uart is not full and no data to be sent
-                        {
-                            TXREG = irIOcommand.command[1];
-                        }
-                        break;
-                }
-                irIOstate = I_IDLE; //return to idle state
-
-                //irS.TXsamples--; //already done above? fell torugh, not sonsume new bytes
-                //TxBuffCtr++;
-                break;
-        }//case I process
-    }//switch
-
-
-    if (irS.overflow == 0) {
-        //service the inbound samples here
-        //keep in 64 byte buffer then send to USB for max sample rate
-        if (irS.rxflag == 1) { //a RX byte is in the buffer
-            *InPtr = h; //add to USB send buffer
-            irS.RXsamples++;
-            InPtr++;
-            *InPtr = l; //add to USB send buffer
-
-            irS.RXsamples++;
-            InPtr++;
-            irS.rxflag = 0; //reset the flag
-        }
-
-        //if the buffer is full, send it to USB
-        if (((irS.RXsamples == CDC_BUFFER_SIZE) || (irS.flushflag == 1))) { // && (WaitInReady())) { //if we have full buffer, or end of capture flush
-
-            SendCDC_In_ArmNext(irS.RXsamples);
-
-            if ( irS.RXcompleted == 1) {
-                irIOstate = I_IDLE;
-                DisArmCDCInDB();
-
-                if (irS.RXsamples == CDC_BUFFER_SIZE)
-                    putUnsignedCharArrayUsbUsart(cdc_In_buffer, 0); // JTR ZLP at end of last packet was CDC_BUFFER_SIZE
-
+                default:
+                    break;
             }
+            //break;
+        }//switch
+
+
+        if (irS.overflow == 0) {
+            //service the inbound samples here
+            //keep in 64 byte buffer then send to USB for max sample rate
+            if (irS.rxflag == 1) { //a RX byte is in the buffer
+                *InPtr = h; //add to USB send buffer
+                irS.RXsamples++;
+                InPtr++;
+                *InPtr = l; //add to USB send buffer
+
+                irS.RXsamples++;
+                InPtr++;
+                irS.rxflag = 0; //reset the flag
+            }
+
+            //if the buffer is full, send it to USB
+            if (((irS.RXsamples == CDC_BUFFER_SIZE) || (irS.flushflag == 1))) { //if we have full buffer, or end of capture flush
+                putda_cdc(irS.RXsamples);
+
+                if (irS.RXcompleted == 1) {
+                    if (irS.RXsamples == CDC_BUFFER_SIZE)
+                        putda_cdc(0);
+                }
+                irS.RXsamples = 0;
+                irS.flushflag = 0;
+            }
+        } else {//overflow error
+            //on overflow we loop until we can send 6 0xff then reset everything
+            putc_cdc(0xFF);
+            putc_cdc(0xFF);
+            putc_cdc(0xFF);
+            putc_cdc(0xFF);
+            putc_cdc(0xFF);
+            putc_cdc(0xFF);
+            CDC_Flush_In_Now();
+
+            T1ON = 0; //t1 is the usb packet timeout, disable it
+            T0ON = 0; //timer0 off
+            T0_IF = 0;
+
+            //reset the pin interrupt, just in case
+            IRRXIF = 0;
+
             irS.RXsamples = 0;
             irS.flushflag = 0;
+            irS.overflow = 0;
+            LedOff();
         }
+        usb_handler();
+    } while (irs_mode);
 
-    } else {//overflow error
-        //on overflow we loop until we can send 6 0xff then reset everything
-
-        WaitInReady();
-        cdc_In_buffer[0] = 0xff; //add to USB send buffer
-        cdc_In_buffer[1] = 0xff; //add to USB send buffer
-        cdc_In_buffer[2] = 0xff; //add to USB send buffer
-        cdc_In_buffer[3] = 0xff; //add to USB send buffer
-        cdc_In_buffer[4] = 0xff; //add to USB send buffer
-        cdc_In_buffer[5] = 0xff; //add to USB send buffer
-        irS.RXsamples = 6;
-        putUnsignedCharArrayUsbUsart(cdc_In_buffer, irS.RXsamples); //send current buffer to USB
-
-        T1ON = 0; //t1 is the usb packet timeout, disable it
-        T0ON = 0; //timer0 off
-        T0_IF = 0;
- 
-       //reset the pin interrupt, just in case
-        IRRXIF = 0;
-
-        irS.RXsamples = 0;
-        irS.flushflag = 0;
-        irS.overflow = 0;
-
-        LedOff();
-    }
-    return 0; //CONTINUE
+    return 1;
 }
 
-void cleanup(void) {
+void IRs_HandleParms(BYTE cnt, BYTE cmd) {
+#define DUTY IRS_command.command[1]
+#define  IRS_COMMAND_PARAM IRS_command.command[1],IRS_command.command[2] // so it will be easy to adjust who is MSB and who is LSB hehe
 
-    CCP1CON = 0;
-    T0ON = 0;
-    T0_IE = 0;
-    T0CON = 0;
-    T2ON = 0;
-    T3CON = 0;
-    IRFREQ_CCPxCON = 0;
-    T1ON = 0;
-    T1IE = 0;
-    IRRXIE = 0;
-    IRTX_TRIS |= IRTX_PIN; //digital INPUT (no PWM until active)
-    IRTX_LAT &= (~IRTX_PIN); //direction 0
+    _smCommand IRS_command;
+    IRS_command.parCnt = 0;
+    IRS_command.command[0] = cmd;
+
+    do {
+        IRS_command.parCnt++;
+        IRS_command.command[IRS_command.parCnt] = getc_cdc(); //store each parameter
+    } while (IRS_command.parCnt < (cnt)); //if not all parameters, quit
+
+    switch (IRS_command.command[0]) {
+        case IRS_SETUP_PWM: //setup user defined PWM frequency
+            //stop timer
+            T2CON = 0;
+
+            //setup the user defined period
+            PR2 = IRS_command.command[1]; //user period
+            //setup the duty cycle
+            if (IRS_command.command[2] > 0) //user duty?
+                DUTY = IRS_command.command[2]; //move to variable
+
+
+            CCPR1L = (DUTY >> 1); //upper 8 bits of duty cycle, 50% of period by binary division
+            if ((DUTY & 0b1) != 0)//if LSB is set, set bit 1 in CCP1CON
+                CCP1CON |= 0b00100000; //5-4 two LSB of duty, 3-0 set PWM
+            else
+                CCP1CON &= (~0b00100000); //5-4 two LSB of duty, 3-0 set PWM
+
+            T2CON = 0b00000101; //enable timer again, 4x prescaler
+            break;
+        case IRS_SETUP_SAMPLETIMER:
+            T0CON = 0; //setup timer 0
+            IRRXIE = 0; //IR RX interrupt off
+            //configure prescaler
+            //bit 2-0 T0PS2:T0PS0: Timer0 Prescaler Select bits
+            T0CON |= (IRS_command.command[1]&0b111); //set new prescaler bits
+            IRRXIF = 0; //IR RX interrupt on
+            IRRXIE = 1; //IR RX interrupt on
+            IRRXIF = 0; //IR RX interrupt on
+            break;
+
+        case IRS_IO_WRITE: //clear these IO bits
+            IrS_SetPortEqual(IRS_COMMAND_PARAM);
+            break;
+        case IRS_IO_DIR: //Setup direction IO
+            IrS_SetPortTrisEqual(IRS_COMMAND_PARAM);
+            break;
+        case IRS_UART_WRITE:
+            if (TxIf) // If Uart is not full and no data to be sent
+            {
+                TXREG = IRS_command.command[1];
+            }
+            break;
+    }
+#undef IRS_COMMAND_PARAM
+#undef DUTY
+}
+
+void Usb2Uart_InitUart() {
+    TRISC |= 0xC0;
+    TXSTA = 0x24; //baudrate high
+    RCSTA = 0x00;
+    BAUDCON = 0x08; // baud16
+    PIE1 = 0x00;  // JTR why enable interrupts when there is no handler??
+}
+
+void Usb2Uart_CloseUart(void) {
+    TXSTA = 0;
+    RCSTA = 0;
 }
 
 //the first falling edge starts timer0
 //the next pin interrupt copies the timer0 value to a buffer and resets timer0
 //if timer0 interrupts, then timeout and end.
-//high priority interrupt routine
-//#pragma interrupt irsInterruptHandlerHigh
+//high priority interrupt routine dispatched from main.c
 
 void irsInterruptHandlerHigh(void) {
 
@@ -674,9 +604,6 @@ void irsInterruptHandlerHigh(void) {
             if (((l & IRRX_PIN) == 0)) {
                 //only if 0, must read PORTB to clear RBIF
 
-                ArmCDCInDB();
-
-                //LedOn();
                 TMR0H = 0; //first set the high byte
                 TMR0L = 0; //set low byte copies high byte too
                 T0_IE = 1;
@@ -690,7 +617,7 @@ void irsInterruptHandlerHigh(void) {
                 T1ON = 1; //timer on
 
                 //setup the period capture module to measure the raw IR waveform period
-                if (irToy.HardwareVersion > 1) {
+                if (HardwareVersion > 1) {
                     //capture module measures raw IR frequency
                     IRFREQ_CAP_SETUP();
                     IRFREQ_CAPIF = 0;
@@ -742,7 +669,6 @@ void irsInterruptHandlerHigh(void) {
             modFreqCnt++;
             modFreq[modFreqCnt] = IRFREQ_CAP_L;
             modFreqCnt++;
-
             IRFREQ_CAPIF = 0;
 
             if (modFreqCnt == 6) {
@@ -766,10 +692,10 @@ void irsInterruptHandlerHigh(void) {
         if (irS.TX == 1) {//timer0 interrupt means the IR transmit period is over
             T0_IE = 0;
 
-			//in transmit mode, but no new data is available
-            if (irS.txflag == 0) { 
+            //in transmit mode, but no new data is available
+            if (irS.txflag == 0) {
 
-				if(tmr0_buf[2]==0x00) irS.txerror=1; //if not end flag, raise buffer underrun error
+                if (tmr0_buf[2] == 0x00) irS.txerror = 1; //if not end flag, raise buffer underrun error
 
                 //disable the PWM, output ground
                 PWMoff();
@@ -817,7 +743,6 @@ void irsInterruptHandlerHigh(void) {
             IRRXIE = 1;
             IRRXIF = 0;
 
-            //LedOff();
         }
     } else if (T1IE == 1 && T1IF == 1) { //is this timer 1 interrupt?
         //this is another timer
@@ -831,4 +756,4 @@ void irsInterruptHandlerHigh(void) {
         T1IF = 0; //clear the interrupt flag
     }
 }
-//#endif //IRS.c
+
