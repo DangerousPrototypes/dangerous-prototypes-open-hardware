@@ -21,11 +21,13 @@ void USBSuspend(void);
 
 #pragma udata
 extern BYTE usb_device_state;
+extern uint8_t MMA7455L_X_OFFSET;
 
 #pragma code// declare executable instructions
 void main()
 {
     BYTE RecvdByte;
+    uint8_t AccX; //X Acceleration used for calibration
 
     initCDC(); // setup the CDC state machine
 
@@ -64,25 +66,48 @@ void main()
         usb_handler();
 #endif
 
+/*
 // Receive and send method 1
 // The CDC module will call usb_handler each time a BULK CDC packet is sent or received.
 // If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
         if (poll_getc_cdc(&RecvdByte)) 
-            putc_cdc(RecvdByte+1); //
+            putc_cdc(MMA7455L_ReadRegister(MMA7455L_XOUT8)); //
 
 // Receive and send method 2
 // Same as poll_getc_cdc except that byte is NOT removed from queue.
 // This function will wait for a byte and return and remove it from the queue when it arrives.
         if (peek_getc_cdc(&RecvdByte)) { 
             RecvdByte = getc_cdc(); 
-            putc_cdc(RecvdByte+1);
+            putc_cdc(MMA7455L_ReadRegister(MMA7455L_XOUT8));
         }
+*/
 
 // Receive and send method 3
 // If there is a byte ready will return with the number of bytes available and received byte in RecvdByte
 // use CDC_Flush_In_Now(); when it has to be sent immediately and not wait for a timeout condition.
         if (poll_getc_cdc(&RecvdByte)) { 
-            putc_cdc(RecvdByte+1); //
+            if(RecvdByte == 'c') 
+            {
+               //Calibation using 0g. 
+               MMA7455L_WriteRegister(MMA7455L_XOFFL, 0);    //Clear X offset.
+               AccX = MMA7455L_ReadRegister(MMA7455L_XOUT8); //Read acceleration.
+               if(AccX > 200) //Acc near 249,250,251,... range
+               {
+                 MMA7455L_X_OFFSET = (0xFF - AccX) * 2 ;
+               } 
+               else           //Acc near 0,1,2,... range
+               {
+                 MMA7455L_X_OFFSET = AccX * 2 ;
+               }
+
+               MMA7455L_WriteRegister(MMA7455L_XOFFL, MMA7455L_X_OFFSET);  //Write X offset.
+               SPIFlash_WriteByte(0, MMA7455L_X_OFFSET);                   //store the X offset calibration in EEPROM. 
+               
+            }
+            if(RecvdByte == 'x') //Returns X Acceleration. At 0g, this should be +/- 2 
+            {
+               putc_cdc(MMA7455L_ReadRegister(MMA7455L_XOUT8));
+            }
             CDC_Flush_In_Now(); 
         }
     } while (1);

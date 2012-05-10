@@ -82,6 +82,7 @@ uint8_t POVToy_ReadSwitch(void);
                           POVToy_Timer0Init();      /*configure timer1 for display refresh */ \
                           POVToy_Int1Init();        /*Configure INT external interrupt. */ \
                           POVToy_LoadBitmap(0);     /*Load Bitmap to RAM from SPI Flash */ \
+                          MMA7455L_X_OFFSET = SPIFlash_ReadByte(0); /* Read calibration from EEPROM */ \
                           MMA7455L_Init();          /*Init Accelerometer */
 
 
