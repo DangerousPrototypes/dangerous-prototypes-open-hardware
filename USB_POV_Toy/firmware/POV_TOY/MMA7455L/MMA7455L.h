@@ -68,7 +68,6 @@ MMA7455L Three Axis - Digital Output Accelerometer
 #define MMA7455L_LT                    0x1D       // Latency time value  
 #define MMA7455L_TW                    0x1E       // Time window for 2nd pulse value
 
-#define MMA7455L_X_OFFSET              18
 
 #define MMA7455L_CS LATAbits.LATA2                //Chip Select Pin of MMA7455L mapped to RA2 in this hardware. Change this for a different hardware.
 

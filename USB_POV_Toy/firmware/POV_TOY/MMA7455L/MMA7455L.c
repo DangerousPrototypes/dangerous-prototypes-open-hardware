@@ -26,6 +26,7 @@ DEALINGS IN THE SOFTWARE.
 #include "MMA7455L.h"
 
 extern uint8_t temp1;
+uint8_t MMA7455L_X_OFFSET =  0;                   // Reload from EEPROM
 
 uint8_t MMA7455L_ReadRegister(uint8_t address)
 {
@@ -58,7 +59,6 @@ void MMA7455L_Init(void)
     MMA7455L_WriteRegister(MMA7455L_MCTL, 0b00000101 ); // Set Mode control register to 2G range, config Measurement Mode and set DRPD=0 ( Data ready status is output to INT1/DRDY PIN)
 
     MMA7455L_WriteRegister(MMA7455L_XOFFL, MMA7455L_X_OFFSET);  //Calibrate X offset.
-    LATB = regValue;
 }
 
 
