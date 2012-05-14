@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "config.h"
+#include "HD44780.h"
 static void init(void);
 #define LOW 0
 #define HIGH 1
@@ -17,9 +18,10 @@ void HiZ(u8 Pin);
 #define PART_MODE_NONE 0
 #define PART_MODE_NPN 1
 #define PART_MODE_PNP 2
-u8 PartType, PartMode, RepeatDetect;
-u16 hfe[2], vBE[2];
+u8 PartType, PartMode, RepeatDetect ;
+u16 hfe[2], vBE[2], gthvoltage;
 u8 c,b,e;
+float f;
 #pragma code
 void main(void){  
 	unsigned char i,cmd, param[9], tmp; 
@@ -27,6 +29,17 @@ void main(void){
 	//unsigned char t[]={"Hello World"};
 
     init();			//setup the crystal, pins
+
+	Delay_MS(10);	
+
+	HD44780_Reset();//setup the LCD
+	HD44780_Init();
+	//LCD_Backlight(1);//turn it on, we ignore the parameter
+
+LCD_CursorPosition(0);
+LCD_WriteString("Part Ninja v0.0a");
+LCD_CursorPosition(21);
+LCD_WriteString("      testing...");
 
 	while(1){
 		PartType=0;
@@ -38,6 +51,7 @@ void main(void){
 		checkpins(1, 2, 0); //CBE npn
 		checkpins(2, 0, 1); //CBE npn
 		checkpins(2, 1, 0); //CBE npn
+
 		if(PartType==PART_TRANSISTOR){
 			if(RepeatDetect==0){
 				hfe[1] = hfe[0];
@@ -51,11 +65,6 @@ void main(void){
 				c = e;
 				e = tmp;
 			}
-			if(PartMode == PART_MODE_NPN) {
-				tmp=tmp;
-			} else {
-				tmp=tmp;
-			}
 
 			lhfe = hfe[1];
 
@@ -64,7 +73,56 @@ void main(void){
 			if(vBE[1]<11) vBE[1] = 11;
 			lhfe /= vBE[1];
 			hfe[1] = (unsigned int) lhfe;
+
+			LCD_Clear();
+			LCD_CursorPosition(0);
+			if(PartMode == PART_MODE_NPN) {
+				LCD_WriteString("NPN ");
+			} else if (PartMode==PART_MODE_PNP) {
+				LCD_WriteString("PNP ");
+			}
+			LCD_WriteString("  hFE:");	
+			LCD_WriteByteVal(hfe[1]);
+
+			LCD_CursorPosition(21);
+			LCD_WriteString("C=");
+			LCD_WriteChar(c+0x31);
+			LCD_WriteString(" B=");
+			LCD_WriteChar(b+0x31);
+			LCD_WriteString(" E=");			
+			LCD_WriteChar(e+0x31);
+
+		}else if(PartType==PART_FET){
+
+			LCD_Clear();
+			LCD_CursorPosition(0);
+			if(PartMode == PART_MODE_NPN) {
+				LCD_WriteString("N-");
+			} else if (PartMode==PART_MODE_PNP) {
+				LCD_WriteString("P-");
+			}
+			LCD_WriteString("FET ");
+
+			f=gthvoltage;
+			f=((f)/1024)*5;
+			gthvoltage=f;
+			LCD_WriteString("  Vth:");
+			LCD_WriteByteVal(gthvoltage);
+			//lcd_data('m');
+			LCD_WriteString("v");
+
+			LCD_CursorPosition(21);
+			LCD_WriteString("G=");
+			LCD_WriteChar(b+0x31);
+			LCD_WriteString(" D=");
+			LCD_WriteChar(c+0x31);
+			LCD_WriteString(" S=");			
+			LCD_WriteChar(e+0x31);
+
+
+
 		}
+
 	}
 
 
@@ -76,10 +134,10 @@ u16 ReadADC(u8 Pin){
 	ADCON2=0b10101110; //R justified result, 12TAD time 101, FOSC/64 110 
 	//Analog inputs
 	//A0-2 are analog monitors
-	ADCON1=0b1100; //internal Vrefs, A0-2 analog
+	ADCON1=0b1000; //internal Vrefs, A0-6 analog
 	//set channel
 	ADCON0=0;
-	ADCON0|=((Pin)<<2);//enable the channel
+	ADCON0|=((Pin+4)<<2);//enable the channel
 	ADCON0|=0b1;//ADON=1
 	//take reading
 	Delay_MS(1);
@@ -230,6 +288,12 @@ void checkpins(u8 HighPin, u8 LowPin, u8 TristatePin){
 				//MOSFET and tests
 				PartType=PART_FET;
 				PartMode=PART_MODE_NPN;
+				c=((1<<HighPin)<<3);
+				DischargePin(TristatePin, LOW); //for MOSFETs
+				R_470K(TristatePin, HIGH);
+				while(R0_IN&c);	
+				gthvoltage=ReadADC(TristatePin);			
+
 			}
 			c=HighPin;
 			e=LowPin;
@@ -237,10 +301,54 @@ void checkpins(u8 HighPin, u8 LowPin, u8 TristatePin){
 		}//adc<500
 	}//adc < 200	
 	//NON transistor tests
-		//Diode and internal part diodes
-		
-		//Resistors
-	
+	//Diode and internal part diodes
+/*	
+	//Resistors
+	//LowPin ground
+	R_0(LowPin, LOW);
+	//HighPin 680 high
+	R_680(HighPin, HIGH);
+	LowPinADC1=ReadADC(LowPin);
+	HighPinADC1=ReadADC(HighPin)-LowPinADC1;
+	//HighPin 470K high
+	R_470K(HighPin, HIGH);	
+	LowPinADC2=ReadADC(LowPin);
+	HighPinADC2=ReadADC(HighPin)-LowPinADC2;
+
+	//LowPin 680 ground
+	R_680(LowPin, LOW);
+	//highpin to Vcc
+	R_0(HighPin, HIGH);
+	LowPinADC1+=(1023-ReadADC(HighPin));
+	//LowPin 470K ground
+	R_470K(HighPin, HIGH);	
+	LowPinADC2+=(1023-ReadADC(HighPin));
+
+	if(((HighPinADC1 - LowPinADC1) < 900) && ((HighPinADC2 - LowPinADC2) > 20)) goto testend; //not a resistor
+	if(((HighPinADC2 * 32) / 31) < HighPinADC1) {
+		if((PartFound == PART_DIODE) || (PartFound == PART_NONE) || (PartFound == PART_RESISTOR)) {
+			if((tmpPartFound == PART_RESISTOR) && (ra == LowPin) && (rb == HighPin)) {
+
+
+				if(!((((adcv[0] + 100) * 6) >= ((rv[0] + 100) * 5)) && (((rv[0] + 100) * 6) >= ((adcv[0] + 100) * 5)) && (((adcv[1] + 100) * 6) >= ((rv[1] + 100) * 5)) && (((rv[1] + 100) * 6) >= ((adcv[1] + 100) * 5)))) {
+					//min. 20% Abweichung => kein Widerstand
+					tmpPartFound = PART_NONE;
+					goto testend;
+				}
+				PartFound = PART_RESISTOR;
+			}
+			rv[0] = adcv[0];
+			rv[1] = adcv[1];
+
+			radcmax[0] = 1023 - adcv[2];	//Spannung am Low-Pin ist nicht ganz Null, sondern rund 0,1V (wird aber gemessen). Der dadurch entstehende Fehler wird hier kompenisert
+			radcmax[1] = 1023 - adcv[3];
+			ra = HighPin;
+			rb = LowPin;
+			tmpPartFound = PART_RESISTOR;
+		}
+	}
+*/
+testend:	
 	HiZ(HighPin);
 	HiZ(LowPin);
 	HiZ(TristatePin);
@@ -251,7 +359,7 @@ void R_680 (u8 Pin, u8 State){
 	u8 R0p, R680p, R470Kp;
 
 	R0p=((1<<Pin)<<3);
-	R680p=((1<<Pin)<<3);
+	R680p=((1<<Pin));
 	R470Kp=(1<<Pin);
 	
 	//R0 to input
@@ -272,7 +380,7 @@ void R_470K (u8 Pin, u8 State){
 	u8 R0p, R680p, R470Kp;
 
 	R0p=((1<<Pin)<<3);
-	R680p=((1<<Pin)<<3);
+	R680p=((1<<Pin));
 	R470Kp=(1<<Pin);
 
 	//R0 to input
@@ -292,7 +400,7 @@ void R_0 (u8 Pin, u8 State){
 	u8 R0p, R680p, R470Kp;
 
 	R0p=((1<<Pin)<<3);
-	R680p=((1<<Pin)<<3);
+	R680p=((1<<Pin));
 	R470Kp=(1<<Pin);
 
 	//680R to input
@@ -313,7 +421,7 @@ void HiZ(u8 Pin){
 	u8 R0p, R680p, R470Kp;
 
 	R0p=((1<<Pin)<<3);
-	R680p=((1<<Pin)<<3);
+	R680p=((1<<Pin));
 	R470Kp=(1<<Pin);
 
 	//R0 to input

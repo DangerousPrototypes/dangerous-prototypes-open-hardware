@@ -16,6 +16,7 @@ typedef unsigned long u32;
 // =================== GLOBAL HEADERS
 #include "HardwareProfile.h"
 #include "GenericTypeDefs.h"
-#include "Compiler.h"
+//#include "Compiler.h"
+#include <p18cxxx.h> 
 
 #endif

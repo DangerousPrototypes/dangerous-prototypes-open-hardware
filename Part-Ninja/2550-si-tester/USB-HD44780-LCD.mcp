@@ -1,7 +1,7 @@
 [HEADER]
 magic_cookie={66E99B07-E706-4689-9E80-9B2582898A13}
 file_version=1.0
-device=PIC18F2550
+device=PIC18F4550
 [PATH_INFO]
 BuildDirPolicy=BuildDirIsProjectDir
 dir_src=
@@ -26,8 +26,8 @@ subfolder_lkr=
 [FILE_SUBFOLDERS]
 file_000=.
 file_001=.
-file_002=Common
-file_003=Common
+file_002=.
+file_003=.
 file_004=.
 file_005=.
 file_006=.
@@ -49,11 +49,11 @@ file_005=no
 file_006=no
 [FILE_INFO]
 file_000=main.c
-file_001=HardwareProfile.h
-file_002=..\Microchip\Include\GenericTypeDefs.h
-file_003=..\Microchip\Include\Compiler.h
-file_004=globals.h
-file_005=config.h
+file_001=HD44780.c
+file_002=HardwareProfile.h
+file_003=globals.h
+file_004=config.h
+file_005=HD44780.h
 file_006=rm18f2550 - HID Bootload.lkr
 [SUITE_INFO]
 suite_guid={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
