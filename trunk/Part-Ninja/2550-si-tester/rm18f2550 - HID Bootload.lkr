@@ -2,7 +2,7 @@ LIBPATH .
 
 FILES c018i.o
 FILES clib.lib
-FILES p18f2550.lib
+FILES p18f4550.lib
 
 CODEPAGE   NAME=bootloader START=0x0          	   END=0x7FF          PROTECTED
 CODEPAGE   NAME=vectors    START=0x800       	   END=0x829	  	  PROTECTED
