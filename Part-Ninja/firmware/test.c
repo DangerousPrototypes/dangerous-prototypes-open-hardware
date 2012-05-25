@@ -29,7 +29,7 @@ void initT()
 }
 
 //Test function...does the testing
-u8 test()
+u8 testPart()
 {
 	u8 diff=0;
 	type PartSS=0;
@@ -50,30 +50,26 @@ u8 test()
 //the test is made just after the 3rd pin is charged to test State, and then made HiZ
 //this is done so that FET devices can have their Gates still charged, while it makes no diff to other parts
 //Triacs, and SCRs are an exception, here the short trigering of the gate will make a differense, but it is different to the Fets... 
-u16 checkConduct(u8 A, u8 B,u8 test)
+u16 checkConduct(u8 A, u8 B,u8 state)
 {	
 	
-	u8 i=TST_DEL,C=3-(A+B); //Calculate the leftover pin
+	u8 i=TST_DEL,C; //Calculate the leftover pin
 	u16 Value;
-	
-	R_680(A,LOW);
-	R_0(B,LOW);
-	Delay_MS(10);
-	R_0(A,LOW);
-	Delay_MS(10);	
-	R_680(C,test); //charges the leftover pin to test State
+	C=3-(A+B);
+	R_680(C,state); //charges the leftover pin to test State
 	Delay_MS(10); //wait for charge
-	quickADCsetup(A);	//sets up the ADC for a later reading
-	R_680(A,HIGH);		//coneects the A pin to 5V throgh 680R 5V--[680]--[A]
-	R_0(B,LOW);			//conects teh B pinn to GND, [B]--GND
+	quickADCsetup(B);	//sets up the ADC for a later reading
+	R_680(B,LOW);
+	R_0(A,HIGH);		//coneects the A pin to 5V throgh 680R 5V--[680]--[A]
 	HiZ(C); 			//brings the leftover pin to HiZ
 	while(i--);		
 	ADCON0|=0b10; //GO/!DONE=1	//starts the ADC acq
 	while(ADCON0&0b10);			//this is done just after the left over pin is HiZ
-	Value = ADRES;
-	R_680(A,LOW);
+	Value = 1023-ADRES;
+	R_0(A,LOW);
 	Delay_MS(10);
-	R_0(A,LOW);				
+	R_0(B,LOW);	
+	Delay_MS(10);			
 	HiZ(A);
 	HiZ(B);
 	
