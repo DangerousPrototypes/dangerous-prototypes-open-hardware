@@ -24,7 +24,7 @@ void main(void)
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  
-	while(1) test();
+	while(1) testPart();
 }//end main
 
 static void init(void){

@@ -33,7 +33,7 @@ void compInit(u8 Pin);
 void initT();
 
 //Test function...does the testing..encapsulates the whole testing process for main...
-u8 test();
+u8 testPart();
 //Checks conductivity through form [A]->[B] while keeping the 3rd pin at the test state birefly before the test.
 //5V--[680]-Vt-[A]-->[B]---GND, if Vt < 93% VCC it is conducting
 u16 checkConduct(u8 A, u8 B,u8 test);
