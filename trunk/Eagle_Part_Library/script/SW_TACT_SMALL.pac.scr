@@ -45,25 +45,25 @@ Wire  0.0762 (-0.9958 1.645) (0.9958 1.645) (1.645 0.9958);
 Wire  0.0762 (-1.645 -0.9958) (-1.645 0.9958) (-0.9958 1.645);
 Wire  0.0762 (0.9958 -1.645) (-0.9958 -1.645) (-1.645 -0.9958);
 Wire  0.0762 (1.645 0.9958) (1.645 -0.9958) (0.9958 -1.645);
-Layer 48;
+Layer 51;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
 Polygon 0.0762  (1.3003 2.1) (3.3 2.1) (3.3 1.6) (1.8003 1.6) \
       (1.3003 2.1);
-Layer 48;
+Layer 51;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
 Polygon 0.0762  (-1.3003 -2.1) (-3.3 -2.1) (-3.3 -1.6) (-1.8003 -1.6) \
       (-1.3003 -2.1);
-Layer 48;
+Layer 51;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
 Polygon 0.0762  (-1.3003 2.1) (-3.3 2.1) (-3.3 1.6) (-1.8003 1.6) \
       (-1.3003 2.1);
-Layer 48;
+Layer 51;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
