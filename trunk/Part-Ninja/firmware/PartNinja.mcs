@@ -1,0 +1,71 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\main.o
+Folder=Intermediary
+DeviceName=PIC18F4550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|HD44780.c|test.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File001]
+Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\HD44780.o
+Folder=Intermediary
+DeviceName=PIC18F4550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|HD44780.c|test.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File002]
+Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\test.o
+Folder=Intermediary
+DeviceName=PIC18F4550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={E56A1C86-9D32-4DF6-8C34-FE0388B1B644}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mcc18.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|HD44780.c|test.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
+TraceCmdString=
+DebugOptions=-D__DEBUG -D__MPLAB_DEBUGGER_PK3=1
+[File003]
+Location=C:\Users\Filip\Documents\MPLAB\PartNinja\output\PartNinja.cof
+Folder=Output
+DeviceName=PIC18F4550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mplink.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|HD44780.c|test.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1 /z__MPLAB_DEBUGGER_PK3=1 /z__ICD2RAM=1
+[File004]
+Location=C:\Users\Filip\Documents\MPLAB\PartNinja\output\PartNinja.hex
+Folder=Output
+DeviceName=PIC18F4550
+LanguageToolSuiteID={5B7D72DD-9861-47BD-9F60-2BE967BF8416}
+LanguageToolID={96C98149-AA1B-4CF9-B967-FAE79CAB663C}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mplink.exe
+PPAD=$(BINDIR)|output||$(TMPDIR)|work||$(AINDIR)||$(INCDIR)|.;c:\mcc18\h;..\microchip\include||$(LIBDIR)|C:\mcc18\lib||$(LKRDIR)||
+SOLK=<src>|main.c|HD44780.c|test.c||<obj>||<lib>||<lkr>|rm18f2550 - HID Bootload.lkr||
+SuiteArgsString=
+ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
+TraceCmdString=
+DebugOptions=/z__MPLAB_DEBUG=1 /z__MPLAB_DEBUGGER_PK3=1 /z__ICD2RAM=1
+[TOOL_LOC_STAMPS]
+tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mplink.exe
+tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mcc18.exe
