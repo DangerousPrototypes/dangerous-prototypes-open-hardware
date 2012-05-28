@@ -41,7 +41,7 @@ static void init(void){
 	TRISC=0b11111111; 
 
 	//comparator analog pins setup...
-/*	CMCONbits.C2INV = 1;	//whne voltage on RA1 > vreff cout2=>1
+	CMCONbits.C2INV = 1;	//whne voltage on RA1 > vreff cout2=>1
 	CMCONbits.C1INV = 1;	//whne voltage on RA1 > vreff cout1=>1
 	CMCONbits.CIS=0; 		//the Cvin- input aer RA0 na RA1
 	CMCONbits.CM2=1,CMCONbits.CM1=0,CMCONbits.CM0=0; //100 C1 and C2 V+ conencted to vref, while v+ conected to RA1 and RA2
@@ -49,7 +49,7 @@ static void init(void){
 	INTCONbits.PEIE =1;
 	IPR2bits.CMIP =1;
 
-	//Timer 1 contorl setup
+	/*//Timer 1 contorl setup
 	T1CONbits.RD16=1;
 	T1CONbits.T1RUN=0;
 	T1CONbits.T1CKPS=3;//8prescaler
@@ -65,10 +65,9 @@ static void init(void){
 void    high_isr(void)
 {
    /* high priority interrupt handling code here */
-	/*
-	T1CONbits.TMR1ON =0;
 	CMP_INTE=0;
-	testCMP=1;**/
+	CMP_INTF=0;
+	testCMP=1;
 }
 
 #pragma interruptlow low_isr
