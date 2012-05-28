@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'IC_VREG_3PINS.dev';
+Edit 'VREG_3PINS.dev';
 Prefix 'VREG';
 Description 'Various 3 pin voltage regulators in different packages <br> Double check the right pinout for the right part';
 Value On;
