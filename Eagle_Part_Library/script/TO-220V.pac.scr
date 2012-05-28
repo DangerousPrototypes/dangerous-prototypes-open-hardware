@@ -7,7 +7,7 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'TO-220V.pac';
-Description '';
+Description 'TO-220 Vertical mount, 0.1" (2.5mm) pitch';
 Change Drill 1.016;Pad '1' Long 0 R90 (-2.54 0);
 Change Drill 1.016;Pad '2' Long 0 R90 (0 0);
 Change Drill 1.016;Pad '3' Long 0 R90 (2.54 0);

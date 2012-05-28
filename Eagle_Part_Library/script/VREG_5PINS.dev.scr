@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'IC_VREG_5PINS.dev';
+Edit 'VREG_5PINS.dev';
 Prefix 'VREG';
 Description '5 pins voltage regulator';
 Value On;
