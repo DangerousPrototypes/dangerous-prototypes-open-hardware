@@ -11,6 +11,7 @@ u8 tN[8]={0,0,0,0,0,0,0,0};
 u8 nC=0;
 u8 node;
 u8 testCMP=0;
+char unit;
 char pins[3]={0,0,0};
 
 
@@ -499,8 +500,9 @@ u8 switchPart(type SS)
 	case CAP:
 		if(temp=testCAP())
 		{	
-			LCD_WriteString("Capacitor  ");
+			LCD_WriteString("Capacitor: ");
 			LCD_WriteINT(temp);
+			LCD_WriteChar(unit);
 			LCD_CursorPosition(21);
 			LCD_WritePinout();
 			return 1;
@@ -509,8 +511,9 @@ u8 switchPart(type SS)
 	case RES:
 		if(temp=testRES())
 		{	
-			LCD_WriteString("RESISTANCE:");
+			LCD_WriteString("Resistance: ");
 			LCD_WriteINT(temp);
+			LCD_WriteChar(unit);
 			LCD_CursorPosition(21);
 			LCD_WritePinout();
 			return 1;
@@ -883,10 +886,20 @@ u16 testCAP()
 	if(timer)			//works down to 7nF..for 470K...up to ~5uF. or 5uF up to ~4mF for 680..
 	{	
 		timer+=22;
-		time=timer*2.16667e-6;
+		time=timer*2.6666e-6;
 		RC=RC*(double)Rtest;
 		cap=(double)time/RC;
-		return cap;
+		cap=cap*1e6;
+		if(cap>1)
+		{
+			unit='u';
+		}
+		else
+		{
+			cap=cap*1e3;
+			unit='n';
+		}
+		return (u16)cap;
 	}	
 	return 0;
 }
@@ -922,7 +935,18 @@ u16 testRES()
 	rr=r[tt]*t[tt];
 	if(rr==0) return ERROR;
 	rr=rr/(1023-r[tt]);
-	return rr;
+	unit='R';
+	if(rr>1000)
+	{
+		rr/=1000;
+		unit = 'K';
+	}
+	if(rr>1000000)
+	{
+		rr/=1000000;
+		unit = 'M';
+	}
+	return (u16)rr;
 }
 
 

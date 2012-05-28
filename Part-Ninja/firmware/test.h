@@ -116,4 +116,5 @@ extern u8 tC[3];
 extern u8 tN[8];
 extern u8 node; 
 extern u8 testCMP;
+extern char unit;
 #endif
