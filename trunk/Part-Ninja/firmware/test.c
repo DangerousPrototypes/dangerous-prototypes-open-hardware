@@ -10,8 +10,7 @@ u8 tC[3]={0,0,0};
 u8 tN[8]={0,0,0,0,0,0,0,0}; 
 u8 nC=0;
 u8 node;
-u8 testCMP;
-u8 CMPpin;
+u8 testCMP=0;
 char pins[3]={0,0,0};
 
 
@@ -824,37 +823,72 @@ u16 testSCR()
 u16 testCAP()
 {
 	
-	u16 timeL,timeH;
+	u32 timer=0,Rtest;
+	double cap,RC=0.489484/*0.6952*/,time=0;
 	u8 C1,C2;
+	testCMP=0;
 	C1=tList[0][0];
 	C2=tList[0][1];
-	/*
-	CMPpin=((1<<C1));
 
 	//safe Discharege
 	R_0(C2,LOW);
 	R_680(C1,LOW);
 	Delay_MS(100);
 	R_0(C1,LOW);
-	Delay_MS(1);
-	CMP_INTF=0;	//clear comparator IF
-	CMP_INTE=1;	//enable comparator interrupt	
-	testCMP =0;
-	TMR1L=0;
-	TMR1H=0;
-	R_680(C1,HIGH);
-	T1CONbits.TMR1ON =1;
-	while(CMP_INTF==0);
-	timeL=TMR1L;
-	timeH=TMR1H;
+	Delay_MS(10);
+	if(tList[0][2]==1023)
+	{
+		Rtest=470000;
+		CMP_INTF=0;	//clear comparator IF
+		CMP_INTE=1;	//enable comparator interrupt	
+		R_470K(C1,HIGH);
+		while(CMP_INTF==0)
+		{
+			if(timer<500000)timer++;
+			else 
+			{
+			CMP_INTE=0;
+			CMP_INTF=0;
+			timer =0;
+			break;
+			}
+		}
+	}
+	else
+	{
+		Rtest=680;
+		CMP_INTF=0;	//clear comparator IF
+		CMP_INTE=1;	//enable comparator interrupt	
+		R_680(C1,HIGH);
+		while(CMP_INTF==0)
+		{
+			if(timer<500000)timer++;
+			else 
+			{
+			CMP_INTE=0;
+			CMP_INTF=0;
+			timer =0;
+			break;
+			}
+		}	
+	}
+	
 	R_680(C1,LOW);
 	Delay_MS(100);
 	R_0(C1,LOW);
 	HiZ(C2);
-	HiZ(C1);*/	
+	HiZ(C1);
 	pins[C1]='C';
 	pins[C2]='C';
-return 1;
+	if(timer)			//works down to 7nF..for 470K...up to ~5uF. or 5uF up to ~4mF for 680..
+	{	
+		timer+=22;
+		time=timer*2.16667e-6;
+		RC=RC*(double)Rtest;
+		cap=(double)time/RC;
+		return cap;
+	}	
+	return 0;
 }
 
 u16 testRES()
