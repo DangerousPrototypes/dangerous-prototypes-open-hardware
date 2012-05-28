@@ -828,24 +828,29 @@ u16 testCAP()
 	
 	u32 timer=0,Rtest;
 	double cap,RC=0.489484/*0.6952*/,time=0;
-	u8 C1,C2;
+	u8 C1,C2,xC;
 	testCMP=0;
+	
+	//due to the way the order of testing is done tListp[0][0] can only be 0 or 1
+	//C combos... 0-1,0-2,and 1-2 this is the frst order of tesrting so pin1 and pin2 comparators are assured...
 	C1=tList[0][0];
 	C2=tList[0][1];
-
+	xC=3-(C1+C2);	//3d unused pin which could be connected to a 2nd comparator need to be brought low
+	R_0(xC,LOW);
 	//safe Discharege
 	R_0(C2,LOW);
 	R_680(C1,LOW);
 	Delay_MS(100);
 	R_0(C1,LOW);
 	Delay_MS(10);
+	testCMP=1;
 	if(tList[0][2]==1023)
 	{
 		Rtest=470000;
 		CMP_INTF=0;	//clear comparator IF
 		CMP_INTE=1;	//enable comparator interrupt	
 		R_470K(C1,HIGH);
-		while(CMP_INTF==0)
+		while(testCMP)
 		{
 			if(timer<500000)timer++;
 			else 
@@ -863,7 +868,7 @@ u16 testCAP()
 		CMP_INTF=0;	//clear comparator IF
 		CMP_INTE=1;	//enable comparator interrupt	
 		R_680(C1,HIGH);
-		while(CMP_INTF==0)
+		while(testCMP)
 		{
 			if(timer<500000)timer++;
 			else 
@@ -881,6 +886,7 @@ u16 testCAP()
 	R_0(C1,LOW);
 	HiZ(C2);
 	HiZ(C1);
+	HiZ(xC);
 	pins[C1]='C';
 	pins[C2]='C';
 	if(timer)			//works down to 7nF..for 470K...up to ~5uF. or 5uF up to ~4mF for 680..
