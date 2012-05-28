@@ -67,7 +67,7 @@ void    high_isr(void)
    /* high priority interrupt handling code here */
 	CMP_INTE=0;
 	CMP_INTF=0;
-	testCMP=1;
+	testCMP=0;
 }
 
 #pragma interruptlow low_isr
