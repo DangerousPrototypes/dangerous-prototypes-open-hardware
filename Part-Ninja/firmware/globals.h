@@ -1,5 +1,7 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#ifndef GLOBALSPN_H
+#define GLOBALSPN_H
+
+#define PART_NINJA
 
 // i put all the
 

@@ -26,7 +26,8 @@
 //CA is a common anode -||-
 typedef enum type
 {ERROR=0,NFET,PFET,NMOS,PMOS,NPN,CA,PNP,CC,
-	DIODE,TRIAC,SCR,CAP,RES,ZENER,DD,NOID=20}type;
+	DIODE,TRIAC,SCR,CAP,RES,ZENER,DD,NOID=20,
+		ERROR1,ERROR2,ERROR3,ERROR4,ERROR5}type;
 
 void compInit(u8 Pin);
 
@@ -72,6 +73,9 @@ u16 testZENER();
 u16 testDD();
 
 
+void puts_cdc(rom char *s);
+void putINT_cdc(u16 value);
+void tListPrint();
 
 //stes up the ADC module and takes a reading of the Pin
 u16 ReadADC(u8 Pin);
@@ -116,5 +120,6 @@ extern u8 tC[3];
 extern u8 tN[8];
 extern u8 node; 
 extern u8 testCMP;
+extern u8 diff;
 extern char unit;
 #endif
