@@ -1,17 +1,61 @@
+
 #include "globals.h"
 #include "config.h"
 #include "HD44780.h"
 #include "test.h"
 
+//USB stack
+#include "..\dp_usb\usb_stack_globals.h"    // USB stack only defines Not function related.
+#include "descriptors.h"	// JTR Only included in main.c
+
+
+
+
+
+#define REMAPPED_RESET_VECTOR_ADDRESS		0x800
+#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
+#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
+
 static void init(void);
+void InterruptHandlerHigh();
+void InterruptHandlerLow();
+void USBSuspend(void);
+void USBSuspend(void){}
 
 
-
+#pragma udata
+extern BYTE usb_device_state;
 
 #pragma code
 void main(void)
 {  
-    init();			//setup the crystal, pins
+    BYTE RecvdByte;
+	init();			//setup the crystal, pins
+	
+	initCDC(); // setup the CDC state machine
+
+    usb_init(cdc_device_descriptor, cdc_config_descriptor, cdc_str_descs, USB_NUM_STRINGS); // initialize USB. TODO: Remove magic with macro
+    usb_start(); //start the USB peripheral
+
+#if defined USB_INTERRUPTS // See the prj_usb_config.h file.
+    EnableUsbPerifInterrupts(USB_TRN + USB_SOF + USB_UERR + USB_URST);
+#if defined __18CXX //turn on interrupts for PIC18
+    INTCONbits.PEIE = 1;
+    INTCONbits.GIE = 1;
+#endif
+    EnableUsbGlobalInterrupt(); // Only enables global USB interrupt. Chip interrupts must be enabled by the user (PIC18)
+#endif
+
+	// Wait for USB to connect
+	do 
+	{
+#ifndef USB_INTERRUPTS
+        usb_handler();
+#endif
+    } while (usb_device_state < CONFIGURED_STATE);
+
+    usb_register_sof_handler(CDCFlushOnTimeout); // Register our CDC timeout handler after device configured
+
 
 	Delay_MS(10);	
 
@@ -24,7 +68,16 @@ void main(void)
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  
-	while(1) testPart();
+	while(1)
+	{
+// If USB_INTERRUPT is not defined each loop should have at least one additional call to the usb handler to allow for control transfers.
+#ifndef USB_INTERRUPTS
+        usb_handler();
+#endif
+		testPart();
+		//testing comleate...
+	
+	}
 }//end main
 
 static void init(void){
@@ -38,6 +91,7 @@ static void init(void){
 	//make sure everything is input (should be on startup, but just in case)
 	TRISA=0xff;
 	TRISB=0xff;
+	TRISE=0xff;
 	TRISC=0b11111111; 
 
 	//comparator analog pins setup...
@@ -60,11 +114,12 @@ static void init(void){
 
 }
 
+/*
 #pragma interrupt high_isr
 
 void    high_isr(void)
 {
-   /* high priority interrupt handling code here */
+   // high priority interrupt handling code here 
 	CMP_INTE=0;
 	CMP_INTF=0;
 	testCMP=0;
@@ -74,7 +129,7 @@ void    high_isr(void)
 
 void    low_isr(void)
 {
-   /* low priority interrupt handling code here */
+   // low priority interrupt handling code here 
 
 }
 
@@ -92,3 +147,75 @@ void    low_vector(void)
    _asm GOTO low_isr _endasm
 }
 
+*/
+
+//PIC18F style interrupts with remapping for bootloader
+//	Interrupt remap chain
+//
+//This function directs the interrupt to
+// the proper function depending on the mode
+// set in the mode variable.
+//USB stack on low priority interrupts,
+#pragma interruptlow InterruptHandlerLow nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
+void InterruptHandlerLow(void) {
+    if(PIR2bits.USBIF)	//usb interrupt
+	{
+		usb_handler();
+	    ClearGlobalUsbInterruptFlag();
+	}
+	if(CMP_INTF)
+	{
+		CMP_INTE=0;
+		CMP_INTF=0;
+		testCMP=0;
+	}
+}
+
+#pragma interrupt InterruptHandlerHigh nosave= PROD, PCLATH, PCLATU, TBLPTR, TBLPTRU, TABLAT, section (".tmpdata"), section("MATH_DATA")
+void InterruptHandlerHigh(void) { //Also legacy mode interrupt.
+	
+   if(PIR2bits.USBIF)//usb interrupt
+	{
+	usb_handler();
+    ClearGlobalUsbInterruptFlag();
+	}
+	if(CMP_INTF)
+	{
+		CMP_INTE=0;
+		CMP_INTF=0;
+		testCMP=0;
+	}
+}
+
+//these statements remap the vector to our function
+//When the interrupt fires the PIC checks here for directions
+#pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
+
+void Remapped_High_ISR(void) {
+    _asm goto InterruptHandlerHigh _endasm
+}
+
+#pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
+
+void Remapped_Low_ISR(void) {
+    _asm goto InterruptHandlerLow _endasm
+}
+
+//relocate the reset vector
+extern void _startup(void);
+#pragma code REMAPPED_RESET_VECTOR = REMAPPED_RESET_VECTOR_ADDRESS
+
+void _reset(void) {
+    _asm goto _startup _endasm
+}
+//set the initial vectors so this works without the bootloader too.
+#pragma code HIGH_INTERRUPT_VECTOR = 0x08
+
+void High_ISR(void) {
+    _asm goto REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS _endasm
+}
+#pragma code LOW_INTERRUPT_VECTOR = 0x18
+
+void Low_ISR(void) {
+    _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
+}

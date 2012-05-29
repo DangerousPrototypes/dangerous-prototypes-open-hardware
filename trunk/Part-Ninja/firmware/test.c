@@ -11,6 +11,7 @@ u8 tN[8]={0,0,0,0,0,0,0,0};
 u8 nC=0;
 u8 node;
 u8 testCMP=0;
+u8 diff;
 char unit;
 char pins[3]={0,0,0};
 
@@ -31,16 +32,23 @@ void initT()
 //Test function...does the testing
 u8 testPart()
 {
-	u8 diff=0;
 	type PartSS=0;
+	diff=0;
 	pins[0]='X';
 	pins[1]='X';
 	pins[2]='X';
 	//returns the number of conducting directions between all 3 pins
 	nC=testConduct(&diff);	//and fills up the list
+	puts_cdc("\r\r");
+	tListPrint();	
+
 	PartSS=getPartSS(diff);	//gets the ID of the part that is most probable
+
+	puts_cdc("\rPartSS: ");
+	putINT_cdc(PartSS);
 	//switches depending on the PartSS value, here is where all the part specific functions all called
 	switchPart(PartSS);
+
 	if(PartSS)return 1;
 	return 0;	
 }
@@ -199,7 +207,7 @@ u8 testCAP_RES()
 				else return RES;
 			}			
 		}
-	return ERROR;
+	return ERROR5;
 }
 
 
@@ -237,7 +245,7 @@ type getPartSS(u8 diff)
 	{			//must be FET
 		if(nC>5)
 		{
-			if(tN[5]==0)return ERROR;
+			if(tN[5]==0)return ERROR1;
 			if(tN[5]==1)
 			{
 				for(j=0;j<3;j++)
@@ -269,7 +277,7 @@ type getPartSS(u8 diff)
 			}
 			if((diff-1)==2)return PMOS;//P-MOS
 		}
-		return NOID;			//untested...uncertain..error
+		return ERROR2;			//untested...uncertain..error
 	}
 	if(nC==0)return testCAP_RES();
 	if(nC==1)return DIODE;		//one conducts with no Diff must be Diode
@@ -278,12 +286,12 @@ type getPartSS(u8 diff)
 			if(nD==1)return NFET;
 			if(nD==2)return PFET;
 	}
-	if(nC!=2)return NOID;		//no posibiliteis other the 2 conducts..error if other then
+	if(nC!=2)return ERROR3;		//no posibiliteis other the 2 conducts..error if other then
 	if(nN==2)return getPartSS2();		//2 concucts, 2 nodes, no diff are Res/antiP_D/Zener/Cap
-	if(nN!=1)return NOID;		//only 1 node combinatons left..error if other then
+	if(nN!=1)return ERROR4;		//only 1 node combinatons left..error if other then
 	if(nD==1)					//2conducts, 1 node, direction 1(OUT), nust be NPN/DD-CA
 	{
-		R_470K(tList[0][0],HIGH);//B
+		R_680(tList[0][0],HIGH);//B
 		R_0(tList[1][1],LOW);	//E
 		R_680(tList[0][1],HIGH);	//C
 		test=ReadADC(tList[0][1]);
@@ -300,7 +308,7 @@ type getPartSS(u8 diff)
 	}
 	if(nD==2)				//2conducts, 1 node. directon 2 (IN), muct be PNP/DD-CC
 	{	
-		R_470K(tList[0][1],LOW);//B
+		R_680(tList[0][1],LOW);//B
 		R_0(tList[0][0],HIGH);	//E
 		R_680(tList[1][0],LOW);	//C
 		test=ReadADC(tList[1][0]);
@@ -891,7 +899,8 @@ u16 testCAP()
 	pins[C2]='C';
 	if(timer)			//works down to 7nF..for 470K...up to ~5uF. or 5uF up to ~4mF for 680..
 	{	
-		timer+=22;
+		if((tList[0][2]==1023)&&(timer>5))timer-=5;
+		else timer+=22;
 		time=timer*2.6666e-6;
 		RC=RC*(double)Rtest;
 		cap=(double)time/RC;
@@ -1046,6 +1055,57 @@ void Delay_MS(u8 ms){
 		while(timer--);
 	}
 
+}
+
+void puts_cdc(rom char *s)
+{
+	char c;
+	while((c = *s++))putc_cdc(c);
+}
+
+void putINT_cdc(u16 vcdc)
+{
+
+   unsigned int temp,dvd=10000;
+   char i=0,k=0;
+   temp = vcdc;
+	CDC_Flush_In_Now(); 
+   for (i=0;i<5;i++)
+   {
+      temp=vcdc/dvd;
+      if(temp)k++;
+      if(k)putc_cdc((char)temp + '0');
+      vcdc = vcdc - (temp*dvd);
+      dvd/=10;
+   }
+	CDC_Flush_In_Now(); 
+}
+void tListPrint()
+{
+	u8 i,j,t1;
+	u16 t2;
+	puts_cdc("\rnC:");
+	putc_cdc(nC+'0');
+	puts_cdc("\rdiff:");
+	putc_cdc(diff+'0');
+	for(i=0;i<nC;i++)
+	{	
+		puts_cdc("\rtList[");
+		putc_cdc(i+'0');
+		puts_cdc("][0]: ");
+		t1=(u8)tList[i][0];
+		putc_cdc(t1+'0');
+		puts_cdc("\rtList[");
+		putc_cdc(i+'0');
+		puts_cdc("][1]: ");
+		t1=(u8)tList[i][1];
+		putc_cdc(t1+'0');
+		puts_cdc("\rtList[");
+		putc_cdc(i+'0');
+		puts_cdc("][2]: ");
+		t2=tList[i][2];
+		putINT_cdc(t2);
+	}
 }
 
 void R_680 (u8 Pin, u8 State){

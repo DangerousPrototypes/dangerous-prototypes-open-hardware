@@ -1,3 +1,3 @@
-Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 23 : type qualifier mismatch in assignment
-Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 25 : type qualifier mismatch in assignment
-Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 27 : call of function without prototype
+Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 67 : type qualifier mismatch in assignment
+Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 69 : type qualifier mismatch in assignment
+Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\main.c 77 : call of function without prototype
