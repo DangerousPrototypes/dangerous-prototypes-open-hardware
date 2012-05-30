@@ -43,9 +43,7 @@ NET "DBGACK"         LOC =  "P29";
 #NET "TARGET_PRESENT" LOC =  "P18";
 
 #trigger pins for test mode
-NET "TEST_MODE_0"    LOC =  "P28";
+NET "TEST_MODE_0"    LOC =  "P28"; #test mode trigger pin, pull low to enter test mode
 NET "TEST_MODE_0"    PULLUP;
-NET "TEST_MODE_1"    LOC =  "P19";
+NET "TEST_MODE_1"    LOC =  "P19"; #test mode output pin, usually the LED
 NET "TEST_MODE_1"    PULLUP;
-NET "TEST_MODE_2"    LOC =  "P20";
-NET "TEST_MODE_2"    PULLUP;
