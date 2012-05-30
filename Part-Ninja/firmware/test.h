@@ -18,7 +18,7 @@
 #define ZENER_DD 	100	//by how much will 2 anti paraller diodes VDs differ 
 #define FET_HIGH    923
 #define FET_LOW     100
-#define TST_DEL    	100
+#define TST_DEL    	200
 
 
 //Enum with the different part type names...
