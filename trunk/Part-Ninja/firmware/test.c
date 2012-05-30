@@ -171,16 +171,16 @@ u8 testConduct(u8 *diff)
 //called only if nC =0, so no CP were found in the r680 test...
 u8 testCAP_RES()
 {
-	u8 i,j,k;
-	u16 vT1=0,vT2;
+	u8 i,j;
+	u16 vT1=0,vT2,k2;
 	for(i=0;i<2;i++)
 		for(j=i+1;j<3;j++)
 		{	
-			k=100;
+			k2=400;
 			quickADCsetup(i);
 			R_0(j,LOW);
 			R_470K(i,HIGH);
-			while(k--);
+			while(k2--);
 			ADCON0|=0b10; //GO/!DONE=1	//starts the ADC acq
 			while(ADCON0&0b10);			//this is done just after the left over pin is HiZ
 			vT1 = ADRES;			
@@ -1090,19 +1090,15 @@ void tListPrint()
 	putc_cdc(diff+'0');
 	for(i=0;i<nC;i++)
 	{	
-		puts_cdc("\rtList[");
-		putc_cdc(i+'0');
-		puts_cdc("][0]: ");
+		puts_cdc("\rCP");
+		putc_cdc(i+'1');
+		puts_cdc(": ");
 		t1=(u8)tList[i][0];
 		putc_cdc(t1+'0');
-		puts_cdc("\rtList[");
-		putc_cdc(i+'0');
-		puts_cdc("][1]: ");
+		puts_cdc("->");
 		t1=(u8)tList[i][1];
 		putc_cdc(t1+'0');
-		puts_cdc("\rtList[");
-		putc_cdc(i+'0');
-		puts_cdc("][2]: ");
+		puts_cdc(" Value: ");
 		t2=tList[i][2];
 		putINT_cdc(t2);
 	}

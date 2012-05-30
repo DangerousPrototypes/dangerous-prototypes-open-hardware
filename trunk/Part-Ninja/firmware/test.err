@@ -61,9 +61,5 @@ Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1094 : call of fun
 Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1095 : type qualifier mismatch in assignment
 Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1097 : call of function without prototype
 Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1098 : type qualifier mismatch in assignment
-Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1099 : call of function without prototype
-Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1100 : type qualifier mismatch in assignment
-Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1102 : call of function without prototype
-Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1103 : type qualifier mismatch in assignment
-Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1104 : call of function without prototype
-Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1105 : type qualifier mismatch in assignment
+Warning[2058] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1100 : call of function without prototype
+Warning[2066] C:\Users\Filip\Documents\MPLAB\PartNinja\test.c 1101 : type qualifier mismatch in assignment
