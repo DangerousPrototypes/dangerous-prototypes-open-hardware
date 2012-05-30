@@ -11,9 +11,8 @@ Prefix 'IC';
 Description 'BASIC USB to UART IC';
 Value Off;
 Add FT230X 'IC' Next 0 (0 0);
-Package 'SSOP-16' '-SSOP-16';
+Package 'SSOP-16-FTDI' '-SSOP-16';
 Technology '';
-Connect  'IC.TXD' '1'  'IC.!RTS' '2'  'IC.VCCIO' '3'  'IC.RXD' '4'  'IC.GND@1' '5' \
-         'IC.!CTS' '6'  'IC.CBUS2' '7'  'IC.USB+' '8'  'IC.USB-' '9'  'IC.3V3OUT' '10'  'IC.!RESET' '11' \
-         'IC.VCC' '12'  'IC.GND@2' '13'  'IC.CBUS1' '14'  'IC.CBUS0' '15'  'IC.CBUS3' '16';
-Grid inch;
+Connect  'IC.USB+' '8'  'IC.CBUS0' '15'  'IC.CBUS1' '14'  'IC.CBUS3' '16'  'IC.GND@2' '13' \
+         'IC.VCC' '12'  'IC.!RESET' '11'  'IC.3V3OUT' '10'  'IC.USB-' '9'  'IC.TXD' '1'  'IC.!RTS' '2' \
+         'IC.VCCIO' '3'  'IC.RXD' '4'  'IC.GND@1' '5'  'IC.!CTS' '6'  'IC.CBUS2' '7';
