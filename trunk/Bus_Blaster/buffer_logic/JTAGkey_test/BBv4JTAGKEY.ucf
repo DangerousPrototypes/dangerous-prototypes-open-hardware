@@ -1,0 +1,52 @@
+#Bus Blaster v2 JTAGkey pin connections
+#modified by skot for BBv4
+#taken from: http://dangerousprototypes.com/forum/posting.php?mode=reply&f=37&t=3503#pr39413
+
+# ft2232h connection
+NET "FT_JTAG_OE"     LOC =  "P53";   #AD4
+NET "FT_JTAG_OE"     PULLUP;
+NET "FT_TDO"         LOC =  "P56";  #AD2
+NET "FT_TCK"         LOC =  "P60";  #AD0
+#NET "FT_TCK"         BUFG = CLK;
+NET "FT_TDI"         LOC =  "P58";  #AD1
+NET "FT_TMS"         LOC =  "P55";  #AD3
+
+NET "FT_nSRST_OE"    LOC =  "P40";  #AC3
+NET "FT_nSRST_OE"    PULLUP;
+NET "FT_nSRST_OUT"   LOC =  "P42";   #AC1
+NET "FT_nSRST_IN"    LOC =  "P50";   #AD6
+
+NET "FT_nTRST_OE"    LOC =  "P41";  #AC2
+NET "FT_nTRST_OE"    PULLUP;
+NET "FT_nTRST_OUT"   LOC =  "P43";   #AC0
+
+NET "FT_RTCK"        LOC =  "P49";   #AD7
+NET "FT_TARGET_PRESENT" LOC = "P52"; #AD5
+
+NET "FT_DBGRQ"       LOC =  "P39";  #AC4
+NET "FT_DBGACK"      LOC =  "P27";  #AC5 is clock out in 485 mode
+NET "FT_DBGACK"      BUFG = CLK;
+
+#unused ft2232 connections
+#NET "ACBUS6"      	LOC =  "P40";
+#NET "ACBUS7"      	LOC =  "P39";
+
+# jtag io header
+NET "RTCK"           LOC =  "P81"; #x
+NET "TDO"            LOC =  "P79"; #x
+NET "TCK"            LOC =  "P91"; #x
+NET "TDI"            LOC =  "P94"; #x
+NET "TMS"            LOC =  "P92"; #x
+NET "nSRST"          LOC =  "P78"; #x
+NET "nTRST"          LOC =  "P97"; #x
+NET "DBGRQ"          LOC =  "P77"; #x
+NET "DBGACK"         LOC =  "P76"; #x
+
+# tgt input
+//NET "TARGET_PRESENT" LOC =  "P18";
+
+#trigger pins for test mode
+NET "TEST_MODE_0"    LOC =  "P1"; #test mode trigger pin, pull low to enter test mode
+NET "TEST_MODE_0"    PULLUP;
+NET "TEST_MODE_1"    LOC =  "P64"; #test mode output pin, usually the LED
+NET "TEST_MODE_1"    PULLUP;

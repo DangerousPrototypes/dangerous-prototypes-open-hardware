@@ -31,7 +31,6 @@ module jtagkey(
 			TARGET_PRESENT,
 			TEST_MODE_0,
 			TEST_MODE_1,
-			TEST_MODE_2,
 			ACBUS6,
 			ACBUS7
 			  );
@@ -66,14 +65,13 @@ output wire ACBUS6;
 output wire ACBUS7;
 
 //control pins for test mode
-input wire TEST_MODE_0;
-inout wire TEST_MODE_1;
-input wire TEST_MODE_2;
+input wire TEST_MODE_0; //has pullup, pull low to ground to enter test mode
+inout wire TEST_MODE_1; //outputs high (light LED) on test mode active
 wire TEST_MODE;
 
 //need : TDO, TMS, rtck, FT_nTRST_OUT, FT_nSRST_OUT, FT_nTRST_OE, FT_nSRST_OE, FT_DBGRQ, FT_TDO, FT_TARGET_PRESENT, FT_nSRST_IN, nTRST, nSRST
 //three IO pins select test mode
-assign TEST_MODE = (TEST_MODE_0)? 1'b0:1'b1; // && TEST_MODE_1 && TEST_MODE_2
+assign TEST_MODE = (TEST_MODE_0)? 1'b0:1'b1; 
 assign TEST_MODE_1 =TEST_MODE;
 
 //buffer controlled by FT_JTAG_OE
