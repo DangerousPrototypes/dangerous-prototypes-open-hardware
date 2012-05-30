@@ -22,6 +22,7 @@ void InterruptHandlerLow();
 void USBSuspend(void);
 void USBSuspend(void){}
 
+u8 rBF;
 
 #pragma udata
 extern BYTE usb_device_state;
@@ -29,7 +30,8 @@ extern BYTE usb_device_state;
 #pragma code
 void main(void)
 {  
-    BYTE RecvdByte;
+    rBF=0;
+	//BYTE RecvdByte;
 	init();			//setup the crystal, pins
 	
 	initCDC(); // setup the CDC state machine
@@ -64,7 +66,7 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja v0.0a");
+	LCD_WriteString("Part Ninja r1908");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  
@@ -74,6 +76,11 @@ void main(void)
 #ifndef USB_INTERRUPTS
         usb_handler();
 #endif
+		if(peek_getc_cdc(&RecvdByte))
+		{
+			if(RecvdByte == 'a')rBF=1;
+			else rBF=0;
+		}
 		testPart();
 		//testing comleate...
 	
