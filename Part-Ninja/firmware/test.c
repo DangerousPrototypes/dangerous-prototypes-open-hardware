@@ -14,7 +14,8 @@ u8 testCMP=0;
 u8 diff;
 char unit;
 char pins[3]={0,0,0};
-
+BYTE RecvdByte;
+u16 temp;
 
 
 void initT()
@@ -32,6 +33,9 @@ void initT()
 //Test function...does the testing
 u8 testPart()
 {
+	u8 i;
+	u16 ptList[12][3];
+	type pPartSS;
 	type PartSS=0;
 	diff=0;
 	pins[0]='X';
@@ -39,16 +43,33 @@ u8 testPart()
 	pins[2]='X';
 	//returns the number of conducting directions between all 3 pins
 	nC=testConduct(&diff);	//and fills up the list
-	puts_cdc("\r\r");
-	tListPrint();	
+	if(!rBF)
+	{	
+		puts_cdc("\n\n");
+		tListPrint();
+	}
+	else
+	{
+		for(i=0;i<12;i++)
+		{
+			ptList[i][0]=tList[i][0];
+			ptList[i][1]=tList[i][1];
+			ptList[i][2]=tList[i][2];
 
+		}
+	}
 	PartSS=getPartSS(diff);	//gets the ID of the part that is most probable
-
-	puts_cdc("\rPartSS: ");
-	putINT_cdc(PartSS);
+	if(!rBF)
+	{
+		puts_cdc("\nPartSS: ");
+		putINT_cdc(PartSS);
+	}
+	else pPartSS=PartSS;
 	//switches depending on the PartSS value, here is where all the part specific functions all called
 	switchPart(PartSS);
-
+	
+	ProcessingDebug(pPartSS,PartSS,ptList);
+	
 	if(PartSS)return 1;
 	return 0;	
 }
@@ -389,7 +410,7 @@ type getPartSS2()
 u8 switchPart(type SS)
 {
 	double C;
-	u16 temp;
+	//u16 temp;
 	LCD_Clear();
 	LCD_CursorPosition(0);
 
@@ -1084,13 +1105,13 @@ void tListPrint()
 {
 	u8 i,j,t1;
 	u16 t2;
-	puts_cdc("\rnC:");
+	puts_cdc("\nnC:");
 	putc_cdc(nC+'0');
-	puts_cdc("\rdiff:");
+	puts_cdc("\ndiff:");
 	putc_cdc(diff+'0');
 	for(i=0;i<nC;i++)
 	{	
-		puts_cdc("\rCP");
+		puts_cdc("\nCP");
 		putc_cdc(i+'1');
 		puts_cdc(": ");
 		t1=(u8)tList[i][0];
@@ -1315,4 +1336,35 @@ u16 HiZadc(u8 Pin,u8 ADCpin,u16 delay)
 	}
 
 }
+
+void ProcessingDebug(type pPartSS,type PartSS,u16*ptList[3])
+{
+	putc_cdc('D');
+	putc_cdc('P');
+	putc_cdc(nC);
+	putc_cdc(diff);
+	putc_cdc(pPartSS);	
+	putc_cdc(PartSS);
+	if(nC)
+	{
+		u8 pi,high, low;
+		for(pi=0;pi<nC;pi++)
+		{
+			high=tList[pi][0];
+			low =tList[pi][1];
+			putc_cdc(high);
+			putc_cdc(low);
+			high=tList[pi][2]>>8;
+			low=tList[pi][2];
+			putc_cdc(high);
+			putc_cdc(low);		
+		}
+		high=temp>>8;
+		low=temp;
+		putc_cdc(high);
+		putc_cdc(low);
+	}
+}
+
+
 /////////////////EOF
