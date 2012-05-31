@@ -68,7 +68,7 @@ u8 testPart()
 	//switches depending on the PartSS value, here is where all the part specific functions all called
 	switchPart(PartSS);
 	
-	ProcessingDebug(pPartSS,PartSS,ptList);
+	if(rBF)ProcessingDebug(pPartSS,PartSS,ptList);
 	
 	if(PartSS)return 1;
 	return 0;	
@@ -1339,15 +1339,22 @@ u16 HiZadc(u8 Pin,u8 ADCpin,u16 delay)
 
 void ProcessingDebug(type pPartSS,type PartSS,u16*ptList[3])
 {
+	u8 low, high;
 	putc_cdc('D');
 	putc_cdc('P');
 	putc_cdc(nC);
 	putc_cdc(diff);
 	putc_cdc(pPartSS);	
 	putc_cdc(PartSS);
+	low=pins[0];
+	putc_cdc(low);
+	low=pins[1];
+	putc_cdc(low);
+	low=pins[2];
+	putc_cdc(low);
 	if(nC)
 	{
-		u8 pi,high, low;
+		u8 pi;
 		for(pi=0;pi<nC;pi++)
 		{
 			high=tList[pi][0];
