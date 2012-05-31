@@ -16,7 +16,8 @@ char unit;
 char pins[3]={0,0,0};
 BYTE RecvdByte;
 u16 temp;
-
+type pPartSS,PartSS;
+u16 ptList[12][3];
 
 void initT()
 {
@@ -34,21 +35,19 @@ void initT()
 u8 testPart()
 {
 	u8 i;
-	u16 ptList[12][3];
-	type pPartSS;
-	type PartSS=0;
+	PartSS=0;
 	diff=0;
 	pins[0]='X';
 	pins[1]='X';
 	pins[2]='X';
 	//returns the number of conducting directions between all 3 pins
 	nC=testConduct(&diff);	//and fills up the list
-	if(!rBF)
+	if(terminalF)
 	{	
 		puts_cdc("\n\n");
 		tListPrint();
 	}
-	else
+	if(procF)
 	{
 		for(i=0;i<12;i++)
 		{
@@ -59,16 +58,15 @@ u8 testPart()
 		}
 	}
 	PartSS=getPartSS(diff);	//gets the ID of the part that is most probable
-	if(!rBF)
+	if(terminalF)
 	{
 		puts_cdc("\nPartSS: ");
 		putINT_cdc(PartSS);
 	}
 	else pPartSS=PartSS;
+	terminalF=0;
 	//switches depending on the PartSS value, here is where all the part specific functions all called
 	switchPart(PartSS);
-	
-	if(rBF)ProcessingDebug(pPartSS,PartSS,ptList);
 	
 	if(PartSS)return 1;
 	return 0;	
@@ -1347,7 +1345,7 @@ u16 HiZadc(u8 Pin,u8 ADCpin,u16 delay)
 
 }
 
-void ProcessingDebug(type pPartSS,type PartSS,u16*ptList[3])
+void ProcessingDebug()
 {
 	u8 low, high;
 	putc_cdc('D');
