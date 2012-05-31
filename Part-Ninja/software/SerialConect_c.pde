@@ -10,13 +10,18 @@ import java.awt.datatransfer.*;
 import processing.serial.*;
 
 
-
+String[] PartType = {"ERROR","NFET","PFET","NMOS","PMOS","NPN","CA","PNP","CC",
+	"DIODE","TRIAC","SCR","CAP","RES","ZENER","DD","","","","","","","NOID",
+"ERROR1","ERROR2","ERROR3","ERROR4","ERROR5"};
 ClipHelper cp = new ClipHelper();
 Serial myPort;  // Create object from Serial class
 int val;      // Data received from the serial port
 int nSend=0;
 int temp;
-int nC=0,diff,high,low,PartSS,pPartSS,test;
+int pP;
+int nC=0,diff,high,low,test;
+char pin1,pin2,pin3;
+String PartSS,pPartSS;
 int[][] tList=new int[12][3];
 String s;
 void setup()
@@ -59,8 +64,13 @@ void draw()
         //print("\n\n");
         nC=myPort.read();
         diff=myPort.read();
-        pPartSS=myPort.read();
-        PartSS=myPort.read();
+        pP=myPort.read();
+        pPartSS = PartType[pP];
+        pP=myPort.read();
+        PartSS=PartType[pP];
+        pin1=(char)myPort.read();
+        pin2=(char)myPort.read();
+        pin3=(char)myPort.read();
         if(nC>0)
         {
           for(int pi=0;pi<nC;pi++)
@@ -89,7 +99,7 @@ void draw()
       s+="diff: " + diff +'\n';
       s+="pPartSS: " + pPartSS +'\n';
       s+="PartSS: " + PartSS +'\n';
-          
+      s+="Pin1: " + pin1+" PIN2: " + pin2 +" PIN3: " + pin3 + '\n';   
       if(nC>0)
       {
         for(int i=0;i<nC;i++)
