@@ -105,7 +105,7 @@ void draw()
         for(int i=0;i<nC;i++)
         {
           //print("CP"+i+": " + tList[i][0] + "->" + tList[i][1]+"   testVal: " + tList[i][2]+'\n');
-          s+="CP"+i+": " + tList[i][0] + "->" + tList[i][1]+"   testVal: " + tList[i][2]+'\n';
+          s+="CP"+(i+1)+": " + (tList[i][0]+1) + "->" + (tList[i][1]+1)+"   testVal: " + tList[i][2]+'\n';
         }
         s+="partVal: " + temp +'\n';
         //print ("partVal: " + temp +'\n');
