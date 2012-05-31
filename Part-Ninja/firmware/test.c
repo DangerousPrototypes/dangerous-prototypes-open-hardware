@@ -266,7 +266,17 @@ type getPartSS(u8 diff)
 	{			//must be FET
 		if(nC>5)
 		{
-			if(tN[5]==0)return ERROR1;
+			if((tN[5]==0))
+			{
+			if(tN[4]==2)
+			{
+				for(j=0;j<3;j++)
+				{
+					if(tC[j]==2)node=j;					
+				}
+			}
+			else return ERROR1;
+			}
 			if(tN[5]==1)
 			{
 				for(j=0;j<3;j++)
@@ -834,7 +844,7 @@ u16 testTRIAC()
 	pins[C]='C';
 	pins[G]='G';
 	if(nC<8)return 1;
-	else return 2;
+	return 2;
 }
 u16 testSCR()
 {

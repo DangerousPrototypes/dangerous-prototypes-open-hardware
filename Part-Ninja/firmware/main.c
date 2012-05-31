@@ -66,7 +66,7 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1913");
+	LCD_WriteString("Part Ninja r1914");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  
