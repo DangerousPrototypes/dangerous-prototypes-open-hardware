@@ -1,3 +1,25 @@
+import processing.core.*; 
+import processing.xml.*; 
+
+import java.awt.datatransfer.*; 
+import processing.serial.*; 
+
+import java.applet.*; 
+import java.awt.Dimension; 
+import java.awt.Frame; 
+import java.awt.event.MouseEvent; 
+import java.awt.event.KeyEvent; 
+import java.awt.event.FocusEvent; 
+import java.awt.Image; 
+import java.io.*; 
+import java.net.*; 
+import java.text.*; 
+import java.util.*; 
+import java.util.zip.*; 
+import java.util.regex.*; 
+
+public class SerialConect_c extends PApplet {
+
 /**
  * Simple Read
  * 
@@ -6,8 +28,8 @@
  * This example works with the Wiring / Arduino program that follows below.
  */
 
-import java.awt.datatransfer.*;
-import processing.serial.*;
+
+
 
 
 String[] PartType = {"ERROR","NFET","PFET","NMOS","PMOS","NPN","CA","PNP","CC",
@@ -21,8 +43,8 @@ Serial myPort;  // Create object from Serial class
 
 PFont font;
 boolean locked = false;
-color buttoncolor = color(204);
-color highlight = color(153);
+int buttoncolor = color(204);
+int highlight = color(153);
 RectButton[] ComPorts = new RectButton[Serial.list().length];
 int selected;
 int startF;
@@ -40,7 +62,7 @@ String PartSS,pPartSS;
 String[] sSerial = Serial.list();
 int[][] tList=new int[12][3];
 String s;
-void setup()
+public void setup()
 {
   size(140, (Serial.list().length*25)+40);
   
@@ -58,7 +80,7 @@ void setup()
 }
 
 
-void draw()
+public void draw()
 {
   if(startF==1)
   {
@@ -188,7 +210,7 @@ class ClipHelper
    getClipboard();  
  }
  
- void getClipboard ()
+ public void getClipboard ()
  {
    // this is our simple thread that grabs the clipboard
    Thread clipThread = new Thread() {
@@ -209,18 +231,18 @@ catch (Exception e) {
    }
  }
 
- void copyString (String data)
+ public void copyString (String data)
  {
    copyTransferableObject(new StringSelection(data));
  }
 
- void copyTransferableObject (Transferable contents)
+ public void copyTransferableObject (Transferable contents)
  {
    getClipboard();
    clipboard.setContents(contents, null);
  }
 
- String pasteString ()
+ public String pasteString ()
  {
    String data = null;
    try {
@@ -233,7 +255,7 @@ System.err.println("Error getting String from clipboard: " + e);
    return data;
  }
 
- Object pasteObject (DataFlavor flavor)  
+ public Object pasteObject (DataFlavor flavor)  
    throws UnsupportedFlavorException, IOException
  {
    Object obj = null;
@@ -249,7 +271,7 @@ obj = content.getTransferData(flavor);
 
 	
 
-void serialEvent(Serial myPort) 
+public void serialEvent(Serial myPort) 
 {
   SerEF=1;
 }
@@ -259,12 +281,12 @@ class Button
   int x, y;
   int size;
   String sBtext;
-  color basecolor, highlightcolor;
-  color currentcolor;
+  int basecolor, highlightcolor;
+  int currentcolor;
   boolean over = false;
   boolean pressed = false;   
 
-  void update() 
+  public void update() 
   {
     if(over()) {
       currentcolor = highlightcolor;
@@ -274,7 +296,7 @@ class Button
     }
   }
 
-  boolean pressed() 
+  public boolean pressed() 
   {
     if(over) {
       locked = true;
@@ -286,12 +308,12 @@ class Button
     }    
   }
 
-  boolean over() 
+  public boolean over() 
   { 
     return true; 
   }
 
-  boolean overRect(int x, int y, int width, int height) 
+  public boolean overRect(int x, int y, int width, int height) 
   {
     if (mouseX >= x && mouseX <= x+width && 
       mouseY >= y && mouseY <= y+height) {
@@ -302,7 +324,7 @@ class Button
     }
   }
 
-  boolean overCircle(int x, int y, int diameter) 
+  public boolean overCircle(int x, int y, int diameter) 
   {
     float disX = x - mouseX;
     float disY = y - mouseY;
@@ -318,7 +340,7 @@ class Button
 
 class RectButton extends Button
 {
-  RectButton(int ix, int iy, int isize, color icolor, color ihighlight, String itext) 
+  RectButton(int ix, int iy, int isize, int icolor, int ihighlight, String itext) 
   {
     x = ix;
     y = iy;
@@ -329,7 +351,7 @@ class RectButton extends Button
     currentcolor = basecolor;
   }
 
-  boolean over() 
+  public boolean over() 
   {
     if( overRect(x, y, size, size) ) {
       over = true;
@@ -341,7 +363,7 @@ class RectButton extends Button
     }
   }
 
-  void display() 
+  public void display() 
   {
     stroke(255);
     fill(currentcolor);
@@ -351,3 +373,7 @@ class RectButton extends Button
   }
 }
 
+  static public void main(String args[]) {
+    PApplet.main(new String[] { "--bgcolor=#F0F0F0", "SerialConect_c" });
+  }
+}
