@@ -13,14 +13,18 @@ import processing.serial.*;
 String[] PartType = {"ERROR","NFET","PFET","NMOS","PMOS","NPN","CA","PNP","CC",
 	"DIODE","TRIAC","SCR","CAP","RES","ZENER","DD","","","","","","","NOID",
 "ERROR1","ERROR2","ERROR3","ERROR4","ERROR5"};
+
 ClipHelper cp = new ClipHelper();
 Serial myPort;  // Create object from Serial class
+
+int SerEF=0;
 int val;      // Data received from the serial port
-int nSend=0;
+int nSend=0,nSend2=0;
 int temp;
 int pP;
 int nC=0,diff,high,low,test;
 char pin1,pin2,pin3;
+char rB;
 String PartSS,pPartSS;
 int[][] tList=new int[12][3];
 String s;
@@ -52,7 +56,24 @@ void setup()
 */
 void draw()
 {
-  test=0;  
+  test=0; 
+  while(nSend==0)
+  {
+    myPort.write('s');
+    while(SerEF ==0);
+    SerEF =0;
+    rB = (char)myPort.read();
+    if(rB=='s')nSend++;
+  }
+  while(nSend2==0)
+  {
+    myPort.write('p');
+    while(SerEF ==0);
+    SerEF =0;
+    rB = (char)myPort.read();
+    if(rB=='p')nSend2++;
+  }
+  nSend2=0;  
   if ( myPort.available() > 0) 
   {  // If data is available,
     test = myPort.read();
@@ -116,13 +137,6 @@ void draw()
 
     }
   }
-  if(nSend==0)
-    {
-      myPort.write('a');
-      nSend++;
-    } 
-            // Set background to white
-
 }
 
 
@@ -220,4 +234,11 @@ obj = content.getTransferData(flavor);
 
    return obj;
  }
+}
+
+	
+
+void serialEvent(Serial myPort) 
+{
+  SerEF=1;
 }

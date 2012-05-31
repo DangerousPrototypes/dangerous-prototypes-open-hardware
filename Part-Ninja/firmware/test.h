@@ -101,7 +101,7 @@ u16 R_470Kadc (u8 Pin, u8 State,u16 delay);
 //reads the ADCpin when the Pin is brought to HiZ, if delay=0--no delay..
 u16 HiZadc(u8 Pin,u8 ADCpin, u16 delay);
 
-void ProcessingDebug(type pPartSS,type PartSS,u16*ptList[3]);
+void ProcessingDebug();
 
 
 ////////////////////////////////////////////////////
@@ -122,6 +122,9 @@ extern u8 testCMP;
 extern u8 diff;
 extern char unit;
 extern BYTE RecvdByte;
-extern u8 rBF;
+extern u8 terminalF;
+extern u8 procF;
 extern u16 temp;
+extern type pPartSS,PartSS;
+extern u16 ptList[12][3];
 #endif

@@ -16,13 +16,18 @@
 #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS	0x808
 #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS	0x818
 
+#define BootloaderJump() _asm goto 0x16 _endasm
+
 static void init(void);
 void InterruptHandlerHigh();
 void InterruptHandlerLow();
 void USBSuspend(void);
 void USBSuspend(void){}
 
-u8 rBF;
+u8 testF=1;
+u8 cdc_switch(BYTE rB);
+u8 terminalF=0;
+u8 procF=0;
 
 #pragma udata
 extern BYTE usb_device_state;
@@ -30,7 +35,6 @@ extern BYTE usb_device_state;
 #pragma code
 void main(void)
 {  
-    rBF=0;
 	//BYTE RecvdByte;
 	init();			//setup the crystal, pins
 	
@@ -66,22 +70,25 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1914");
+	LCD_WriteString("Part Ninja r1915");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
- 
+ 	CDC_Flush_In_Now();
 	while(1)
 	{
 // If USB_INTERRUPT is not defined each loop should have at least one additional call to the usb handler to allow for control transfers.
 #ifndef USB_INTERRUPTS
         usb_handler();
 #endif
-		if(peek_getc_cdc(&RecvdByte))
-		{
-			if(RecvdByte == 'a')rBF=1;
-			else rBF=0;
+    	if(testF)testPart();
+		CDC_Flush_In_Now();
+		if (poll_getc_cdc(&RecvdByte)) 
+		{ 
+            putc_cdc(RecvdByte); //
+            CDC_Flush_In_Now(); 
+			cdc_switch(RecvdByte);
 		}
-		testPart();
+		
 		//testing comleate...
 	
 	}
@@ -121,40 +128,35 @@ static void init(void){
 
 }
 
-/*
-#pragma interrupt high_isr
-
-void    high_isr(void)
+u8 cdc_switch(BYTE rB)
 {
-   // high priority interrupt handling code here 
-	CMP_INTE=0;
-	CMP_INTF=0;
-	testCMP=0;
+	switch(rB)
+	{
+		case 's':
+			testF=1;
+			return 1;
+		case 't':
+			terminalF =1;
+			procF=0;
+			return 1;
+		case 'p':
+			procF=1;
+			terminalF =0;
+			ProcessingDebug();
+			return 1;
+		case 0:
+			terminalF =0;
+			procF=0;
+			testF=0;
+			return 1;
+		default:
+			terminalF =0;
+			procF=0;
+			testF=0;
+			return 0;
+	}
 }
 
-#pragma interruptlow low_isr
-
-void    low_isr(void)
-{
-   // low priority interrupt handling code here 
-
-}
-
-#pragma code high_vector=0x08
-
-void    high_vector(void)
-{
-   _asm GOTO high_isr _endasm
-}
-
-#pragma code low_vector=0x18
-
-void    low_vector(void)
-{
-   _asm GOTO low_isr _endasm
-}
-
-*/
 
 //PIC18F style interrupts with remapping for bootloader
 //	Interrupt remap chain
