@@ -24,10 +24,19 @@ boolean locked = false;
 color buttoncolor = color(204);
 color highlight = color(153);
 RectButton[] ComPorts = new RectButton[Serial.list().length];
+
 int selected;
 int startF;
+float[] cordX=new float[3];
+float[] cordY=new float[3];
+float[] corddX=new float[3];
+float[] corddY=new float[3];
 
+float cx1,cy1,cx2,cy2,cx3,cy3,dx1,dx2,dx3,dy1,dy2,dy3;
+RectButton testButton;
+RectButton clipButton;
 
+int testF=0,clipF=0;
 int SerEF=0;
 int val;      // Data received from the serial port
 int nSend=0,nSend2=0;
@@ -42,8 +51,8 @@ int[][] tList=new int[12][3];
 String s;
 void setup()
 {
-  size(140, (Serial.list().length*25)+40);
-  
+  //size(140, (Serial.list().length*25)+40);
+  size(600,250);
   font = loadFont("Arial-Black-48.vlw"); 
   textFont(font,25);
   for (int i=0;i<sSerial.length;i++)
@@ -52,8 +61,8 @@ void setup()
     highlight = color(51); 
     ComPorts[i] = new RectButton(20, 20+(i*30), 25, buttoncolor, highlight,sSerial[i]); 
     ComPorts[i].display();
-  } 
-  
+  }
+   
   //myPort = new Serial(this, "COM9", 115200);
 }
 
@@ -62,65 +71,73 @@ void draw()
 {
   if(startF==1)
   {
-    test=0;
-    ComPorts[selected].basecolor =color(0,255,0);
-    ComPorts[selected].highlightcolor =color(0,255,0);
-    ComPorts[selected].update();
-    ComPorts[selected].display();
-    
-    while(nSend==0)
+   while(nSend==0)
     {
+      buttoncolor = color(102);
+      highlight = color(51); 
+      testButton = new RectButton(50, 200, 25, buttoncolor, highlight,"Test");
+      clipButton = new RectButton(200, 200, 25, buttoncolor, highlight,"ClipB");
+      testButton.display();
+      clipButton.display();
       myPort.write('s');
       while(SerEF ==0);
       SerEF =0;
       rB = (char)myPort.read();
+      print(rB);
       if(rB=='s')nSend++;
+      background(153);
+      stroke(0);
+      strokeWeight(3);
     }
-    while(nSend2==0)
+    testButton.update();
+    clipButton.update();
+    testButton.display();
+    clipButton.display();
+    if(testF!=0)
     {
-      myPort.write('p');
-      while(SerEF ==0);
-      SerEF =0;
-      rB = (char)myPort.read();
-      if(rB=='p')nSend2++;
-    }
-    nSend2=0;  
-    if ( myPort.available() > 0) 
-    {  // If data is available,
-      test = myPort.read();
-      if(test=='D')
+      while(nSend2==0)
+      { 
+        	
+
+        delay(1000);
+        myPort.clear(); 
+        myPort.write('p');
+        delay(100);
+        rB=(char)myPort.read();
+        print(rB);
+        if(rB=='p')nSend2++;
+      }
+      background(153); 
+      nSend2=0;
+      drawDisplay();
+      while(myPort.available()==0);
+      nC=myPort.read();
+      diff=myPort.read();
+      pP=myPort.read();
+      pPartSS = PartType[pP];
+      pP=myPort.read();
+      PartSS=PartType[pP];
+      pin1=(char)myPort.read();
+      pin2=(char)myPort.read();
+      pin3=(char)myPort.read();
+      if(nC>0)
       {
-        test = myPort.read();
-        if(test=='P')
+        for(int pi=0;pi<nC;pi++)
         {
-          //print("\n\n");
-          nC=myPort.read();
-          diff=myPort.read();
-          pP=myPort.read();
-          pPartSS = PartType[pP];
-          pP=myPort.read();
-          PartSS=PartType[pP];
-          pin1=(char)myPort.read();
-          pin2=(char)myPort.read();
-          pin3=(char)myPort.read();
-          if(nC>0)
-          {
-            for(int pi=0;pi<nC;pi++)
-            {
-              tList[pi][0]=myPort.read();
-              tList[pi][1]=myPort.read();
-              high = myPort.read();
-              low = myPort.read();
-              tList[pi][2]=high<<8;
-              tList[pi][2]=tList[pi][2]|low;
-            }
-            high = myPort.read();
-            low = myPort.read();
-            temp = high<<8;
-            temp = temp|low;
-          }
-  
-      
+          tList[pi][0]=myPort.read();
+          tList[pi][1]=myPort.read();
+          if(pi>(diff-1))drawCP(cordX[tList[pi][0]],cordY[tList[pi][0]],cordX[tList[pi][1]],cordY[tList[pi][1]]);
+          else drawCP(corddX[tList[pi][0]],corddY[tList[pi][0]],corddX[tList[pi][1]],corddY[tList[pi][1]]);
+          high = myPort.read();
+          low = myPort.read();
+          tList[pi][2]=high<<8;
+          tList[pi][2]=tList[pi][2]|low;
+        }
+        high = myPort.read();
+        low = myPort.read();
+        temp = high<<8;
+        temp = temp|low;
+      }
         s="";
         s+="nC: " + nC +'\n';
         s+="diff: " + diff +'\n';
@@ -138,11 +155,16 @@ void draw()
           //print ("partVal: " + temp +'\n');
         }
         println(s);
-        cp.copyString(s);
-      }
-
-      }
+        textFont(font,12);
+        text(s,400,20);
+        testF=0;
     }
+        if(clipF!=0)
+        {
+          clipF=0;
+          cp.copyString(s);
+        }
+        myPort.clear();
   }
   else
   {
@@ -162,6 +184,10 @@ void draw()
             myPort = new Serial(this, Serial.list()[j], 115200);
             startF=1;
             selected = j;
+            ComPorts[selected].basecolor =color(0,255,0);
+            ComPorts[selected].highlightcolor =color(0,255,0);
+            ComPorts[selected].update();
+            ComPorts[selected].display();
           }
         }
       }
@@ -331,7 +357,7 @@ class RectButton extends Button
 
   boolean over() 
   {
-    if( overRect(x, y, size, size) ) {
+    if( overRect(x, y, 4*size, size) ) {
       over = true;
       return true;
     } 
@@ -347,7 +373,94 @@ class RectButton extends Button
     fill(currentcolor);
     rect(x, y, 4*size, size);
     fill(255,0,0);
+    textFont(font,25);
     text(sBtext,x+10,y+size-2);
   }
 }
 
+void drawDisplay()
+{
+  fill(255);
+  rect(10,10,350,150);
+  textFont(font,12);
+  cordX[0]=cx1=100;
+  cordY[0]=cy1=25;
+  cordX[1]=cx2=50;
+  cordY[1]=cordY[2]=cy2=cy3=100;
+  cordX[2]=cx3=150;
+  corddX[0]=dx1=cx1+150;
+  corddX[1]=dx2=cx2+150;
+  corddX[2]=dx3=cx3+150;
+  corddY[0]=dy1=cy1;
+  corddY[1]=dy2=cy2;
+  corddY[2]=dy3=cy3;
+  fill(0);
+  ellipse(cx1, cy1, 5, 5);
+
+  text('1',cx1-5,cy1-5);
+  stroke(0);
+  strokeWeight(3);
+  ellipse(cx2, cy2, 5, 5);
+  text('2',cx2-5,cy2+15);
+  ellipse(cx3, cy3, 5, 5);
+  text('3',cx3-5,cy3+15);
+  text("LOW",cx2+35,cy2+30);
+  ellipse(dx1, dy1, 5, 5);
+  fill(0);
+  text('1',dx1-5,cy1-5);
+  ellipse(dx2, cy2, 5, 5);
+  text('2',dx2-5,cy2+15);
+  ellipse(dx3, dy3, 5, 5);
+  text('3',dx3-5,dy3+15);
+  text("HIGH",dx2+33,dy2+30);
+  
+}
+
+void drawCP(float x1, float y1,float x2, float y2)
+{
+  float x3,y3,K,k,j,x4,y4,x5,y5,ky,kx,tx,ty;
+  j=5;
+  k=y2-y1;
+  if(x2==x1)
+  {
+    kx=1;
+    ky=0;
+  }
+  else 
+  {
+    k=k/(x2-x1);
+    print(k);
+    k=atan(k);
+    print(k);
+    kx=sin(k);
+    ky=cos(k);
+    print(kx);
+    print(ky);
+  }
+  K=0.8;
+  y3=((y2-y1)*K)+y1;
+  x3=((x2-x1)*K)+x1;
+  K=0.1;
+  ty=((y2-y1)*K)+y1;
+  tx=((x2-x1)*K)+x1;   
+  x4=x3+(kx*j);
+  x5=x3-(kx*j);
+  y4=y3-(ky*j);
+  y5=y3+(ky*j);
+  stroke(0);
+  strokeWeight(3);
+  line(tx,ty,x3,y3);
+  K=0.9;
+  y3=((y2-y1)*K)+y1;
+  x3=((x2-x1)*K)+x1; 
+  triangle(x3, y3, x4, y4, x5, y5);
+}
+
+void mousePressed() 
+{
+  if((mouseY>200)&&(mouseY<225))
+  {
+    if((mouseX>50)&&(mouseX<150))testF=1;
+    if((mouseX>200)&&(mouseX<300))clipF=1;
+  }
+}

@@ -1348,8 +1348,6 @@ u16 HiZadc(u8 Pin,u8 ADCpin,u16 delay)
 void ProcessingDebug()
 {
 	u8 low, high;
-	putc_cdc('D');
-	putc_cdc('P');
 	putc_cdc(nC);
 	putc_cdc(diff);
 	putc_cdc(pPartSS);	
