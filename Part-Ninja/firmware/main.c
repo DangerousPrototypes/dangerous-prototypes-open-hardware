@@ -70,7 +70,7 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1915");
+	LCD_WriteString("Part Ninja r1918");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  	CDC_Flush_In_Now();
@@ -140,11 +140,12 @@ u8 cdc_switch(BYTE rB)
 			procF=0;
 			return 1;
 		case 'p':
+			testF=1;
 			procF=1;
 			terminalF =0;
 			ProcessingDebug();
 			return 1;
-		case 0:
+		case '0':
 			terminalF =0;
 			procF=0;
 			testF=0;
