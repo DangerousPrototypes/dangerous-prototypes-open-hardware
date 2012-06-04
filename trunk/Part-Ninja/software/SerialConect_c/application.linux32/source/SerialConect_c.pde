@@ -35,6 +35,7 @@ float[] corddY=new float[3];
 float cx1,cy1,cx2,cy2,cx3,cy3,dx1,dx2,dx3,dy1,dy2,dy3;
 RectButton testButton;
 RectButton clipButton;
+RectButton sugestButton;
 
 int testF=0,clipF=0;
 int SerEF=0;
@@ -78,8 +79,10 @@ void draw()
       highlight = color(51); 
       testButton = new RectButton(50, 200, 25, buttoncolor, highlight,"Test");
       clipButton = new RectButton(200, 200, 25, buttoncolor, highlight,"ClipB");
+      sugestButton = new RectButton(350, 200, 25, buttoncolor, highlight,"sPart");
       testButton.display();
       clipButton.display();
+      sugestButton.display();
       myPort.write('s');
       while(myPort.available()==0);
       rB = (char)myPort.read();
@@ -94,8 +97,10 @@ void draw()
     }
     testButton.update();
     clipButton.update();
+    sugestButton.update();
     testButton.display();
     clipButton.display();
+    sugestButton.display();
     if(testF!=0)
     {
       while(nSend2==0)
@@ -282,11 +287,6 @@ obj = content.getTransferData(flavor);
 
 	
 
-void serialEvent(Serial myPort) 
-{
-  SerEF=1;
-}
-
 class Button
 {
   int x, y;
@@ -465,9 +465,13 @@ void drawCP(float x1, float y1,float x2, float y2)
 
 void mousePressed() 
 {
-  if((mouseY>200)&&(mouseY<225))
+  if(startF==1)
   {
-    if((mouseX>50)&&(mouseX<150))testF=1;
-    if((mouseX>200)&&(mouseX<300))clipF=1;
+    testButton.update();
+    clipButton.update();
+    sugestButton.update();
+    if(testButton.over())testF=1;
+    if(clipButton.over())clipF=1;
+    if(sugestButton.over())print("sugested part");
   }
 }
