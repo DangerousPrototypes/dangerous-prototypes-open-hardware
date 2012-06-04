@@ -72,14 +72,14 @@ void draw()
 {
   if(startF==1)
   {
-   while(nSend==0)
+    while(nSend==0)
     {
       myPort.clear();
       buttoncolor = color(102);
       highlight = color(51); 
-      testButton = new RectButton(50, 200, 25, buttoncolor, highlight,"Test");
-      clipButton = new RectButton(200, 200, 25, buttoncolor, highlight,"ClipB");
-      sugestButton = new RectButton(350, 200, 25, buttoncolor, highlight,"sPart");
+      testButton = new RectButton(10, 175, 25, buttoncolor, highlight,"Test");
+      clipButton = new RectButton(135, 175, 25, buttoncolor, highlight,"ClipB");
+      sugestButton = new RectButton(260, 175, 25, buttoncolor, highlight,"sPart");
       testButton.display();
       clipButton.display();
       sugestButton.display();
@@ -114,16 +114,17 @@ void draw()
       }
       background(153); 
       nSend2=0;
+      stroke(0);
+      strokeWeight(3);
       drawDisplay();
-
 
       while(myPort.available()<7);
       nC=myPort.read();
-      print(nC);
+      //print(nC);
       diff=myPort.read();
-      print(diff);
+      //print(diff);
       pP=myPort.read();
-      print(pP);
+      //print(pP);
       pPartSS = PartType[pP];
       pP=myPort.read();
       PartSS=PartType[pP];
@@ -138,7 +139,7 @@ void draw()
         {
           tList[pi][0]=myPort.read();
           tList[pi][1]=myPort.read();
-          if(pi>(diff-1))drawCP(cordX[tList[pi][0]],cordY[tList[pi][0]],cordX[tList[pi][1]],cordY[tList[pi][1]]);
+          if(pi<(diff-1))drawCP(cordX[tList[pi][0]],cordY[tList[pi][0]],cordX[tList[pi][1]],cordY[tList[pi][1]]);
           else drawCP(corddX[tList[pi][0]],corddY[tList[pi][0]],corddX[tList[pi][1]],corddY[tList[pi][1]]);
           high = myPort.read();
           low = myPort.read();
@@ -150,64 +151,36 @@ void draw()
         temp = high<<8;
         temp = temp|low;
       }
-        s="";
-        s+="nC: " + nC +'\n';
-        s+="diff: " + diff +'\n';
-        s+="pPartSS: " + pPartSS +'\n';
-        s+="PartSS: " + PartSS +'\n';
-        s+="Pin1: " + pin1+" PIN2: " + pin2 +" PIN3: " + pin3 + '\n';   
-        if(nC>0)
-        {
-          for(int i=0;i<nC;i++)
-          {
-            //print("CP"+i+": " + tList[i][0] + "->" + tList[i][1]+"   testVal: " + tList[i][2]+'\n');
-            s+="CP"+(i+1)+": " + (tList[i][0]+1) + "->" + (tList[i][1]+1)+"   testVal: " + tList[i][2]+'\n';
-          }
-          s+="partVal: " + temp +'\n';
-          //print ("partVal: " + temp +'\n');
-        }
-        println(s);
-        textFont(font,12);
-        text(s,400,20);
-        testF=0;
-    }
-        if(clipF!=0)
-        {
-          clipF=0;
-          cp.copyString(s);
-        }
-        myPort.clear();
-  }
-  else
-  {
-    if(mousePressed)
-    {
-      int x,y;
-      print("\n"+mouseX+"  "+mouseY);
-
-      x=mouseX;
-      y=mouseY;
-      if((x>20&&x<120))
+      s="";
+      s+="nC: " + nC +'\n';
+      s+="diff: " + diff +'\n';
+      s+="pPartSS: " + pPartSS +'\n';
+      s+="PartSS: " + PartSS +'\n';
+      s+="Pin1: " + pin1+" PIN2: " + pin2 +" PIN3: " + pin3 + '\n';   
+      if(nC>0)
       {
-        for(int j=0;j<Serial.list().length;j++)
+        for(int i=0;i<nC;i++)
         {
-          if(mouseY>((j*30)+20)&&mouseY<((j*30)+45))
-          {
-            myPort = new Serial(this, Serial.list()[j], 115200);
-            startF=1;
-            selected = j;
-            ComPorts[selected].basecolor =color(0,255,0);
-            ComPorts[selected].highlightcolor =color(0,255,0);
-            ComPorts[selected].update();
-            ComPorts[selected].display();
-          }
+          //print("CP"+i+": " + tList[i][0] + "->" + tList[i][1]+"   testVal: " + tList[i][2]+'\n');
+          s+="CP"+(i+1)+": " + (tList[i][0]+1) + "->" + (tList[i][1]+1)+"   testVal: " + tList[i][2]+'\n';
         }
+        s+="partVal: " + temp +'\n';
+        //print ("partVal: " + temp +'\n');
       }
-      
+      println(s);
+      textFont(font,12);
+      text(s,400,20);
+      testF=0;
     }
+    if(clipF!=0)
+    {
+        clipF=0;
+        cp.copyString(s);
+    }
+    myPort.clear();
   }
-
 }
+
 
 
 
@@ -436,13 +409,9 @@ void drawCP(float x1, float y1,float x2, float y2)
   else 
   {
     k=k/(x2-x1);
-    print(k);
     k=atan(k);
-    print(k);
     kx=sin(k);
     ky=cos(k);
-    print(kx);
-    print(ky);
   }
   K=0.8;
   y3=((y2-y1)*K)+y1;
@@ -474,4 +443,23 @@ void mousePressed()
     if(clipButton.over())clipF=1;
     if(sugestButton.over())print("sugested part");
   }
+  else
+  {
+    for(int j=0;j<Serial.list().length;j++)
+    {
+      ComPorts[j].update();
+      if(ComPorts[j].over())
+      {
+        myPort = new Serial(this, Serial.list()[j], 115200);
+        myPort.buffer(100);
+        startF=1;
+        selected = j;
+        ComPorts[selected].basecolor =color(0,255,0);
+        ComPorts[selected].highlightcolor =color(0,255,0);
+        ComPorts[selected].update();
+        ComPorts[selected].display();
+      }
+    }
+  }
 }
+
