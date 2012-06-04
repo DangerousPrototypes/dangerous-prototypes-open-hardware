@@ -73,6 +73,7 @@ void draw()
   {
    while(nSend==0)
     {
+      myPort.clear();
       buttoncolor = color(102);
       highlight = color(51); 
       testButton = new RectButton(50, 200, 25, buttoncolor, highlight,"Test");
@@ -80,14 +81,16 @@ void draw()
       testButton.display();
       clipButton.display();
       myPort.write('s');
-      while(SerEF ==0);
-      SerEF =0;
+      while(myPort.available()==0);
       rB = (char)myPort.read();
       print(rB);
-      if(rB=='s')nSend++;
-      background(153);
-      stroke(0);
-      strokeWeight(3);
+      if(rB=='s')
+      {
+        nSend++;
+        background(153);
+        stroke(0);
+        strokeWeight(3);
+      }
     }
     testButton.update();
     clipButton.update();
@@ -97,12 +100,9 @@ void draw()
     {
       while(nSend2==0)
       { 
-        	
-
-        delay(1000);
-        myPort.clear(); 
+        //myPort.clear(); 
         myPort.write('p');
-        delay(100);
+        while(myPort.available()==0);
         rB=(char)myPort.read();
         print(rB);
         if(rB=='p')nSend2++;
@@ -110,10 +110,15 @@ void draw()
       background(153); 
       nSend2=0;
       drawDisplay();
-      while(myPort.available()==0);
+
+
+      while(myPort.available()<7);
       nC=myPort.read();
+      print(nC);
       diff=myPort.read();
+      print(diff);
       pP=myPort.read();
+      print(pP);
       pPartSS = PartType[pP];
       pP=myPort.read();
       PartSS=PartType[pP];
@@ -122,6 +127,8 @@ void draw()
       pin3=(char)myPort.read();
       if(nC>0)
       {
+        int vv=nC*2+2;
+        while(myPort.available()<vv);
         for(int pi=0;pi<nC;pi++)
         {
           tList[pi][0]=myPort.read();
