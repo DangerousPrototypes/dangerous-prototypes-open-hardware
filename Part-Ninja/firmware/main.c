@@ -24,7 +24,7 @@ void InterruptHandlerLow();
 void USBSuspend(void);
 void USBSuspend(void){}
 
-u8 testF=1;
+u8 testF=0;//1;
 u8 cdc_switch(BYTE rB);
 u8 terminalF=0;
 u8 procF=0;
