@@ -78,7 +78,7 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1929");
+	LCD_WriteString("Part Ninja r1931");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  	CDC_Flush_In_Now();
@@ -153,9 +153,6 @@ u8 cdc_switch(BYTE rB)
 			testF=0;
 			return 1;
 		default:
-			terminalF =0;
-			procF=0;
-			testF=0;
 			return 0;
 	}
 }
