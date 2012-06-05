@@ -25,7 +25,7 @@ void USBSuspend(void);
 void USBSuspend(void){}
 
 u8 testF=1;//0;
-u8 usbCON=0;	//usb connection flag, if connected 1;
+u8 usbCON=1;	//usb connection flag, if connected 1;
 u8 cdc_switch(BYTE rB);
 u8 terminalF=0;
 u8 procF=0;
@@ -63,7 +63,7 @@ void main(void)
 #endif
 		if(usbTimerPN>1000000)
 		{
-			usbCON=1;
+			usbCON=0;
 			break;
 		}
     } while (usb_device_state < CONFIGURED_STATE);
@@ -78,7 +78,7 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1928");
+	LCD_WriteString("Part Ninja r1929");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  	CDC_Flush_In_Now();
