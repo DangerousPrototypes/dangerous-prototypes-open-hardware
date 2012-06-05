@@ -24,7 +24,8 @@ void InterruptHandlerLow();
 void USBSuspend(void);
 void USBSuspend(void){}
 
-u8 testF=0;//1;
+u8 testF=1;//0;
+u8 usbCON=0;	//usb connection flag, if connected 1;
 u8 cdc_switch(BYTE rB);
 u8 terminalF=0;
 u8 procF=0;
@@ -35,6 +36,7 @@ extern BYTE usb_device_state;
 #pragma code
 void main(void)
 {  
+	u32 usbTimerPN=0;
 	//BYTE RecvdByte;
 	init();			//setup the crystal, pins
 	
@@ -55,12 +57,18 @@ void main(void)
 	// Wait for USB to connect
 	do 
 	{
+		usbTimerPN++;
 #ifndef USB_INTERRUPTS
         usb_handler();
 #endif
+		if(usbTimerPN>1000000)
+		{
+			usbCON=1;
+			break;
+		}
     } while (usb_device_state < CONFIGURED_STATE);
 
-    usb_register_sof_handler(CDCFlushOnTimeout); // Register our CDC timeout handler after device configured
+    if(!usbCON)usb_register_sof_handler(CDCFlushOnTimeout); // Register our CDC timeout handler after device configured
 
 
 	Delay_MS(10);	
@@ -70,23 +78,22 @@ void main(void)
 	//LCD_Backlight(1);//turn it on, we ignore the parameter
 
 	LCD_CursorPosition(0);
-	LCD_WriteString("Part Ninja r1918");
+	LCD_WriteString("Part Ninja r1928");
 	LCD_CursorPosition(21);
 	LCD_WriteString("      testing...");
  	CDC_Flush_In_Now();
 	while(1)
 	{
-// If USB_INTERRUPT is not defined each loop should have at least one additional call to the usb handler to allow for control transfers.
-#ifndef USB_INTERRUPTS
-        usb_handler();
-#endif
-    	if(testF)testPart();
-		CDC_Flush_In_Now();
-		if (poll_getc_cdc(&RecvdByte)) 
-		{ 
-            putc_cdc(RecvdByte); //
-            CDC_Flush_In_Now(); 
-			cdc_switch(RecvdByte);
+		if(testF)testPart();
+		if(usbCON)
+		{
+			CDC_Flush_In_Now();
+			if (poll_getc_cdc(&RecvdByte)) 
+			{ 
+        	    putc_cdc(RecvdByte); //
+            	CDC_Flush_In_Now(); 
+				cdc_switch(RecvdByte);
+			}
 		}
 		
 		//testing comleate...
@@ -117,12 +124,7 @@ static void init(void){
 	INTCONbits.PEIE =1;
 	IPR2bits.CMIP =1;
 
-	/*//Timer 1 contorl setup
-	T1CONbits.RD16=1;
-	T1CONbits.T1RUN=0;
-	T1CONbits.T1CKPS=3;//8prescaler
-	T1CONbits.TMR1CS=0;*/
-		//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
+	//on 18f24j50 we must manually enable PLL and wait at least 2ms for a lock
 	//OSCTUNEbits.PLLEN = 1;  //enable PLL
 	//while(cnt--); //wait for lock
 
