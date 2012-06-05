@@ -64,7 +64,7 @@ u8 testPart()
 		putINT_cdc(PartSS);
 	}
 	else pPartSS=PartSS;
-	terminalF=0;
+	//terminalF=0;
 	//switches depending on the PartSS value, here is where all the part specific functions all called
 	switchPart(PartSS);
 	
@@ -930,7 +930,7 @@ u16 testCAP()
 	{	
 		if((tList[0][2]==1023)&&(timer>5))timer-=5;
 		else timer+=22;
-		time=timer*2.6666e-6;
+		time=timer*1.6e-6;
 		RC=RC*(double)Rtest;
 		cap=(double)time/RC;
 		cap=cap*1e6;
