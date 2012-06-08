@@ -80,7 +80,8 @@ u8 testPart()
 u16 checkConduct(u8 A, u8 B,u8 state)
 {	
 	
-	u8 i=TST_DEL,C; //Calculate the leftover pin
+	u8 i=TST_DEL;
+	u8 C; //Calculate the leftover pin
 	u16 Value;
 	C=3-(A+B);
 	R_680(C,state); //charges the leftover pin to test State
@@ -310,6 +311,26 @@ type getPartSS(u8 diff)
 	}
 	if(nC==0)return testCAP_RES();
 	if(nC==1)return DIODE;		//one conducts with no Diff must be Diode
+	if(nC==3)
+	{
+		if(tN[1]==3)
+		{
+			if(tList[0][2]>tList[1][2])
+			{
+				if(tList[0][2]>tList[2][2])node=0;
+				else node=2;
+			}
+			else
+			{
+				if(tList[1][2]>tList[2][2])node=1;
+				else node=2;
+			}
+			j=tList[node][1];
+			if(tIN[j]==1)return NPN_D;
+			else return PNP_D;
+		}
+		else return ERROR6;
+	}
 	if((nC==4)&&(nN==1))
 	{
 			if(nD==1)return NFET;
@@ -320,6 +341,16 @@ type getPartSS(u8 diff)
 	if(nN!=1)return ERROR4;		//only 1 node combinatons left..error if other then
 	if(nD==1)					//2conducts, 1 node, direction 1(OUT), nust be NPN/DD-CA
 	{
+		if(tList[0][2]>(tList[1][2]+DARL_BJT))
+		{
+			node = 0;
+			return NPN_D;
+		}
+		if(tList[1][2]>(tList[0][2]+DARL_BJT))
+		{
+			node = 1;
+			return NPN_D;
+		}
 		R_680(tList[0][0],HIGH);//B
 		R_0(tList[1][1],LOW);	//E
 		R_680(tList[0][1],HIGH);	//C
@@ -337,6 +368,16 @@ type getPartSS(u8 diff)
 	}
 	if(nD==2)				//2conducts, 1 node. directon 2 (IN), muct be PNP/DD-CC
 	{	
+		if(tList[0][2]>(tList[1][2]+DARL_BJT))
+		{
+			node = 0;
+			return PNP_D;
+		}
+		if(tList[1][2]>(tList[0][2]+DARL_BJT))
+		{
+			node = 1;
+			return PNP_D;
+		}
 		R_680(tList[0][1],LOW);//B
 		R_0(tList[0][0],HIGH);	//E
 		R_680(tList[1][0],LOW);	//C
@@ -569,6 +610,24 @@ u8 switchPart(type SS)
 		if(temp=testDD())
 		{	
 			LCD_WriteString("DD      Vd:");
+			LCD_WriteINT(temp);
+			LCD_CursorPosition(21);
+			LCD_WritePinout();
+			return 1;
+		}
+	case NPN_D:
+		if(temp=testNPN_D())
+		{	
+			LCD_WriteString("NPN_D   Vd:");
+			LCD_WriteINT(temp);
+			LCD_CursorPosition(21);
+			LCD_WritePinout();
+			return 1;
+		}
+	case PNP_D:
+		if(temp=testPNP_D())
+		{	
+			LCD_WriteString("PNP_D   Vd:");
 			LCD_WriteINT(temp);
 			LCD_CursorPosition(21);
 			LCD_WritePinout();
@@ -1027,7 +1086,28 @@ u16 testDD()
 	return vD;
 }
 
-
+u16 testNPN_D()
+{
+u8 B,C,E;
+B=tList[node][0];
+E=tList[node][1];
+C=3-(B+E);
+pins[B]='B';
+pins[E]='E';
+pins[C]='C';
+return 1;
+}
+u16 testPNP_D()
+{
+u8 B,C,E;
+B=tList[node][1];
+E=tList[node][0];
+C=3-(B+E);
+pins[B]='B';
+pins[E]='E';
+pins[C]='C';
+return 1;
+}
 
 
 
@@ -1217,6 +1297,7 @@ void HiZ3(u8 A,u8 B, u8 C)
 	HiZ(B);
 	HiZ(C);
 }
+/*
 u16 R_680adc (u8 Pin, u8 State,u16 delay)
 {
 	u8 R0p, R680p, R470Kp;
@@ -1344,7 +1425,7 @@ u16 HiZadc(u8 Pin,u8 ADCpin,u16 delay)
 	}
 
 }
-
+*/
 void ProcessingDebug()
 {
 	u8 low, high;

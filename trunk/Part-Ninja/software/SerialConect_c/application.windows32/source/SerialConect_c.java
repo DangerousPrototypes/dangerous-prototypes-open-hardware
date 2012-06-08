@@ -33,8 +33,8 @@ public class SerialConect_c extends PApplet {
 
 
 String[] PartType = {"ERROR","NFET","PFET","NMOS","PMOS","NPN","CA","PNP","CC",
-	"DIODE","TRIAC","SCR","CAP","RES","ZENER","DD","","","","","","","NOID",
-"ERROR1","ERROR2","ERROR3","ERROR4","ERROR5"};
+	"DIODE","TRIAC","SCR","CAP","RES","ZENER","DD","NPN_D","PNP_D","","","","","NOID",
+"ERROR1","ERROR2","ERROR3","ERROR4","ERROR5","ERROR6"};
 
 ClipHelper cp = new ClipHelper();
 Serial myPort;  // Create object from Serial class
@@ -74,7 +74,6 @@ int[][] tList=new int[12][3];
 String s;
 public void setup()
 {
-  //size(140, (Serial.list().length*25)+40);
   size(600,250);
   font = loadFont("Arial-Black-48.vlw"); 
   textFont(font,25);
@@ -86,7 +85,6 @@ public void setup()
     ComPorts[i].display();
   }
    
-  //myPort = new Serial(this, "COM9", 115200);
 }
 
 
