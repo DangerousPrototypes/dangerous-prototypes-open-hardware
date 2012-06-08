@@ -19,15 +19,15 @@
 #define FET_HIGH    923
 #define FET_LOW     100
 #define TST_DEL    	200
-
+#define DARL_BJT    50
 
 //Enum with the different part type names...
 //CC is a common cathode double diode
 //CA is a common anode -||-
 typedef enum type
 {ERROR=0,NFET,PFET,NMOS,PMOS,NPN,CA,PNP,CC,
-	DIODE,TRIAC,SCR,CAP,RES,ZENER,DD,NOID=20,
-		ERROR1,ERROR2,ERROR3,ERROR4,ERROR5}type;
+	DIODE,TRIAC,SCR,CAP,RES,ZENER,DD,NPN_D,PNP_D,NOID=20,
+		ERROR1,ERROR2,ERROR3,ERROR4,ERROR5,ERROR6}type;
 
 void compInit(u8 Pin);
 
@@ -71,6 +71,8 @@ u16 testCAP();
 u16 testRES();
 u16 testZENER();
 u16 testDD();
+u16 testNPN_D();
+u16 testPNP_D();
 
 
 void puts_cdc(rom char *s);

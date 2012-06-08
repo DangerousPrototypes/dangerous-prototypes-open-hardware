@@ -13,7 +13,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=
 [File001]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\HD44780.o
 Folder=Intermediary
@@ -26,7 +26,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=
 [File002]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\test.o
 Folder=Intermediary
@@ -39,7 +39,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=
 [File003]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\cdc.o
 Folder=Intermediary
@@ -52,7 +52,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=
 [File004]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\work\usb_stack.o
 Folder=Intermediary
@@ -65,7 +65,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=-Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-
 TraceCmdString=
-DebugOptions=-D__DEBUG
+DebugOptions=
 [File005]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\output\PartNinja.cof
 Folder=Output
@@ -78,7 +78,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
 TraceCmdString=
-DebugOptions=/z__MPLAB_DEBUG=1
+DebugOptions=
 [File006]
 Location=C:\Users\Filip\Documents\MPLAB\PartNinja\output\PartNinja.hex
 Folder=Output
@@ -91,7 +91,7 @@ SOLK=<src>|main.c|HD44780.c|test.c|C:\Users\Filip\Documents\MPLAB\dp_usb\cdc.c|C
 SuiteArgsString=
 ToolArgsString=/o"$(BINDIR_)$(TARGETBASE).cof" /M"$(BINDIR_)$(TARGETBASE).map" /W
 TraceCmdString=
-DebugOptions=/z__MPLAB_DEBUG=1
+DebugOptions=
 [TOOL_LOC_STAMPS]
 tool_loc{96C98149-AA1B-4CF9-B967-FAE79CAB663C}=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mplink.exe
 tool_loc{E56A1C86-9D32-4DF6-8C34-FE0388B1B644}=C:\Program Files (x86)\Microchip\mplabc18\v3.40\bin\mcc18.exe
