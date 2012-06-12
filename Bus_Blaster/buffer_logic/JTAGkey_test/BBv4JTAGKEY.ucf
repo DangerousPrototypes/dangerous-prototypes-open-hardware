@@ -28,8 +28,8 @@ NET "FT_DBGACK"      LOC =  "P27";  #AC5 is clock out in 485 mode
 NET "FT_DBGACK"      BUFG = CLK;
 
 #unused ft2232 connections
-#NET "ACBUS6"      	LOC =  "P40";
-#NET "ACBUS7"      	LOC =  "P39";
+NET "ACBUS6"      	LOC =  "P40";
+NET "ACBUS7"      	LOC =  "P39";
 
 # jtag io header
 NET "RTCK"           LOC =  "P81"; #x
