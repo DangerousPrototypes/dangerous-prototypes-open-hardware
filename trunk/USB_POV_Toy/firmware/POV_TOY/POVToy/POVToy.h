@@ -27,19 +27,20 @@ DEALINGS IN THE SOFTWARE.
 
 #include "types.h"
 
-#define POVTOY_ACCELERATION_THRESHOLD	110
+#define POVTOY_ACCELERATION_THRESHOLD	90
 #define POVTOY_DIRECTION_RIGHT			0
 #define POVTOY_DIRECTION_LEFT			1
 #define POVTOY_DISPLAY_TOTAL_COLUMNS	48   
+#define POVTOY_DISPLAY_FRAME_DELAY	    10
 #define POVTOY_DISPLAY_BRIGHTNESS		128  /* Any number between 0 to 255. 0 - 0% Duty and 255 - 100% duty */
 
 // Uncomment / comment below line to use unidirectional display or bidirectional display
 #define POVTOY_DISABLE_BIDIRECTIONAL 
 
 // Uncomment below line to use Fixed Frequency display Refresh
-#define POVTOY_FIXED_FREQ_REFESH
+//#define POVTOY_FIXED_FREQ_REFESH
 
-#define POVTOY_FIXED_FREQ_RELOAD_VALUE			178  /*200 Hz*/
+#define POVTOY_FIXED_FREQ_RELOAD_VALUE			217  /*200 Hz*/
 
 /* Reload values for Timer0 with 1:256 Prescale and CPUDIV = OSC1
 

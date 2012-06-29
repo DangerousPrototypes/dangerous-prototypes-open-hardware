@@ -26,17 +26,22 @@ DEALINGS IN THE SOFTWARE.
 #include "MMA7455L.h"
 #include "SPI.h"
 #include "SPIFlash.h"
+#include <delays.h>
 
 
 volatile uint8_t  POVToy_XAccel_TransitionLock=0;						// A variable to lock sampling a side, only once.
 volatile uint8_t  POVToy_Display_Direction = POVTOY_DIRECTION_RIGHT;    // Wave direction
 volatile uint8_t  POVToy_Display_Index=0;        						// Display column index
+volatile uint8_t  POVToy_Display_FrameDelay= POVTOY_DISPLAY_FRAME_DELAY;// Number of ticks delay in display start or stop
 volatile uint8_t  POVToy_AccelTicks_Diff=0;        					 	// Number of timer 0 ticks, between left and right extremes of X Accel 
 volatile sint8_t  POVToy_AccelX;                                        // X Acceleration from Accelerometer
 volatile uint8_t  POVToy_TMR0L_Reload = 178;                            // Timer reload value
 volatile uint8_t  POVToy_TMR0L_ReloadCalc;                              // Temporary value to calcualte timer reload value
 volatile uint16_t POVToy_AccelTicks=0;           						// Increments every (1/250) seconds
 volatile sint16_t POVToy_AccelXFiltered=0;                              // Digitally filtered accelerometer data
+unsigned long Lnum;
+
+extern void printNumber(unsigned long n, uint8_t base);
 
 uint8_t POVTOY_BITMAP[POVTOY_DISPLAY_TOTAL_COLUMNS];                    // RAM area to hold bitmap
 
@@ -197,11 +202,14 @@ void POVToy_IncrementIndex(void)
     if(POVToy_Display_Index == (POVTOY_DISPLAY_TOTAL_COLUMNS-1))
     {
         //Reached highest index level
-		//POVToy_Display_Index=0;
+    }
+    else if(POVToy_Display_FrameDelay == 0)
+    {
+        POVToy_Display_Index++;
     }
     else
     {
-        POVToy_Display_Index++;
+	    POVToy_Display_FrameDelay--; //Decrement delay counter
     }
 }
 
@@ -211,7 +219,7 @@ void POVToy_DecrementIndex()
     {
         //Reached lowest index level
     }
-    else
+    else if(POVToy_Display_FrameDelay == 0)
     {
 
 #ifndef POVTOY_DISABLE_BIDIRECTIONAL
@@ -219,6 +227,10 @@ void POVToy_DecrementIndex()
         POVToy_Display_Index--;
 
 #endif 
+    }
+    else
+    {
+	    POVToy_Display_FrameDelay--; //Decrement delay counter
     }
 }
 
@@ -246,11 +258,13 @@ void POVToy_LowPriorityISR()
     //check INT1 ( external interrupt )
     if(INTCON3bits.INT1IF)	//Accel Data is Ready
     {
+        Lnum++;
         POVToy_AccelTicks++;	//Acceleration sampling freq as ticks. (increments @ approx 250Hz)
         POVToy_AccelX = MMA7455L_ReadAcceleration(MMA7455L_XOUT8);  //Read X Accel.
 
         //Single Pole IIR Low Pass Filter. Expression: Filtered= 0.9 * Filtered + (1-0.9) AccelX
         POVToy_AccelXFiltered = ((9 * POVToy_AccelXFiltered) + POVToy_AccelX )/10;
+
 
         if((((uint8_t)POVToy_AccelXFiltered) > POVTOY_ACCELERATION_THRESHOLD)  && ((uint8_t)POVToy_AccelXFiltered) < 127)
         {
@@ -261,14 +275,15 @@ void POVToy_LowPriorityISR()
 #ifdef POVTOY_FIXED_FREQ_REFESH
                 POVToy_TMR0L_ReloadCalc = POVTOY_FIXED_FREQ_RELOAD_VALUE;
 #else
-                POVToy_TMR0L_ReloadCalc = 255 -  (((2 * POVToy_AccelTicks_Diff ) )) + 2;  //Adaptive timer0 reload value
+                POVToy_TMR0L_ReloadCalc = 255 -  (((2.6 * POVToy_AccelTicks_Diff ) )) + 2;  //Adaptive timer0 reload value
 #endif
                 if( POVToy_TMR0L_ReloadCalc > 40 && POVToy_TMR0L_ReloadCalc < 225) //Put a limit to display refresh speed.
                 {
                     POVToy_TMR0L_Reload = POVToy_TMR0L_ReloadCalc;
                 }
-                POVToy_Display_Index = 0;        //Reset display index. Reached left end
-                POVToy_AccelTicks = 0;           //Reset ticks. Reached left end.
+                POVToy_AccelTicks = 0;           //Reset ticks. Reached left end.				
+ 				POVToy_Display_FrameDelay = POVTOY_DISPLAY_FRAME_DELAY;
+				POVToy_Display_Index = 0;       //Reset display index. Reached left end
                 POVToy_XAccel_TransitionLock=1;
             }
         }
@@ -278,8 +293,13 @@ void POVToy_LowPriorityISR()
             if(POVToy_XAccel_TransitionLock==1)
             {
                 POVToy_Display_Direction = POVTOY_DIRECTION_LEFT;
+               // if(POVToy_AccelTicks >15 &&  POVToy_AccelTicks < 120)
+               // {
                 POVToy_AccelTicks_Diff   = POVToy_AccelTicks;
-                POVToy_XAccel_TransitionLock=0;
+                //}
+				POVToy_Display_FrameDelay = POVTOY_DISPLAY_FRAME_DELAY;
+                POVToy_XAccel_TransitionLock=0;                
+               
             }
         }
         INTCON3bits.INT1IF = 0;
