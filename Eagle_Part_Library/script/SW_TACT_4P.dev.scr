@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'SW_TACT.dev';
+Edit 'SW_TACT_4P.dev';
 Prefix 'SW';
 Description '';
 Value On;
