@@ -7,7 +7,7 @@ Set Wire_Bend 2;
 Grid mm;
 
 Edit 'OSC-OSCILLATOR.dev';
-Prefix 'Q';
+Prefix 'XTAL';
 Description 'Oscillator';
 Value Off;
 Add OSCILLATOR 'G$1' Next 0 (0 0);
