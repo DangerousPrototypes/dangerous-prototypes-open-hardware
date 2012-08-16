@@ -39,25 +39,29 @@ proto protos[4] = { //first is UNK
 		nullfunc1,				// EEPROM
 		nullfunc1,				// PWM
 	}
+	
+	,							//SPI
+	{	
+		SPIADCworker,				// ADC
+		SPIDACworker,				// DAC
+		SPIEEworker,			// EEPROM
+		SPIPWMworker,				// PWM
+	}
 	,							//UART
-	{	UARTworker,				// ADC
+	{	
+		UARTworker,				// ADC
 		UARTworker,				// DAC
 		UARTworker,				// EEPROM
 		UARTworker,				// PWM
 	}
-	,							//I2C
-	{	I2CADCworker,				// ADC
-		I2CDACworker,				// DAC
-		I2CEEworker,				// EEPROM
-		nullfunc1,				// PWM
-	}
-	,							//SPI
-	{	SPIworker,				// ADC
-		SPIworker,				// DAC
-		SPIworker,				// EEPROM
-		SPIworker,				// PWM
-	}
 
+	,							//I2C
+	{	
+		I2CADCworker,				// ADC
+		I2CDACworker,				// DAC
+		I2CEEworker,				// EEPROM		
+		I2CPWMworker,				// PWM
+	}
 };
 
 // globals
@@ -65,11 +69,20 @@ unsigned char mode,mode_device,mode_protocol;
 
 void nullfunc1(void){	}
 
+unsigned char eeBuf[256];
+
 int main(void)
 {	
 	mode=MODEI2C;
 
 	init();
+	//EEPROM buffer load
+	int i;	
+	for (i=0;i<256;i++)
+	{
+		eeBuf[i]= EEPROMread(i);	//each byte from EEPROM is loaded
+	}
+
 
 	while(1){
 
@@ -77,7 +90,8 @@ int main(void)
 	
 		// main loop
 		switch(mode_device)
-		{		case MODEADC:	protos[mode_protocol].ADCworker();
+		{		
+				case MODEADC:	protos[mode_protocol].ADCworker();
 								break;
 				case MODEMEM:	protos[mode_protocol].EEPROMworker();
 								break;
@@ -93,8 +107,10 @@ int main(void)
 // hardware init 
 void init(void)
 {	// setup oscillator
-	OSCCON=OSCCONVALUE;
-
+	//OSCCON=OSCCONVALUE;
+	OSCCONbits.SPLLEN=1;	//software PLL enable x4 = 32mhz
+	OSCCONbits.IRCF = 14;//8MHZ
+	OSCCONbits.SCS =0;// osc dettermined by fosc
 	// setup i/o pins
     // setup porta
     PORTA=0x00;
@@ -155,6 +171,7 @@ void init(void)
     // enable interrupts
 //    PEIE=1;
 //    GIE=1;
+
 
 }
 

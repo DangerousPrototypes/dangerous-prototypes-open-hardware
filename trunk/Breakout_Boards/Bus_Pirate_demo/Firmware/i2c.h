@@ -1,10 +1,12 @@
 /* header */
-
+#ifndef I2C_H
+#define I2C_H
 // defines
 // I2C defines/state machine
 #define I2CADDEE        0xA0
-#define I2CADDADC		0x10
-#define I2CADDDAC		0x20
+#define I2CADDADC			0x10
+#define I2CADDDAC			0x20
+#define I2CADDPWM       0x30
 #define I2CADDMASK      0xFE	// use only 1 address    
 #define I2CMASK         0x03
 
@@ -23,7 +25,10 @@ void I2CADCworker(void);		// main I2C processing loop ADC
 void I2CDACworker(void);		// main I2C processing loop DAC
 void I2CPWMworker(void);		// main I2C processing loop PWM
 
+extern unsigned char eeBuf[256];
+extern unsigned char mode_device;
 // isr macro
 // I2C doesn't have an isr (although It should have one!)
 #define I2Cisr	do { ;\
 } while(0);
+#endif

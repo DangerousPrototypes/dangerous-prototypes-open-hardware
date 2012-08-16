@@ -1,7 +1,7 @@
 
-# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c"
 
-# 132 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h"
+# 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
 
 
@@ -2779,34 +2779,76 @@ unsigned TOSH : 7;
 } TOSHbits @ 0xFEF;
 
 
-# 27 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "C:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 9 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./uart.h"
+# 9 "C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h"
 void initUART(void);
 void UARTworker(void);
 void UARTwrite(unsigned char c);
+void UARTwriteDecimal(unsigned char c);
 unsigned char UARTread(void);
+void UARTwriteString (char* str);
 
 extern unsigned ringbuff[8];
 extern volatile char rhead, rtail;
 
-# 9 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.c"
+# 36
+unsigned char UARTcharFromString(unsigned char c);
+
+const char msgMenu0[]="\n\nBus Pirate Demo Board v5\nFW verison v0.95\n\n  Main Menu\n-------------\n\n1)ADC\n2)PWM\n3)DAC\n4)EEPROM\n\nChoose(1-4):\0";
+const char msgMenu1[]="\n\nADC Menu\n-----------\n\nr)Read ADC\n1)Channel l\n2)Channel 2\n3)Channel 3\nt)Temperature sensor\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu2[]="\n\nPWM Menu\n-----------\n\np)Set PWM Period\nd)Set PWM Duty Cycle\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu3[]="\n\nDAC Menu\n-----------\n\nv)Set DAC level 0-31\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu4[]="\n\nEEPROM Menu\n--------------\n\nw)Write a character to EEPROM\nr)Read a character from EEPROM\nm)Back to main menu\n\nChoose: \0";
+
+const char msgDACsetV[]="\n\nEnter desired DAC level from 0 to 31: ";
+
+const char msgEEw[]="\n\nEnter the variable (0-255) to be entered into EEPROM: ";
+const char msgEEaddr[]="\n\nEnter the address 0-255: ";
+
+const char *msgMenu[] ={msgMenu0,msgMenu1,msgMenu2,msgMenu3,msgMenu4};
+
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h"
+void enablePWM(void);
+void disablePWM(void);
+void setPeriod(unsigned char);
+void setDuty(unsigned char);
+
+
+extern unsigned char PWMduty;
+extern unsigned char PWMperiod;
+
+# 4 "C:\Users\Filip\Documents\MPLAB\Demo Board\./dac.h"
+void setDAC(unsigned char dac);
+void enableDAC(void);
+void disableDAC(void);
+
+# 5 "C:\Users\Filip\Documents\MPLAB\Demo Board\./adc.h"
+unsigned int getADC(unsigned char adc);
+void enableTS(void);
+unsigned int startADC16(unsigned char adc);
+
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h"
+void EEPROMwrite (unsigned char addr, unsigned char data);
+unsigned char EEPROMread(unsigned char addr);
+
+# 13 "C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c"
 unsigned ringbuff[8];
 volatile char rhead, rtail;
 
@@ -2821,7 +2863,7 @@ TRISC4=0;
 
 BRGH=1;
 SPBRGH=0x00;
-SPBRGL=25;
+SPBRGL=207;
 
 
 SYNC=0;
@@ -2829,27 +2871,213 @@ SPEN=1;
 TXEN=1;
 CREN=1;
 
-
-RCIE=1;
-TXIE=0;
-
-
-rhead=0;
-rtail=0;
-for(i=0; i<(8-1); i++)
-{
-ringbuff[i]=0x00;
-}
-
+# 48
 RC5=1;;
 }
 
 void UARTworker(void)
 {
-unsigned char c;
+unsigned char c,mode=0,addr=0,instruction=0,EEaddrF=0,EEaddr=0,adcc=0,helpC;
+initUART();
 
+UARTwriteString(msgMenu[0]);
+UARTwrite('\n');
+while(1)
+{
+
+if(RCIF)
+{
+RCIF=0;
+RC3=1;;
+if(!(RCSTA&0b00000110))
+{ rhead++;
+rhead&=(8-1);
+ringbuff[rhead]=RCREG;
+}
+RC3=0;;
 c=UARTread();
 UARTwrite(c);
+
+switch (mode)
+{
+case 0:
+mode=c-48;
+UARTwriteString(msgMenu[c-48]);
+if(mode==2)enablePWM();
+else if(mode==3)enableDAC();
+break;
+case 1:
+switch(c)
+{
+case 'r':
+UARTwriteString("\n\nADC value: ");
+helpC=getADC(adcc);
+UARTwriteDecimal(helpC);
+UARTwriteString(msgMenu[1]);
+break;
+case '1':
+UARTwriteString("\n\nchannel 1 selected");
+adcc=0;
+UARTwriteString(msgMenu[1]);
+break;
+case '2':
+UARTwriteString("\n\nchannel 2 selected");
+adcc=1;
+UARTwriteString(msgMenu[1]);
+break;
+case '3':
+UARTwriteString("\n\nchannel 3 selected");
+adcc=2;
+UARTwriteString(msgMenu[1]);
+break;
+case 't':
+UARTwriteString("\n\nTemp sensor selected");
+adcc=3;
+UARTwriteString(msgMenu[1]);
+break;
+case 'm':
+mode = 0;
+UARTwriteString(msgMenu[0]);
+break;
+default:
+break;
+}
+break;
+case 2:
+if(instruction)
+{
+switch(instruction)
+{
+case 'p':
+
+setPeriod(UARTcharFromString(c));
+UARTwriteString(msgMenu[2]);
+break;
+case 'd':
+setDuty(UARTcharFromString(c));
+UARTwriteString(msgMenu[2]);
+
+break;
+case 'm':
+mode =0;
+
+UARTwriteString(msgMenu[0]);
+break;
+default:
+break;
+}
+instruction = 0;
+}
+else
+{
+instruction = c;
+if(instruction == 'p')
+{
+UARTwriteString("\n\nEnter the PWM Period: ");
+
+}
+else if(instruction == 'd')
+{
+UARTwriteString("\n\nEnter the PWM Duty Cycle: ");
+}
+else if(instruction == 'm')
+{
+mode =0;
+instruction =0;
+disablePWM();
+UARTwriteString(msgMenu[0]);
+}
+}
+break;
+case 3:
+if(instruction)
+{
+switch(instruction)
+{
+case 'v':
+setDAC(UARTcharFromString(c));
+UARTwriteString(msgMenu[3]);
+break;
+case 'm':
+mode = 0;
+UARTwriteString(msgMenu[0]);
+break;
+default:
+break;
+}
+instruction =0;
+}
+else
+{
+instruction = c;
+if(instruction == 'v')
+{
+UARTwriteString(msgDACsetV);
+}
+else if(instruction == 'm')
+{
+mode =0;
+instruction =0;
+disableDAC();
+UARTwriteString(msgMenu[0]);
+}
+}
+break;
+case 4:
+if(instruction)
+{
+if(EEaddrF)
+{
+if(instruction == 'w')
+{
+EEPROMwrite(EEaddr,UARTcharFromString(c));
+UARTwriteString(msgMenu[4]);
+
+}
+else if (instruction == 'r')
+{
+UARTwriteDecimal(EEPROMread(EEaddr));
+UARTwriteString(msgMenu[4]);
+}
+else if (instruction == 'm')
+{
+mode = 0;
+UARTwriteString(msgMenu[0]);
+}
+EEaddrF=0;
+instruction =0;
+}
+else
+{
+EEaddrF=1;
+EEaddr=UARTcharFromString(c);
+
+if(instruction=='w')UARTwriteString(msgEEw);
+else if(instruction == 'r')UARTwriteString("\n\nHit any key to read from EEPROM.\n\n");
+}
+}
+else
+{
+instruction = c;
+if((instruction == 'w')||(instruction == 'r'))
+{
+UARTwriteString(msgEEaddr);
+}
+else if(instruction == 'm')
+{
+mode =0;
+instruction =0;
+UARTwriteString(msgMenu[0]);
+}
+}
+break;
+default:
+mode=0;
+UARTwriteString(msgMenu[0]);
+break;
+}
+}
+}
 }
 
 
@@ -2857,14 +3085,11 @@ unsigned char UARTread(void)
 {
 unsigned char temp;
 
-while(rtail==rhead);
-
-
-GIE=0;
+# 265
 rtail++;
 rtail&=(8-1);
 temp=ringbuff[rtail];
-GIE=1;
+
 
 return temp;
 }
@@ -2881,3 +3106,47 @@ TXREG=c;
 RC3=0;;
 }
 
+void UARTwriteString (char str[])
+{
+unsigned char i=0;
+while(str[i])
+{
+UARTwrite(str[i++]);
+}
+}
+
+unsigned char UARTcharFromString(unsigned char c)
+{
+unsigned char rC,outF=0,c1=c-48;
+while(outF==0)
+{
+while(RCIF==0);
+if(!(RCSTA&0b00000110))
+{ rhead++;
+rhead&=(8-1);
+ringbuff[rhead]=RCREG;
+}
+RCIF=0;
+rC=UARTread();
+UARTwrite(rC);
+if(rC==13)outF=1;
+else
+{
+c1*=10;
+c1+=(rC-48);
+}
+}
+return c1;
+}
+
+void UARTwriteDecimal(unsigned char c)
+{
+unsigned char hC,d=100;
+do
+{
+hC=c/d;
+UARTwrite(hC+48);
+c-=hC*d;
+d/=10;
+}while(d);
+}

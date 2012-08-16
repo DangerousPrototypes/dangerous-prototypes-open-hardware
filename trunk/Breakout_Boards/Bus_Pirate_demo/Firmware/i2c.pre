@@ -1,7 +1,7 @@
 
-# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\i2c.c"
 
-# 132 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h"
+# 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
 
 
@@ -2779,25 +2779,25 @@ unsigned TOSH : 7;
 } TOSHbits @ 0xFEF;
 
 
-# 27 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "C:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 19 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h"
+# 21 "C:\Users\Filip\Documents\MPLAB\Demo Board\./i2c.h"
 void initI2C(void);
 void I2CWrite(unsigned char c);
 void I2CEEworker(void);
@@ -2805,20 +2805,34 @@ void I2CADCworker(void);
 void I2CDACworker(void);
 void I2CPWMworker(void);
 
-# 5 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./eeprom.h"
+extern unsigned char eeBuf[256];
+extern unsigned char mode_device;
+
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h"
 void EEPROMwrite (unsigned char addr, unsigned char data);
 unsigned char EEPROMread(unsigned char addr);
 
-# 4 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./adc.h"
+# 5 "C:\Users\Filip\Documents\MPLAB\Demo Board\./adc.h"
 unsigned int getADC(unsigned char adc);
 void enableTS(void);
+unsigned int startADC16(unsigned char adc);
 
-# 3 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./dac.h"
+# 4 "C:\Users\Filip\Documents\MPLAB\Demo Board\./dac.h"
 void setDAC(unsigned char dac);
 void enableDAC(void);
 void disableDAC(void);
 
-# 14 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.c"
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h"
+void enablePWM(void);
+void disablePWM(void);
+void setPeriod(unsigned char);
+void setDuty(unsigned char);
+
+
+extern unsigned char PWMduty;
+extern unsigned char PWMperiod;
+
+# 14 "C:\Users\Filip\Documents\MPLAB\Demo Board\i2c.c"
 void initI2C(void)
 {
 
@@ -2834,22 +2848,22 @@ SSP2CON3|=0b11000000;
 
 
 void I2CEEworker(void)
-{ unsigned char token, addr, temp, addressed;
+{
+unsigned char token,i, addr=0, temp=0, addressed=0,w=0;
 
-addr=0x00;
-addressed=0;
 
 SSP2ADD=0xA0;
-
+SSP2CON1bits.SSPEN=1;
 while(1)
 {
 
 if(SSP2IF)
 {
+SSP2IF=0;
 token=SSP2STAT&0x25;
-
 if(SSP2STATbits.S)
-{ RC5=1;;
+{
+RC5=1;;
 switch(token)
 {
 case 0x01:
@@ -2857,46 +2871,53 @@ temp=SSP2BUF;
 break;
 case 0x21:
 if(!addressed)
-{ addr=SSP2BUF;
+{
+addr=SSP2BUF;
 addressed=1;
 }
 else
 {
-EEPROMwrite(addr, SSP2BUF);
-addr++;
+eeBuf[addr++]=SSP2BUF;
+w++;
 }
-
 break;
 case 0x05:
 temp=SSP2BUF;
-I2CWrite(EEPROMread(addr++));
+SSP2BUF = eeBuf[addr++];
 break;
 case 0x24:
 temp=SSP2BUF;
-I2CWrite(EEPROMread(addr++));
+
+if(SSP2CON2bits.ACKSTAT==0)SSP2BUF=eeBuf[addr++];
 break;
 }
 }
 else if(SSP2STATbits.P)
-{ RC5=0;;
+{
+RC5=0;;
 addressed=0;
+if(w>0)
+{
+for(i=addr-w;i<addr-1;i++)
+{
+EEPROMwrite(i,eeBuf[i]);
+}
+}
+w=0;
 asm("NOP");
 }
-SSP2IF=0;
-SSP2CON1bits.SSPEN=1;
 SSP2CON1bits.CKP=1;
 }
 }
 }
 
-
-
+# 97
 void I2CADCworker(void)
-{ unsigned char token, temp, adc;
+{ unsigned char token, temp, adc,config=0,adcON=0,fb=0;
 
 adc=0x00;
 enableTS();
-SSP2ADD=0x10;
+SSP2ADD=0x68;
 
 while(1)
 {
@@ -2913,37 +2934,55 @@ case 0x01:
 temp=SSP2BUF;
 break;
 case 0x21:
-adc=SSP2BUF;
+config=SSP2BUF;
 break;
 case 0x05:
 temp=SSP2BUF;
-I2CWrite(getADC(adc));
+I2CWrite(ADRESH);
 break;
 case 0x24:
 temp=SSP2BUF;
-I2CWrite(getADC(adc));
+if(fb==0)
+{
+fb=1;
+I2CWrite(ADRESL);
+}
+else
+{
+I2CWrite(config&(ADCON0bits.ADGO<<7));
+}
 break;
 }
 }
 else if(SSP2STATbits.P)
-{ RC5=0;;
+{
+fb=0;
+RC5=0;;
+adc=config&0b01100000;
+adc>>=5;
+startADC16(adc);
 asm("NOP");
+
 }
+
 SSP2IF=0;
+ADCON0bits.ADGO=1;
 SSP2CON1bits.SSPEN=1;
 SSP2CON1bits.CKP=1;
+
 }
 }
 }
 
-
-
+# 163
 void I2CDACworker(void)
-{ unsigned char token, temp, dac;
+{ unsigned char token, temp, dac,command=0,fb=0;
 
 dac=0x00;
 enableDAC();
-SSP2ADD=0x20;
+
+
+SSP2ADD=0x5C;
 
 while(1)
 {
@@ -2960,22 +2999,38 @@ case 0x01:
 temp=SSP2BUF;
 break;
 case 0x21:
+if(fb=0)
+{
+command = SSP2BUF;
+fb=1;
+}
+else
+{
+if(command ==0)
+{
 dac=SSP2BUF;
-dac>>=3;
+dac>>=1;
 setDAC(dac);
+}
+else temp=SSP2BUF;
+}
 break;
 case 0x05:
 temp=SSP2BUF;
-I2CWrite(getADC(dac));
+if(command==0)I2CWrite(dac<<1);
+else I2CWrite(0);
 break;
 case 0x24:
 temp=SSP2BUF;
-I2CWrite(getADC(dac));
+if(command==0)I2CWrite(dac<<1);
+else I2CWrite(0);
 break;
 }
 }
 else if(SSP2STATbits.P)
-{ RC5=0;;
+{
+fb=0;
+RC5=0;;
 asm("NOP");
 }
 SSP2IF=0;
@@ -2984,6 +3039,79 @@ SSP2CON1bits.CKP=1;
 }
 }
 }
+
+
+
+void I2CPWMworker(void)
+{
+unsigned char token, tempP,tempD,temp, rDuty,rFreq,fD=0,fP=0,addr=0,addressed=0;
+enablePWM();
+SSP2ADD=0x30;
+SSP2CON1bits.SSPEN=1;
+while(1)
+{
+
+if(SSP2IF)
+{
+SSP2IF=0;
+token=SSP2STAT&0x25;
+if(SSP2STATbits.S)
+{
+RC5=1;;
+switch(token)
+{
+case 0x01:
+temp=SSP2BUF;
+break;
+case 0x21:
+if(!addressed)
+{
+addr=SSP2BUF;
+addressed=1;
+}
+else
+{
+if(addr==0)
+{
+tempP=SSP2BUF;
+addr=1;
+fP=1;
+}
+else
+{
+tempD=SSP2BUF;
+addr=0;
+fD=1;
+}
+}
+break;
+case 0x05:
+temp=SSP2BUF;
+SSP2BUF = PWMperiod;
+break;
+case 0x24:
+temp=SSP2BUF;
+
+SSP2BUF = PWMduty;
+break;
+}
+}
+else if(SSP2STATbits.P)
+{
+RC5=0;;
+addressed=0;
+asm("NOP");
+if(fP)setPeriod(tempP);
+if(fD)setDuty(tempD);
+fD=fP=0;
+
+}
+SSP2CON1bits.CKP=1;
+}
+}
+}
+
+
 
 
 void I2CWrite(unsigned char c)

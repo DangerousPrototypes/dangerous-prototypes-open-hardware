@@ -1,7 +1,7 @@
 
-# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\main.c"
 
-# 132 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h"
+# 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
 
 
@@ -2779,38 +2779,63 @@ unsigned TOSH : 7;
 } TOSHbits @ 0xFEF;
 
 
-# 27 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "C:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 4 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./spi.h"
+# 5 "C:\Users\Filip\Documents\MPLAB\Demo Board\./spi.h"
 void initSPI(void);
 void SPIworker(void);
+void SPIEEworker(void);
+void SPIPWMworker(void);
+void SPIDACworker(void);
+void SPIADCworker(void);
 
-# 9 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./uart.h"
+# 23
+extern unsigned char eeBuf[256];
+
+# 9 "C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h"
 void initUART(void);
 void UARTworker(void);
 void UARTwrite(unsigned char c);
+void UARTwriteDecimal(unsigned char c);
 unsigned char UARTread(void);
+void UARTwriteString (char* str);
 
 extern unsigned ringbuff[8];
 extern volatile char rhead, rtail;
 
-# 19 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./i2c.h"
+# 36
+unsigned char UARTcharFromString(unsigned char c);
+
+const char msgMenu0[]="\n\nBus Pirate Demo Board v5\nFW verison v0.95\n\n  Main Menu\n-------------\n\n1)ADC\n2)PWM\n3)DAC\n4)EEPROM\n\nChoose(1-4):\0";
+const char msgMenu1[]="\n\nADC Menu\n-----------\n\nr)Read ADC\n1)Channel l\n2)Channel 2\n3)Channel 3\nt)Temperature sensor\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu2[]="\n\nPWM Menu\n-----------\n\np)Set PWM Period\nd)Set PWM Duty Cycle\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu3[]="\n\nDAC Menu\n-----------\n\nv)Set DAC level 0-31\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu4[]="\n\nEEPROM Menu\n--------------\n\nw)Write a character to EEPROM\nr)Read a character from EEPROM\nm)Back to main menu\n\nChoose: \0";
+
+const char msgDACsetV[]="\n\nEnter desired DAC level from 0 to 31: ";
+
+const char msgEEw[]="\n\nEnter the variable (0-255) to be entered into EEPROM: ";
+const char msgEEaddr[]="\n\nEnter the address 0-255: ";
+
+const char *msgMenu[] ={msgMenu0,msgMenu1,msgMenu2,msgMenu3,msgMenu4};
+
+# 21 "C:\Users\Filip\Documents\MPLAB\Demo Board\./i2c.h"
 void initI2C(void);
 void I2CWrite(unsigned char c);
 void I2CEEworker(void);
@@ -2818,15 +2843,18 @@ void I2CADCworker(void);
 void I2CDACworker(void);
 void I2CPWMworker(void);
 
-# 3 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./easteregg.h"
+extern unsigned char eeBuf[256];
+extern unsigned char mode_device;
+
+# 4 "C:\Users\Filip\Documents\MPLAB\Demo Board\./easteregg.h"
 unsigned char isEE();
 void doEE();
 
-# 5 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./eeprom.h"
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h"
 void EEPROMwrite (unsigned char addr, unsigned char data);
 unsigned char EEPROMread(unsigned char addr);
 
-# 21 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.c"
+# 21 "C:\Users\Filip\Documents\MPLAB\Demo Board\main.c"
 asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFFFC&0xFFE7&0xFFFF&0xFFBF&0xFFFF&0xFFFF&0xFFFF&0xFFFF&0xEFFF&0xFFFF");
 asm("\tpsect config,class=CONFIG,delta=2"); asm("\tdw ""0xFEFF&0xFFFF&0xDFFF");
 
@@ -2848,25 +2876,29 @@ nullfunc1,
 nullfunc1,
 nullfunc1,
 }
+
 ,
-{ UARTworker,
-UARTworker,
-UARTworker,
-UARTworker,
+{
+SPIADCworker,
+SPIDACworker,
+SPIEEworker,
+SPIPWMworker,
 }
 ,
-{ I2CADCworker,
-I2CDACworker,
-I2CEEworker,
-nullfunc1,
-}
-,
-{ nullfunc1,
-nullfunc1,
-nullfunc1,
-nullfunc1,
+{
+UARTworker,
+UARTworker,
+UARTworker,
+UARTworker,
 }
 
+,
+{
+I2CADCworker,
+I2CDACworker,
+I2CEEworker,
+I2CPWMworker,
+}
 };
 
 
@@ -2874,11 +2906,20 @@ unsigned char mode,mode_device,mode_protocol;
 
 void nullfunc1(void){ }
 
+unsigned char eeBuf[256];
+
 int main(void)
 {
-mode=0x02;
+mode=0x03;
 
 init();
+
+int i;
+for (i=0;i<256;i++)
+{
+eeBuf[i]= EEPROMread(i);
+}
+
 
 while(1){
 
@@ -2886,11 +2927,12 @@ if(isEE()) doEE();
 
 
 switch(mode_device)
-{ case 0x03: protos[mode_protocol].ADCworker();
+{
+case 0x03: protos[mode_protocol].ADCworker();
 break;
-case 0x01: protos[mode_protocol].EEPROMworker();
+case 0x02: protos[mode_protocol].EEPROMworker();
 break;
-case 0x02: protos[mode_protocol].DACworker();
+case 0x01: protos[mode_protocol].DACworker();
 break;
 case 0x00: protos[mode_protocol].PWMworker();
 default: break;
@@ -2902,8 +2944,10 @@ default: break;
 
 void init(void)
 {
-OSCCON=0xEA;
 
+OSCCONbits.SPLLEN=1;
+OSCCONbits.IRCF = 14;
+OSCCONbits.SCS =0;
 
 
 PORTA=0x00;
@@ -2935,22 +2979,22 @@ APFCON1=0x00;
 RC5=1;;
 RC3=1;;
 
-# 133
+# 149
 mode_device=0x00;
 mode_protocol=0x00;
 mode_device|=(RC2<<1);
-mode_device|=(RC0);
+mode_device|=(RA2);
 mode_protocol|=(RB6<<1);
 mode_protocol|=(RB4);
 
 
 
 switch(mode_protocol)
-{ case 0x03: initSPI();
+{ case 0x01: initSPI();
 break;
-case 0x02: initI2C();
+case 0x03: initI2C();
 break;
-case 0x01: initUART();
+case 0x02: initUART();
 break;
 case 0x00: break;
 default: break;
@@ -2958,7 +3002,7 @@ default: break;
 
 RC5=0;;
 
-# 159
+# 176
 }
 
 

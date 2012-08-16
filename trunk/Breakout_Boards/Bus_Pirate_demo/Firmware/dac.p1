@@ -1,51 +1,51 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"132 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"132 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INDF0 `Vuc  1 e@0 ]
-"136 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"136 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INDF1 `Vuc  1 e@1 ]
-"140 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"140 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCL `Vuc  1 e@2 ]
-"144 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"144 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STATUS `Vuc  1 e@3 ]
-"146 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"146 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CARRY `Vb  1 e@24 ]
-"147 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"147 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC `Vb  1 e@25 ]
-"148 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"148 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ZERO `Vb  1 e@26 ]
-"149 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"149 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nPD `Vb  1 e@27 ]
-"150 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"150 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nTO `Vb  1 e@28 ]
 [s S2 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 ]
 [n S2 . C DC Z nPD nTO . . ]
 [u S1 `S2 1 ]
 [n S1 . . ]
-"162 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"162 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STATUSbits `VS1  1 e@3 ]
-"167 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"167 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR0L `Vuc  1 e@4 ]
-"171 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"171 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR0H `Vuc  1 e@5 ]
-"175 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"175 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR0 `Vui  1 e@4 ]
-"179 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"179 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR1L `Vuc  1 e@6 ]
-"183 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"183 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR1H `Vuc  1 e@7 ]
-"187 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"187 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR1 `Vui  1 e@6 ]
-"190 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"190 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR `Vuc  1 e@8 ]
-"192 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"192 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR0 `Vb  1 e@64 ]
-"193 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"193 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR1 `Vb  1 e@65 ]
-"194 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"194 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR2 `Vb  1 e@66 ]
-"195 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"195 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR3 `Vb  1 e@67 ]
-"196 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"196 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR4 `Vb  1 e@68 ]
 [s S4 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S4 . BSR0 BSR1 BSR2 BSR3 BSR4 ]
@@ -53,39 +53,39 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S5 . BSR ]
 [u S3 `S4 1 `S5 1 ]
 [n S3 . . . ]
-"209 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"209 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSRbits `VS3  1 e@8 ]
-"213 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"213 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WREG `Vuc  1 e@9 ]
-"217 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"217 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCLATH `Vuc  1 e@10 ]
 [s S7 :7 `uc 1 ]
 [n S7 . PCLATH ]
 [u S6 `S7 1 ]
 [n S6 . . ]
-"224 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"224 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCLATHbits `VS6  1 e@10 ]
-"228 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"228 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INTCON `Vuc  1 e@11 ]
-"230 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"230 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCIF `Vb  1 e@88 ]
-"231 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"231 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INTF `Vb  1 e@89 ]
-"232 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"232 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR0IF `Vb  1 e@90 ]
-"233 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"233 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCIE `Vb  1 e@91 ]
-"234 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"234 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INTE `Vb  1 e@92 ]
-"235 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"235 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR0IE `Vb  1 e@93 ]
-"236 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"236 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PEIE `Vb  1 e@94 ]
-"237 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"237 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _GIE `Vb  1 e@95 ]
-"238 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"238 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T0IF `Vb  1 e@90 ]
-"239 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"239 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T0IE `Vb  1 e@93 ]
 [s S9 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S9 . IOCIF INTF TMR0IF IOCIE INTE TMR0IE PEIE GIE ]
@@ -93,163 +93,163 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S10 . . T0IF . T0IE ]
 [u S8 `S9 1 `S10 1 ]
 [n S8 . . . ]
-"258 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"258 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INTCONbits `VS8  1 e@11 ]
-"262 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"262 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTA `Vuc  1 e@12 ]
-"264 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"264 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA0 `Vb  1 e@96 ]
-"265 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"265 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA1 `Vb  1 e@97 ]
-"266 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"266 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA2 `Vb  1 e@98 ]
-"267 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"267 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA3 `Vb  1 e@99 ]
-"268 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"268 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA4 `Vb  1 e@100 ]
-"269 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"269 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RA5 `Vb  1 e@101 ]
 [s S12 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S12 . RA0 RA1 RA2 RA3 RA4 RA5 . . ]
 [u S11 `S12 1 ]
 [n S11 . . ]
-"282 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"282 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTAbits `VS11  1 e@12 ]
-"286 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"286 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTB `Vuc  1 e@13 ]
-"288 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"288 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RB4 `Vb  1 e@108 ]
-"289 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"289 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RB5 `Vb  1 e@109 ]
-"290 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"290 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RB6 `Vb  1 e@110 ]
-"291 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"291 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RB7 `Vb  1 e@111 ]
 [s S14 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S14 . . RB4 RB5 RB6 RB7 ]
 [u S13 `S14 1 ]
 [n S13 . . ]
-"301 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"301 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTBbits `VS13  1 e@13 ]
-"305 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"305 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTC `Vuc  1 e@14 ]
-"307 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"307 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC0 `Vb  1 e@112 ]
-"308 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"308 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC1 `Vb  1 e@113 ]
-"309 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"309 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC2 `Vb  1 e@114 ]
-"310 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"310 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC3 `Vb  1 e@115 ]
-"311 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"311 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC4 `Vb  1 e@116 ]
-"312 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"312 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC5 `Vb  1 e@117 ]
-"313 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"313 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC6 `Vb  1 e@118 ]
-"314 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"314 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RC7 `Vb  1 e@119 ]
 [s S16 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S16 . RC0 RC1 RC2 RC3 RC4 RC5 RC6 RC7 ]
 [u S15 `S16 1 ]
 [n S15 . . ]
-"327 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"327 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PORTCbits `VS15  1 e@14 ]
-"331 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"331 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR1 `Vuc  1 e@17 ]
-"334 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"334 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1IF `Vb  1 e@136 ]
-"336 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"336 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR2IF `Vb  1 e@137 ]
-"338 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"338 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1IF `Vb  1 e@138 ]
-"340 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"340 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1IF `Vb  1 e@139 ]
-"342 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"342 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXIF `Vb  1 e@140 ]
-"344 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"344 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCIF `Vb  1 e@141 ]
-"346 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"346 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADIF `Vb  1 e@142 ]
-"348 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"348 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1GIF `Vb  1 e@143 ]
 [s S18 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S18 . TMR1IF TMR2IF CCP1IF SSP1IF TXIF RCIF ADIF TMR1GIF ]
 [u S17 `S18 1 ]
 [n S17 . . ]
-"361 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"361 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR1bits `VS17  1 e@17 ]
-"365 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"365 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR2 `Vuc  1 e@18 ]
-"367 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"367 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2IF `Vb  1 e@144 ]
-"368 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"368 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BCL1IF `Vb  1 e@147 ]
-"369 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"369 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEIF `Vb  1 e@148 ]
-"370 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"370 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1IF `Vb  1 e@149 ]
-"371 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"371 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2IF `Vb  1 e@150 ]
-"372 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"372 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSFIF `Vb  1 e@151 ]
 [s S20 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S20 . CCP2IF . . BCL1IF EEIF C1IF C2IF OSFIF ]
 [u S19 `S20 1 ]
 [n S19 . . ]
-"385 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"385 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR2bits `VS19  1 e@18 ]
-"389 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"389 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR3 `Vuc  1 e@19 ]
-"391 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"391 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR4IF `Vb  1 e@153 ]
-"392 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"392 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR6IF `Vb  1 e@155 ]
-"393 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"393 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3IF `Vb  1 e@156 ]
-"394 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"394 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4IF `Vb  1 e@157 ]
 [s S22 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S22 . . TMR4IF . TMR6IF CCP3IF CCP4IF ]
 [u S21 `S22 1 ]
 [n S21 . . ]
-"405 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"405 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR3bits `VS21  1 e@19 ]
-"409 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"409 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR4 `Vuc  1 e@20 ]
-"411 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"411 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2IF `Vb  1 e@160 ]
-"412 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"412 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BCL2IF `Vb  1 e@161 ]
 [s S24 :1 `uc 1 :1 `uc 1 ]
 [n S24 . SSP2IF BCL2IF ]
 [u S23 `S24 1 ]
 [n S23 . . ]
-"419 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"419 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIR4bits `VS23  1 e@20 ]
-"423 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"423 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR0 `Vuc  1 e@21 ]
-"428 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"428 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1L `Vuc  1 e@22 ]
-"432 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"432 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1H `Vuc  1 e@23 ]
-"436 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"436 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1 `Vui  1 e@22 ]
-"439 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"439 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1CON `Vuc  1 e@24 ]
-"441 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"441 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1ON `Vb  1 e@192 ]
-"442 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"442 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nT1SYNC `Vb  1 e@194 ]
-"443 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"443 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1OSCEN `Vb  1 e@195 ]
-"444 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"444 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1CKPS0 `Vb  1 e@196 ]
-"445 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"445 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1CKPS1 `Vb  1 e@197 ]
-"446 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"446 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1CS0 `Vb  1 e@198 ]
-"447 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"447 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1CS1 `Vb  1 e@199 ]
 [s S26 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S26 . TMR1ON . nT1SYNC T1OSCEN T1CKPS0 T1CKPS1 TMR1CS0 TMR1CS1 ]
@@ -257,25 +257,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S27 . . T1CKPS TMR1CS ]
 [u S25 `S26 1 `S27 1 ]
 [n S25 . . . ]
-"465 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"465 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1CONbits `VS25  1 e@24 ]
-"469 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"469 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GCON `Vuc  1 e@25 ]
-"471 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"471 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GSS0 `Vb  1 e@200 ]
-"472 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"472 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GSS1 `Vb  1 e@201 ]
-"473 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"473 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GVAL `Vb  1 e@202 ]
-"474 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"474 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GGO `Vb  1 e@203 ]
-"475 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"475 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GSPM `Vb  1 e@204 ]
-"476 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"476 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GTM `Vb  1 e@205 ]
-"477 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"477 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GPOL `Vb  1 e@206 ]
-"478 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"478 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1GE `Vb  1 e@207 ]
 [s S29 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S29 . T1GSS0 T1GSS1 T1GVAL T1GGO T1GSPM T1GTM T1GPOL TMR1GE ]
@@ -283,27 +283,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S30 . T1GSS ]
 [u S28 `S29 1 `S30 1 ]
 [n S28 . . . ]
-"494 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"494 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GCONbits `VS28  1 e@25 ]
-"498 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"498 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR2 `Vuc  1 e@26 ]
-"502 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"502 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PR2 `Vuc  1 e@27 ]
-"506 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"506 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2CON `Vuc  1 e@28 ]
-"508 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"508 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2CKPS0 `Vb  1 e@224 ]
-"509 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"509 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2CKPS1 `Vb  1 e@225 ]
-"510 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"510 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR2ON `Vb  1 e@226 ]
-"511 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"511 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2OUTPS0 `Vb  1 e@227 ]
-"512 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"512 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2OUTPS1 `Vb  1 e@228 ]
-"513 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"513 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2OUTPS2 `Vb  1 e@229 ]
-"514 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"514 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2OUTPS3 `Vb  1 e@230 ]
 [s S32 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S32 . T2CKPS0 T2CKPS1 TMR2ON T2OUTPS0 T2OUTPS1 T2OUTPS2 T2OUTPS3 ]
@@ -311,21 +311,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S33 . T2CKPS . T2OUTPS ]
 [u S31 `S32 1 `S33 1 ]
 [n S31 . . . ]
-"531 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"531 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T2CONbits `VS31  1 e@28 ]
-"535 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"535 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCON0 `Vuc  1 e@30 ]
-"537 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"537 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T0XCS `Vb  1 e@240 ]
-"538 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"538 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSOUT `Vb  1 e@241 ]
-"539 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"539 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSRNG0 `Vb  1 e@242 ]
-"540 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"540 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSRNG1 `Vb  1 e@243 ]
-"541 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"541 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSRM `Vb  1 e@246 ]
-"542 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"542 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSON `Vb  1 e@247 ]
 [s S35 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S35 . T0XCS CPSOUT CPSRNG0 CPSRNG1 . CPSRM CPSON ]
@@ -333,17 +333,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S36 . . CPSRNG ]
 [u S34 `S35 1 `S36 1 ]
 [n S34 . . . ]
-"558 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"558 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCON0bits `VS34  1 e@30 ]
-"562 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"562 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCON1 `Vuc  1 e@31 ]
-"564 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"564 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCH0 `Vb  1 e@248 ]
-"565 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"565 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCH1 `Vb  1 e@249 ]
-"566 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"566 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCH2 `Vb  1 e@250 ]
-"567 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"567 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCH3 `Vb  1 e@251 ]
 [s S38 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S38 . CPSCH0 CPSCH1 CPSCH2 CPSCH3 ]
@@ -351,21 +351,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S39 . CPSCH . ]
 [u S37 `S38 1 `S39 1 ]
 [n S37 . . . ]
-"580 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"580 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CPSCON1bits `VS37  1 e@31 ]
-"590 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"590 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA `Vuc  1 e@140 ]
-"592 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"592 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA0 `Vb  1 e@1120 ]
-"593 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"593 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA1 `Vb  1 e@1121 ]
-"594 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"594 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA2 `Vb  1 e@1122 ]
-"595 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"595 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA3 `Vb  1 e@1123 ]
-"596 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"596 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA4 `Vb  1 e@1124 ]
-"597 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"597 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISA5 `Vb  1 e@1125 ]
 [s S41 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S41 . TRISA0 TRISA1 TRISA2 TRISA3 TRISA4 TRISA5 . . ]
@@ -373,17 +373,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S42 . TRISA . ]
 [u S40 `S41 1 `S42 1 ]
 [n S40 . . . ]
-"614 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"614 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISAbits `VS40  1 e@140 ]
-"618 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"618 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISB `Vuc  1 e@141 ]
-"620 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"620 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISB4 `Vb  1 e@1132 ]
-"621 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"621 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISB5 `Vb  1 e@1133 ]
-"622 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"622 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISB6 `Vb  1 e@1134 ]
-"623 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"623 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISB7 `Vb  1 e@1135 ]
 [s S44 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S44 . . TRISB4 TRISB5 TRISB6 TRISB7 ]
@@ -391,25 +391,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S45 . . TRISB ]
 [u S43 `S44 1 `S45 1 ]
 [n S43 . . . ]
-"637 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"637 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISBbits `VS43  1 e@141 ]
-"642 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"642 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC `Vuc  1 e@142 ]
-"644 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"644 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC0 `Vb  1 e@1136 ]
-"645 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"645 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC1 `Vb  1 e@1137 ]
-"646 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"646 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC2 `Vb  1 e@1138 ]
-"647 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"647 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC3 `Vb  1 e@1139 ]
-"648 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"648 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC4 `Vb  1 e@1140 ]
-"649 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"649 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC5 `Vb  1 e@1141 ]
-"650 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"650 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC6 `Vb  1 e@1142 ]
-"651 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"651 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISC7 `Vb  1 e@1143 ]
 [s S47 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S47 . TRISC0 TRISC1 TRISC2 TRISC3 TRISC4 TRISC5 TRISC6 TRISC7 ]
@@ -417,101 +417,101 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S48 . TRISC . ]
 [u S46 `S47 1 `S48 1 ]
 [n S46 . . . ]
-"668 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"668 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRISCbits `VS46  1 e@142 ]
-"673 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"673 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE1 `Vuc  1 e@145 ]
-"676 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"676 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1IE `Vb  1 e@1160 ]
-"678 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"678 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR2IE `Vb  1 e@1161 ]
-"680 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"680 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1IE `Vb  1 e@1162 ]
-"682 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"682 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1IE `Vb  1 e@1163 ]
-"684 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"684 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXIE `Vb  1 e@1164 ]
-"686 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"686 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCIE `Vb  1 e@1165 ]
-"688 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"688 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADIE `Vb  1 e@1166 ]
-"690 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"690 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR1GIE `Vb  1 e@1167 ]
 [s S50 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S50 . TMR1IE TMR2IE CCP1IE SSP1IE TXIE RCIE ADIE TMR1GIE ]
 [u S49 `S50 1 ]
 [n S49 . . ]
-"703 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"703 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE1bits `VS49  1 e@145 ]
-"708 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"708 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE2 `Vuc  1 e@146 ]
-"710 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"710 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2IE `Vb  1 e@1168 ]
-"712 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"712 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BCL1IE `Vb  1 e@1171 ]
-"714 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"714 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEIE `Vb  1 e@1172 ]
-"716 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"716 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1IE `Vb  1 e@1173 ]
-"718 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"718 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2IE `Vb  1 e@1174 ]
-"720 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"720 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSFIE `Vb  1 e@1175 ]
 [s S52 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S52 . CCP2IE . . BCL1IE EEIE C1IE C2IE OSFIE ]
 [u S51 `S52 1 ]
 [n S51 . . ]
-"733 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"733 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE2bits `VS51  1 e@146 ]
-"737 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"737 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE3 `Vuc  1 e@147 ]
-"739 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"739 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR4IE `Vb  1 e@1177 ]
-"740 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"740 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR6IE `Vb  1 e@1179 ]
-"741 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"741 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3IE `Vb  1 e@1180 ]
-"742 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"742 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4IE `Vb  1 e@1181 ]
 [s S54 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S54 . . TMR4IE . TMR6IE CCP3IE CCP4IE ]
 [u S53 `S54 1 ]
 [n S53 . . ]
-"753 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"753 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE3bits `VS53  1 e@147 ]
-"757 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"757 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE4 `Vuc  1 e@148 ]
-"759 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"759 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2IE `Vb  1 e@1184 ]
-"760 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"760 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BCL2IE `Vb  1 e@1185 ]
 [s S56 :1 `uc 1 :1 `uc 1 ]
 [n S56 . SSP2IE BCL2IE ]
 [u S55 `S56 1 ]
 [n S55 . . ]
-"767 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"767 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PIE4bits `VS55  1 e@148 ]
-"772 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"772 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OPTION_REG `Vuc  1 e@149 ]
-"775 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"775 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PS0 `Vb  1 e@1192 ]
-"777 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"777 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PS1 `Vb  1 e@1193 ]
-"779 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"779 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PS2 `Vb  1 e@1194 ]
-"781 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"781 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSA `Vb  1 e@1195 ]
-"783 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"783 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR0SE `Vb  1 e@1196 ]
-"785 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"785 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR0CS `Vb  1 e@1197 ]
-"787 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"787 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INTEDG `Vb  1 e@1198 ]
-"789 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"789 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nWPUEN `Vb  1 e@1199 ]
-"790 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"790 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T0SE `Vb  1 e@1196 ]
-"791 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"791 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T0CS `Vb  1 e@1197 ]
 [s S58 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S58 . PS0 PS1 PS2 PSA TMR0SE TMR0CS INTEDG nWPUEN ]
@@ -519,41 +519,41 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S59 . PS . T0SE T0CS ]
 [u S57 `S58 1 `S59 1 ]
 [n S57 . . . ]
-"810 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"810 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OPTION_REGbits `VS57  1 e@149 ]
-"815 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"815 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCON `Vuc  1 e@150 ]
-"818 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"818 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nBOR `Vb  1 e@1200 ]
-"820 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"820 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nPOR `Vb  1 e@1201 ]
-"822 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"822 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nRI `Vb  1 e@1202 ]
-"824 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"824 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _nRMCLR `Vb  1 e@1203 ]
-"826 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"826 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STKUNF `Vb  1 e@1206 ]
-"828 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"828 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STKOVF `Vb  1 e@1207 ]
 [s S61 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S61 . nBOR nPOR nRI nRMCLR . . STKUNF STKOVF ]
 [u S60 `S61 1 ]
 [n S60 . . ]
-"841 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"841 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCONbits `VS60  1 e@150 ]
-"846 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"846 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTCON `Vuc  1 e@151 ]
-"849 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"849 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SWDTEN `Vb  1 e@1208 ]
-"851 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"851 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTPS0 `Vb  1 e@1209 ]
-"853 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"853 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTPS1 `Vb  1 e@1210 ]
-"855 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"855 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTPS2 `Vb  1 e@1211 ]
-"857 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"857 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTPS3 `Vb  1 e@1212 ]
-"859 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"859 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTPS4 `Vb  1 e@1213 ]
 [s S63 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S63 . SWDTEN WDTPS0 WDTPS1 WDTPS2 WDTPS3 WDTPS4 ]
@@ -561,21 +561,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S64 . . WDTPS ]
 [u S62 `S63 1 `S64 1 ]
 [n S62 . . . ]
-"874 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"874 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WDTCONbits `VS62  1 e@151 ]
-"879 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"879 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCTUNE `Vuc  1 e@152 ]
-"882 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"882 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN0 `Vb  1 e@1216 ]
-"884 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"884 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN1 `Vb  1 e@1217 ]
-"886 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"886 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN2 `Vb  1 e@1218 ]
-"888 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"888 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN3 `Vb  1 e@1219 ]
-"890 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"890 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN4 `Vb  1 e@1220 ]
-"892 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"892 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TUN5 `Vb  1 e@1221 ]
 [s S66 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S66 . TUN0 TUN1 TUN2 TUN3 TUN4 TUN5 ]
@@ -583,23 +583,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S67 . TUN ]
 [u S65 `S66 1 `S67 1 ]
 [n S65 . . . ]
-"906 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"906 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCTUNEbits `VS65  1 e@152 ]
-"911 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"911 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCCON `Vuc  1 e@153 ]
-"914 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"914 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SCS0 `Vb  1 e@1224 ]
-"916 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"916 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SCS1 `Vb  1 e@1225 ]
-"918 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"918 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IRCF0 `Vb  1 e@1227 ]
-"920 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"920 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IRCF1 `Vb  1 e@1228 ]
-"922 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"922 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IRCF2 `Vb  1 e@1229 ]
-"924 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"924 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IRCF3 `Vb  1 e@1230 ]
-"926 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"926 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SPLLEN `Vb  1 e@1231 ]
 [s S69 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S69 . SCS0 SCS1 . IRCF0 IRCF1 IRCF2 IRCF3 SPLLEN ]
@@ -607,57 +607,57 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S70 . SCS . IRCF ]
 [u S68 `S69 1 `S70 1 ]
 [n S68 . . . ]
-"944 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"944 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCCONbits `VS68  1 e@153 ]
-"949 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"949 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCSTAT `Vuc  1 e@154 ]
-"952 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"952 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _HFIOFS `Vb  1 e@1232 ]
-"954 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"954 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LFIOFR `Vb  1 e@1233 ]
-"956 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"956 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MFIOFR `Vb  1 e@1234 ]
-"958 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"958 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _HFIOFL `Vb  1 e@1235 ]
-"960 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"960 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _HFIOFR `Vb  1 e@1236 ]
-"962 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"962 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSTS `Vb  1 e@1237 ]
-"964 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"964 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PLLR `Vb  1 e@1238 ]
-"966 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"966 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1OSCR `Vb  1 e@1239 ]
 [s S72 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S72 . HFIOFS LFIOFR MFIOFR HFIOFL HFIOFR OSTS PLLR T1OSCR ]
 [u S71 `S72 1 ]
 [n S71 . . ]
-"979 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"979 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OSCSTATbits `VS71  1 e@154 ]
-"985 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"985 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADRESL `Vuc  1 e@155 ]
-"990 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"990 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADRESH `Vuc  1 e@156 ]
-"994 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"994 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADRES `Vui  1 e@155 ]
-"998 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"998 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCON0 `Vuc  1 e@157 ]
-"1001 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1001 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADON `Vb  1 e@1256 ]
-"1003 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1003 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _GO_nDONE `Vb  1 e@1257 ]
-"1005 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1005 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CHS0 `Vb  1 e@1258 ]
-"1007 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1007 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CHS1 `Vb  1 e@1259 ]
-"1009 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1009 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CHS2 `Vb  1 e@1260 ]
-"1011 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1011 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CHS3 `Vb  1 e@1261 ]
-"1013 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1013 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CHS4 `Vb  1 e@1262 ]
-"1015 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1015 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADGO `Vb  1 e@1257 ]
-"1017 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1017 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _GO `Vb  1 e@1257 ]
 [s S74 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S74 . ADON GO_nDONE CHS0 CHS1 CHS2 CHS3 CHS4 . ]
@@ -667,23 +667,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S76 . . GO ]
 [u S73 `S74 1 `S75 1 `S76 1 ]
 [n S73 . . . . ]
-"1039 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1039 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCON0bits `VS73  1 e@157 ]
-"1044 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1044 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCON1 `Vuc  1 e@158 ]
-"1047 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1047 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADPREF0 `Vb  1 e@1264 ]
-"1049 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1049 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADPREF1 `Vb  1 e@1265 ]
-"1051 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1051 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADNREF `Vb  1 e@1266 ]
-"1053 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1053 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCS0 `Vb  1 e@1268 ]
-"1055 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1055 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCS1 `Vb  1 e@1269 ]
-"1057 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1057 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCS2 `Vb  1 e@1270 ]
-"1059 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1059 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADFM `Vb  1 e@1271 ]
 [s S78 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S78 . ADPREF0 ADPREF1 ADNREF . ADCS0 ADCS1 ADCS2 ADFM ]
@@ -691,19 +691,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S79 . ADPREF . ADCS ]
 [u S77 `S78 1 `S79 1 ]
 [n S77 . . . ]
-"1077 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1077 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADCON1bits `VS77  1 e@158 ]
-"1086 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1086 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA `Vuc  1 e@268 ]
-"1088 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1088 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA0 `Vb  1 e@2144 ]
-"1089 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1089 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA1 `Vb  1 e@2145 ]
-"1090 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1090 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA2 `Vb  1 e@2146 ]
-"1091 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1091 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA4 `Vb  1 e@2148 ]
-"1092 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1092 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATA5 `Vb  1 e@2149 ]
 [s S81 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S81 . LATA0 LATA1 LATA2 . LATA4 LATA5 . . ]
@@ -711,17 +711,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S82 . LATA . ]
 [u S80 `S81 1 `S82 1 ]
 [n S80 . . . ]
-"1109 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1109 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATAbits `VS80  1 e@268 ]
-"1113 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1113 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATB `Vuc  1 e@269 ]
-"1115 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1115 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATB4 `Vb  1 e@2156 ]
-"1116 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1116 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATB5 `Vb  1 e@2157 ]
-"1117 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1117 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATB6 `Vb  1 e@2158 ]
-"1118 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1118 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATB7 `Vb  1 e@2159 ]
 [s S84 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S84 . . LATB4 LATB5 LATB6 LATB7 ]
@@ -729,67 +729,67 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S85 . . LATB ]
 [u S83 `S84 1 `S85 1 ]
 [n S83 . . . ]
-"1132 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1132 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATBbits `VS83  1 e@269 ]
-"1136 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1136 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC `Vuc  1 e@270 ]
-"1138 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1138 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC0 `Vb  1 e@2160 ]
-"1139 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1139 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC1 `Vb  1 e@2161 ]
-"1140 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1140 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC2 `Vb  1 e@2162 ]
-"1141 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1141 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC3 `Vb  1 e@2163 ]
-"1142 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1142 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC4 `Vb  1 e@2164 ]
-"1143 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1143 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC5 `Vb  1 e@2165 ]
-"1144 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1144 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC6 `Vb  1 e@2166 ]
-"1145 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1145 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATC7 `Vb  1 e@2167 ]
 [s S87 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S87 . LATC0 LATC1 LATC2 LATC3 LATC4 LATC5 LATC6 LATC7 ]
 [u S86 `S87 1 ]
 [n S86 . . ]
-"1158 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1158 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LATCbits `VS86  1 e@270 ]
-"1162 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1162 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM1CON0 `Vuc  1 e@273 ]
-"1165 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1165 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1SYNC `Vb  1 e@2184 ]
-"1167 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1167 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1HYS `Vb  1 e@2185 ]
-"1169 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1169 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1SP `Vb  1 e@2186 ]
-"1171 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1171 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1POL `Vb  1 e@2188 ]
-"1173 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1173 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1OE `Vb  1 e@2189 ]
-"1175 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1175 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1OUT `Vb  1 e@2190 ]
-"1177 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1177 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1ON `Vb  1 e@2191 ]
 [s S89 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S89 . C1SYNC C1HYS C1SP . C1POL C1OE C1OUT C1ON ]
 [u S88 `S89 1 ]
 [n S88 . . ]
-"1190 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1190 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM1CON0bits `VS88  1 e@273 ]
-"1194 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1194 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM1CON1 `Vuc  1 e@274 ]
-"1197 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1197 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1NCH0 `Vb  1 e@2192 ]
-"1199 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1199 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1NCH1 `Vb  1 e@2193 ]
-"1201 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1201 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1PCH0 `Vb  1 e@2196 ]
-"1203 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1203 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1PCH1 `Vb  1 e@2197 ]
-"1205 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1205 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1INTN `Vb  1 e@2198 ]
-"1207 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1207 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1INTP `Vb  1 e@2199 ]
 [s S91 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S91 . C1NCH0 C1NCH1 . C1PCH0 C1PCH1 C1INTN C1INTP ]
@@ -797,43 +797,43 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S92 . C1NCH . C1PCH ]
 [u S90 `S91 1 `S92 1 ]
 [n S90 . . . ]
-"1224 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1224 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM1CON1bits `VS90  1 e@274 ]
-"1228 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1228 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM2CON0 `Vuc  1 e@275 ]
-"1230 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1230 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2SYNC `Vb  1 e@2200 ]
-"1231 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1231 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2HYS `Vb  1 e@2201 ]
-"1232 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1232 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2SP `Vb  1 e@2202 ]
-"1233 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1233 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2POL `Vb  1 e@2204 ]
-"1234 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1234 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2OE `Vb  1 e@2205 ]
-"1235 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1235 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2OUT `Vb  1 e@2206 ]
-"1236 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1236 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2ON `Vb  1 e@2207 ]
 [s S94 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S94 . C2SYNC C2HYS C2SP . C2POL C2OE C2OUT C2ON ]
 [u S93 `S94 1 ]
 [n S93 . . ]
-"1249 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1249 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM2CON0bits `VS93  1 e@275 ]
-"1253 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1253 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM2CON1 `Vuc  1 e@276 ]
-"1256 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1256 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2NCH0 `Vb  1 e@2208 ]
-"1258 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1258 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2NCH1 `Vb  1 e@2209 ]
-"1260 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1260 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2PCH0 `Vb  1 e@2212 ]
-"1262 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1262 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2PCH1 `Vb  1 e@2213 ]
-"1264 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1264 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2INTN `Vb  1 e@2214 ]
-"1266 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1266 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2INTP `Vb  1 e@2215 ]
 [s S96 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S96 . C2NCH0 C2NCH1 . C2PCH0 C2PCH1 C2INTN C2INTP ]
@@ -841,49 +841,49 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S97 . C2NCH . C2PCH ]
 [u S95 `S96 1 `S97 1 ]
 [n S95 . . . ]
-"1283 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1283 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CM2CON1bits `VS95  1 e@276 ]
-"1288 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1288 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CMOUT `Vuc  1 e@277 ]
-"1290 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1290 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MC1OUT `Vb  1 e@2216 ]
-"1291 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1291 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MC2OUT `Vb  1 e@2217 ]
 [s S99 :1 `uc 1 :1 `uc 1 ]
 [n S99 . MC1OUT MC2OUT ]
 [u S98 `S99 1 ]
 [n S98 . . ]
-"1298 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1298 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CMOUTbits `VS98  1 e@277 ]
-"1303 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1303 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BORCON `Vuc  1 e@278 ]
-"1306 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1306 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BORRDY `Vb  1 e@2224 ]
-"1308 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1308 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SBOREN `Vb  1 e@2231 ]
 [s S101 :1 `uc 1 :6 `uc 1 :1 `uc 1 ]
 [n S101 . BORRDY . SBOREN ]
 [u S100 `S101 1 ]
 [n S100 . . ]
-"1316 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1316 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BORCONbits `VS100  1 e@278 ]
-"1321 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1321 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FVRCON `Vuc  1 e@279 ]
-"1324 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1324 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADFVR0 `Vb  1 e@2232 ]
-"1326 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1326 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADFVR1 `Vb  1 e@2233 ]
-"1328 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1328 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CDAFVR0 `Vb  1 e@2234 ]
-"1330 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1330 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CDAFVR1 `Vb  1 e@2235 ]
-"1332 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1332 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TSRNG `Vb  1 e@2236 ]
-"1334 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1334 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TSEN `Vb  1 e@2237 ]
-"1336 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1336 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FVRRDY `Vb  1 e@2238 ]
-"1338 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1338 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FVREN `Vb  1 e@2239 ]
 [s S103 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S103 . ADFVR0 ADFVR1 CDAFVR0 CDAFVR1 TSRNG TSEN FVRRDY FVREN ]
@@ -891,21 +891,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S104 . ADFVR CDAFVR ]
 [u S102 `S103 1 `S104 1 ]
 [n S102 . . . ]
-"1355 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1355 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FVRCONbits `VS102  1 e@279 ]
-"1360 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1360 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACCON0 `Vuc  1 e@280 ]
-"1363 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1363 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACNSS `Vb  1 e@2240 ]
-"1365 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1365 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACPSS0 `Vb  1 e@2242 ]
-"1367 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1367 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACPSS1 `Vb  1 e@2243 ]
-"1369 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1369 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACOE `Vb  1 e@2245 ]
-"1371 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1371 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACLPS `Vb  1 e@2246 ]
-"1373 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1373 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACEN `Vb  1 e@2247 ]
 [s S106 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S106 . DACNSS . DACPSS0 DACPSS1 . DACOE DACLPS DACEN ]
@@ -913,19 +913,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S107 . . DACPSS ]
 [u S105 `S106 1 `S107 1 ]
 [n S105 . . . ]
-"1390 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1390 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACCON0bits `VS105  1 e@280 ]
-"1395 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1395 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACCON1 `Vuc  1 e@281 ]
-"1398 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1398 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACR0 `Vb  1 e@2248 ]
-"1400 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1400 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACR1 `Vb  1 e@2249 ]
-"1402 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1402 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACR2 `Vb  1 e@2250 ]
-"1404 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1404 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACR3 `Vb  1 e@2251 ]
-"1406 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1406 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACR4 `Vb  1 e@2252 ]
 [s S109 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S109 . DACR0 DACR1 DACR2 DACR3 DACR4 . ]
@@ -933,25 +933,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S110 . DACR ]
 [u S108 `S109 1 `S110 1 ]
 [n S108 . . . ]
-"1420 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1420 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DACCON1bits `VS108  1 e@281 ]
-"1425 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1425 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCON0 `Vuc  1 e@282 ]
-"1428 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1428 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRPR `Vb  1 e@2256 ]
-"1430 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1430 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRPS `Vb  1 e@2257 ]
-"1432 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1432 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRNQEN `Vb  1 e@2258 ]
-"1434 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1434 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRQEN `Vb  1 e@2259 ]
-"1436 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1436 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCLK0 `Vb  1 e@2260 ]
-"1438 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1438 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCLK1 `Vb  1 e@2261 ]
-"1440 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1440 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCLK2 `Vb  1 e@2262 ]
-"1442 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1442 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRLEN `Vb  1 e@2263 ]
 [s S112 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S112 . SRPR SRPS SRNQEN SRQEN SRCLK0 SRCLK1 SRCLK2 SRLEN ]
@@ -959,75 +959,75 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S113 . . SRCLK ]
 [u S111 `S112 1 `S113 1 ]
 [n S111 . . . ]
-"1459 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1459 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCON0bits `VS111  1 e@282 ]
-"1464 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1464 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCON1 `Vuc  1 e@283 ]
-"1467 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1467 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRRC1E `Vb  1 e@2264 ]
-"1469 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1469 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRRC2E `Vb  1 e@2265 ]
-"1471 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1471 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRRCKE `Vb  1 e@2266 ]
-"1473 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1473 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRRPE `Vb  1 e@2267 ]
-"1475 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1475 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRSC1E `Vb  1 e@2268 ]
-"1477 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1477 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRSC2E `Vb  1 e@2269 ]
-"1479 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1479 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRSCKE `Vb  1 e@2270 ]
-"1481 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1481 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRSPE `Vb  1 e@2271 ]
 [s S115 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S115 . SRRC1E SRRC2E SRRCKE SRRPE SRSC1E SRSC2E SRSCKE SRSPE ]
 [u S114 `S115 1 ]
 [n S114 . . ]
-"1494 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1494 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SRCON1bits `VS114  1 e@283 ]
-"1499 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1499 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _APFCON0 `Vuc  1 e@285 ]
-"1501 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1501 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXCKSEL `Vb  1 e@2282 ]
-"1502 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1502 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T1GSEL `Vb  1 e@2283 ]
-"1503 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1503 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RXDTSEL `Vb  1 e@2287 ]
 [s S117 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S117 . . . TXCKSEL T1GSEL . . . RXDTSEL ]
 [u S116 `S117 1 ]
 [n S116 . . ]
-"1516 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1516 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _APFCON0bits `VS116  1 e@285 ]
-"1520 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1520 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _APFCON1 `Vuc  1 e@286 ]
-"1522 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1522 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2SEL `Vb  1 e@2288 ]
-"1523 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1523 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2BSEL `Vb  1 e@2289 ]
-"1524 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1524 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1CSEL `Vb  1 e@2290 ]
-"1525 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1525 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DSEL `Vb  1 e@2291 ]
-"1526 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1526 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SS2SEL `Vb  1 e@2292 ]
-"1527 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1527 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SDO2SEL `Vb  1 e@2293 ]
 [s S119 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S119 . CCP2SEL P2BSEL P1CSEL P1DSEL SS2SEL SDO2SEL ]
 [u S118 `S119 1 ]
 [n S118 . . ]
-"1538 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1538 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _APFCON1bits `VS118  1 e@286 ]
-"1547 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1547 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELA `Vuc  1 e@396 ]
-"1549 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1549 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSA0 `Vb  1 e@3168 ]
-"1550 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1550 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSA1 `Vb  1 e@3169 ]
-"1551 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1551 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSA2 `Vb  1 e@3170 ]
-"1552 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1552 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSA4 `Vb  1 e@3172 ]
 [s S121 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S121 . ANSA0 ANSA1 ANSA2 . ANSA4 . . . ]
@@ -1035,17 +1035,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S122 . ANSELA . ]
 [u S120 `S121 1 `S122 1 ]
 [n S120 . . . ]
-"1569 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1569 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELAbits `VS120  1 e@396 ]
-"1573 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1573 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELB `Vuc  1 e@397 ]
-"1575 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1575 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSB4 `Vb  1 e@3180 ]
-"1576 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1576 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSB5 `Vb  1 e@3181 ]
-"1577 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1577 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSB6 `Vb  1 e@3182 ]
-"1578 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1578 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSB7 `Vb  1 e@3183 ]
 [s S124 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S124 . . ANSB4 ANSB5 ANSB6 ANSB7 ]
@@ -1053,171 +1053,171 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S125 . . ANSELB ]
 [u S123 `S124 1 `S125 1 ]
 [n S123 . . . ]
-"1592 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1592 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELBbits `VS123  1 e@397 ]
-"1596 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1596 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELC `Vuc  1 e@398 ]
-"1598 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1598 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC0 `Vb  1 e@3184 ]
-"1599 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1599 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC1 `Vb  1 e@3185 ]
-"1600 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1600 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC2 `Vb  1 e@3186 ]
-"1601 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1601 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC3 `Vb  1 e@3187 ]
-"1602 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1602 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC6 `Vb  1 e@3190 ]
-"1603 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1603 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSC7 `Vb  1 e@3191 ]
 [s S127 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S127 . ANSC0 ANSC1 ANSC2 ANSC3 . . ANSC6 ANSC7 ]
 [u S126 `S127 1 ]
 [n S126 . . ]
-"1616 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1616 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ANSELCbits `VS126  1 e@398 ]
-"1621 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1621 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEADRL `Vuc  1 e@401 ]
-"1625 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1625 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEADRH `Vuc  1 e@402 ]
 [s S129 :7 `uc 1 ]
 [n S129 . EEADRH ]
 [u S128 `S129 1 ]
 [n S128 . . ]
-"1632 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1632 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEADRHbits `VS128  1 e@402 ]
-"1636 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1636 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEADR `Vui  1 e@401 ]
-"1640 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1640 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEDATL `Vuc  1 e@403 ]
-"1641 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1641 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEDATA `Vuc  1 e@403 ]
-"1645 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1645 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEDATH `Vuc  1 e@404 ]
 [s S131 :6 `uc 1 ]
 [n S131 . EEDATH ]
 [u S130 `S131 1 ]
 [n S130 . . ]
-"1652 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1652 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEDATHbits `VS130  1 e@404 ]
-"1656 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1656 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEDAT `Vui  1 e@403 ]
-"1659 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1659 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EECON1 `Vuc  1 e@405 ]
-"1662 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1662 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RD `Vb  1 e@3240 ]
-"1664 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1664 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WR `Vb  1 e@3241 ]
-"1666 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1666 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WREN `Vb  1 e@3242 ]
-"1668 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1668 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WRERR `Vb  1 e@3243 ]
-"1670 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1670 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FREE `Vb  1 e@3244 ]
-"1672 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1672 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _LWLO `Vb  1 e@3245 ]
-"1674 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1674 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CFGS `Vb  1 e@3246 ]
-"1676 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1676 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EEPGD `Vb  1 e@3247 ]
 [s S133 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S133 . RD WR WREN WRERR FREE LWLO CFGS EEPGD ]
 [u S132 `S133 1 ]
 [n S132 . . ]
-"1689 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1689 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EECON1bits `VS132  1 e@405 ]
-"1693 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1693 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _EECON2 `Vuc  1 e@406 ]
-"1697 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1697 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCREG `Vuc  1 e@409 ]
-"1701 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1701 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXREG `Vuc  1 e@410 ]
-"1705 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1705 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SPBRGL `Vuc  1 e@411 ]
-"1706 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1706 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SPBRG `Vuc  1 e@411 ]
-"1710 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1710 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SPBRGH `Vuc  1 e@412 ]
-"1715 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1715 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCSTA `Vuc  1 e@413 ]
-"1718 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1718 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RX9D `Vb  1 e@3304 ]
-"1720 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1720 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _OERR `Vb  1 e@3305 ]
-"1722 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1722 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FERR `Vb  1 e@3306 ]
-"1724 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1724 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ADDEN `Vb  1 e@3307 ]
-"1726 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1726 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CREN `Vb  1 e@3308 ]
-"1728 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1728 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SREN `Vb  1 e@3309 ]
-"1730 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1730 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RX9 `Vb  1 e@3310 ]
-"1732 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1732 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SPEN `Vb  1 e@3311 ]
 [s S135 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S135 . RX9D OERR FERR ADDEN CREN SREN RX9 SPEN ]
 [u S134 `S135 1 ]
 [n S134 . . ]
-"1745 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1745 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCSTAbits `VS134  1 e@413 ]
-"1750 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1750 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXSTA `Vuc  1 e@414 ]
-"1753 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1753 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TX9D `Vb  1 e@3312 ]
-"1755 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1755 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TRMT `Vb  1 e@3313 ]
-"1757 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1757 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BRGH `Vb  1 e@3314 ]
-"1759 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1759 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SENDB `Vb  1 e@3315 ]
-"1761 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1761 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SYNC `Vb  1 e@3316 ]
-"1763 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1763 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXEN `Vb  1 e@3317 ]
-"1765 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1765 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TX9 `Vb  1 e@3318 ]
-"1767 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1767 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CSRC `Vb  1 e@3319 ]
 [s S137 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S137 . TX9D TRMT BRGH SENDB SYNC TXEN TX9 CSRC ]
 [u S136 `S137 1 ]
 [n S136 . . ]
-"1780 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1780 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TXSTAbits `VS136  1 e@414 ]
-"1785 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1785 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BAUDCON `Vuc  1 e@415 ]
-"1788 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1788 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ABDEN `Vb  1 e@3320 ]
-"1790 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1790 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WUE `Vb  1 e@3321 ]
-"1792 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1792 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BRG16 `Vb  1 e@3323 ]
-"1794 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1794 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SCKP `Vb  1 e@3324 ]
-"1796 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1796 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _RCIDL `Vb  1 e@3326 ]
-"1798 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1798 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ABDOVF `Vb  1 e@3327 ]
 [s S139 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S139 . ABDEN WUE . BRG16 SCKP . RCIDL ABDOVF ]
 [u S138 `S139 1 ]
 [n S138 . . ]
-"1811 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1811 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BAUDCONbits `VS138  1 e@415 ]
-"1820 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1820 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA `Vuc  1 e@524 ]
-"1822 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1822 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA0 `Vb  1 e@4192 ]
-"1823 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1823 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA1 `Vb  1 e@4193 ]
-"1824 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1824 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA2 `Vb  1 e@4194 ]
-"1825 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1825 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA3 `Vb  1 e@4195 ]
-"1826 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1826 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA4 `Vb  1 e@4196 ]
-"1827 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1827 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUA5 `Vb  1 e@4197 ]
 [s S141 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S141 . WPUA0 WPUA1 WPUA2 WPUA3 WPUA4 WPUA5 ]
@@ -1225,17 +1225,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S142 . WPUA . ]
 [u S140 `S141 1 `S142 1 ]
 [n S140 . . . ]
-"1842 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1842 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUAbits `VS140  1 e@524 ]
-"1846 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1846 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUB `Vuc  1 e@525 ]
-"1848 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1848 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUB4 `Vb  1 e@4204 ]
-"1849 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1849 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUB5 `Vb  1 e@4205 ]
-"1850 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1850 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUB6 `Vb  1 e@4206 ]
-"1851 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1851 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUB7 `Vb  1 e@4207 ]
 [s S144 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S144 . . WPUB4 WPUB5 WPUB6 WPUB7 ]
@@ -1243,59 +1243,59 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S145 . . WPUB ]
 [u S143 `S144 1 `S145 1 ]
 [n S143 . . . ]
-"1865 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1865 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUBbits `VS143  1 e@525 ]
-"1869 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1869 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC `Vuc  1 e@526 ]
-"1871 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1871 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC0 `Vb  1 e@4208 ]
-"1872 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1872 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC1 `Vb  1 e@4209 ]
-"1873 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1873 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC2 `Vb  1 e@4210 ]
-"1874 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1874 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC3 `Vb  1 e@4211 ]
-"1875 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1875 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC4 `Vb  1 e@4212 ]
-"1876 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1876 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC5 `Vb  1 e@4213 ]
-"1877 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1877 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC6 `Vb  1 e@4214 ]
-"1878 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1878 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUC7 `Vb  1 e@4215 ]
 [s S147 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S147 . WPUC0 WPUC1 WPUC2 WPUC3 WPUC4 WPUC5 WPUC6 WPUC7 ]
 [u S146 `S147 1 ]
 [n S146 . . ]
-"1891 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1891 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WPUCbits `VS146  1 e@526 ]
-"1895 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1895 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1BUF `Vuc  1 e@529 ]
-"1896 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1896 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPBUF `Vuc  1 e@529 ]
-"1900 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1900 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1ADD `Vuc  1 e@530 ]
-"1901 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1901 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPADD `Vuc  1 e@530 ]
-"1905 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1905 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1MSK `Vuc  1 e@531 ]
-"1906 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1906 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPMSK `Vuc  1 e@531 ]
-"1910 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1910 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1STAT `Vuc  1 e@532 ]
-"1911 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1911 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPSTAT `Vuc  1 e@532 ]
 [s S149 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S149 . BF UA R_nW S P D_nA CKE SMP ]
 [u S148 `S149 1 ]
 [n S148 . . ]
-"1933 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1933 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1STATbits `VS148  1 e@532 ]
-"1937 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1937 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON1 `Vuc  1 e@533 ]
-"1938 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1938 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPCON1 `Vuc  1 e@533 ]
-"1939 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1939 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPCON `Vuc  1 e@533 ]
 [s S151 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S151 . SSPM0 SSPM1 SSPM2 SSPM3 CKP SSPEN SSPOV WCOL ]
@@ -1303,43 +1303,43 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S152 . SSPM ]
 [u S150 `S151 1 `S152 1 ]
 [n S150 . . . ]
-"1964 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1964 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON1bits `VS150  1 e@533 ]
-"1968 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1968 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON2 `Vuc  1 e@534 ]
-"1969 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1969 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPCON2 `Vuc  1 e@534 ]
 [s S154 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S154 . SEN RSEN PEN RCEN ACKEN ACKDT ACKSTAT GCEN ]
 [u S153 `S154 1 ]
 [n S153 . . ]
-"1991 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1991 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON2bits `VS153  1 e@534 ]
-"1995 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1995 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON3 `Vuc  1 e@535 ]
-"1996 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"1996 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSPCON3 `Vuc  1 e@535 ]
 [s S156 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S156 . DHEN AHEN SBCDE SDAHT BOEN SCIE PCIE ACKTIM ]
 [u S155 `S156 1 ]
 [n S155 . . ]
-"2018 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2018 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP1CON3bits `VS155  1 e@535 ]
-"2022 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2022 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2BUF `Vuc  1 e@537 ]
-"2026 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2026 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2ADD `Vuc  1 e@538 ]
-"2030 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2030 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2MSK `Vuc  1 e@539 ]
-"2034 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2034 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2STAT `Vuc  1 e@540 ]
 [s S158 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S158 . BF UA R_nW S P D_nA CKE SMP ]
 [u S157 `S158 1 ]
 [n S157 . . ]
-"2056 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2056 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2STATbits `VS157  1 e@540 ]
-"2060 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2060 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON1 `Vuc  1 e@541 ]
 [s S160 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S160 . SSPM0 SSPM1 SSPM2 SSPM3 CKP SSPEN SSPOV WCOL ]
@@ -1347,45 +1347,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S161 . SSPM ]
 [u S159 `S160 1 `S161 1 ]
 [n S159 . . . ]
-"2085 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2085 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON1bits `VS159  1 e@541 ]
-"2089 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2089 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON2 `Vuc  1 e@542 ]
 [s S163 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S163 . SEN RSEN PEN RCEN ACKEN ACKDT ACKSTAT GCEN ]
 [u S162 `S163 1 ]
 [n S162 . . ]
-"2111 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2111 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON2bits `VS162  1 e@542 ]
-"2115 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2115 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON3 `Vuc  1 e@543 ]
 [s S165 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S165 . DHEN AHEN SBCDE SDAHT BOEN SCIE PCIE ACKTIM ]
 [u S164 `S165 1 ]
 [n S164 . . ]
-"2137 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2137 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _SSP2CON3bits `VS164  1 e@543 ]
-"2146 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2146 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR1L `Vuc  1 e@657 ]
-"2150 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2150 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR1H `Vuc  1 e@658 ]
-"2154 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2154 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1CON `Vuc  1 e@659 ]
-"2156 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2156 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1M0 `Vb  1 e@5272 ]
-"2157 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2157 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1M1 `Vb  1 e@5273 ]
-"2158 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2158 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1M2 `Vb  1 e@5274 ]
-"2159 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2159 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1M3 `Vb  1 e@5275 ]
-"2160 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2160 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC1B0 `Vb  1 e@5276 ]
-"2161 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2161 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC1B1 `Vb  1 e@5277 ]
-"2162 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2162 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1M0 `Vb  1 e@5278 ]
-"2163 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2163 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1M1 `Vb  1 e@5279 ]
 [s S167 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S167 . CCP1M0 CCP1M1 CCP1M2 CCP1M3 DC1B0 DC1B1 P1M0 P1M1 ]
@@ -1393,25 +1393,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S168 . CCP1M DC1B P1M ]
 [u S166 `S167 1 `S168 1 ]
 [n S166 . . . ]
-"2181 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2181 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1CONbits `VS166  1 e@659 ]
-"2185 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2185 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PWM1CON `Vuc  1 e@660 ]
-"2187 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2187 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC0 `Vb  1 e@5280 ]
-"2188 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2188 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC1 `Vb  1 e@5281 ]
-"2189 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2189 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC2 `Vb  1 e@5282 ]
-"2190 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2190 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC3 `Vb  1 e@5283 ]
-"2191 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2191 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC4 `Vb  1 e@5284 ]
-"2192 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2192 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC5 `Vb  1 e@5285 ]
-"2193 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2193 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1DC6 `Vb  1 e@5286 ]
-"2194 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2194 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P1RSEN `Vb  1 e@5287 ]
 [s S170 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S170 . P1DC0 P1DC1 P1DC2 P1DC3 P1DC4 P1DC5 P1DC6 P1RSEN ]
@@ -1419,27 +1419,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S171 . P1DC ]
 [u S169 `S170 1 `S171 1 ]
 [n S169 . . . ]
-"2210 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2210 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PWM1CONbits `VS169  1 e@660 ]
-"2214 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2214 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1AS `Vuc  1 e@661 ]
-"2215 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2215 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _ECCP1AS `Vuc  1 e@661 ]
-"2217 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2217 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS1BD0 `Vb  1 e@5288 ]
-"2218 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2218 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS1BD1 `Vb  1 e@5289 ]
-"2219 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2219 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS1AC0 `Vb  1 e@5290 ]
-"2220 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2220 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS1AC1 `Vb  1 e@5291 ]
-"2221 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2221 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1AS0 `Vb  1 e@5292 ]
-"2222 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2222 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1AS1 `Vb  1 e@5293 ]
-"2223 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2223 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1AS2 `Vb  1 e@5294 ]
-"2224 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2224 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1ASE `Vb  1 e@5295 ]
 [s S173 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S173 . PSS1BD0 PSS1BD1 PSS1AC0 PSS1AC1 CCP1AS0 CCP1AS1 CCP1AS2 CCP1ASE ]
@@ -1447,47 +1447,47 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S174 . PSS1BD PSS1AC CCP1AS ]
 [u S172 `S173 1 `S174 1 ]
 [n S172 . . . ]
-"2242 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2242 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP1ASbits `VS172  1 e@661 ]
-"2246 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2246 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSTR1CON `Vuc  1 e@662 ]
-"2248 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2248 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR1A `Vb  1 e@5296 ]
-"2249 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2249 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR1B `Vb  1 e@5297 ]
-"2250 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2250 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR1C `Vb  1 e@5298 ]
-"2251 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2251 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR1D `Vb  1 e@5299 ]
-"2252 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2252 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR1SYNC `Vb  1 e@5300 ]
 [s S176 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S176 . STR1A STR1B STR1C STR1D STR1SYNC ]
 [u S175 `S176 1 ]
 [n S175 . . ]
-"2262 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2262 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSTR1CONbits `VS175  1 e@662 ]
-"2266 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2266 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR2L `Vuc  1 e@664 ]
-"2270 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2270 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR2H `Vuc  1 e@665 ]
-"2274 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2274 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2CON `Vuc  1 e@666 ]
-"2276 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2276 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2M0 `Vb  1 e@5328 ]
-"2277 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2277 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2M1 `Vb  1 e@5329 ]
-"2278 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2278 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2M2 `Vb  1 e@5330 ]
-"2279 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2279 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2M3 `Vb  1 e@5331 ]
-"2280 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2280 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC2B0 `Vb  1 e@5332 ]
-"2281 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2281 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC2B1 `Vb  1 e@5333 ]
-"2282 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2282 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2M0 `Vb  1 e@5334 ]
-"2283 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2283 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2M1 `Vb  1 e@5335 ]
 [s S178 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S178 . CCP2M0 CCP2M1 CCP2M2 CCP2M3 DC2B0 DC2B1 P2M0 P2M1 ]
@@ -1495,25 +1495,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S179 . CCP2M DC2B P2M ]
 [u S177 `S178 1 `S179 1 ]
 [n S177 . . . ]
-"2301 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2301 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2CONbits `VS177  1 e@666 ]
-"2305 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2305 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PWM2CON `Vuc  1 e@667 ]
-"2307 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2307 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC0 `Vb  1 e@5336 ]
-"2308 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2308 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC1 `Vb  1 e@5337 ]
-"2309 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2309 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC2 `Vb  1 e@5338 ]
-"2310 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2310 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC3 `Vb  1 e@5339 ]
-"2311 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2311 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC4 `Vb  1 e@5340 ]
-"2312 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2312 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC5 `Vb  1 e@5341 ]
-"2313 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2313 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2DC6 `Vb  1 e@5342 ]
-"2314 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2314 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _P2RSEN `Vb  1 e@5343 ]
 [s S181 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S181 . P2DC0 P2DC1 P2DC2 P2DC3 P2DC4 P2DC5 P2DC6 P2RSEN ]
@@ -1521,25 +1521,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S182 . P2DC ]
 [u S180 `S181 1 `S182 1 ]
 [n S180 . . . ]
-"2330 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2330 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PWM2CONbits `VS180  1 e@667 ]
-"2334 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2334 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2AS `Vuc  1 e@668 ]
-"2336 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2336 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS2BD0 `Vb  1 e@5344 ]
-"2337 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2337 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS2BD1 `Vb  1 e@5345 ]
-"2338 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2338 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS2AC0 `Vb  1 e@5346 ]
-"2339 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2339 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSS2AC1 `Vb  1 e@5347 ]
-"2340 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2340 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2AS0 `Vb  1 e@5348 ]
-"2341 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2341 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2AS1 `Vb  1 e@5349 ]
-"2342 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2342 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2AS2 `Vb  1 e@5350 ]
-"2343 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2343 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2ASE `Vb  1 e@5351 ]
 [s S184 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S184 . PSS2BD0 PSS2BD1 PSS2AC0 PSS2AC1 CCP2AS0 CCP2AS1 CCP2AS2 CCP2ASE ]
@@ -1547,43 +1547,43 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S185 . PSS2BD PSS2AC CCP2AS ]
 [u S183 `S184 1 `S185 1 ]
 [n S183 . . . ]
-"2361 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2361 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP2ASbits `VS183  1 e@668 ]
-"2365 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2365 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSTR2CON `Vuc  1 e@669 ]
-"2367 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2367 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR2A `Vb  1 e@5352 ]
-"2368 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2368 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR2B `Vb  1 e@5353 ]
-"2369 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2369 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR2C `Vb  1 e@5354 ]
-"2370 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2370 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR2D `Vb  1 e@5355 ]
-"2371 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2371 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STR2SYNC `Vb  1 e@5356 ]
 [s S187 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S187 . STR2A STR2B STR2C STR2D STR2SYNC ]
 [u S186 `S187 1 ]
 [n S186 . . ]
-"2381 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2381 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PSTR2CONbits `VS186  1 e@669 ]
-"2385 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2385 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPTMRS `Vuc  1 e@670 ]
-"2387 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2387 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1TSEL0 `Vb  1 e@5360 ]
-"2388 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2388 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C1TSEL1 `Vb  1 e@5361 ]
-"2389 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2389 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2TSEL0 `Vb  1 e@5362 ]
-"2390 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2390 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C2TSEL1 `Vb  1 e@5363 ]
-"2391 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2391 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C3TSEL0 `Vb  1 e@5364 ]
-"2392 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2392 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C3TSEL1 `Vb  1 e@5365 ]
-"2393 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2393 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C4TSEL0 `Vb  1 e@5366 ]
-"2394 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2394 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C4TSEL1 `Vb  1 e@5367 ]
 [s S189 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S189 . C1TSEL0 C1TSEL1 C2TSEL0 C2TSEL1 C3TSEL0 C3TSEL1 C4TSEL0 C4TSEL1 ]
@@ -1591,25 +1591,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S190 . C1TSEL C2TSEL C3TSEL C4TSEL ]
 [u S188 `S189 1 `S190 1 ]
 [n S188 . . . ]
-"2413 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2413 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPTMRSbits `VS188  1 e@670 ]
-"2422 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2422 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR3L `Vuc  1 e@785 ]
-"2426 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2426 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR3H `Vuc  1 e@786 ]
-"2430 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2430 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3CON `Vuc  1 e@787 ]
-"2432 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2432 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3M0 `Vb  1 e@6296 ]
-"2433 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2433 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3M1 `Vb  1 e@6297 ]
-"2434 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2434 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3M2 `Vb  1 e@6298 ]
-"2435 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2435 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3M3 `Vb  1 e@6299 ]
-"2436 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2436 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC3B0 `Vb  1 e@6300 ]
-"2437 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2437 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC3B1 `Vb  1 e@6301 ]
 [s S192 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S192 . CCP3M0 CCP3M1 CCP3M2 CCP3M3 DC3B0 DC3B1 ]
@@ -1617,25 +1617,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S193 . CCP3M DC3B ]
 [u S191 `S192 1 `S193 1 ]
 [n S191 . . . ]
-"2452 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2452 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP3CONbits `VS191  1 e@787 ]
-"2456 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2456 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR4L `Vuc  1 e@792 ]
-"2460 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2460 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCPR4H `Vuc  1 e@793 ]
-"2464 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2464 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4CON `Vuc  1 e@794 ]
-"2466 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2466 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4M0 `Vb  1 e@6352 ]
-"2467 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2467 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4M1 `Vb  1 e@6353 ]
-"2468 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2468 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4M2 `Vb  1 e@6354 ]
-"2469 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2469 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4M3 `Vb  1 e@6355 ]
-"2470 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2470 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC4B0 `Vb  1 e@6356 ]
-"2471 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2471 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC4B1 `Vb  1 e@6357 ]
 [s S195 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S195 . CCP4M0 CCP4M1 CCP4M2 CCP4M3 DC4B0 DC4B1 ]
@@ -1643,21 +1643,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S196 . CCP4M DC4B ]
 [u S194 `S195 1 `S196 1 ]
 [n S194 . . . ]
-"2486 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2486 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CCP4CONbits `VS194  1 e@794 ]
-"2495 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2495 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA `Vuc  1 e@908 ]
-"2497 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2497 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA0 `Vb  1 e@7264 ]
-"2498 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2498 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA1 `Vb  1 e@7265 ]
-"2499 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2499 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA2 `Vb  1 e@7266 ]
-"2500 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2500 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA3 `Vb  1 e@7267 ]
-"2501 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2501 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA4 `Vb  1 e@7268 ]
-"2502 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2502 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLA5 `Vb  1 e@7269 ]
 [s S198 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S198 . INLVLA0 INLVLA1 INLVLA2 INLVLA3 INLVLA4 INLVLA5 ]
@@ -1665,17 +1665,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S199 . INLVLA ]
 [u S197 `S198 1 `S199 1 ]
 [n S197 . . . ]
-"2516 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2516 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLAbits `VS197  1 e@908 ]
-"2520 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2520 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLB `Vuc  1 e@909 ]
-"2522 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2522 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLB4 `Vb  1 e@7276 ]
-"2523 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2523 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLB5 `Vb  1 e@7277 ]
-"2524 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2524 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLB6 `Vb  1 e@7278 ]
-"2525 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2525 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLB7 `Vb  1 e@7279 ]
 [s S201 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S201 . . INLVLB4 INLVLB5 INLVLB6 INLVLB7 ]
@@ -1683,45 +1683,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S202 . . INLVLB ]
 [u S200 `S201 1 `S202 1 ]
 [n S200 . . . ]
-"2539 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2539 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLBbits `VS200  1 e@909 ]
-"2543 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2543 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC `Vuc  1 e@910 ]
-"2545 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2545 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC0 `Vb  1 e@7280 ]
-"2546 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2546 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC1 `Vb  1 e@7281 ]
-"2547 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2547 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC2 `Vb  1 e@7282 ]
-"2548 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2548 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC3 `Vb  1 e@7283 ]
-"2549 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2549 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC4 `Vb  1 e@7284 ]
-"2550 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2550 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC5 `Vb  1 e@7285 ]
-"2551 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2551 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC6 `Vb  1 e@7286 ]
-"2552 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2552 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLC7 `Vb  1 e@7287 ]
 [s S204 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S204 . INLVLC0 INLVLC1 INLVLC2 INLVLC3 INLVLC4 INLVLC5 INLVLC6 INLVLC7 ]
 [u S203 `S204 1 ]
 [n S203 . . ]
-"2565 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2565 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _INLVLCbits `VS203  1 e@910 ]
-"2570 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2570 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP `Vuc  1 e@913 ]
-"2572 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2572 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP0 `Vb  1 e@7304 ]
-"2573 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2573 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP1 `Vb  1 e@7305 ]
-"2574 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2574 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP2 `Vb  1 e@7306 ]
-"2575 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2575 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP3 `Vb  1 e@7307 ]
-"2576 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2576 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP4 `Vb  1 e@7308 ]
-"2577 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2577 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAP5 `Vb  1 e@7309 ]
 [s S206 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S206 . IOCAP0 IOCAP1 IOCAP2 IOCAP3 IOCAP4 IOCAP5 . . ]
@@ -1729,21 +1729,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S207 . IOCAP . ]
 [u S205 `S206 1 `S207 1 ]
 [n S205 . . . ]
-"2594 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2594 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAPbits `VS205  1 e@913 ]
-"2599 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2599 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN `Vuc  1 e@914 ]
-"2601 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2601 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN0 `Vb  1 e@7312 ]
-"2602 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2602 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN1 `Vb  1 e@7313 ]
-"2603 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2603 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN2 `Vb  1 e@7314 ]
-"2604 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2604 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN3 `Vb  1 e@7315 ]
-"2605 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2605 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN4 `Vb  1 e@7316 ]
-"2606 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2606 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAN5 `Vb  1 e@7317 ]
 [s S209 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S209 . IOCAN0 IOCAN1 IOCAN2 IOCAN3 IOCAN4 IOCAN5 . . ]
@@ -1751,21 +1751,21 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S210 . IOCAN . ]
 [u S208 `S209 1 `S210 1 ]
 [n S208 . . . ]
-"2623 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2623 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCANbits `VS208  1 e@914 ]
-"2628 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2628 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF `Vuc  1 e@915 ]
-"2630 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2630 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF0 `Vb  1 e@7320 ]
-"2631 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2631 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF1 `Vb  1 e@7321 ]
-"2632 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2632 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF2 `Vb  1 e@7322 ]
-"2633 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2633 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF3 `Vb  1 e@7323 ]
-"2634 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2634 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF4 `Vb  1 e@7324 ]
-"2635 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2635 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAF5 `Vb  1 e@7325 ]
 [s S212 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S212 . IOCAF0 IOCAF1 IOCAF2 IOCAF3 IOCAF4 IOCAF5 . . ]
@@ -1773,17 +1773,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S213 . IOCAF . ]
 [u S211 `S212 1 `S213 1 ]
 [n S211 . . . ]
-"2652 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2652 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCAFbits `VS211  1 e@915 ]
-"2656 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2656 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBP `Vuc  1 e@916 ]
-"2658 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2658 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBP4 `Vb  1 e@7332 ]
-"2659 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2659 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBP5 `Vb  1 e@7333 ]
-"2660 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2660 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBP6 `Vb  1 e@7334 ]
-"2661 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2661 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBP7 `Vb  1 e@7335 ]
 [s S215 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S215 . . . . . IOCBP4 IOCBP5 IOCBP6 IOCBP7 ]
@@ -1791,17 +1791,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S216 . . IOCBP ]
 [u S214 `S215 1 `S216 1 ]
 [n S214 . . . ]
-"2678 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2678 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBPbits `VS214  1 e@916 ]
-"2682 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2682 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBN `Vuc  1 e@917 ]
-"2684 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2684 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBN4 `Vb  1 e@7340 ]
-"2685 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2685 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBN5 `Vb  1 e@7341 ]
-"2686 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2686 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBN6 `Vb  1 e@7342 ]
-"2687 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2687 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBN7 `Vb  1 e@7343 ]
 [s S218 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S218 . . IOCBN4 IOCBN5 IOCBN6 IOCBN7 ]
@@ -1809,17 +1809,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S219 . . IOCBN ]
 [u S217 `S218 1 `S219 1 ]
 [n S217 . . . ]
-"2701 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2701 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBNbits `VS217  1 e@917 ]
-"2705 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2705 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBF `Vuc  1 e@918 ]
-"2707 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2707 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBF4 `Vb  1 e@7348 ]
-"2708 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2708 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBF5 `Vb  1 e@7349 ]
-"2709 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2709 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBF6 `Vb  1 e@7350 ]
-"2710 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2710 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBF7 `Vb  1 e@7351 ]
 [s S221 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S221 . . IOCBF4 IOCBF5 IOCBF6 IOCBF7 ]
@@ -1827,25 +1827,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S222 . . IOCBF ]
 [u S220 `S221 1 `S222 1 ]
 [n S220 . . . ]
-"2724 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2724 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _IOCBFbits `VS220  1 e@918 ]
-"2728 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2728 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRCON `Vuc  1 e@922 ]
-"2730 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2730 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRDIV0 `Vb  1 e@7376 ]
-"2731 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2731 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRDIV1 `Vb  1 e@7377 ]
-"2732 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2732 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRDIV2 `Vb  1 e@7378 ]
-"2733 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2733 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRDC0 `Vb  1 e@7379 ]
-"2734 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2734 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRDC1 `Vb  1 e@7380 ]
-"2735 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2735 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRSLR `Vb  1 e@7381 ]
-"2736 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2736 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKROE `Vb  1 e@7382 ]
-"2737 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2737 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKREN `Vb  1 e@7383 ]
 [s S224 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S224 . CLKRDIV0 CLKRDIV1 CLKRDIV2 CLKRDC0 CLKRDC1 CLKRSLR CLKROE CLKREN ]
@@ -1853,39 +1853,39 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S225 . CLKRDIV CLKRDC ]
 [u S223 `S224 1 `S225 1 ]
 [n S223 . . . ]
-"2754 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2754 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _CLKRCONbits `VS223  1 e@922 ]
-"2758 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2758 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCON `Vuc  1 e@924 ]
-"2760 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2760 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDBIT `Vb  1 e@7392 ]
-"2761 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2761 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDOUT `Vb  1 e@7395 ]
-"2762 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2762 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDOPOL `Vb  1 e@7396 ]
-"2763 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2763 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDSLR `Vb  1 e@7397 ]
-"2764 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2764 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDOE `Vb  1 e@7398 ]
-"2765 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2765 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDEN `Vb  1 e@7399 ]
 [s S227 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S227 . MDBIT . MDOUT MDOPOL MDSLR MDOE MDEN ]
 [u S226 `S227 1 ]
 [n S226 . . ]
-"2777 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2777 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCONbits `VS226  1 e@924 ]
-"2781 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2781 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDSRC `Vuc  1 e@925 ]
-"2783 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2783 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDMS0 `Vb  1 e@7400 ]
-"2784 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2784 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDMS1 `Vb  1 e@7401 ]
-"2785 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2785 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDMS2 `Vb  1 e@7402 ]
-"2786 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2786 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDMS3 `Vb  1 e@7403 ]
-"2787 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2787 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDMSODIS `Vb  1 e@7407 ]
 [s S229 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :3 `uc 1 :1 `uc 1 ]
 [n S229 . MDMS0 MDMS1 MDMS2 MDMS3 . MDMSODIS ]
@@ -1893,23 +1893,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S230 . MDMS ]
 [u S228 `S229 1 `S230 1 ]
 [n S228 . . . ]
-"2801 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2801 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDSRCbits `VS228  1 e@925 ]
-"2805 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2805 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCARL `Vuc  1 e@926 ]
-"2807 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2807 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCL0 `Vb  1 e@7408 ]
-"2808 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2808 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCL1 `Vb  1 e@7409 ]
-"2809 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2809 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCL2 `Vb  1 e@7410 ]
-"2810 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2810 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCL3 `Vb  1 e@7411 ]
-"2811 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2811 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCLSYNC `Vb  1 e@7413 ]
-"2812 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2812 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCLPOL `Vb  1 e@7414 ]
-"2813 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2813 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCLODIS `Vb  1 e@7415 ]
 [s S232 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S232 . MDCL0 MDCL1 MDCL2 MDCL3 . MDCLSYNC MDCLPOL MDCLODIS ]
@@ -1917,23 +1917,23 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S233 . MDCL ]
 [u S231 `S232 1 `S233 1 ]
 [n S231 . . . ]
-"2829 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2829 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCARLbits `VS231  1 e@926 ]
-"2833 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2833 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCARH `Vuc  1 e@927 ]
-"2835 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2835 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCH0 `Vb  1 e@7416 ]
-"2836 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2836 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCH1 `Vb  1 e@7417 ]
-"2837 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2837 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCH2 `Vb  1 e@7418 ]
-"2838 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2838 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCH3 `Vb  1 e@7419 ]
-"2839 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2839 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCHSYNC `Vb  1 e@7421 ]
-"2840 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2840 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCHPOL `Vb  1 e@7422 ]
-"2841 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2841 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCHODIS `Vb  1 e@7423 ]
 [s S235 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S235 . MDCH0 MDCH1 MDCH2 MDCH3 . MDCHSYNC MDCHPOL MDCHODIS ]
@@ -1941,27 +1941,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S236 . MDCH ]
 [u S234 `S235 1 `S236 1 ]
 [n S234 . . . ]
-"2857 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2857 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _MDCARHbits `VS234  1 e@927 ]
-"2866 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2866 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR4 `Vuc  1 e@1045 ]
-"2870 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2870 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PR4 `Vuc  1 e@1046 ]
-"2874 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2874 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4CON `Vuc  1 e@1047 ]
-"2876 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2876 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4CKPS0 `Vb  1 e@8376 ]
-"2877 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2877 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4CKPS1 `Vb  1 e@8377 ]
-"2878 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2878 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR4ON `Vb  1 e@8378 ]
-"2879 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2879 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4OUTPS0 `Vb  1 e@8379 ]
-"2880 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2880 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4OUTPS1 `Vb  1 e@8380 ]
-"2881 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2881 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4OUTPS2 `Vb  1 e@8381 ]
-"2882 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2882 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4OUTPS3 `Vb  1 e@8382 ]
 [s S238 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S238 . T4CKPS0 T4CKPS1 TMR4ON T4OUTPS0 T4OUTPS1 T4OUTPS2 T4OUTPS3 ]
@@ -1969,27 +1969,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S239 . T4CKPS . T4OUTPS ]
 [u S237 `S238 1 `S239 1 ]
 [n S237 . . . ]
-"2899 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2899 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T4CONbits `VS237  1 e@1047 ]
-"2903 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2903 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR6 `Vuc  1 e@1052 ]
-"2907 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2907 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PR6 `Vuc  1 e@1053 ]
-"2911 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2911 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6CON `Vuc  1 e@1054 ]
-"2913 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2913 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6CKPS0 `Vb  1 e@8432 ]
-"2914 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2914 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6CKPS1 `Vb  1 e@8433 ]
-"2915 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2915 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TMR6ON `Vb  1 e@8434 ]
-"2916 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2916 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6OUTPS0 `Vb  1 e@8435 ]
-"2917 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2917 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6OUTPS1 `Vb  1 e@8436 ]
-"2918 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2918 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6OUTPS2 `Vb  1 e@8437 ]
-"2919 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2919 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6OUTPS3 `Vb  1 e@8438 ]
 [s S241 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S241 . T6CKPS0 T6CKPS1 TMR6ON T6OUTPS0 T6OUTPS1 T6OUTPS2 T6OUTPS3 ]
@@ -1997,65 +1997,65 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S242 . T6CKPS . T6OUTPS ]
 [u S240 `S241 1 `S242 1 ]
 [n S240 . . . ]
-"2936 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2936 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _T6CONbits `VS240  1 e@1054 ]
-"2945 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2945 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STATUS_SHAD `Vuc  1 e@4068 ]
-"2947 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2947 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _C_SHAD `Vb  1 e@32544 ]
-"2948 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2948 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _DC_SHAD `Vb  1 e@32545 ]
-"2949 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2949 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _Z_SHAD `Vb  1 e@32546 ]
 [s S244 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S244 . C_SHAD DC_SHAD Z_SHAD ]
 [u S243 `S244 1 ]
 [n S243 . . ]
-"2957 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2957 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STATUS_SHADbits `VS243  1 e@4068 ]
-"2961 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2961 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _WREG_SHAD `Vuc  1 e@4069 ]
-"2965 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2965 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR_SHAD `Vuc  1 e@4070 ]
 [s S246 :5 `uc 1 ]
 [n S246 . BSR_SHAD ]
 [u S245 `S246 1 ]
 [n S245 . . ]
-"2972 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2972 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _BSR_SHADbits `VS245  1 e@4070 ]
-"2976 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2976 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCLATH_SHAD `Vuc  1 e@4071 ]
 [s S248 :7 `uc 1 ]
 [n S248 . PCLATH_SHAD ]
 [u S247 `S248 1 ]
 [n S247 . . ]
-"2983 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2983 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _PCLATH_SHADbits `VS247  1 e@4071 ]
-"2987 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2987 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR0L_SHAD `Vuc  1 e@4072 ]
-"2991 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2991 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR0H_SHAD `Vuc  1 e@4073 ]
-"2995 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2995 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR1L_SHAD `Vuc  1 e@4074 ]
-"2999 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"2999 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _FSR1H_SHAD `Vuc  1 e@4075 ]
-"3004 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"3004 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STKPTR `Vuc  1 e@4077 ]
 [s S250 :5 `uc 1 ]
 [n S250 . STKPTR ]
 [u S249 `S250 1 ]
 [n S249 . . ]
-"3011 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"3011 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _STKPTRbits `VS249  1 e@4077 ]
-"3016 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"3016 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TOSL `Vuc  1 e@4078 ]
-"3021 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"3021 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TOSH `Vuc  1 e@4079 ]
 [s S252 :7 `uc 1 ]
 [n S252 . TOSH ]
 [u S251 `S252 1 ]
 [n S251 . . ]
-"3028 C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h
+"3028 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TOSHbits `VS251  1 e@4079 ]
 [; ;pic16f1829.h: 132: volatile unsigned char INDF0 @ 0x000;
 [; ;pic16f1829.h: 136: volatile unsigned char INDF1 @ 0x001;
@@ -4009,49 +4009,49 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;eeprom_routines.h: 43: extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 [; ;eeprom_routines.h: 44: extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 [; ;pic.h: 154: extern void _delay(unsigned long);
-[; ;dac.h: 3: void setDAC(unsigned char dac);
-[; ;dac.h: 4: void enableDAC(void);
-[; ;dac.h: 5: void disableDAC(void);
-"8 E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.c
+[; ;dac.h: 4: void setDAC(unsigned char dac);
+[; ;dac.h: 5: void enableDAC(void);
+[; ;dac.h: 6: void disableDAC(void);
+"8 C:\Users\Filip\Documents\MPLAB\Demo Board\dac.c
 [v _enableDAC `(v  1 ef ]
 {
 [; ;dac.c: 7: void enableDAC(void)
 [; ;dac.c: 8: {
 [e :U _enableDAC ]
 [f ]
-[; ;dac.c: 9: DACCON0=0b10100000;
+[; ;dac.c: 9: DACCON0=0b11100000;
 "9
-[e = _DACCON0 -> -> 160 `i `uc ]
-[; ;dac.c: 10: }
-"10
+[e = _DACCON0 -> -> 224 `i `uc ]
+[; ;dac.c: 13: }
+"13
 [e :UE 253 ]
 }
-"13
+"16
 [v _disableDAC `(v  1 ef ]
 {
-[; ;dac.c: 12: void disableDAC(void)
-[; ;dac.c: 13: {
+[; ;dac.c: 15: void disableDAC(void)
+[; ;dac.c: 16: {
 [e :U _disableDAC ]
 [f ]
-[; ;dac.c: 14: DACCON1=0x00;
-"14
+[; ;dac.c: 17: DACCON1=0x00;
+"17
 [e = _DACCON1 -> -> 0 `i `uc ]
-[; ;dac.c: 15: }
-"15
+[; ;dac.c: 18: }
+"18
 [e :UE 254 ]
 }
-"18
+"21
 [v _setDAC `(v  1 ef1`uc ]
 {
-[; ;dac.c: 17: void setDAC(unsigned char dac)
-[; ;dac.c: 18: {
+[; ;dac.c: 20: void setDAC(unsigned char dac)
+[; ;dac.c: 21: {
 [e :U _setDAC ]
 [v _dac `uc  1 r1 ]
 [f ]
-[; ;dac.c: 19: DACCON1=dac&0x1F;
-"19
+[; ;dac.c: 22: DACCON1=dac&0x1F;
+"22
 [e = _DACCON1 -> & -> _dac `i -> 31 `i `uc ]
-[; ;dac.c: 20: }
-"20
+[; ;dac.c: 23: }
+"23
 [e :UE 255 ]
 }

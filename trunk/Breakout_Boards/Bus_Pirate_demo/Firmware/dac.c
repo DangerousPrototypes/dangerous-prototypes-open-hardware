@@ -6,7 +6,10 @@
 
 void enableDAC(void)
 {
-	DACCON0=0b10100000;		// dacen, !lps, dacout, v+=vdd, v-=vss
+	DACCON0=0b11100000;		// dacen, !lps, dacout, v+=vdd, v-=vss
+				//76543210
+	//DACCON1=	0b00000111;
+	
 }
 
 void disableDAC(void)
