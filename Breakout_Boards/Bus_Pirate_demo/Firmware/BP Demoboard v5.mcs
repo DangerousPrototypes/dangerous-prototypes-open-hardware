@@ -2,275 +2,288 @@
 MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
 Version=1.0
 [File000]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\main.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\main.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File001]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\i2c.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\i2c.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File002]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\spi.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\spi.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File003]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\uart.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\uart.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File004]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\easteregg.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File005]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\eeprom.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File006]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\adc.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\adc.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File007]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\dac.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\dac.p1
 Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File008]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.cof
-Folder=Output
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.p1
+Folder=Intermediary
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File009]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.hex
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.cof
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File010]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.sym
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.hex
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File011]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.map
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.sym
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File012]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.hxl
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.map
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File013]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\startup.lst
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.hxl
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File014]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\startup.rlf
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\startup.lst
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File015]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\doprnt.p1
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\startup.rlf
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File016]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\doprnt.pre
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\doprnt.p1
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File017]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.obj
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\doprnt.pre
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File018]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.lst
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.obj
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File019]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.rlf
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.lst
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=
 [File020]
-Location=E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\BP Demoboard v5.sdb
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.rlf
 Folder=Output
 DeviceName=PIC16F1829
 LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
 LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
-LanguageToolLocation=C:\Program Files\HI-TECH Software\PICC\9.83\bin\picc.exe
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
 PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
-SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c||<obj>||<lib>||<lkr>||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
 SuiteArgsString=
-ToolArgsString=C9=2,1
+ToolArgsString=C9=3,2,1
+TraceCmdString=
+DebugOptions=
+[File021]
+Location=C:\Users\Filip\Documents\MPLAB\Demo Board\BP Demoboard v5.sdb
+Folder=Output
+DeviceName=PIC16F1829
+LanguageToolSuiteID={507D93FD-16F1-4270-980F-0C7C0207E6D3}
+LanguageToolID={0F51667C-2BAF-4EF8-A2C9-AB83788A793D}
+LanguageToolLocation=C:\Program Files (x86)\HI-TECH Software\PICC\9.82\bin\picc.exe
+PPAD=$(BINDIR)||$(TMPDIR)||$(AINDIR)||$(INCDIR)||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|main.c|i2c.c|spi.c|uart.c|easteregg.c|eeprom.c|adc.c|dac.c|pwm.c||<obj>||<lib>||<lkr>||
+SuiteArgsString=
+ToolArgsString=C9=3,2,1
 TraceCmdString=
 DebugOptions=

@@ -1,11 +1,11 @@
 
 
-HI-TECH Software PIC Macro Assembler V9.83 build 10920 
-                                                                                                           Thu Nov 17 15:52:55 2011
+HI-TECH Software PIC Macro Assembler V9.82 build 9453 
+                                                                                                           Thu Aug 16 16:15:04 2012
 
 
      1                           
-     2                           	; HI-TECH C Compiler for PIC10/12/16 MCUs V9.83
+     2                           	; HI-TECH C Compiler for PIC10/12/16 MCUs V9.82
      3                           	; Copyright (C) 1984-2011 HI-TECH Software
      4                           
      5                           	; Auto-generated runtime startup code for final link stage.
@@ -15,83 +15,80 @@ HI-TECH Software PIC Macro Assembler V9.83 build 10920
      9                           	;
     10                           	; -oBP Demoboard v5.cof -mBP Demoboard v5.map --summary=default \
     11                           	; --output=default main.p1 i2c.p1 spi.p1 uart.p1 easteregg.p1 eeprom.p1 \
-    12                           	; adc.p1 dac.p1 --chip=16F1829 -P --runtime=default --opt=default \
-    13                           	; -D__DEBUG=1 --debugger=icd2 -g --asmlist \
-    14                           	; --errformat=Error   [%n] %f; %l.%c %s --msgformat=Advisory[%n] %s \
-    15                           	; --warnformat=Warning [%n] %f; %l.%c %s
-    16                           	;
+    12                           	; adc.p1 dac.p1 pwm.p1 --chip=16F1829 -P --runtime=default \
+    13                           	; --opt=default -g --asmlist --errformat=Error   [%n] %f; %l.%c %s \
+    14                           	; --msgformat=Advisory[%n] %s --warnformat=Warning [%n] %f; %l.%c %s
+    15                           	;
+    16                           
     17                           
-    18                           
-    19                           	processor	16F1829
-    20                           
-    21                           	global	_main,start,_exit,reset_vec
-    22                           	fnroot	_main
-    23                           	psect	config,class=CONFIG,delta=2
-    24                           	psect	idloc,class=IDLOC,delta=2
-    25                           	psect	code,class=CODE,delta=2
-    26                           	psect	powerup,class=CODE,delta=2
-    27                           	psect	reset_vec,class=CODE,delta=2
-    28                           	psect	maintext,class=CODE,delta=2
-    29  0000                     	C	set	0
-    30  0002                     	Z	set	2
-    31  0002                     	PCL	set	2
-    32  0000                     	INDF	set	0
-    33                           
-    34  0003                     	STATUS	equ	3
-    35  0008                     	BSR	equ	8
-    36  000A                     	PCLATH	equ	0Ah
-    37                           	psect	eeprom_data,class=EEDATA,delta=2,space=2
-    38                           	psect	strings,class=CODE,delta=2,reloc=256
-    39                           	psect	intentry,class=CODE,delta=2
-    40                           	psect	functab,class=CODE,delta=2
-    41                           	global	intlevel0,intlevel1,intlevel2, intlevel3, intlevel4, intlevel5
-    42  0100                     intlevel0:
-    43  0100                     intlevel1:
-    44  0100                     intlevel2:
-    45  0100                     intlevel3:
-    46  0100                     intlevel4:
-    47  0100                     intlevel5:
-    48                           	psect	init,class=CODE,delta=2
-    49                           	psect	cinit,class=CODE,delta=2
-    50                           	psect	text,class=CODE,delta=2
-    51                           	psect	end_init,class=CODE,delta=2
-    52                           	psect	clrtext,class=CODE,delta=2
-    53  0000                     	INDF0	set	0
-    54  0001                     	INDF1	set	1
-    55  0002                     	PCL	set	2
-    56  0003                     	STATUS	set	3
-    57  0004                     	FSR0L	set	4
-    58  0005                     	FSR0H	set	5
-    59  0006                     	FSR1L	set	6
-    60  0007                     	FSR1H	set	7
-    61  0008                     	BSR	set	8
-    62  0009                     	WREG	set	9
-    63  000A                     	PCLATH	set	10
-    64  000B                     	INTCON	set	11
-    65                           
-    66                           	psect	reset_vec
-    67  0000                     reset_vec:
-    68  0000  0000               	nop	; NOP inserted due to debugger requirements
+    18                           	processor	16F1829
+    19                           
+    20                           	global	_main,start,_exit,reset_vec
+    21                           	fnroot	_main
+    22                           	psect	config,class=CONFIG,delta=2
+    23                           	psect	idloc,class=IDLOC,delta=2
+    24                           	psect	code,class=CODE,delta=2
+    25                           	psect	powerup,class=CODE,delta=2
+    26                           	psect	reset_vec,class=CODE,delta=2
+    27                           	psect	maintext,class=CODE,delta=2
+    28  0000                     	C	set	0
+    29  0002                     	Z	set	2
+    30  0002                     	PCL	set	2
+    31  0000                     	INDF	set	0
+    32                           
+    33  0003                     	STATUS	equ	3
+    34  0008                     	BSR	equ	8
+    35  000A                     	PCLATH	equ	0Ah
+    36                           	psect	eeprom_data,class=EEDATA,delta=2,space=2
+    37                           	psect	strings,class=CODE,delta=2,reloc=256
+    38                           	psect	intentry,class=CODE,delta=2
+    39                           	psect	functab,class=CODE,delta=2
+    40                           	global	intlevel0,intlevel1,intlevel2, intlevel3, intlevel4, intlevel5
+    41  0100                     intlevel0:
+    42  0100                     intlevel1:
+    43  0100                     intlevel2:
+    44  0100                     intlevel3:
+    45  0100                     intlevel4:
+    46  0100                     intlevel5:
+    47                           	psect	init,class=CODE,delta=2
+    48                           	psect	cinit,class=CODE,delta=2
+    49                           	psect	text,class=CODE,delta=2
+    50                           	psect	end_init,class=CODE,delta=2
+    51                           	psect	clrtext,class=CODE,delta=2
+    52  0000                     	INDF0	set	0
+    53  0001                     	INDF1	set	1
+    54  0002                     	PCL	set	2
+    55  0003                     	STATUS	set	3
+    56  0004                     	FSR0L	set	4
+    57  0005                     	FSR0H	set	5
+    58  0006                     	FSR1L	set	6
+    59  0007                     	FSR1H	set	7
+    60  0008                     	BSR	set	8
+    61  0009                     	WREG	set	9
+    62  000A                     	PCLATH	set	10
+    63  000B                     	INTCON	set	11
+    64                           
+    65                           	psect	reset_vec
+    66  0000                     reset_vec:
+    67                           	; No powerup routine
+    68                           	global start
     69                           
-    70                           	; No powerup routine
-    71                           	global start
+    70                           ; jump to start
+    71  0000  3180  283C         	ljmp	start
     72                           
-    73                           ; jump to start
-    74  0001  3180  2839         	ljmp	start
-    75                           
-    76                           
-    77                           	psect	init
-    78  0039                     start
-    79  0039                     _exit
-    80                           	psect	end_init
-    81  0039  0188               	clrf	BSR
-    82                           	global start_initialization
-    83  003A  3187  2F00         	ljmp start_initialization	;jump to C runtime clear & initialization
+    73                           
+    74                           	psect	init
+    75  003C                     start
+    76  003C                     _exit
+    77                           	psect	end_init
+    78  003C  0188               	clrf	BSR
+    79                           	global start_initialization
+    80  003D  3195  2DA7         	ljmp start_initialization	;jump to C runtime clear & initialization
 
 
-HI-TECH Software PICC Macro Assembler V9.83 build 10920 
-Symbol Table                                                                                               Thu Nov 17 15:52:55 2011
+HI-TECH Software PICC Macro Assembler V9.82 build 9453 
+Symbol Table                                                                                               Thu Aug 16 16:15:04 2012
 
-                 BSR 0008                 _main 048A                 _exit 0039                 start 0039  
-start_initialization 0700             intlevel0 0100             intlevel1 0100             intlevel2 0100  
+                 BSR 0008                 _main 0117                 _exit 003C                 start 003C  
+start_initialization 15A7             intlevel0 0100             intlevel1 0100             intlevel2 0100  
            intlevel3 0100             intlevel4 0100             intlevel5 0100             reset_vec 0000  

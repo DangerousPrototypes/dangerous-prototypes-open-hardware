@@ -2057,60 +2057,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S251 . . ]
 "3028 C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h
 [v _TOSHbits `VS251  1 e@4079 ]
-"38 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu0 `Cuc  -> 0 `x e ]
-"39 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu1 `Cuc  -> 0 `x e ]
-"40 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu2 `Cuc  -> 0 `x e ]
-"41 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu3 `Cuc  -> 0 `x e ]
-"42 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu4 `Cuc  -> 0 `x e ]
-"44 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgDACsetV `Cuc  -> 0 `x e ]
-"46 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgEEw `Cuc  -> 0 `x e ]
-"47 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgEEaddr `Cuc  -> 0 `x e ]
-"49 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _msgMenu `*Cuc  -> 0 `x e ]
-"13 C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c
-[v _ringbuff `ui  -> 8 `i e ]
-"14 C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c
-[v _rhead `Vuc  1 e ]
-"14 C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c
-[v _rtail `Vuc  1 e ]
-"14 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _UARTwriteString `(v  0 ef1`*uc ]
-"11 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _UARTwrite `(v  0 ef1`uc ]
-"13 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _UARTread `(uc  0 ef ]
-"6 C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h
-[v _enablePWM `(v  0 ef ]
-"5 C:\Users\Filip\Documents\MPLAB\Demo Board\./dac.h
-[v _enableDAC `(v  0 ef ]
-"5 C:\Users\Filip\Documents\MPLAB\Demo Board\./adc.h
-[v _getADC `(ui  0 ef1`uc ]
-"12 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _UARTwriteDecimal `(v  0 ef1`uc ]
-"8 C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h
-[v _setPeriod `(v  0 ef1`uc ]
-"36 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[v _UARTcharFromString `(uc  0 ef1`uc ]
-"9 C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h
-[v _setDuty `(v  0 ef1`uc ]
-"7 C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h
-[v _disablePWM `(v  0 ef ]
-"4 C:\Users\Filip\Documents\MPLAB\Demo Board\./dac.h
-[v _setDAC `(v  0 ef1`uc ]
-"6 C:\Users\Filip\Documents\MPLAB\Demo Board\./dac.h
-[v _disableDAC `(v  0 ef ]
-"6 C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h
-[v _EEPROMwrite `(v  0 ef2`uc`uc ]
-"7 C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h
-[v _EEPROMread `(uc  0 ef1`uc ]
+"6 C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.c
+[v _PWMduty `uc  1 e ]
+"7 C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.c
+[v _PWMperiod `uc  1 e ]
 [; ;pic16f1829.h: 132: volatile unsigned char INDF0 @ 0x000;
 [; ;pic16f1829.h: 136: volatile unsigned char INDF1 @ 0x001;
 [; ;pic16f1829.h: 140: volatile unsigned char PCL @ 0x002;
@@ -4063,1702 +4013,199 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;eeprom_routines.h: 43: extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 [; ;eeprom_routines.h: 44: extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 [; ;pic.h: 154: extern void _delay(unsigned long);
-[; ;uart.h: 9: void initUART(void);
-[; ;uart.h: 10: void UARTworker(void);
-[; ;uart.h: 11: void UARTwrite(unsigned char c);
-[; ;uart.h: 12: void UARTwriteDecimal(unsigned char c);
-[; ;uart.h: 13: unsigned char UARTread(void);
-[; ;uart.h: 14: void UARTwriteString (char* str);
-[; ;uart.h: 16: extern unsigned ringbuff[8];
-[; ;uart.h: 17: extern volatile char rhead, rtail;
-[; ;uart.h: 36: unsigned char UARTcharFromString(unsigned char c);
-"38 C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h
-[i _msgMenu0
-:U ..
--> 10 `c
--> 10 `c
--> 66 `c
--> 117 `c
--> 115 `c
--> 32 `c
--> 80 `c
--> 105 `c
--> 114 `c
--> 97 `c
--> 116 `c
--> 101 `c
--> 32 `c
--> 68 `c
--> 101 `c
--> 109 `c
--> 111 `c
--> 32 `c
--> 66 `c
--> 111 `c
--> 97 `c
--> 114 `c
--> 100 `c
--> 32 `c
--> 118 `c
--> 53 `c
--> 10 `c
--> 70 `c
--> 87 `c
--> 32 `c
--> 118 `c
--> 101 `c
--> 114 `c
--> 105 `c
--> 115 `c
--> 111 `c
--> 110 `c
--> 32 `c
--> 118 `c
--> 48 `c
--> 46 `c
--> 57 `c
--> 53 `c
--> 10 `c
--> 10 `c
--> 32 `c
--> 32 `c
--> 77 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 77 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 10 `c
--> 10 `c
--> 49 `c
--> 41 `c
--> 65 `c
--> 68 `c
--> 67 `c
--> 10 `c
--> 50 `c
--> 41 `c
--> 80 `c
--> 87 `c
--> 77 `c
--> 10 `c
--> 51 `c
--> 41 `c
--> 68 `c
--> 65 `c
--> 67 `c
--> 10 `c
--> 52 `c
--> 41 `c
--> 69 `c
--> 69 `c
--> 80 `c
--> 82 `c
--> 79 `c
--> 77 `c
--> 10 `c
--> 10 `c
--> 67 `c
--> 104 `c
--> 111 `c
--> 111 `c
--> 115 `c
--> 101 `c
--> 40 `c
--> 49 `c
--> 45 `c
--> 52 `c
--> 41 `c
--> 58 `c
--> 0 `c
--> 0 `c
-..
-]
-[; ;uart.h: 38: const char msgMenu0[]="\n\nBus Pirate Demo Board v5\nFW verison v0.95\n\n  Main Menu\n-------------\n\n1)ADC\n2)PWM\n3)DAC\n4)EEPROM\n\nChoose(1-4):\0";
-"39
-[i _msgMenu1
-:U ..
--> 10 `c
--> 10 `c
--> 65 `c
--> 68 `c
--> 67 `c
--> 32 `c
--> 77 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 10 `c
--> 10 `c
--> 114 `c
--> 41 `c
--> 82 `c
--> 101 `c
--> 97 `c
--> 100 `c
--> 32 `c
--> 65 `c
--> 68 `c
--> 67 `c
--> 10 `c
--> 49 `c
--> 41 `c
--> 67 `c
--> 104 `c
--> 97 `c
--> 110 `c
--> 110 `c
--> 101 `c
--> 108 `c
--> 32 `c
--> 108 `c
--> 10 `c
--> 50 `c
--> 41 `c
--> 67 `c
--> 104 `c
--> 97 `c
--> 110 `c
--> 110 `c
--> 101 `c
--> 108 `c
--> 32 `c
--> 50 `c
--> 10 `c
--> 51 `c
--> 41 `c
--> 67 `c
--> 104 `c
--> 97 `c
--> 110 `c
--> 110 `c
--> 101 `c
--> 108 `c
--> 32 `c
--> 51 `c
--> 10 `c
--> 116 `c
--> 41 `c
--> 84 `c
--> 101 `c
--> 109 `c
--> 112 `c
--> 101 `c
--> 114 `c
--> 97 `c
--> 116 `c
--> 117 `c
--> 114 `c
--> 101 `c
--> 32 `c
--> 115 `c
--> 101 `c
--> 110 `c
--> 115 `c
--> 111 `c
--> 114 `c
--> 10 `c
--> 109 `c
--> 41 `c
--> 66 `c
--> 97 `c
--> 99 `c
--> 107 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 109 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 10 `c
--> 67 `c
--> 104 `c
--> 111 `c
--> 111 `c
--> 115 `c
--> 101 `c
--> 58 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-]
-[; ;uart.h: 39: const char msgMenu1[]="\n\nADC Menu\n-----------\n\nr)Read ADC\n1)Channel l\n2)Channel 2\n3)Channel 3\nt)Temperature sensor\nm)Back to main menu\n\nChoose: \0";
-"40
-[i _msgMenu2
-:U ..
--> 10 `c
--> 10 `c
--> 80 `c
--> 87 `c
--> 77 `c
--> 32 `c
--> 77 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 10 `c
--> 10 `c
--> 112 `c
--> 41 `c
--> 83 `c
--> 101 `c
--> 116 `c
--> 32 `c
--> 80 `c
--> 87 `c
--> 77 `c
--> 32 `c
--> 80 `c
--> 101 `c
--> 114 `c
--> 105 `c
--> 111 `c
--> 100 `c
--> 10 `c
--> 100 `c
--> 41 `c
--> 83 `c
--> 101 `c
--> 116 `c
--> 32 `c
--> 80 `c
--> 87 `c
--> 77 `c
--> 32 `c
--> 68 `c
--> 117 `c
--> 116 `c
--> 121 `c
--> 32 `c
--> 67 `c
--> 121 `c
--> 99 `c
--> 108 `c
--> 101 `c
--> 10 `c
--> 109 `c
--> 41 `c
--> 66 `c
--> 97 `c
--> 99 `c
--> 107 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 109 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 10 `c
--> 67 `c
--> 104 `c
--> 111 `c
--> 111 `c
--> 115 `c
--> 101 `c
--> 58 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-]
-[; ;uart.h: 40: const char msgMenu2[]="\n\nPWM Menu\n-----------\n\np)Set PWM Period\nd)Set PWM Duty Cycle\nm)Back to main menu\n\nChoose: \0";
-"41
-[i _msgMenu3
-:U ..
--> 10 `c
--> 10 `c
--> 68 `c
--> 65 `c
--> 67 `c
--> 32 `c
--> 77 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 10 `c
--> 10 `c
--> 118 `c
--> 41 `c
--> 83 `c
--> 101 `c
--> 116 `c
--> 32 `c
--> 68 `c
--> 65 `c
--> 67 `c
--> 32 `c
--> 108 `c
--> 101 `c
--> 118 `c
--> 101 `c
--> 108 `c
--> 32 `c
--> 48 `c
--> 45 `c
--> 51 `c
--> 49 `c
--> 10 `c
--> 109 `c
--> 41 `c
--> 66 `c
--> 97 `c
--> 99 `c
--> 107 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 109 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 10 `c
--> 67 `c
--> 104 `c
--> 111 `c
--> 111 `c
--> 115 `c
--> 101 `c
--> 58 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-]
-[; ;uart.h: 41: const char msgMenu3[]="\n\nDAC Menu\n-----------\n\nv)Set DAC level 0-31\nm)Back to main menu\n\nChoose: \0";
-"42
-[i _msgMenu4
-:U ..
--> 10 `c
--> 10 `c
--> 69 `c
--> 69 `c
--> 80 `c
--> 82 `c
--> 79 `c
--> 77 `c
--> 32 `c
--> 77 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 45 `c
--> 10 `c
--> 10 `c
--> 119 `c
--> 41 `c
--> 87 `c
--> 114 `c
--> 105 `c
--> 116 `c
--> 101 `c
--> 32 `c
--> 97 `c
--> 32 `c
--> 99 `c
--> 104 `c
--> 97 `c
--> 114 `c
--> 97 `c
--> 99 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 69 `c
--> 69 `c
--> 80 `c
--> 82 `c
--> 79 `c
--> 77 `c
--> 10 `c
--> 114 `c
--> 41 `c
--> 82 `c
--> 101 `c
--> 97 `c
--> 100 `c
--> 32 `c
--> 97 `c
--> 32 `c
--> 99 `c
--> 104 `c
--> 97 `c
--> 114 `c
--> 97 `c
--> 99 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 32 `c
--> 102 `c
--> 114 `c
--> 111 `c
--> 109 `c
--> 32 `c
--> 69 `c
--> 69 `c
--> 80 `c
--> 82 `c
--> 79 `c
--> 77 `c
--> 10 `c
--> 109 `c
--> 41 `c
--> 66 `c
--> 97 `c
--> 99 `c
--> 107 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 109 `c
--> 97 `c
--> 105 `c
--> 110 `c
--> 32 `c
--> 109 `c
--> 101 `c
--> 110 `c
--> 117 `c
--> 10 `c
--> 10 `c
--> 67 `c
--> 104 `c
--> 111 `c
--> 111 `c
--> 115 `c
--> 101 `c
--> 58 `c
--> 32 `c
--> 0 `c
--> 0 `c
-..
-]
-[; ;uart.h: 42: const char msgMenu4[]="\n\nEEPROM Menu\n--------------\n\nw)Write a character to EEPROM\nr)Read a character from EEPROM\nm)Back to main menu\n\nChoose: \0";
-"44
-[i _msgDACsetV
-:U ..
--> 10 `c
--> 10 `c
--> 69 `c
--> 110 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 32 `c
--> 100 `c
--> 101 `c
--> 115 `c
--> 105 `c
--> 114 `c
--> 101 `c
--> 100 `c
--> 32 `c
--> 68 `c
--> 65 `c
--> 67 `c
--> 32 `c
--> 108 `c
--> 101 `c
--> 118 `c
--> 101 `c
--> 108 `c
--> 32 `c
--> 102 `c
--> 114 `c
--> 111 `c
--> 109 `c
--> 32 `c
--> 48 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 51 `c
--> 49 `c
--> 58 `c
--> 32 `c
--> 0 `c
-..
-]
-[; ;uart.h: 44: const char msgDACsetV[]="\n\nEnter desired DAC level from 0 to 31: ";
-"46
-[i _msgEEw
-:U ..
--> 10 `c
--> 10 `c
--> 69 `c
--> 110 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 32 `c
--> 116 `c
--> 104 `c
--> 101 `c
--> 32 `c
--> 118 `c
--> 97 `c
--> 114 `c
--> 105 `c
--> 97 `c
--> 98 `c
--> 108 `c
--> 101 `c
--> 32 `c
--> 40 `c
--> 48 `c
--> 45 `c
--> 50 `c
--> 53 `c
--> 53 `c
--> 41 `c
--> 32 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 98 `c
--> 101 `c
--> 32 `c
--> 101 `c
--> 110 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 101 `c
--> 100 `c
--> 32 `c
--> 105 `c
--> 110 `c
--> 116 `c
--> 111 `c
--> 32 `c
--> 69 `c
--> 69 `c
--> 80 `c
--> 82 `c
--> 79 `c
--> 77 `c
--> 58 `c
--> 32 `c
--> 0 `c
-..
-]
-[; ;uart.h: 46: const char msgEEw[]="\n\nEnter the variable (0-255) to be entered into EEPROM: ";
-"47
-[i _msgEEaddr
-:U ..
--> 10 `c
--> 10 `c
--> 69 `c
--> 110 `c
--> 116 `c
--> 101 `c
--> 114 `c
--> 32 `c
--> 116 `c
--> 104 `c
--> 101 `c
--> 32 `c
--> 97 `c
--> 100 `c
--> 100 `c
--> 114 `c
--> 101 `c
--> 115 `c
--> 115 `c
--> 32 `c
--> 48 `c
--> 45 `c
--> 50 `c
--> 53 `c
--> 53 `c
--> 58 `c
--> 32 `c
--> 0 `c
-..
-]
-[; ;uart.h: 47: const char msgEEaddr[]="\n\nEnter the address 0-255: ";
-"49
-[i _msgMenu
-:U ..
-&U _msgMenu0
-&U _msgMenu1
-&U _msgMenu2
-&U _msgMenu3
-&U _msgMenu4
-..
-]
-[; ;uart.h: 49: const char *msgMenu[] ={msgMenu0,msgMenu1,msgMenu2,msgMenu3,msgMenu4};
 [; ;pwm.h: 6: void enablePWM(void);
 [; ;pwm.h: 7: void disablePWM(void);
 [; ;pwm.h: 8: void setPeriod(unsigned char);
 [; ;pwm.h: 9: void setDuty(unsigned char);
 [; ;pwm.h: 12: extern unsigned char PWMduty;
 [; ;pwm.h: 13: extern unsigned char PWMperiod;
-[; ;dac.h: 4: void setDAC(unsigned char dac);
-[; ;dac.h: 5: void enableDAC(void);
-[; ;dac.h: 6: void disableDAC(void);
-[; ;adc.h: 5: unsigned int getADC(unsigned char adc);
-[; ;adc.h: 6: void enableTS(void);
-[; ;adc.h: 7: unsigned int startADC16(unsigned char adc);
-[; ;eeprom.h: 6: void EEPROMwrite (unsigned char addr, unsigned char data);
-[; ;eeprom.h: 7: unsigned char EEPROMread(unsigned char addr);
-[; ;uart.c: 13: unsigned ringbuff[8];
-[; ;uart.c: 14: volatile char rhead, rtail;
-"17 C:\Users\Filip\Documents\MPLAB\Demo Board\uart.c
-[v _initUART `(v  1 ef ]
+[; ;pwm.c: 6: unsigned char PWMduty;
+[; ;pwm.c: 7: unsigned char PWMperiod;
+"9 C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.c
+[v _enablePWM `(v  1 ef ]
 {
-[; ;uart.c: 16: void initUART(void)
-[; ;uart.c: 17: { unsigned char i;
-[e :U _initUART ]
+[; ;pwm.c: 8: void enablePWM(void)
+[; ;pwm.c: 9: {
+[e :U _enablePWM ]
 [f ]
-[v _i `uc  1 a ]
-[; ;uart.c: 19: APFCON0|=0x04;
-"19
-[e =| _APFCON0 -> -> 4 `i `uc ]
-[; ;uart.c: 20: TRISB5=1;
+"10
+[v _tempP `ui  1 a ]
+[; ;pwm.c: 10: unsigned int tempP;
+[; ;pwm.c: 11: TRISAbits.TRISA5 =1;
+"11
+[e = . . _TRISAbits 0 5 -> -> 1 `i `uc ]
+[; ;pwm.c: 12: APFCON1bits.CCP2SEL=1;
+"12
+[e = . . _APFCON1bits 0 0 -> -> 1 `i `uc ]
+[; ;pwm.c: 13: PR2 = 0x02;
+"13
+[e = _PR2 -> -> 2 `i `uc ]
+[; ;pwm.c: 15: PWMperiod = PR2;
+"15
+[e = _PWMperiod _PR2 ]
+[; ;pwm.c: 17: CCP2CON =0b00001100;
+"17
+[e = _CCP2CON -> -> 12 `i `uc ]
+[; ;pwm.c: 20: CCPR2L =0x01;
 "20
-[e = _TRISB5 -> -> 1 `i `b ]
-[; ;uart.c: 21: TRISC4=0;
-"21
-[e = _TRISC4 -> -> 0 `i `b ]
-[; ;uart.c: 25: BRGH=1;
-"25
-[e = _BRGH -> -> 1 `i `b ]
-[; ;uart.c: 26: SPBRGH=0x00;
+[e = _CCPR2L -> -> 1 `i `uc ]
+[; ;pwm.c: 22: tempP=(unsigned int)CCPR2L*100;
+"22
+[e = _tempP * -> _CCPR2L `ui -> -> 100 `i `ui ]
+[; ;pwm.c: 23: PWMduty = tempP/PWMperiod;
+"23
+[e = _PWMduty -> / _tempP -> _PWMperiod `ui `uc ]
+[; ;pwm.c: 26: CCPTMRS=0;
 "26
-[e = _SPBRGH -> -> 0 `i `uc ]
-[; ;uart.c: 27: SPBRGL=207;
+[e = _CCPTMRS -> -> 0 `i `uc ]
+[; ;pwm.c: 27: TMR2IF=0;
 "27
-[e = _SPBRGL -> -> 207 `i `uc ]
-[; ;uart.c: 30: SYNC=0;
+[e = _TMR2IF -> -> 0 `i `b ]
+[; ;pwm.c: 29: T2CON = 0;
+"29
+[e = _T2CON -> -> 0 `i `uc ]
+[; ;pwm.c: 30: T2CONbits.TMR2ON =1;
 "30
-[e = _SYNC -> -> 0 `i `b ]
-[; ;uart.c: 31: SPEN=1;
+[e = . . _T2CONbits 0 2 -> -> 1 `i `uc ]
+[; ;pwm.c: 31: TRISAbits.TRISA5 =0;
 "31
-[e = _SPEN -> -> 1 `i `b ]
-[; ;uart.c: 32: TXEN=1;
+[e = . . _TRISAbits 0 5 -> -> 0 `i `uc ]
+[; ;pwm.c: 32: }
 "32
-[e = _TXEN -> -> 1 `i `b ]
-[; ;uart.c: 33: CREN=1;
-"33
-[e = _CREN -> -> 1 `i `b ]
-[; ;uart.c: 48: RC5=1;;
-"48
-[e = _RC5 -> -> 1 `i `b ]
-[; ;uart.c: 49: }
-"49
 [e :UE 253 ]
 }
-"52
-[v _UARTworker `(v  1 ef ]
+"35
+[v _setPeriod `(v  1 ef1`uc ]
 {
-[; ;uart.c: 51: void UARTworker(void)
-[; ;uart.c: 52: {
-[e :U _UARTworker ]
+[; ;pwm.c: 34: void setPeriod(unsigned char P)
+[; ;pwm.c: 35: {
+[e :U _setPeriod ]
+[v _P `uc  1 r1 ]
 [f ]
-"53
-[v _c `uc  1 a ]
-[v _mode `uc  1 a ]
-[; ;uart.c: 53: unsigned char c,mode=0,addr=0,instruction=0,EEaddrF=0,EEaddr=0,adcc=0,helpC;
-[e = _mode -> -> 0 `i `uc ]
-[v _addr `uc  1 a ]
-[e = _addr -> -> 0 `i `uc ]
-[v _instruction `uc  1 a ]
-[e = _instruction -> -> 0 `i `uc ]
-[v _EEaddrF `uc  1 a ]
-[e = _EEaddrF -> -> 0 `i `uc ]
-[v _EEaddr `uc  1 a ]
-[e = _EEaddr -> -> 0 `i `uc ]
-[v _adcc `uc  1 a ]
-[e = _adcc -> -> 0 `i `uc ]
-[v _helpC `uc  1 a ]
-[; ;uart.c: 54: initUART();
-"54
-[e ( _initUART ..  ]
-[; ;uart.c: 56: UARTwriteString(msgMenu[0]);
-"56
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 57: UARTwrite('\n');
-"57
-[e ( _UARTwrite (1 -> -> 10 `ui `uc ]
-[; ;uart.c: 58: while(1)
-"58
-[e :U 256 ]
-[; ;uart.c: 59: {
-"59
+"36
+[v _temp `ui  1 a ]
+[; ;pwm.c: 36: unsigned int temp;
+[; ;pwm.c: 37: if(P>1)
+"37
+[e $ ! > -> _P `i -> 1 `i 255  ]
+[; ;pwm.c: 38: {
+"38
 {
-[; ;uart.c: 61: if(RCIF)
-"61
-[e $ ! _RCIF 258  ]
-[; ;uart.c: 62: {
-"62
-{
-[; ;uart.c: 63: RCIF=0;
-"63
-[e = _RCIF -> -> 0 `i `b ]
-[; ;uart.c: 64: RC3=1;;
-"64
-[e = _RC3 -> -> 1 `i `b ]
-[; ;uart.c: 65: if(!(RCSTA&0b00000110))
-"65
-[e $ ! ! != & -> _RCSTA `i -> 6 `i -> 0 `i 259  ]
-[; ;uart.c: 66: { rhead++;
-"66
-{
-[e ++ _rhead -> -> 1 `i `uc ]
-[; ;uart.c: 67: rhead&=(8-1);
-"67
-[e =& _rhead -> - -> 8 `i -> 1 `i `uc ]
-[; ;uart.c: 68: ringbuff[rhead]=RCREG;
-"68
-[e = *U + &U _ringbuff * -> _rhead `ux -> -> # *U &U _ringbuff `ui `ux -> _RCREG `ui ]
-"69
+[; ;pwm.c: 39: temp=P*PWMduty;
+"39
+[e = _temp -> * -> _P `i -> _PWMduty `i `ui ]
+[; ;pwm.c: 40: temp = temp/100;
+"40
+[e = _temp / _temp -> -> 100 `i `ui ]
+[; ;pwm.c: 41: CCPR2L = temp;
+"41
+[e = _CCPR2L -> _temp `uc ]
+[; ;pwm.c: 42: PWMperiod = P;
+"42
+[e = _PWMperiod _P ]
+[; ;pwm.c: 43: PR2=P;
+"43
+[e = _PR2 _P ]
+"44
 }
-[e :U 259 ]
-[; ;uart.c: 69: }
-[; ;uart.c: 70: RC3=0;;
-"70
-[e = _RC3 -> -> 0 `i `b ]
-[; ;uart.c: 71: c=UARTread();
-"71
-[e = _c ( _UARTread ..  ]
-[; ;uart.c: 72: UARTwrite(c);
-"72
-[e ( _UARTwrite (1 _c ]
-[; ;uart.c: 74: switch (mode)
-"74
-[e $U 261  ]
-[; ;uart.c: 75: {
-"75
-{
-[; ;uart.c: 76: case 0:
-"76
-[e :U 262 ]
-[; ;uart.c: 77: mode=c-48;
-"77
-[e = _mode -> - -> _c `i -> 48 `i `uc ]
-[; ;uart.c: 78: UARTwriteString(msgMenu[c-48]);
-"78
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> - -> _c `i -> 48 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 79: if(mode==2)enablePWM();
-"79
-[e $ ! == -> _mode `i -> 2 `i 263  ]
-[e ( _enablePWM ..  ]
-[e $U 264  ]
-"80
-[e :U 263 ]
-[; ;uart.c: 80: else if(mode==3)enableDAC();
-[e $ ! == -> _mode `i -> 3 `i 265  ]
-[e ( _enableDAC ..  ]
-[e :U 265 ]
-"81
-[e :U 264 ]
-[; ;uart.c: 81: break;
-[e $U 260  ]
-[; ;uart.c: 82: case 1:
-"82
-[e :U 266 ]
-[; ;uart.c: 83: switch(c)
-"83
-[e $U 268  ]
-[; ;uart.c: 84: {
-"84
-{
-[; ;uart.c: 85: case 'r':
-"85
-[e :U 269 ]
-[; ;uart.c: 86: UARTwriteString("\n\nADC value: ");
-"86
-[e ( _UARTwriteString (1 -> :s 1C `*uc ]
-[; ;uart.c: 87: helpC=getADC(adcc);
-"87
-[e = _helpC -> ( _getADC (1 _adcc `uc ]
-[; ;uart.c: 88: UARTwriteDecimal(helpC);
-"88
-[e ( _UARTwriteDecimal (1 _helpC ]
-[; ;uart.c: 89: UARTwriteString(msgMenu[1]);
-"89
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 1 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 90: break;
-"90
-[e $U 267  ]
-[; ;uart.c: 91: case '1':
-"91
-[e :U 270 ]
-[; ;uart.c: 92: UARTwriteString("\n\nchannel 1 selected");
-"92
-[e ( _UARTwriteString (1 -> :s 2C `*uc ]
-[; ;uart.c: 93: adcc=0;
-"93
-[e = _adcc -> -> 0 `i `uc ]
-[; ;uart.c: 94: UARTwriteString(msgMenu[1]);
-"94
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 1 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 95: break;
-"95
-[e $U 267  ]
-[; ;uart.c: 96: case '2':
-"96
-[e :U 271 ]
-[; ;uart.c: 97: UARTwriteString("\n\nchannel 2 selected");
-"97
-[e ( _UARTwriteString (1 -> :s 3C `*uc ]
-[; ;uart.c: 98: adcc=1;
-"98
-[e = _adcc -> -> 1 `i `uc ]
-[; ;uart.c: 99: UARTwriteString(msgMenu[1]);
-"99
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 1 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 100: break;
-"100
-[e $U 267  ]
-[; ;uart.c: 101: case '3':
-"101
-[e :U 272 ]
-[; ;uart.c: 102: UARTwriteString("\n\nchannel 3 selected");
-"102
-[e ( _UARTwriteString (1 -> :s 4C `*uc ]
-[; ;uart.c: 103: adcc=2;
-"103
-[e = _adcc -> -> 2 `i `uc ]
-[; ;uart.c: 104: UARTwriteString(msgMenu[1]);
-"104
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 1 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 105: break;
-"105
-[e $U 267  ]
-[; ;uart.c: 106: case 't':
-"106
-[e :U 273 ]
-[; ;uart.c: 107: UARTwriteString("\n\nTemp sensor selected");
-"107
-[e ( _UARTwriteString (1 -> :s 5C `*uc ]
-[; ;uart.c: 108: adcc=3;
-"108
-[e = _adcc -> -> 3 `i `uc ]
-[; ;uart.c: 109: UARTwriteString(msgMenu[1]);
-"109
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 1 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 110: break;
-"110
-[e $U 267  ]
-[; ;uart.c: 111: case 'm':
-"111
-[e :U 274 ]
-[; ;uart.c: 112: mode = 0;
-"112
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 113: UARTwriteString(msgMenu[0]);
-"113
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 114: break;
-"114
-[e $U 267  ]
-[; ;uart.c: 115: default:
-"115
-[e :U 275 ]
-[; ;uart.c: 116: break;
-"116
-[e $U 267  ]
-"117
-}
-[; ;uart.c: 117: }
-[e $U 267  ]
-"83
-[e :U 268 ]
-[e [\ _c , $ -> -> 114 `ui `uc 269
- , $ -> -> 49 `ui `uc 270
- , $ -> -> 50 `ui `uc 271
- , $ -> -> 51 `ui `uc 272
- , $ -> -> 116 `ui `uc 273
- , $ -> -> 109 `ui `uc 274
- 275 ]
-"117
-[e :U 267 ]
-[; ;uart.c: 118: break;
-"118
-[e $U 260  ]
-[; ;uart.c: 119: case 2:
-"119
-[e :U 276 ]
-[; ;uart.c: 120: if(instruction)
-"120
-[e $ ! != -> _instruction `i -> -> -> 0 `i `uc `i 277  ]
-[; ;uart.c: 121: {
-"121
-{
-[; ;uart.c: 122: switch(instruction)
-"122
-[e $U 279  ]
-[; ;uart.c: 123: {
-"123
-{
-[; ;uart.c: 124: case 'p':
-"124
-[e :U 280 ]
-[; ;uart.c: 126: setPeriod(UARTcharFromString(c));
-"126
-[e ( _setPeriod (1 ( _UARTcharFromString (1 _c ]
-[; ;uart.c: 127: UARTwriteString(msgMenu[2]);
-"127
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 2 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 128: break;
-"128
-[e $U 278  ]
-[; ;uart.c: 129: case 'd':
-"129
-[e :U 281 ]
-[; ;uart.c: 130: setDuty(UARTcharFromString(c));
-"130
-[e ( _setDuty (1 ( _UARTcharFromString (1 _c ]
-[; ;uart.c: 131: UARTwriteString(msgMenu[2]);
-"131
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 2 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 133: break;
-"133
-[e $U 278  ]
-[; ;uart.c: 134: case 'm':
-"134
-[e :U 282 ]
-[; ;uart.c: 135: mode =0;
-"135
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 137: UARTwriteString(msgMenu[0]);
-"137
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 138: break;
-"138
-[e $U 278  ]
-[; ;uart.c: 139: default:
-"139
-[e :U 283 ]
-[; ;uart.c: 140: break;
-"140
-[e $U 278  ]
-"141
-}
-[; ;uart.c: 141: }
-[e $U 278  ]
-"122
-[e :U 279 ]
-[e [\ _instruction , $ -> -> 112 `ui `uc 280
- , $ -> -> 100 `ui `uc 281
- , $ -> -> 109 `ui `uc 282
- 283 ]
-"141
-[e :U 278 ]
-[; ;uart.c: 142: instruction = 0;
-"142
-[e = _instruction -> -> 0 `i `uc ]
-"143
-}
-[; ;uart.c: 143: }
-[e $U 284  ]
-"144
-[e :U 277 ]
-[; ;uart.c: 144: else
-[; ;uart.c: 145: {
-"145
-{
-[; ;uart.c: 146: instruction = c;
-"146
-[e = _instruction _c ]
-[; ;uart.c: 147: if(instruction == 'p')
-"147
-[e $ ! == -> _instruction `ui -> 112 `ui 285  ]
-[; ;uart.c: 148: {
-"148
-{
-[; ;uart.c: 149: UARTwriteString("\n\nEnter the PWM Period: ");
-"149
-[e ( _UARTwriteString (1 -> :s 6C `*uc ]
-"151
-}
-[; ;uart.c: 151: }
-[e $U 286  ]
-"152
-[e :U 285 ]
-[; ;uart.c: 152: else if(instruction == 'd')
-[e $ ! == -> _instruction `ui -> 100 `ui 287  ]
-[; ;uart.c: 153: {
-"153
-{
-[; ;uart.c: 154: UARTwriteString("\n\nEnter the PWM Duty Cycle: ");
-"154
-[e ( _UARTwriteString (1 -> :s 7C `*uc ]
-"155
-}
-[; ;uart.c: 155: }
-[e $U 288  ]
-"156
-[e :U 287 ]
-[; ;uart.c: 156: else if(instruction == 'm')
-[e $ ! == -> _instruction `ui -> 109 `ui 289  ]
-[; ;uart.c: 157: {
-"157
-{
-[; ;uart.c: 158: mode =0;
-"158
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 159: instruction =0;
-"159
-[e = _instruction -> -> 0 `i `uc ]
-[; ;uart.c: 160: disablePWM();
-"160
-[e ( _disablePWM ..  ]
-[; ;uart.c: 161: UARTwriteString(msgMenu[0]);
-"161
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"162
-}
-[e :U 289 ]
-"163
-[e :U 288 ]
-[e :U 286 ]
-}
-[e :U 284 ]
-[; ;uart.c: 162: }
-[; ;uart.c: 163: }
-[; ;uart.c: 164: break;
-"164
-[e $U 260  ]
-[; ;uart.c: 165: case 3:
-"165
-[e :U 290 ]
-[; ;uart.c: 166: if(instruction)
-"166
-[e $ ! != -> _instruction `i -> -> -> 0 `i `uc `i 291  ]
-[; ;uart.c: 167: {
-"167
-{
-[; ;uart.c: 168: switch(instruction)
-"168
-[e $U 293  ]
-[; ;uart.c: 169: {
-"169
-{
-[; ;uart.c: 170: case 'v':
-"170
-[e :U 294 ]
-[; ;uart.c: 171: setDAC(UARTcharFromString(c));
-"171
-[e ( _setDAC (1 ( _UARTcharFromString (1 _c ]
-[; ;uart.c: 172: UARTwriteString(msgMenu[3]);
-"172
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 3 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 173: break;
-"173
-[e $U 292  ]
-[; ;uart.c: 174: case 'm':
-"174
-[e :U 295 ]
-[; ;uart.c: 175: mode = 0;
-"175
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 176: UARTwriteString(msgMenu[0]);
-"176
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 177: break;
-"177
-[e $U 292  ]
-[; ;uart.c: 178: default:
-"178
-[e :U 296 ]
-[; ;uart.c: 179: break;
-"179
-[e $U 292  ]
-"180
-}
-[; ;uart.c: 180: }
-[e $U 292  ]
-"168
-[e :U 293 ]
-[e [\ _instruction , $ -> -> 118 `ui `uc 294
- , $ -> -> 109 `ui `uc 295
- 296 ]
-"180
-[e :U 292 ]
-[; ;uart.c: 181: instruction =0;
-"181
-[e = _instruction -> -> 0 `i `uc ]
-"182
-}
-[; ;uart.c: 182: }
-[e $U 297  ]
-"183
-[e :U 291 ]
-[; ;uart.c: 183: else
-[; ;uart.c: 184: {
-"184
-{
-[; ;uart.c: 185: instruction = c;
-"185
-[e = _instruction _c ]
-[; ;uart.c: 186: if(instruction == 'v')
-"186
-[e $ ! == -> _instruction `ui -> 118 `ui 298  ]
-[; ;uart.c: 187: {
-"187
-{
-[; ;uart.c: 188: UARTwriteString(msgDACsetV);
-"188
-[e ( _UARTwriteString (1 -> &U _msgDACsetV `*uc ]
-"189
-}
-[; ;uart.c: 189: }
-[e $U 299  ]
-"190
-[e :U 298 ]
-[; ;uart.c: 190: else if(instruction == 'm')
-[e $ ! == -> _instruction `ui -> 109 `ui 300  ]
-[; ;uart.c: 191: {
-"191
-{
-[; ;uart.c: 192: mode =0;
-"192
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 193: instruction =0;
-"193
-[e = _instruction -> -> 0 `i `uc ]
-[; ;uart.c: 194: disableDAC();
-"194
-[e ( _disableDAC ..  ]
-[; ;uart.c: 195: UARTwriteString(msgMenu[0]);
-"195
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"196
-}
-[e :U 300 ]
-"197
-[e :U 299 ]
-}
-[e :U 297 ]
-[; ;uart.c: 196: }
-[; ;uart.c: 197: }
-[; ;uart.c: 198: break;
-"198
-[e $U 260  ]
-[; ;uart.c: 199: case 4:
-"199
-[e :U 301 ]
-[; ;uart.c: 200: if(instruction)
-"200
-[e $ ! != -> _instruction `i -> -> -> 0 `i `uc `i 302  ]
-[; ;uart.c: 201: {
-"201
-{
-[; ;uart.c: 202: if(EEaddrF)
-"202
-[e $ ! != -> _EEaddrF `i -> -> -> 0 `i `uc `i 303  ]
-[; ;uart.c: 203: {
-"203
-{
-[; ;uart.c: 204: if(instruction == 'w')
-"204
-[e $ ! == -> _instruction `ui -> 119 `ui 304  ]
-[; ;uart.c: 205: {
-"205
-{
-[; ;uart.c: 206: EEPROMwrite(EEaddr,UARTcharFromString(c));
-"206
-[e ( _EEPROMwrite (2 , _EEaddr ( _UARTcharFromString (1 _c ]
-[; ;uart.c: 207: UARTwriteString(msgMenu[4]);
-"207
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 4 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"209
-}
-[; ;uart.c: 209: }
-[e $U 305  ]
-"210
-[e :U 304 ]
-[; ;uart.c: 210: else if (instruction == 'r')
-[e $ ! == -> _instruction `ui -> 114 `ui 306  ]
-[; ;uart.c: 211: {
-"211
-{
-[; ;uart.c: 212: UARTwriteDecimal(EEPROMread(EEaddr));
-"212
-[e ( _UARTwriteDecimal (1 ( _EEPROMread (1 _EEaddr ]
-[; ;uart.c: 213: UARTwriteString(msgMenu[4]);
-"213
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 4 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"214
-}
-[; ;uart.c: 214: }
-[e $U 307  ]
-"215
-[e :U 306 ]
-[; ;uart.c: 215: else if (instruction == 'm')
-[e $ ! == -> _instruction `ui -> 109 `ui 308  ]
-[; ;uart.c: 216: {
-"216
-{
-[; ;uart.c: 217: mode = 0;
-"217
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 218: UARTwriteString(msgMenu[0]);
-"218
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"219
-}
-[e :U 308 ]
-"220
-[e :U 307 ]
-[e :U 305 ]
-[; ;uart.c: 219: }
-[; ;uart.c: 220: EEaddrF=0;
-[e = _EEaddrF -> -> 0 `i `uc ]
-[; ;uart.c: 221: instruction =0;
-"221
-[e = _instruction -> -> 0 `i `uc ]
-"222
-}
-[; ;uart.c: 222: }
-[e $U 309  ]
-"223
-[e :U 303 ]
-[; ;uart.c: 223: else
-[; ;uart.c: 224: {
-"224
-{
-[; ;uart.c: 225: EEaddrF=1;
-"225
-[e = _EEaddrF -> -> 1 `i `uc ]
-[; ;uart.c: 226: EEaddr=UARTcharFromString(c);
-"226
-[e = _EEaddr ( _UARTcharFromString (1 _c ]
-[; ;uart.c: 228: if(instruction=='w')UARTwriteString(msgEEw);
-"228
-[e $ ! == -> _instruction `ui -> 119 `ui 310  ]
-[e ( _UARTwriteString (1 -> &U _msgEEw `*uc ]
-[e $U 311  ]
-"229
-[e :U 310 ]
-[; ;uart.c: 229: else if(instruction == 'r')UARTwriteString("\n\nHit any key to read from EEPROM.\n\n");
-[e $ ! == -> _instruction `ui -> 114 `ui 312  ]
-[e ( _UARTwriteString (1 -> :s 8C `*uc ]
-[e :U 312 ]
-"230
-[e :U 311 ]
-}
-[e :U 309 ]
-"231
-}
-[; ;uart.c: 230: }
-[; ;uart.c: 231: }
-[e $U 313  ]
-"232
-[e :U 302 ]
-[; ;uart.c: 232: else
-[; ;uart.c: 233: {
-"233
-{
-[; ;uart.c: 234: instruction = c;
-"234
-[e = _instruction _c ]
-[; ;uart.c: 235: if((instruction == 'w')||(instruction == 'r'))
-"235
-[e $ ! || == -> _instruction `ui -> 119 `ui == -> _instruction `ui -> 114 `ui 314  ]
-[; ;uart.c: 236: {
-"236
-{
-[; ;uart.c: 237: UARTwriteString(msgEEaddr);
-"237
-[e ( _UARTwriteString (1 -> &U _msgEEaddr `*uc ]
-"238
-}
-[; ;uart.c: 238: }
-[e $U 315  ]
-"239
-[e :U 314 ]
-[; ;uart.c: 239: else if(instruction == 'm')
-[e $ ! == -> _instruction `ui -> 109 `ui 316  ]
-[; ;uart.c: 240: {
-"240
-{
-[; ;uart.c: 241: mode =0;
-"241
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 242: instruction =0;
-"242
-[e = _instruction -> -> 0 `i `uc ]
-[; ;uart.c: 243: UARTwriteString(msgMenu[0]);
-"243
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-"244
-}
-[e :U 316 ]
-"245
-[e :U 315 ]
-}
-[e :U 313 ]
-[; ;uart.c: 244: }
-[; ;uart.c: 245: }
-[; ;uart.c: 246: break;
-"246
-[e $U 260  ]
-[; ;uart.c: 247: default:
-"247
-[e :U 317 ]
-[; ;uart.c: 248: mode=0;
-"248
-[e = _mode -> -> 0 `i `uc ]
-[; ;uart.c: 249: UARTwriteString(msgMenu[0]);
-"249
-[e ( _UARTwriteString (1 -> *U + &U _msgMenu * -> -> -> 0 `i `ui `ux -> -> # *U &U _msgMenu `ui `ux `*uc ]
-[; ;uart.c: 250: break;
-"250
-[e $U 260  ]
-"251
-}
-[; ;uart.c: 251: }
-[e $U 260  ]
-"74
-[e :U 261 ]
-[e [\ _mode , $ -> -> 0 `i `uc 262
- , $ -> -> 1 `i `uc 266
- , $ -> -> 2 `i `uc 276
- , $ -> -> 3 `i `uc 290
- , $ -> -> 4 `i `uc 301
- 317 ]
-"251
-[e :U 260 ]
-"252
-}
-[e :U 258 ]
-"253
-}
-[e :U 255 ]
-"58
+[; ;pwm.c: 44: }
 [e $U 256  ]
-[e :U 257 ]
-[; ;uart.c: 252: }
-[; ;uart.c: 253: }
-[; ;uart.c: 254: }
-"254
+"45
+[e :U 255 ]
+[; ;pwm.c: 45: else
+[; ;pwm.c: 46: {
+"46
+{
+[; ;pwm.c: 47: PWMperiod = 2;
+"47
+[e = _PWMperiod -> -> 2 `i `uc ]
+[; ;pwm.c: 48: PR2 = 2;
+"48
+[e = _PR2 -> -> 2 `i `uc ]
+[; ;pwm.c: 49: CCPR2L = 1;
+"49
+[e = _CCPR2L -> -> 1 `i `uc ]
+"50
+}
+[e :U 256 ]
+[; ;pwm.c: 50: }
+[; ;pwm.c: 52: }
+"52
 [e :UE 254 ]
 }
-"258
-[v _UARTread `(uc  1 ef ]
+"55
+[v _setDuty `(v  1 ef1`uc ]
 {
-[; ;uart.c: 257: unsigned char UARTread(void)
-[; ;uart.c: 258: {
-[e :U _UARTread ]
+[; ;pwm.c: 54: void setDuty(unsigned char D)
+[; ;pwm.c: 55: {
+[e :U _setDuty ]
+[v _D `uc  1 r1 ]
 [f ]
-"259
-[v _temp `uc  1 a ]
-[; ;uart.c: 259: unsigned char temp;
-[; ;uart.c: 265: rtail++;
-"265
-[e ++ _rtail -> -> 1 `i `uc ]
-[; ;uart.c: 266: rtail&=(8-1);
-"266
-[e =& _rtail -> - -> 8 `i -> 1 `i `uc ]
-[; ;uart.c: 267: temp=ringbuff[rtail];
-"267
-[e = _temp -> *U + &U _ringbuff * -> _rtail `ux -> -> # *U &U _ringbuff `ui `ux `uc ]
-[; ;uart.c: 270: return temp;
-"270
-[e ) _temp ]
-[e $UE 318  ]
-[; ;uart.c: 271: }
-"271
-[e :UE 318 ]
-}
-"275
-[v _UARTwrite `(v  1 ef1`uc ]
+"56
+[v _temp `ui  1 a ]
+[; ;pwm.c: 56: unsigned int temp;
+[; ;pwm.c: 58: if(D<100)
+"58
+[e $ ! < -> _D `i -> 100 `i 258  ]
+[; ;pwm.c: 59: {
+"59
 {
-[; ;uart.c: 274: void UARTwrite(unsigned char c)
-[; ;uart.c: 275: {
-[e :U _UARTwrite ]
-[v _c `uc  1 r1 ]
+[; ;pwm.c: 60: PWMduty = D;
+"60
+[e = _PWMduty _D ]
+[; ;pwm.c: 61: temp = PWMduty*PWMperiod;
+"61
+[e = _temp -> * -> _PWMduty `i -> _PWMperiod `i `ui ]
+[; ;pwm.c: 62: temp = temp/100;
+"62
+[e = _temp / _temp -> -> 100 `i `ui ]
+[; ;pwm.c: 63: CCPR2L = temp;
+"63
+[e = _CCPR2L -> _temp `uc ]
+"64
+}
+[; ;pwm.c: 64: }
+[e $U 259  ]
+"65
+[e :U 258 ]
+[; ;pwm.c: 65: else
+[; ;pwm.c: 66: {
+"66
+{
+[; ;pwm.c: 67: PWMduty = 99;
+"67
+[e = _PWMduty -> -> 99 `i `uc ]
+[; ;pwm.c: 68: temp = PWMduty*PWMperiod;
+"68
+[e = _temp -> * -> _PWMduty `i -> _PWMperiod `i `ui ]
+[; ;pwm.c: 69: temp = temp/100;
+"69
+[e = _temp / _temp -> -> 100 `i `ui ]
+[; ;pwm.c: 70: CCPR2L = temp;
+"70
+[e = _CCPR2L -> _temp `uc ]
+"71
+}
+[e :U 259 ]
+[; ;pwm.c: 71: }
+[; ;pwm.c: 72: }
+"72
+[e :UE 257 ]
+}
+"75
+[v _disablePWM `(v  1 ef ]
+{
+[; ;pwm.c: 74: void disablePWM(void)
+[; ;pwm.c: 75: {
+[e :U _disablePWM ]
 [f ]
-[; ;uart.c: 276: RC3=1;;
-"276
-[e = _RC3 -> -> 1 `i `b ]
-[; ;uart.c: 278: while(!TRMT);
-"278
-[e $U 320  ]
-[e :U 321 ]
-[e :U 320 ]
-[e $ ! _TRMT 321  ]
-[e :U 322 ]
-[; ;uart.c: 280: TXREG=c;
-"280
-[e = _TXREG _c ]
-[; ;uart.c: 282: RC3=0;;
-"282
-[e = _RC3 -> -> 0 `i `b ]
-[; ;uart.c: 283: }
-"283
-[e :UE 319 ]
+[; ;pwm.c: 76: TRISAbits.TRISA5=1;
+"76
+[e = . . _TRISAbits 0 5 -> -> 1 `i `uc ]
+[; ;pwm.c: 77: T2CONbits.TMR2ON =0;
+"77
+[e = . . _T2CONbits 0 2 -> -> 0 `i `uc ]
+[; ;pwm.c: 78: }
+"78
+[e :UE 260 ]
 }
-"286
-[v _UARTwriteString `(v  1 ef1`*uc ]
-{
-[; ;uart.c: 285: void UARTwriteString (char str[])
-[; ;uart.c: 286: {
-[e :U _UARTwriteString ]
-[v _str `*uc  1 r1 ]
-[f ]
-"287
-[v _i `uc  1 a ]
-[; ;uart.c: 287: unsigned char i=0;
-[e = _i -> -> 0 `i `uc ]
-[; ;uart.c: 288: while(str[i])
-"288
-[e $U 324  ]
-[e :U 325 ]
-[; ;uart.c: 289: {
-"289
-{
-[; ;uart.c: 290: UARTwrite(str[i++]);
-"290
-[e ( _UARTwrite (1 *U + _str * -> ++ _i -> -> 1 `i `uc `ux -> -> # *U _str `ui `ux ]
-"291
-}
-[e :U 324 ]
-"288
-[e $ != -> *U + _str * -> _i `ux -> -> # *U _str `ui `ux `i -> -> -> 0 `i `uc `i 325  ]
-[e :U 326 ]
-[; ;uart.c: 291: }
-[; ;uart.c: 292: }
-"292
-[e :UE 323 ]
-}
-"295
-[v _UARTcharFromString `(uc  1 ef1`uc ]
-{
-[; ;uart.c: 294: unsigned char UARTcharFromString(unsigned char c)
-[; ;uart.c: 295: {
-[e :U _UARTcharFromString ]
-[v _c `uc  1 r1 ]
-[f ]
-"296
-[v _rC `uc  1 a ]
-[v _outF `uc  1 a ]
-[; ;uart.c: 296: unsigned char rC,outF=0,c1=c-48;
-[e = _outF -> -> 0 `i `uc ]
-[v _c1 `uc  1 a ]
-[e = _c1 -> - -> _c `i -> 48 `i `uc ]
-[; ;uart.c: 297: while(outF==0)
-"297
-[e $U 328  ]
-[e :U 329 ]
-[; ;uart.c: 298: {
-"298
-{
-[; ;uart.c: 299: while(RCIF==0);
-"299
-[e $U 331  ]
-[e :U 332 ]
-[e :U 331 ]
-[e $ == -> _RCIF `i -> 0 `i 332  ]
-[e :U 333 ]
-[; ;uart.c: 300: if(!(RCSTA&0b00000110))
-"300
-[e $ ! ! != & -> _RCSTA `i -> 6 `i -> 0 `i 334  ]
-[; ;uart.c: 301: { rhead++;
-"301
-{
-[e ++ _rhead -> -> 1 `i `uc ]
-[; ;uart.c: 302: rhead&=(8-1);
-"302
-[e =& _rhead -> - -> 8 `i -> 1 `i `uc ]
-[; ;uart.c: 303: ringbuff[rhead]=RCREG;
-"303
-[e = *U + &U _ringbuff * -> _rhead `ux -> -> # *U &U _ringbuff `ui `ux -> _RCREG `ui ]
-"304
-}
-[e :U 334 ]
-[; ;uart.c: 304: }
-[; ;uart.c: 305: RCIF=0;
-"305
-[e = _RCIF -> -> 0 `i `b ]
-[; ;uart.c: 306: rC=UARTread();
-"306
-[e = _rC ( _UARTread ..  ]
-[; ;uart.c: 307: UARTwrite(rC);
-"307
-[e ( _UARTwrite (1 _rC ]
-[; ;uart.c: 308: if(rC==13)outF=1;
-"308
-[e $ ! == -> _rC `i -> 13 `i 335  ]
-[e = _outF -> -> 1 `i `uc ]
-[e $U 336  ]
-"309
-[e :U 335 ]
-[; ;uart.c: 309: else
-[; ;uart.c: 310: {
-"310
-{
-[; ;uart.c: 311: c1*=10;
-"311
-[e =* _c1 -> -> 10 `i `uc ]
-[; ;uart.c: 312: c1+=(rC-48);
-"312
-[e =+ _c1 -> - -> _rC `i -> 48 `i `uc ]
-"313
-}
-[e :U 336 ]
-"314
-}
-[e :U 328 ]
-"297
-[e $ == -> _outF `i -> 0 `i 329  ]
-[e :U 330 ]
-[; ;uart.c: 313: }
-[; ;uart.c: 314: }
-[; ;uart.c: 315: return c1;
-"315
-[e ) _c1 ]
-[e $UE 327  ]
-[; ;uart.c: 316: }
-"316
-[e :UE 327 ]
-}
-"319
-[v _UARTwriteDecimal `(v  1 ef1`uc ]
-{
-[; ;uart.c: 318: void UARTwriteDecimal(unsigned char c)
-[; ;uart.c: 319: {
-[e :U _UARTwriteDecimal ]
-[v _c `uc  1 r1 ]
-[f ]
-"320
-[v _hC `uc  1 a ]
-[v _d `uc  1 a ]
-[; ;uart.c: 320: unsigned char hC,d=100;
-[e = _d -> -> 100 `i `uc ]
-[; ;uart.c: 321: do
-"321
-[e :U 340 ]
-[; ;uart.c: 322: {
-"322
-{
-[; ;uart.c: 323: hC=c/d;
-"323
-[e = _hC -> / -> _c `i -> _d `i `uc ]
-[; ;uart.c: 324: UARTwrite(hC+48);
-"324
-[e ( _UARTwrite (1 -> + -> _hC `i -> 48 `i `uc ]
-[; ;uart.c: 325: c-=hC*d;
-"325
-[e =- _c -> * -> _hC `i -> _d `i `uc ]
-[; ;uart.c: 326: d/=10;
-"326
-[e =/ _d -> 10 `uc ]
-"327
-}
-[; ;uart.c: 327: }while(d);
-[e $ != -> _d `i -> -> -> 0 `i `uc `i 340  ]
-[e :U 339 ]
-[; ;uart.c: 328: }
-"328
-[e :UE 337 ]
-}
-[a 5C 10 10 84 101 109 112 32 115 101 110 115 111 114 32 115 101 108 101 99 116 101 100 0 ]
-[a 4C 10 10 99 104 97 110 110 101 108 32 51 32 115 101 108 101 99 116 101 100 0 ]
-[a 3C 10 10 99 104 97 110 110 101 108 32 50 32 115 101 108 101 99 116 101 100 0 ]
-[a 2C 10 10 99 104 97 110 110 101 108 32 49 32 115 101 108 101 99 116 101 100 0 ]
-[a 1C 10 10 65 68 67 32 118 97 108 117 101 58 32 0 ]
-[a 7C 10 10 69 110 116 101 114 32 116 104 101 32 80 87 77 32 68 117 116 121 32 67 121 99 108 101 58 32 0 ]
-[a 6C 10 10 69 110 116 101 114 32 116 104 101 32 80 87 77 32 80 101 114 105 111 100 58 32 0 ]
-[a 8C 10 10 72 105 116 32 97 110 121 32 107 101 121 32 116 111 32 114 101 97 100 32 102 114 111 109 32 69 69 80 82 79 77 46 10 10 0 ]

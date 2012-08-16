@@ -1,5 +1,5 @@
 
-	; HI-TECH C Compiler for PIC10/12/16 MCUs V9.83
+	; HI-TECH C Compiler for PIC10/12/16 MCUs V9.82
 	; Copyright (C) 1984-2011 HI-TECH Software
 
 	; Auto-generated runtime startup code for final link stage.
@@ -9,10 +9,9 @@
 	;
 	; -oBP Demoboard v5.cof -mBP Demoboard v5.map --summary=default \
 	; --output=default main.p1 i2c.p1 spi.p1 uart.p1 easteregg.p1 eeprom.p1 \
-	; adc.p1 dac.p1 --chip=16F1829 -P --runtime=default --opt=default \
-	; -D__DEBUG=1 --debugger=icd2 -g --asmlist \
-	; --errformat=Error   [%n] %f; %l.%c %s --msgformat=Advisory[%n] %s \
-	; --warnformat=Warning [%n] %f; %l.%c %s
+	; adc.p1 dac.p1 pwm.p1 --chip=16F1829 -P --runtime=default \
+	; --opt=default -g --asmlist --errformat=Error   [%n] %f; %l.%c %s \
+	; --msgformat=Advisory[%n] %s --warnformat=Warning [%n] %f; %l.%c %s
 	;
 
 
@@ -65,8 +64,6 @@ intlevel5:
 
 	psect	reset_vec
 reset_vec:
-	nop	; NOP inserted due to debugger requirements
-
 	; No powerup routine
 	global start
 

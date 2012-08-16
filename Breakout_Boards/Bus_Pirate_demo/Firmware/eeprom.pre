@@ -1,7 +1,7 @@
 
-# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\eeprom.c"
 
-# 132 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h"
+# 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
 
 
@@ -2779,29 +2779,29 @@ unsigned TOSH : 7;
 } TOSHbits @ 0xFEF;
 
 
-# 27 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "C:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 5 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./eeprom.h"
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./eeprom.h"
 void EEPROMwrite (unsigned char addr, unsigned char data);
 unsigned char EEPROMread(unsigned char addr);
 
-# 7 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\eeprom.c"
+# 7 "C:\Users\Filip\Documents\MPLAB\Demo Board\eeprom.c"
 void EEPROMwrite (unsigned char addr, unsigned char data)
 {
 EEADRL=addr;

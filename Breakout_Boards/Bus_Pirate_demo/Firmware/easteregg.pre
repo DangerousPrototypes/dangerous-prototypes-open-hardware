@@ -1,7 +1,7 @@
 
-# 1 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\easteregg.c"
 
-# 132 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic16f1829.h"
+# 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
 
 
@@ -2779,38 +2779,56 @@ unsigned TOSH : 7;
 } TOSHbits @ 0xFEF;
 
 
-# 27 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 27 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_nop)
 extern void _nop(void);
 
 # 80
 extern unsigned int flash_read(unsigned short addr);
 
-# 41 "C:\Program Files\HI-TECH Software\PICC\9.83\include\eeprom_routines.h"
+# 41 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\eeprom_routines.h"
 extern unsigned char eeprom_write(unsigned char addr, unsigned char value);
 extern unsigned char eeprom_read(unsigned char addr);
 extern void eecpymem(volatile unsigned char *to, eeprom unsigned char *from, unsigned char size);
 extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsigned char size);
 
 
-# 153 "C:\Program Files\HI-TECH Software\PICC\9.83\include\pic.h"
+# 153 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic.h"
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 3 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./easteregg.h"
+# 4 "C:\Users\Filip\Documents\MPLAB\Demo Board\./easteregg.h"
 unsigned char isEE();
 void doEE();
 
-# 9 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\./uart.h"
+# 9 "C:\Users\Filip\Documents\MPLAB\Demo Board\./uart.h"
 void initUART(void);
 void UARTworker(void);
 void UARTwrite(unsigned char c);
+void UARTwriteDecimal(unsigned char c);
 unsigned char UARTread(void);
+void UARTwriteString (char* str);
 
 extern unsigned ringbuff[8];
 extern volatile char rhead, rtail;
 
-# 12 "E:\Work\dp\Breakout_Boards\Bus_Pirate_demo\Firmware\easteregg.c"
+# 36
+unsigned char UARTcharFromString(unsigned char c);
+
+const char msgMenu0[]="\n\nBus Pirate Demo Board v5\nFW verison v0.95\n\n  Main Menu\n-------------\n\n1)ADC\n2)PWM\n3)DAC\n4)EEPROM\n\nChoose(1-4):\0";
+const char msgMenu1[]="\n\nADC Menu\n-----------\n\nr)Read ADC\n1)Channel l\n2)Channel 2\n3)Channel 3\nt)Temperature sensor\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu2[]="\n\nPWM Menu\n-----------\n\np)Set PWM Period\nd)Set PWM Duty Cycle\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu3[]="\n\nDAC Menu\n-----------\n\nv)Set DAC level 0-31\nm)Back to main menu\n\nChoose: \0";
+const char msgMenu4[]="\n\nEEPROM Menu\n--------------\n\nw)Write a character to EEPROM\nr)Read a character from EEPROM\nm)Back to main menu\n\nChoose: \0";
+
+const char msgDACsetV[]="\n\nEnter desired DAC level from 0 to 31: ";
+
+const char msgEEw[]="\n\nEnter the variable (0-255) to be entered into EEPROM: ";
+const char msgEEaddr[]="\n\nEnter the address 0-255: ";
+
+const char *msgMenu[] ={msgMenu0,msgMenu1,msgMenu2,msgMenu3,msgMenu4};
+
+# 12 "C:\Users\Filip\Documents\MPLAB\Demo Board\easteregg.c"
 void teletype(const char *s);
 
 

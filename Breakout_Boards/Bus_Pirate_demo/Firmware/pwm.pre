@@ -1,5 +1,5 @@
 
-# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\adc.c"
+# 1 "C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.c"
 
 # 132 "C:\Program Files (x86)\HI-TECH Software\PICC\9.82\include\pic16f1829.h"
 volatile unsigned char INDF0 @ 0x000;
@@ -2797,82 +2797,87 @@ extern void memcpyee(eeprom unsigned char *to, const unsigned char *from, unsign
 #pragma inline(_delay)
 extern void _delay(unsigned long);
 
-# 5 "C:\Users\Filip\Documents\MPLAB\Demo Board\./adc.h"
-unsigned int getADC(unsigned char adc);
-void enableTS(void);
-unsigned int startADC16(unsigned char adc);
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\./pwm.h"
+void enablePWM(void);
+void disablePWM(void);
+void setPeriod(unsigned char);
+void setDuty(unsigned char);
 
-# 15 "C:\Users\Filip\Documents\MPLAB\Demo Board\adc.c"
-unsigned int getADC(unsigned char adc)
+
+extern unsigned char PWMduty;
+extern unsigned char PWMperiod;
+
+# 6 "C:\Users\Filip\Documents\MPLAB\Demo Board\pwm.c"
+unsigned char PWMduty;
+unsigned char PWMperiod;
+void enablePWM(void)
 {
-unsigned char temp;
-int i;
-switch (adc)
-{
-case 0:
-adc=3;
-break;
-case 1:
-adc=8;
-break;
-case 2:
-adc =9;
-break;
-case 3:
-adc=0b11101;
-break;
-default:
-return 0;
+unsigned int tempP;
+TRISAbits.TRISA5 =1;
+APFCON1bits.CCP2SEL=1;
+PR2 = 0x02;
+
+PWMperiod = PR2;
+
+CCP2CON =0b00001100;
+
+
+CCPR2L =0x01;
+
+tempP=(unsigned int)CCPR2L*100;
+PWMduty = tempP/PWMperiod;
+
+
+CCPTMRS=0;
+TMR2IF=0;
+
+T2CON = 0;
+T2CONbits.TMR2ON =1;
+TRISAbits.TRISA5 =0;
 }
 
-
-ADCON1=0b11000000;
-adc&=0x1F;
-ADCON0=0x01|(adc<<2);
-
-for(i=0; i<4; i++) asm("nop");
-
-ADCON0bits.ADGO=1;
-while(ADCON0bits.ADGO);
-
-ADCON0&=0xFE;
-temp = (ADRESH<<6)|(ADRESL>>2);
-return temp;
+void setPeriod(unsigned char P)
+{
+unsigned int temp;
+if(P>1)
+{
+temp=P*PWMduty;
+temp = temp/100;
+CCPR2L = temp;
+PWMperiod = P;
+PR2=P;
+}
+else
+{
+PWMperiod = 2;
+PR2 = 2;
+CCPR2L = 1;
 }
 
-
-void enableTS(void)
-{
-FVRCON|=0b00100000;
-FVRCON&=0b11101111;
 }
 
-unsigned int startADC16(unsigned char adc)
+void setDuty(unsigned char D)
 {
-unsigned char temp;
-int i;
-switch (adc)
+unsigned int temp;
+
+if(D<100)
 {
-case 0:
-adc=3;
-break;
-case 1:
-adc=8;
-break;
-case 2:
-adc =9;
-break;
-case 3:
-adc=0b11101;
-break;
-default:
-return 0;
+PWMduty = D;
+temp = PWMduty*PWMperiod;
+temp = temp/100;
+CCPR2L = temp;
+}
+else
+{
+PWMduty = 99;
+temp = PWMduty*PWMperiod;
+temp = temp/100;
+CCPR2L = temp;
+}
 }
 
-
-ADCON1=0b11000000;
-adc&=0x1F;
-ADCON0=0x01|(adc<<2);
-
-for(i=0; i<4; i++) asm("nop");
+void disablePWM(void)
+{
+TRISAbits.TRISA5=1;
+T2CONbits.TMR2ON =0;
 }
