@@ -13,6 +13,12 @@
 <meta charset="<?php bloginfo( 'charset' ); ?>" />
 <title><?php wp_title( '|', true, 'right' );?></title>
 <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+<?php if(is_page_template('project.php')) :?>
+<link rel="stylesheet" type="text/css" href="/wp-content/themes/cwantwm-child/project.css" media="screen" />
+<?php endif;?>
+<?php if(is_page_template('contest.php')) :?>
+<link rel="stylesheet" type="text/css" href="/wp-content/themes/cwantwm-child/contest.css" media="screen" />
+<?php endif;?>
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>" />
  <script src="/wp-content/themes/cwantwm/js/modernizr-1.7.min.js"></script>
 <?php
