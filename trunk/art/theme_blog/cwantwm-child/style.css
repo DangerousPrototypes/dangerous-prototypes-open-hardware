@@ -59,6 +59,7 @@ address {line-height:1.4}
 #twitter {padding-right: 20px;  padding-bottom: 2px; background: url(images/social.png) no-repeat right -32px; margin-right: 10px;}
 #rss {padding-right: 20px; padding-bottom: 2px; background: url(images/social.png) no-repeat right -64px; margin-right: 10px;}
 #comrss {padding-right: 20px; padding-bottom: 2px; background: url(images/social.png) no-repeat right -96px; margin-right: 10px;}
+#text-10 { width: 370px !important; }
 
 /* Main Layout */
 #main-inner {}
