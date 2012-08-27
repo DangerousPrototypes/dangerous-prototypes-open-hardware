@@ -1,0 +1,28 @@
+/*
+Theme Name:     Cwantwm Child
+Theme URI:      http: //cwantwm.co.uk
+Description:    Child theme for cwantwm theme 
+Author:         Rob Holmes
+Author URI:     http: //example.com/about/
+Template:       cwantwm
+Version:        0.1.0
+*/
+
+  .two-sidebars #content
+  {
+    width: 900px;
+    margin-left: 50px;
+    margin-right: -950px; /* Negative value of #content's width + left margin. */
+  }
+
+     div#bpbg1 {
+  /*  position: absolute;*/
+/*    top: 0px; left: 0px;*/
+    width: 900px;
+    height:663px;
+        
+         background-image: url("http://dangerousprototypes.com/wp-content/media/2009/08/BP_with-USBWhite.jpg");
+             background-repeat:no-repeat;
+        
+         }
+
