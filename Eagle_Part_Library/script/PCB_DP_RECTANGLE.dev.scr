@@ -37,5 +37,5 @@ Package 'DP10050_V1' '-50X100';
 Technology '';
 Package 'DP10080_V1' '-80X100';
 Technology '';
-Package 'DP8556_V1' '-85X56';
+Package 'DP8654_V1' '-85X56';
 Technology '';
