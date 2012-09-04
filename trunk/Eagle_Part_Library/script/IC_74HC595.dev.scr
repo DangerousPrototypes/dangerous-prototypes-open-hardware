@@ -22,3 +22,8 @@ Technology '';
 Connect  'IC.Q2' '2'  'IC.!OE' '13'  'IC.Q1' '1'  'IC.Q3' '3'  'IC.Q4' '4' \
          'IC.DS' '14'  'IC.STCP' '12'  'IC.SHCP' '11'  'IC.Q6' '6'  'IC.Q7S' '9'  'IC.Q5' '5' \
          'IC.Q7' '7'  'IC.!MR' '10'  'SUP.GND' '8'  'IC.Q0' '15'  'SUP.V+' '16';
+Package 'DIL16' '-DIP-16';
+Technology '';
+Connect  'IC.Q1' '1'  'IC.Q2' '2'  'IC.Q7' '7'  'SUP.GND' '8'  'IC.Q3' '3' \
+         'IC.Q4' '4'  'IC.Q6' '6'  'IC.Q5' '5'  'IC.Q7S' '9'  'IC.!MR' '10'  'IC.SHCP' '11' \
+         'IC.STCP' '12'  'IC.!OE' '13'  'IC.DS' '14'  'IC.Q0' '15'  'SUP.V+' '16';
