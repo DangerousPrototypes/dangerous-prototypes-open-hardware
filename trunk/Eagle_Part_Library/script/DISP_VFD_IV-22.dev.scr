@@ -9,12 +9,11 @@ Grid mm;
 Edit 'DISP_VFD_IV-22.dev';
 Prefix 'DISP';
 Description '\
-Oval VFD Display <br>\n\
+7-segment VFD Display <br>\n\
 <B>Dangerousprototypes.com</B>';
 Value Off;
 Add DISP_VFD_IV-22 'DISP' Next 0 (0 0);
-Package 'DISP_VFD_IV-22' '''''';
+Package 'DISP_IN-12_SOCKET' '''''';
 Technology '';
 Connect  'DISP.FA' '5'  'DISP.GRID' '6'  'DISP.A' '7'  'DISP.B' '8'  'DISP.E' '10' \
          'DISP.G' '11'  'DISP.FB' '12'  'DISP.H' '1'  'DISP.F' '2'  'DISP.D' '3'  'DISP.C' '4';
-Grid inch;
