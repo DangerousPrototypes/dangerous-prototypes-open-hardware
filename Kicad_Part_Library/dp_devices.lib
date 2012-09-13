@@ -1,6 +1,6 @@
-EESchema-LIBRARY Version 2.3  05/09/2012-22:35:17
+EESchema-LIBRARY Version 2.3  13/09/2012-16:35:28
 # Converted with eagle2kicad.ulp Version 0.9
-# Device count = 284
+# Device count = 285
 #
 # Dev Name: BATTERY_2032
 # Package Name: BATT2032
@@ -9,8 +9,6 @@ EESchema-LIBRARY Version 2.3  05/09/2012-22:35:17
 # Gate count = 1
 #
 DEF BATTERY_2032 BATT 0 40 N N 1 L N
-# Gate Name: BATT
-# Symbol Name: 2032
 F0 "BATT" -200 225 50 H V L B
 F1 "BATTERY_2032" -200 -300 50 H V L B
 F2 "dp_devices-BATT2032" 0 150 50 H I C C
@@ -33,8 +31,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_NPOL-0402 C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP
 F0 "C" 100 200 50 H V L B
 F1 "CAPACITOR_NPOL-0402" 100 100 50 H V L B
 F2 "dp_devices-C402" 0 150 50 H I C C
@@ -56,8 +52,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_NPOL-0603 C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP
 F0 "C" 100 200 50 H V L B
 F1 "CAPACITOR_NPOL-0603" 100 100 50 H V L B
 F2 "dp_devices-C603" 0 150 50 H I C C
@@ -79,8 +73,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_NPOL-0805 C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP
 F0 "C" 100 200 50 H V L B
 F1 "CAPACITOR_NPOL-0805" 100 100 50 H V L B
 F2 "dp_devices-C805" 0 150 50 H I C C
@@ -102,8 +94,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_NPOL-1206 C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP
 F0 "C" 100 200 50 H V L B
 F1 "CAPACITOR_NPOL-1206" 100 100 50 H V L B
 F2 "dp_devices-C1206" 0 150 50 H I C C
@@ -125,10 +115,8 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_NPOL-PTH_0.1" C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP
 F0 "C" 100 200 50 H V L B
-F1 "CAPACITOR_NPOL-PTH_0.1"" 100 100 50 H V L B
+F1 "CAPACITOR_NPOL-PTH_0.1" 100 100 50 H V L B
 F2 "dp_devices-C0.1PTH" 0 150 50 H I C C
 DRAW
 P 2 1 0 0 0 100 0 80
@@ -148,8 +136,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_POL-CASE_A C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP_POL
 F0 "C" 45 19 50 H V L B
 F1 "CAPACITOR_POL-CASE_A" 45 -181 50 H V L B
 F2 "dp_devices-CASE_A" 0 150 50 H I C C
@@ -173,8 +159,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_POL-CASE_B C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP_POL
 F0 "C" 45 19 50 H V L B
 F1 "CAPACITOR_POL-CASE_B" 45 -181 50 H V L B
 F2 "dp_devices-CASE_B" 0 150 50 H I C C
@@ -198,8 +182,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_POL-SMC_A C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP_POL
 F0 "C" 45 19 50 H V L B
 F1 "CAPACITOR_POL-SMC_A" 45 -181 50 H V L B
 F2 "dp_devices-SMC_A" 0 150 50 H I C C
@@ -223,8 +205,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CAPACITOR_POL-SMC_B C 0 40 N N 1 L N
-# Gate Name: C
-# Symbol Name: CAP_POL
 F0 "C" 45 19 50 H V L B
 F1 "CAPACITOR_POL-SMC_B" 45 -181 50 H V L B
 F2 "dp_devices-SMC_B" 0 150 50 H I C C
@@ -248,8 +228,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON-EDGE-F-06X2 CON 0 40 N N 1 L N
-# Gate Name: CON
-# Symbol Name: EDGE_CONNECTOR_6X2
 F0 "CON" -400 325 50 H V L B
 F1 "CON-EDGE-F-06X2" 0 0 50 H V L B
 F2 "dp_devices-EDGE_CONNECTOR_6X2" 0 150 50 H I C C
@@ -293,8 +271,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON-EDGE-M-06X2 CON 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: EDGE_CONNECTOR_6X2
 F0 "CON" -400 325 50 H V L B
 F1 "CON-EDGE-M-06X2" 0 0 50 H V L B
 F2 "dp_devices-PCB_EDGE_CONNECTOR_6X2" 0 150 50 H I C C
@@ -338,8 +314,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON-RJ45-F ETH 0 40 N N 1 L N
-# Gate Name: ETH
-# Symbol Name: HR911105A
 F0 "ETH" -600 1250 50 H V L B
 F1 "CON-RJ45-F" -600 1150 50 H V L B
 F2 "dp_devices-HR911105A" 0 150 50 H I C C
@@ -472,8 +446,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF CON-USB-F-MICRO-B USB 0 40 N N 2 L N
-# Gate Name: BODY
-# Symbol Name: USB_BODY_PINS
 F0 "USB" 0 0 50 H V C C
 F1 "CON-USB-F-MICRO-B" 0 0 50 H V C C
 F2 "dp_devices-CONN_USB_MICRO-B" 0 150 50 H I C C
@@ -482,8 +454,6 @@ X BODY@1 BODY@1 0 -500 200 U 40 40 1 1 T
 X BODY@2 BODY@2 200 -500 200 U 40 40 1 1 T 
 X BODY@3 BODY@3 200 500 200 D 40 40 1 1 T 
 X BODY@4 BODY@4 0 500 200 D 40 40 1 1 T 
-# Gate Name: USB
-# Symbol Name: CONN_USB
 P 2 2 0 0 -200 300 0 300
 P 2 2 0 0 0 300 0 -300
 P 2 2 0 0 0 -300 -200 -300
@@ -509,8 +479,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF CON-USB-F-MINI-B USB 0 40 N N 2 L N
-# Gate Name: BODY
-# Symbol Name: USB_BODY_PINS
 F0 "USB" 0 0 50 H V C C
 F1 "CON-USB-F-MINI-B" 0 0 50 H V C C
 F2 "dp_devices-CONN_USB_MINI-B" 0 150 50 H I C C
@@ -519,8 +487,6 @@ X BODY@1 BODY@1 0 -500 200 U 40 40 1 1 T
 X BODY@2 BODY@2 200 -500 200 U 40 40 1 1 T 
 X BODY@3 BODY@3 200 500 200 D 40 40 1 1 T 
 X BODY@4 BODY@4 0 500 200 D 40 40 1 1 T 
-# Gate Name: USB
-# Symbol Name: CONN_USB
 P 2 2 0 0 -200 300 0 300
 P 2 2 0 0 0 300 0 -300
 P 2 2 0 0 0 -300 -200 -300
@@ -546,16 +512,12 @@ ENDDEF
 # Gate count = 2
 #
 DEF CON-USB-F-2PB USB 0 40 N N 2 L N
-# Gate Name: B
-# Symbol Name: USB_BODY_PINS_2P
 F0 "USB" 0 0 50 H V C C
 F1 "CON-USB-F-2PB" 0 0 50 H V C C
 F2 "dp_devices-CONN_USB_A_F" 0 150 50 H I C C
 DRAW
 X BODY@1 B1 0 -500 200 U 40 40 1 1 T 
 X BODY@2 B2 0 500 200 D 40 40 1 1 T 
-# Gate Name: USB
-# Symbol Name: CONN_USB_4P
 P 2 2 0 0 -200 300 0 300
 P 2 2 0 0 0 300 0 -200
 P 2 2 0 0 0 -200 -200 -200
@@ -579,8 +541,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF CON-USB-M-A USB 0 40 N N 2 L N
-# Gate Name: BODY
-# Symbol Name: USB_BODY_PINS2
 F0 "USB" 0 0 50 H V C C
 F1 "CON-USB-M-A" 0 0 50 H V C C
 F2 "dp_devices-CONN_USB_A_MALE" 0 150 50 H I C C
@@ -589,8 +549,6 @@ X BODY@1 BODY@1 0 -400 200 U 40 40 1 1 T
 X BODY@2 BODY@2 200 -400 200 U 40 40 1 1 T 
 X BODY@3 BODY@3 200 500 200 D 40 40 1 1 T 
 X BODY@4 BODY@4 0 500 200 D 40 40 1 1 T 
-# Gate Name: USB
-# Symbol Name: CONN_USB_4P
 P 2 2 0 0 -200 300 0 300
 P 2 2 0 0 0 300 0 -200
 P 2 2 0 0 0 -200 -200 -200
@@ -614,8 +572,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_ARDUINO ARDUINO 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ARDUINO
 F0 "ARDUINO" -700 850 50 H V L B
 F1 "CON_ARDUINO" -700 -1000 50 H V L B
 F2 "dp_devices-CON_ARDUINO" 0 150 50 H I C C
@@ -665,8 +621,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_ATX_PWR-90DEG J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X10
 F0 "J" -50 537 50 H V L B
 F1 "CON_ATX_PWR-90DEG" 0 0 50 H V L B
 F2 "dp_devices-CON_ATX_PWR_90DEG" 0 150 50 H I C C
@@ -706,8 +660,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_BUSPIRATE J 0 40 N N 1 L N
-# Gate Name: A
-# Symbol Name: HDR-BUSPIRATE
 F0 "J" -150 425 50 H V L B
 F1 "CON_BUSPIRATE" 0 0 50 H V L B
 F2 "dp_devices-HDR-BUSPIRATE" 0 150 50 H I C C
@@ -743,8 +695,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_DC_M-DC_PTH J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: DC_JACK
 F0 "J" -100 300 50 H V L B
 F1 "CON_DC_M-DC_PTH" -100 200 50 H V L B
 F2 "dp_devices-DC_BARREL_JACK_PTH_2MM" 0 150 50 H I C C
@@ -782,8 +732,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_DC_M-DC_SMD J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: DC_JACK
 F0 "J" -100 300 50 H V L B
 F1 "CON_DC_M-DC_SMD" -100 200 50 H V L B
 F2 "dp_devices-DC_BARREL_JACK_SMD_2MM" 0 150 50 H I C C
@@ -821,8 +769,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X01-PTH J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER1X1
 F0 "J" 0 0 50 H V C C
 F1 "CON_HEADER_1X01-PTH" 0 0 50 H V C C
 F2 "dp_devices-M1X1" 0 150 50 H I C C
@@ -843,8 +789,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X01-PTH_08_17 J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER1X1
 F0 "J" 0 0 50 H V C C
 F1 "CON_HEADER_1X01-PTH_08_17" 0 0 50 H V C C
 F2 "dp_devices-M1X2_08_17" 0 150 50 H I C C
@@ -865,8 +809,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X01-PTH_10_17 J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER1X1
 F0 "J" 0 0 50 H V C C
 F1 "CON_HEADER_1X01-PTH_10_17" 0 0 50 H V C C
 F2 "dp_devices-M1X2_10_17" 0 150 50 H I C C
@@ -887,8 +829,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X01-SMD J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER1X1
 F0 "J" 0 0 50 H V C C
 F1 "CON_HEADER_1X01-SMD" 0 0 50 H V C C
 F2 "dp_devices-SMDPAD05X05" 0 150 50 H I C C
@@ -909,8 +849,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X02-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER1X2
 F0 "J" -50 150 50 H V L B
 F1 "CON_HEADER_1X02-PTH" 0 0 50 H V L B
 F2 "dp_devices-M1X2" 0 150 50 H I C C
@@ -932,8 +870,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X03-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER1X3
 F0 "J" -50 250 50 H V L B
 F1 "CON_HEADER_1X03-PTH" 0 0 50 H V L B
 F2 "dp_devices-M1X3" 0 150 50 H I C C
@@ -956,8 +892,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X04 J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER1X4
 F0 "J" -50 250 50 H V L B
 F1 "CON_HEADER_1X04" 0 0 50 H V L B
 F2 "dp_devices-M1X4" 0 150 50 H I C C
@@ -981,8 +915,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X05-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER1X5
 F0 "J" -50 325 50 H V L B
 F1 "CON_HEADER_1X05-PTH" 0 0 50 H V L B
 F2 "dp_devices-M1X5" 0 150 50 H I C C
@@ -1007,8 +939,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X06-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER1X6
 F0 "J" -50 350 50 H V L B
 F1 "CON_HEADER_1X06-PTH" 0 0 50 H V L B
 F2 "dp_devices-M1X6" 0 150 50 H I C C
@@ -1034,8 +964,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_1X08-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER1X8
 F0 "J" -50 425 50 H V L B
 F1 "CON_HEADER_1X08-PTH" 0 0 50 H V L B
 F2 "dp_devices-M1X8" 0 150 50 H I C C
@@ -1063,8 +991,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X02-PTH J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X2
 F0 "J" -50 137 50 H V L B
 F1 "CON_HEADER_2X02-PTH" 0 0 50 H V L B
 F2 "dp_devices-M2X2" 0 150 50 H I C C
@@ -1088,8 +1014,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X03-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER2X3
 F0 "J" -50 237 50 H V L B
 F1 "CON_HEADER_2X03-PTH" 0 0 50 H V L B
 F2 "dp_devices-M2X3" 0 150 50 H I C C
@@ -1115,8 +1039,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X04-PTH J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: HEADER2X4
 F0 "J" -50 225 50 H V L B
 F1 "CON_HEADER_2X04-PTH" 0 0 50 H V L B
 F2 "dp_devices-M2X4" 0 150 50 H I C C
@@ -1144,8 +1066,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X05-PTH J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X5
 F0 "J" -50 325 50 H V L B
 F1 "CON_HEADER_2X05-PTH" 0 0 50 H V L B
 F2 "dp_devices-M2X5" 0 150 50 H I C C
@@ -1175,8 +1095,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X05-PTH+SHROUDED_A J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X5
 F0 "J" -50 325 50 H V L B
 F1 "CON_HEADER_2X05-PTH+SHROUDED_A" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_PTH_2X05" 0 150 50 H I C C
@@ -1206,8 +1124,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X05-PTH+SHROUDED_B J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X5
 F0 "J" -50 325 50 H V L B
 F1 "CON_HEADER_2X05-PTH+SHROUDED_B" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_PTH_2X05B" 0 150 50 H I C C
@@ -1237,8 +1153,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X05-SMD+SHROUDED J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X5
 F0 "J" -50 325 50 H V L B
 F1 "CON_HEADER_2X05-SMD+SHROUDED" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_SMT_2X05" 0 150 50 H I C C
@@ -1268,8 +1182,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X06-PTH+SHROUDED J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X6
 F0 "J" -50 350 50 H V L B
 F1 "CON_HEADER_2X06-PTH+SHROUDED" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_PTH_2X06" 0 150 50 H I C C
@@ -1301,8 +1213,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X06-SMD+SHROUDED J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X6
 F0 "J" -50 350 50 H V L B
 F1 "CON_HEADER_2X06-SMD+SHROUDED" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_SMT_2X06" 0 150 50 H I C C
@@ -1334,8 +1244,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X07-PTH-SHROUDED J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X7
 F0 "J" -50 350 50 H V L B
 F1 "CON_HEADER_2X07-PTH-SHROUDED" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_PTH_2X07" 0 150 50 H I C C
@@ -1369,8 +1277,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X08 J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X8
 F0 "J" -50 437 50 H V L B
 F1 "CON_HEADER_2X08" 0 0 50 H V L B
 F2 "dp_devices-M2X8" 0 150 50 H I C C
@@ -1406,8 +1312,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X10-PTH J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X10
 F0 "J" -50 537 50 H V L B
 F1 "CON_HEADER_2X10-PTH" 0 0 50 H V L B
 F2 "dp_devices-M2X10" 0 150 50 H I C C
@@ -1447,8 +1351,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_2X10-SHROUDED J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: HEADER2X10
 F0 "J" -50 537 50 H V L B
 F1 "CON_HEADER_2X10-SHROUDED" 0 0 50 H V L B
 F2 "dp_devices-PINSHRD_PTH_2X10" 0 150 50 H I C C
@@ -1488,8 +1390,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_PRG_AVR_ICSP J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: PRG_ICSP_AVR
 F0 "J" -350 230 50 H V L B
 F1 "CON_HEADER_PRG_AVR_ICSP" 0 0 50 H V L B
 F2 "dp_devices-HEADER_PRG_2X03" 0 150 50 H I C C
@@ -1521,8 +1421,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_PRG_MSP_SBW J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: PRG_SBW_MSP
 F0 "J" -250 230 50 H V L B
 F1 "CON_HEADER_PRG_MSP_SBW" 0 0 50 H V L B
 F2 "dp_devices-HEADER_PRG_1X04" 0 150 50 H I C C
@@ -1550,8 +1448,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_PRG_PIC_ICSPA J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: PRG_ICSP_PIC
 F0 "J" -162 325 50 H V L B
 F1 "CON_HEADER_PRG_PIC_ICSPA" 0 0 50 H V L B
 F2 "dp_devices-HEADER_PRG_1X05" 0 150 50 H I C C
@@ -1581,8 +1477,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_PRG_PIC_ICSPB J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: PRG_ICSP_PIC
 F0 "J" -162 325 50 H V L B
 F1 "CON_HEADER_PRG_PIC_ICSPB" 0 0 50 H V L B
 F2 "dp_devices-HEADER_PRG_1X05_ICSP_B" 0 150 50 H I C C
@@ -1612,8 +1506,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_HEADER_PRG_XILINX_JTAG6 J 0 40 N N 1 L N
-# Gate Name: J
-# Symbol Name: XILINX_JTAG6
 F0 "J" -50 350 50 H V L B
 F1 "CON_HEADER_PRG_XILINX_JTAG6" 0 0 50 H V L B
 F2 "dp_devices-HEADER_PRG_1X06" 0 150 50 H I C C
@@ -1645,8 +1537,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_TERMINAL_BLOCK_02-5MM J 0 40 N N 1 L N
-# Gate Name: CON
-# Symbol Name: HEADER1X2
 F0 "J" -50 150 50 H V L B
 F1 "CON_TERMINAL_BLOCK_02-5MM" 0 0 50 H V L B
 F2 "dp_devices-TERMINAL_BLOCK_2P_5" 0 150 50 H I C C
@@ -1668,8 +1558,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF CON_TERMINAL_BLOCK_03-5MM J 0 40 N N 1 L N
-# Gate Name: CON
-# Symbol Name: HEADER1X3
 F0 "J" -50 250 50 H V L B
 F1 "CON_TERMINAL_BLOCK_03-5MM" 0 0 50 H V L B
 F2 "dp_devices-TERMINAL_BLOCK_3P_5" 0 150 50 H I C C
@@ -1692,8 +1580,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DIODE-DO-214AC D 0 40 N N 1 L N
-# Gate Name: D
-# Symbol Name: DIODE
 F0 "D" 100 19 50 H V L B
 F1 "DIODE-DO-214AC" 100 -91 50 H V L B
 F2 "dp_devices-DO-214AC" 0 150 50 H I C C
@@ -1716,8 +1602,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DIODE-DO323 D 0 40 N N 1 L N
-# Gate Name: D
-# Symbol Name: DIODE
 F0 "D" 100 19 50 H V L B
 F1 "DIODE-DO323" 100 -91 50 H V L B
 F2 "dp_devices-DO323" 0 150 50 H I C C
@@ -1740,8 +1624,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DIODE-SOD-123 D 0 40 N N 1 L N
-# Gate Name: D
-# Symbol Name: DIODE
 F0 "D" 100 19 50 H V L B
 F1 "DIODE-SOD-123" 100 -91 50 H V L B
 F2 "dp_devices-SOD-123" 0 150 50 H I C C
@@ -1764,8 +1646,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DIODE-SOT23 D 0 40 N N 1 L N
-# Gate Name: D
-# Symbol Name: DIODE
 F0 "D" 100 19 50 H V L B
 F1 "DIODE-SOT23" 100 -91 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -1788,8 +1668,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DIODE_PHOTO_QSE15X D 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: QSE15X
 F0 "D" -125 325 50 H V L B
 F1 "DIODE_PHOTO_QSE15X" -125 -400 50 H V L B
 F2 "dp_devices-QSE15X" 0 150 50 H I C C
@@ -1825,8 +1703,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DISP_7SEG 7SEG 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 7SEGCC
 F0 "7SEG" -100 525 50 H V L B
 F1 "DISP_7SEG" -100 -500 50 H V L B
 F2 "dp_devices-DISP_7SEG" 0 150 50 H I C C
@@ -1856,6 +1732,58 @@ ENDDRAW
 ENDDEF
 
 #
+# Dev Name: DISP_IN12A
+# Package Name: DISP_IN-12_SOCKET
+# Dev Tech: ''
+# Dev Prefix: DISP
+# Gate count = 1
+#
+DEF DISP_IN12A DISP 0 40 N N 1 L N
+F0 "DISP" -200 700 50 H V L B
+F1 "DISP_IN12A" -200 600 50 H V L B
+F2 "dp_devices-DISP_IN-12_SOCKET" 0 150 50 H I C C
+DRAW
+P 2 1 0 0 -150 -500 -150 400
+P 2 1 0 0 200 400 200 -500
+A 25 400 175 -3599 -1801 1 1 0 N 200 400 -150 400
+A 25 -500 175 -1799 -1 1 1 0 N -150 -500 200 -500
+P 2 1 0 0 100 -400 100 450
+P 2 1 0 0 -100 425 -100 375
+P 2 1 0 0 -100 325 -100 275
+P 2 1 0 0 -100 225 -100 175
+P 2 1 0 0 -100 125 -100 75
+P 2 1 0 0 -100 25 -100 -25
+P 2 1 0 0 -100 -75 -100 -125
+P 2 1 0 0 -100 -175 -100 -225
+P 2 1 0 0 -100 -275 -100 -325
+P 2 1 0 0 -100 -375 -100 -425
+P 2 1 0 0 -100 -475 -100 -525
+T 0 -17 410 70 0 1 0 K0
+T 0 -17 310 70 0 1 0 K1
+T 0 -17 210 70 0 1 0 K2
+T 0 -17 110 70 0 1 0 K3
+T 0 -17 10 70 0 1 0 K4
+T 0 -17 -90 70 0 1 0 K5
+T 0 -17 -190 70 0 1 0 K6
+T 0 -17 -290 70 0 1 0 K7
+T 0 257 50 70 0 1 0 A
+T 0 -17 -390 70 0 1 0 K8
+T 0 -17 -490 70 0 1 0 K9
+X ANODE 1 300 0 200 L 40 40 1 1 I 
+X K0 2 -300 400 200 R 40 40 1 1 I 
+X K1 11 -300 300 200 R 40 40 1 1 I 
+X K2 10 -300 200 200 R 40 40 1 1 I 
+X K3 9 -300 100 200 R 40 40 1 1 I 
+X K4 8 -300 0 200 R 40 40 1 1 I 
+X K5 7 -300 -100 200 R 40 40 1 1 I 
+X K6 6 -300 -200 200 R 40 40 1 1 I 
+X K7 5 -300 -300 200 R 40 40 1 1 I 
+X K8 4 -300 -400 200 R 40 40 1 1 I 
+X K9 3 -300 -500 200 R 40 40 1 1 I 
+ENDDRAW
+ENDDEF
+
+#
 # Dev Name: DISP_LCD-4X20
 # Package Name: DISP_LCD_4X20
 # Dev Tech: ''
@@ -1863,8 +1791,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DISP_LCD-4X20 LCD 0 40 N N 1 L N
-# Gate Name: LCD
-# Symbol Name: DISP_LCD
 F0 "LCD" 0 0 50 H V C C
 F1 "DISP_LCD-4X20" 0 0 50 H V C C
 F2 "dp_devices-DISP_LCD_4X20" 0 150 50 H I C C
@@ -1905,8 +1831,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DISP_OLED_96X16 DISP 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: OLED96X16
 F0 "DISP" -100 525 50 H V L B
 F1 "DISP_OLED_96X16" -100 -500 50 H V L B
 F2 "dp_devices-OLED96X16" 0 150 50 H I C C
@@ -1936,8 +1860,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF DISP_TFT18 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: LCD_SPI
 DRAW
 P 2 1 0 0 -400 700 -400 -800
 P 2 1 0 0 -400 -800 1200 -800
@@ -1966,17 +1888,15 @@ ENDDEF
 
 #
 # Dev Name: DISP_VFD_IV-22
-# Package Name: DISP_VFD_IV-22
+# Package Name: DISP_IN-12_SOCKET
 # Dev Tech: ''
 # Dev Prefix: DISP
 # Gate count = 1
 #
 DEF DISP_VFD_IV-22 DISP 0 40 N N 1 L N
-# Gate Name: DISP
-# Symbol Name: DISP_VFD_IV-22
 F0 "DISP" -200 700 50 H V L B
 F1 "DISP_VFD_IV-22" -200 600 50 H V L B
-F2 "dp_devices-DISP_VFD_IV-22" 0 150 50 H I C C
+F2 "dp_devices-DISP_IN-12_SOCKET" 0 150 50 H I C C
 DRAW
 P 2 1 0 0 -150 -300 -150 400
 P 2 1 0 0 200 400 200 -300
@@ -2024,8 +1944,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF ENCODER_SW1-PEC12 SW 0 40 N N 2 L N
-# Gate Name: ENCODER
-# Symbol Name: ENCODER
 F0 "SW" -100 300 50 H V L B
 F1 "ENCODER_SW1-PEC12" -100 200 50 H V L B
 F2 "dp_devices-PEC12_INCREMENTAL_ENCODER" 0 150 50 H I C C
@@ -2044,8 +1962,6 @@ C 100 -100 5 1 1 0 F
 X A A -200 100 100 R 40 40 1 1 P 
 X B B -200 -100 100 R 40 40 1 1 P 
 X C C 300 0 100 L 40 40 1 1 P 
-# Gate Name: SW
-# Symbol Name: SW_MEMBRANE
 P 2 2 0 0 75 -100 100 -100
 P 2 2 0 0 75 75 75 25
 P 2 2 0 0 -75 75 -75 25
@@ -2070,8 +1986,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FERRITE-0402 L 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: INDUCTOR
 F0 "L" 100 250 50 H V L B
 F1 "FERRITE-0402" 100 -250 50 H V L B
 F2 "dp_devices-FB402" 0 150 50 H I C C
@@ -2091,8 +2005,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FERRITE-0603 L 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: INDUCTOR
 F0 "L" 100 250 50 H V L B
 F1 "FERRITE-0603" 100 -250 50 H V L B
 F2 "dp_devices-FB603" 0 150 50 H I C C
@@ -2112,8 +2024,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FERRITE-0805 L 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: INDUCTOR
 F0 "L" 100 250 50 H V L B
 F1 "FERRITE-0805" 100 -250 50 H V L B
 F2 "dp_devices-FB805" 0 150 50 H I C C
@@ -2133,8 +2043,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FERRITE-1206 L 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: INDUCTOR
 F0 "L" 100 250 50 H V L B
 F1 "FERRITE-1206" 100 -250 50 H V L B
 F2 "dp_devices-FB1206" 0 150 50 H I C C
@@ -2154,8 +2062,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF FRAME_DINA4_L ?? 0 40 N N 2 L N
-# Gate Name: G$1
-# Symbol Name: DINA4_L
 DRAW
 P 2 1 0 0 0 7100 0 5250
 P 2 1 0 0 0 3550 0 1850
@@ -2234,8 +2140,6 @@ T 0 1412 7024 103 0 1 0 1
 T 0 3937 7024 103 0 1 0 2
 T 0 6462 7024 103 0 1 0 3
 T 0 8987 7024 103 0 1 0 4
-# Gate Name: G$2
-# Symbol Name: DOCFIELD
 P 6 2 1 0     350 1225 400 1225 400 1225 375 1075 375 1075 350 1225 F
 P 6 2 1 0     350 1225 375 1250 375 1250 400 1225 400 1225 350 1225 F
 P 8 2 1 0      375 1000 400 1025 400 1025 375 1050 375 1050 350 1025 350 1025 375 1000 F
@@ -2287,8 +2191,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FUSE_PTC-0805 F 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FUSE_PTC
 F0 "F" -150 82 50 H V L B
 F1 "FUSE_PTC-0805" -150 -157 50 H V L B
 F2 "dp_devices-PTC0805" 0 150 50 H I C C
@@ -2313,8 +2215,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF FUSE_PTC-1812 F 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FUSE_PTC
 F0 "F" -150 82 50 H V L B
 F1 "FUSE_PTC-1812" -150 -157 50 H V L B
 F2 "dp_devices-PTC1812L" 0 150 50 H I C C
@@ -2339,8 +2239,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74AC573 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74AC573
 F0 "IC" -300 625 50 H V L B
 F1 "IC_74AC573" -300 -700 50 H V L B
 F2 "dp_devices-SOIC-20" 0 150 50 H I C C
@@ -2367,8 +2265,6 @@ X 7Q 13 400 400 100 L 40 40 1 1 B
 X 8D 9 -400 500 100 R 40 40 1 1 B 
 X 8Q 12 400 500 100 L 40 40 1 1 B 
 X LE 11 -400 -500 100 R 40 40 1 1 I 
-# Gate Name: PWR
-# Symbol Name: SUPPLY
 X GND 10 0 -500 200 U 40 40 2 1 w 
 X V+ 20 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2382,8 +2278,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74HC595-DIP-16 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74595
 F0 "IC" -300 537 50 H V L B
 F1 "IC_74HC595-DIP-16" -300 -700 50 H V L B
 F2 "dp_devices-DIL16" 0 150 50 H I C C
@@ -2406,8 +2300,6 @@ X Q7 7 500 -500 200 L 40 40 1 1 O
 X Q7S 9 500 400 200 L 40 40 1 1 O 
 X SHCP 11 -500 300 200 R 40 40 1 1 I 
 X STCP 12 -500 200 200 R 40 40 1 1 I 
-# Gate Name: SUP
-# Symbol Name: SUPPLY
 X GND 8 0 -500 200 U 40 40 2 1 w 
 X V+ 16 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2421,8 +2313,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74HC595-SOIC-16 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74595
 F0 "IC" -300 537 50 H V L B
 F1 "IC_74HC595-SOIC-16" -300 -700 50 H V L B
 F2 "dp_devices-SOIC-16" 0 150 50 H I C C
@@ -2445,8 +2335,6 @@ X Q7 7 500 -500 200 L 40 40 1 1 O
 X Q7S 9 500 400 200 L 40 40 1 1 O 
 X SHCP 11 -500 300 200 R 40 40 1 1 I 
 X STCP 12 -500 200 200 R 40 40 1 1 I 
-# Gate Name: SUP
-# Symbol Name: SUPPLY
 X GND 8 0 -500 200 U 40 40 2 1 w 
 X V+ 16 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2460,8 +2348,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74HC595-TSSOP-16 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74595
 F0 "IC" -300 537 50 H V L B
 F1 "IC_74HC595-TSSOP-16" -300 -700 50 H V L B
 F2 "dp_devices-TSSOP-16" 0 150 50 H I C C
@@ -2484,8 +2370,6 @@ X Q7 7 500 -500 200 L 40 40 1 1 O
 X Q7S 9 500 400 200 L 40 40 1 1 O 
 X SHCP 11 -500 300 200 R 40 40 1 1 I 
 X STCP 12 -500 200 200 R 40 40 1 1 I 
-# Gate Name: SUP
-# Symbol Name: SUPPLY
 X GND 8 0 -500 200 U 40 40 2 1 w 
 X V+ 16 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2499,8 +2383,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74HC4017-TSSOP-16 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74HC4017
 F0 "IC" -300 625 50 H V L B
 F1 "IC_74HC4017-TSSOP-16" -300 -700 50 H V L B
 F2 "dp_devices-TSSOP-16" 0 150 50 H I C C
@@ -2523,8 +2405,6 @@ X Q6 5 500 -100 200 L 40 40 1 1 O
 X Q7 6 500 -200 200 L 40 40 1 1 O 
 X Q8 9 500 -300 200 L 40 40 1 1 O 
 X Q9 11 500 -400 200 L 40 40 1 1 O 
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY
 X GND 8 0 -500 200 U 40 40 2 1 w 
 X V+ 16 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2538,8 +2418,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_555-SOIC8 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: 555
 F0 "IC" -400 337 50 H V L B
 F1 "IC_555-SOIC8" -400 -300 50 H V L B
 F2 "dp_devices-SOIC-8" 0 150 50 H I C C
@@ -2567,8 +2445,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_74141-DIP-16 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: 74141
 F0 "IC" -300 537 50 H V L B
 F1 "IC_74141-DIP-16" -300 -700 50 H V L B
 F2 "dp_devices-DIL16" 0 150 50 H I C C
@@ -2591,8 +2467,6 @@ X Q6 11 500 -200 200 L 40 40 1 1 O
 X Q7 10 500 -300 200 L 40 40 1 1 O 
 X Q8 1 500 -400 200 L 40 40 1 1 O 
 X Q9 2 500 -500 200 L 40 40 1 1 O 
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY
 X GND 12 0 -500 200 U 40 40 2 1 w 
 X V+ 5 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2606,8 +2480,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ADC_ADS831 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ADS831
 F0 "IC" 200 -1000 50 H V L B
 F1 "IC_ADC_ADS831" 200 -1100 50 H V L B
 F2 "dp_devices-SSOP-20-DBQ" 0 150 50 H I C C
@@ -2647,8 +2519,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ADC_MAX111*-SOT-23-6 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MAX111**
 F0 "IC" -610 330 50 H V L B
 F1 "IC_ADC_MAX111*-SOT-23-6" -600 -390 50 H V L B
 F2 "dp_devices-SOT-23-6" 0 150 50 H I C C
@@ -2679,8 +2549,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_BUFF_7416245 IC 0 40 N N 2 L N
-# Gate Name: G$1
-# Symbol Name: 7416245
 F0 "IC" -400 1125 50 H V L B
 F1 "IC_BUFF_7416245" -400 -1200 50 H V L B
 F2 "dp_devices-SSOP-48DL" 0 150 50 H I C C
@@ -2725,8 +2593,6 @@ X 2B7 22 500 -400 200 L 40 40 1 1 B
 X 2B8 23 500 -500 200 L 40 40 1 1 B 
 X 2DIR 24 -600 -1000 200 R 40 40 1 1 I I
 X 2G 25 -600 -900 200 R 40 40 1 1 I I
-# Gate Name: P
-# Symbol Name: 4PWR8GND
 T 1 250 175 50 0 2 0 VCC
 T 1 550 -155 50 0 2 0 GND
 X GND@1 4 -200 -300 200 U 40 40 2 1 W 
@@ -2752,8 +2618,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_BUFF_7416245TSSOP48 IC 0 40 N N 2 L N
-# Gate Name: G$1
-# Symbol Name: 7416245
 F0 "IC" -400 1125 50 H V L B
 F1 "IC_BUFF_7416245TSSOP48" -400 -1200 50 H V L B
 F2 "dp_devices-TSSOP-48" 0 150 50 H I C C
@@ -2798,8 +2662,6 @@ X 2B7 22 500 -400 200 L 40 40 1 1 B
 X 2B8 23 500 -500 200 L 40 40 1 1 B 
 X 2DIR 24 -600 -1000 200 R 40 40 1 1 I I
 X 2G 25 -600 -900 200 R 40 40 1 1 I I
-# Gate Name: P
-# Symbol Name: 4PWR8GND
 T 1 250 175 50 0 2 0 VCC
 T 1 550 -155 50 0 2 0 GND
 X GND@1 4 -200 -300 200 U 40 40 2 1 W 
@@ -2825,8 +2687,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_74LVC1G125 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 74LVC1G125
 F0 "IC" 0 425 50 H V L B
 F1 "IC_BUFF_74LVC1G125" 0 -100 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -2851,8 +2711,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_BUFF_74LVC245A-SOIC20 IC 0 40 N N 2 L N
-# Gate Name: G$1
-# Symbol Name: 74LVC245A
 F0 "IC" -300 625 50 H V L B
 F1 "IC_BUFF_74LVC245A-SOIC20" -300 -700 50 H V L B
 F2 "dp_devices-SOIC-20" 0 150 50 H I C C
@@ -2879,8 +2737,6 @@ X B5 13 500 0 200 L 40 40 1 1 B
 X B6 12 500 -100 200 L 40 40 1 1 B 
 X B7 11 500 -200 200 L 40 40 1 1 B 
 X DIR 1 -500 -500 200 R 40 40 1 1 I 
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY
 X GND 10 0 -500 200 U 40 40 2 1 w 
 X V+ 20 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2894,8 +2750,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_BUFF_74LVC245A-SSOP20 IC 0 40 N N 2 L N
-# Gate Name: G$1
-# Symbol Name: 74LVC245A
 F0 "IC" -300 625 50 H V L B
 F1 "IC_BUFF_74LVC245A-SSOP20" -300 -700 50 H V L B
 F2 "dp_devices-SSOP-20" 0 150 50 H I C C
@@ -2922,8 +2776,6 @@ X B5 13 500 0 200 L 40 40 1 1 B
 X B6 12 500 -100 200 L 40 40 1 1 B 
 X B7 11 500 -200 200 L 40 40 1 1 B 
 X DIR 1 -500 -500 200 R 40 40 1 1 I 
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY
 X GND 10 0 -500 200 U 40 40 2 1 w 
 X V+ 20 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -2937,8 +2789,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74AVC2T45DCT IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 2T45
 F0 "IC" -300 325 50 H V L B
 F1 "IC_BUFF_SN74AVC2T45DCT" -300 -300 50 H V L B
 F2 "dp_devices-DCT_R_PDSO_G8" 0 150 50 H I C C
@@ -2966,8 +2816,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74AVC2T45DCU IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 2T45
 F0 "IC" -300 325 50 H V L B
 F1 "IC_BUFF_SN74AVC2T45DCU" -300 -300 50 H V L B
 F2 "dp_devices-DCU_R_PDSO_G8" 0 150 50 H I C C
@@ -2995,8 +2843,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74AVC4T245 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SN74AVC4T245
 F0 "IC" 125 737 50 H V L B
 F1 "IC_BUFF_SN74AVC4T245" 150 -600 50 H V L B
 F2 "dp_devices-SOIC-16W" 0 150 50 H I C C
@@ -3032,8 +2878,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74AVC4T245PW IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SN74AVC4T245
 F0 "IC" 125 737 50 H V L B
 F1 "IC_BUFF_SN74AVC4T245PW" 150 -600 50 H V L B
 F2 "dp_devices-TSSOP-16" 0 150 50 H I C C
@@ -3069,8 +2913,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74LVC1T45DBV IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SN74LVC1T45
 F0 "IC" -400 225 50 H V L B
 F1 "IC_BUFF_SN74LVC1T45DBV" -400 -300 50 H V L B
 F2 "dp_devices-DBV-R-PDSO-G6" 0 150 50 H I C C
@@ -3096,8 +2938,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74LVC2G17DBV IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DUAL_SCHMITT
 F0 "IC" -100 450 50 H V L B
 F1 "IC_BUFF_SN74LVC2G17DBV" -100 -300 50 H V L B
 F2 "dp_devices-DBV-R-PDSO-G6" 0 150 50 H I C C
@@ -3123,8 +2963,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74LVC2G17DCK IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DUAL_SCHMITT
 F0 "IC" -100 450 50 H V L B
 F1 "IC_BUFF_SN74LVC2G17DCK" -100 -300 50 H V L B
 F2 "dp_devices-DCK_R_PDSO_G6" 0 150 50 H I C C
@@ -3150,8 +2988,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74LVC2T45DCT IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SN74LVC2T45
 F0 "IC" -400 225 50 H V L B
 F1 "IC_BUFF_SN74LVC2T45DCT" -400 -400 50 H V L B
 F2 "dp_devices-DCT_R_PDSO_G8" 0 150 50 H I C C
@@ -3179,8 +3015,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_BUFF_SN74LVC8T245 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SN74LVC8T245
 F0 "IC" -400 725 50 H V L B
 F1 "IC_BUFF_SN74LVC8T245" -400 -900 50 H V L B
 F2 "dp_devices-SOIC-24" 0 150 50 H I C C
@@ -3224,8 +3058,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_CPLD_EPM3064A-TQFP44 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: EPM3064A
 F0 "IC" 600 -1300 50 H V L B
 F1 "IC_CPLD_EPM3064A-TQFP44" 600 -1400 50 H V L B
 F2 "dp_devices-TQFP-44" 0 150 50 H I C C
@@ -3294,8 +3126,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_CPLD_LC4032V-TQFP44 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: LC4032V
 F0 "IC" 600 -1300 50 H V L B
 F1 "IC_CPLD_LC4032V-TQFP44" 600 -1400 50 H V L B
 F2 "dp_devices-TQFP-44" 0 150 50 H I C C
@@ -3365,8 +3195,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_CPLD_XC2C32A IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: XC2C32A_VQ44-IAN
 F0 "IC" -200 50 50 H V L B
 F1 "IC_CPLD_XC2C32A" -200 -100 50 H V L B
 F2 "dp_devices-VQ-44" 0 150 50 H I C C
@@ -3440,8 +3268,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_CPLD_XC3S250E_2 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: XC3S250E_VQ100
 F0 "IC" -200 50 50 H V L B
 F1 "IC_CPLD_XC3S250E_2" -200 -100 50 H V L B
 F2 "dp_devices-VQ-100" 0 150 50 H I C C
@@ -3561,8 +3387,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_CPLD_XC9572VQ44 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: XC9572XL
 F0 "IC" -1200 1237 50 H V L B
 F1 "IC_CPLD_XC9572VQ44" -1200 -1300 50 H V L B
 F2 "dp_devices-VQ-44" 0 150 50 H I C C
@@ -3639,8 +3463,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL8-PTH IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-8
 F0 "IC" -200 237 50 H V L B
 F1 "IC_DIL8-PTH" -200 -400 50 H V L B
 F2 "dp_devices-DIP8" 0 150 50 H I C C
@@ -3670,8 +3492,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL8-SO8 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-8
 F0 "IC" -200 237 50 H V L B
 F1 "IC_DIL8-SO8" -200 -400 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -3701,8 +3521,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL14-PTH IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-14
 F0 "IC" -200 -500 50 H V L B
 F1 "IC_DIL14-PTH" -200 425 50 H V L B
 F2 "dp_devices-DIP14" 0 150 50 H I C C
@@ -3738,8 +3556,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL14-PTHW IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-14
 F0 "IC" -200 -500 50 H V L B
 F1 "IC_DIL14-PTHW" -200 425 50 H V L B
 F2 "dp_devices-DIP14W" 0 150 50 H I C C
@@ -3775,8 +3591,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL18-EDGE IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-18
 F0 "IC" -200 537 50 H V L B
 F1 "IC_DIL18-EDGE" -200 -600 50 H V L B
 F2 "dp_devices-EGDE2X9" 0 150 50 H I C C
@@ -3816,8 +3630,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL18-PTH IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-18
 F0 "IC" -200 537 50 H V L B
 F1 "IC_DIL18-PTH" -200 -600 50 H V L B
 F2 "dp_devices-DIP18" 0 150 50 H I C C
@@ -3857,8 +3669,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL20-EDGE IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-20
 F0 "IC" -200 537 50 H V L B
 F1 "IC_DIL20-EDGE" -200 -700 50 H V L B
 F2 "dp_devices-EGDE2X10" 0 150 50 H I C C
@@ -3900,8 +3710,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DIL20-PTH IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DIL-20
 F0 "IC" -200 537 50 H V L B
 F1 "IC_DIL20-PTH" -200 -700 50 H V L B
 F2 "dp_devices-DIP20" 0 150 50 H I C C
@@ -3943,8 +3751,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_DS1085-SO-8 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: DS1085
 F0 "IC" -400 220 50 H V L B
 F1 "IC_DS1085-SO-8" -400 -400 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -3972,8 +3778,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ENC28J60-SOIC-28 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: ENC28J60
 F0 "IC" 300 -700 50 H V L B
 F1 "IC_ENC28J60-SOIC-28" 300 -800 50 H V L B
 F2 "dp_devices-SOIC-28W" 0 150 50 H I C C
@@ -4020,8 +3824,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ENC424J600-TQFP44 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ENC424J600
 F0 "IC" -500 1725 50 H V L B
 F1 "IC_ENC424J600-TQFP44" -500 -1600 50 H V L B
 F2 "dp_devices-TQFP-44" 0 150 50 H I C C
@@ -4085,8 +3887,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FAN5331-SOT-23-5 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FAN5331
 F0 "IC" 0 0 50 H V C C
 F1 "IC_FAN5331-SOT-23-5" 0 0 50 H V C C
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -4111,8 +3911,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FPGA_XC3S250E IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: XC3S250E_VQ100_1532
 F0 "IC" -200 50 50 H V L B
 F1 "IC_FPGA_XC3S250E" -200 -100 50 H V L B
 F2 "dp_devices-VQ-100" 0 150 50 H I C C
@@ -4232,8 +4030,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FPGA_XC6SLX93TQG144C IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: XC6SLX9-3TQG144C
 F0 "IC" -2800 3400 50 H V L B
 F1 "IC_FPGA_XC6SLX93TQG144C" -2800 3300 50 H V L B
 F2 "dp_devices-TQFP-144" 0 150 50 H I C C
@@ -4402,8 +4198,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FT230X-SSOP-16 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: FT230X
 F0 "IC" 200 537 50 H V L B
 F1 "IC_FT230X-SSOP-16" 200 -600 50 H V L B
 F2 "dp_devices-SSOP-16-FTDI" 0 150 50 H I C C
@@ -4439,8 +4233,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FT232RL IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FT232RL
 F0 "IC" -700 900 50 H V L B
 F1 "IC_FT232RL" -700 800 50 H V L B
 F2 "dp_devices-SSOP-28" 0 150 50 H I C C
@@ -4486,8 +4278,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FT232RL-VER2 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FT232RL-VER2
 F0 "IC" -700 912 50 H V L B
 F1 "IC_FT232RL-VER2" -700 830 50 H V L B
 F2 "dp_devices-SSOP-28" 0 150 50 H I C C
@@ -4535,8 +4325,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FT311D-LQFP-32 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: FT311D
 F0 "IC" 700 -1100 50 H V L B
 F1 "IC_FT311D-LQFP-32" 700 -1200 50 H V L B
 F2 "dp_devices-LQFP-32" 0 150 50 H I C C
@@ -4586,8 +4374,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_FT2232H IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FT-2232
 F0 "IC" -500 0 50 H V L B
 F1 "IC_FT2232H" -500 -100 50 H V L B
 F2 "dp_devices-LQFP64" 0 150 50 H I C C
@@ -4671,8 +4457,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_KSZ8851SNL IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: IC_KSZ8851SNL
 F0 "IC" 900 -600 50 H V L B
 F1 "IC_KSZ8851SNL" 900 -700 50 H V L B
 F2 "dp_devices-QFN32_5X5" 0 150 50 H I C C
@@ -4713,8 +4497,6 @@ X VDD_IO@1 25 400 1000 200 D 40 40 1 1 B
 X VDD_IO@2 30 -100 1000 200 D 40 40 1 1 B 
 X X1 20 1000 0 200 L 40 40 1 1 B 
 X X2 21 1000 100 200 L 40 40 1 1 B 
-# Gate Name: SUP
-# Symbol Name: QFN25_GND
 P 2 2 0 0 -400 300 400 300
 P 2 2 0 0 400 300 400 -300
 P 2 2 0 0 400 -300 -400 -300
@@ -4739,8 +4521,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_LM4910-SO-8 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: LM4910
 F0 "IC" -500 230 50 H V L B
 F1 "IC_LM4910-SO-8" -500 -400 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -4768,8 +4548,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_LTC4053-MSOP-10 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: LTC4053
 F0 "IC" -500 415 50 H V L B
 F1 "IC_LTC4053-MSOP-10" -500 320 50 H V L B
 F2 "dp_devices-MSOP-10" 0 150 50 H I C C
@@ -4800,8 +4578,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MAX1896 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MAX1896
 F0 "IC" -300 225 50 H V L B
 F1 "IC_MAX1896" -300 -300 50 H V L B
 F2 "dp_devices-SOT-23-6" 0 150 50 H I C C
@@ -4827,8 +4603,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MAX6921-TSSOP28 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: MAX6921
 F0 "IC" 100 -1300 50 H V L B
 F1 "IC_MAX6921-TSSOP28" 100 -1400 50 H V L B
 F2 "dp_devices-TSSOP-28" 0 150 50 H I C C
@@ -4884,8 +4658,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MAX14500-TQFN40-5X5 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MAX14500
 F0 "IC" -500 1125 50 H V L B
 F1 "IC_MAX14500-TQFN40-5X5" -500 -1500 50 H V L B
 F2 "dp_devices-TQFN-40-5X5" 0 150 50 H I C C
@@ -4946,8 +4718,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MAX31855-SO-8 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MAX31855
 F0 "IC" -400 220 50 H V L B
 F1 "IC_MAX31855-SO-8" -400 -400 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -4975,8 +4745,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP2200-QFN-25-5X5 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP2200
 F0 "IC" -400 625 50 H V L B
 F1 "IC_MCP2200-QFN-25-5X5" -400 -600 50 H V L B
 F2 "dp_devices-QFN25_5X5" 0 150 50 H I C C
@@ -5016,8 +4784,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP2200-SOIC-20 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP2200
 F0 "IC" -400 625 50 H V L B
 F1 "IC_MCP2200-SOIC-20" -400 -600 50 H V L B
 F2 "dp_devices-SOIC-20" 0 150 50 H I C C
@@ -5057,8 +4823,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP2200-SSOP-20 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP2200
 F0 "IC" -400 625 50 H V L B
 F1 "IC_MCP2200-SSOP-20" -400 -600 50 H V L B
 F2 "dp_devices-SSOP-20" 0 150 50 H I C C
@@ -5098,8 +4862,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP3021SOT-23-5 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP3021
 F0 "IC" -200 175 50 H V L B
 F1 "IC_MCP3021SOT-23-5" -200 -237 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5129,8 +4891,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP4019 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP4019
 F0 "IC" -300 325 50 H V L B
 F1 "IC_MCP4019" -300 -300 50 H V L B
 F2 "dp_devices-SOT-23-5LT" 0 150 50 H I C C
@@ -5173,8 +4933,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP4725 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP4725
 F0 "IC" -200 225 50 H V L B
 F1 "IC_MCP4725" -200 -300 50 H V L B
 F2 "dp_devices-SOT-23-6" 0 150 50 H I C C
@@ -5206,8 +4964,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MCP73831 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MCP73831
 F0 "IC" -200 225 50 H V L B
 F1 "IC_MCP73831" -200 -300 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5237,8 +4993,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MEM_23A*SO8 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 23AXX
 F0 "IC" -400 225 50 H V L B
 F1 "IC_MEM_23A*SO8" -400 -300 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -5265,8 +5019,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MEM_23K256 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SRAM
 F0 "IC" -500 -500 50 H V L B
 F1 "IC_MEM_23K256" -500 400 50 H V L B
 F2 "dp_devices-SOIC-8" 0 150 50 H I C C
@@ -5293,8 +5045,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_MEM_23LC1024 IC 0 40 N N 2 L N
-# Gate Name: IC
-# Symbol Name: SRAM-23LCXXXX
 F0 "IC" -500 512 50 H V L B
 F1 "IC_MEM_23LC1024" -500 425 50 H V L B
 F2 "dp_devices-SOIC-8" 0 150 50 H I C C
@@ -5309,8 +5059,6 @@ X SCK 6 -500 -200 200 R 40 40 1 1 I C
 X SI/SIO0 5 -500 300 200 R 40 40 1 1 B 
 X SIO2 3 -500 100 200 R 40 40 1 1 B 
 X SO/SIO1 2 -500 200 200 R 40 40 1 1 B 
-# Gate Name: SUP
-# Symbol Name: SUPPLY
 X GND 4 0 -500 200 U 40 40 2 1 w 
 X V+ 8 0 500 200 D 40 40 2 1 w 
 ENDDRAW
@@ -5324,8 +5072,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MEM_24AA IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 24AA
 F0 "IC" -500 350 50 H V L B
 F1 "IC_MEM_24AA" -500 -400 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5373,8 +5119,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MEM_93C46 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: 3WIRE
 F0 "IC" -200 325 50 H V L B
 F1 "IC_MEM_93C46" -200 -300 50 H V L B
 F2 "dp_devices-SOIC-8" 0 150 50 H I C C
@@ -5402,8 +5146,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_MMA7455L IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MMA7455L
 F0 "IC" -600 425 50 H V L B
 F1 "IC_MMA7455L" -600 -500 50 H V L B
 F2 "dp_devices-LGA-14" 0 150 50 H I C C
@@ -5437,8 +5179,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_OP-AMP_LM358-SO8 IC 0 40 N N 2 L N
-# Gate Name: A
-# Symbol Name: OPAMP_V+-
 F0 "IC" 100 200 50 H V L B
 F1 "IC_OP-AMP_LM358-SO8" 100 100 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -5454,8 +5194,6 @@ X - 2 -400 -100 200 R 40 40 1 1 I
 X OUT 1 400 0 200 L 40 40 1 1 O 
 X V+ 8 0 300 200 D 40 40 1 1 w 
 X V- 4 0 -300 200 U 40 40 1 1 w 
-# Gate Name: B
-# Symbol Name: OPAMP
 P 2 2 0 0 -200 -200 -200 200
 P 2 2 0 0 -200 200 200 0
 P 2 2 0 0 200 0 -200 -200
@@ -5476,8 +5214,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_OP-AMP_LMV321-SOT-23-5 IC 0 40 N N 1 L N
-# Gate Name: OPAMP
-# Symbol Name: OPAMP_V+GND
 F0 "IC" 200 200 50 H V L B
 F1 "IC_OP-AMP_LMV321-SOT-23-5" 200 100 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5506,8 +5242,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_OPA2830 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: OPA2830
 F0 "IC" -500 337 50 H V L B
 F1 "IC_OPA2830" -500 -300 50 H V L B
 F2 "dp_devices-DGK_S_PDSO_G8" 0 150 50 H I C C
@@ -5535,8 +5269,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_PCF8563 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCF8563
 F0 "IC" -400 225 50 H V L B
 F1 "IC_PCF8563" -400 -387 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -5564,8 +5296,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_RTC_DS1307 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DS1307
 F0 "IC" -400 325 50 H V L B
 F1 "IC_RTC_DS1307" -400 -300 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -5593,8 +5323,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_SI4707 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SI4707
 F0 "IC" 237 725 50 H V L B
 F1 "IC_SI4707" 237 630 50 H V L B
 F2 "dp_devices-QFN-20" 0 150 50 H I C C
@@ -5635,8 +5363,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_TC74 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: TC74
 F0 "IC" -300 125 50 H V L B
 F1 "IC_TC74" -300 -300 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5660,8 +5386,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_TMP006 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: TMP006
 F0 "IC" -400 320 50 H V L B
 F1 "IC_TMP006" -400 -400 50 H V L B
 F2 "dp_devices-DSBGA-8" 0 150 50 H I C C
@@ -5689,8 +5413,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_TPIC6B595DW IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: TPIC6B595
 F0 "IC" -400 520 50 H V L B
 F1 "IC_TPIC6B595DW" -400 -700 50 H V L B
 F2 "dp_devices-SOIC-20" 0 150 50 H I C C
@@ -5728,8 +5450,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_TPS2041B IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: TPS2041B
 F0 "IC" -300 325 50 H V L B
 F1 "IC_TPS2041B" -300 -400 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -5754,8 +5474,6 @@ ENDDEF
 # Gate count = 2
 #
 DEF IC_TPS6120X-QFN10 IC 0 40 N N 2 L N
-# Gate Name: GND
-# Symbol Name: QFN-10-GND
 F0 "IC" -400 330 50 H V L B
 F1 "IC_TPS6120X-QFN10" 0 0 50 H V L B
 F2 "dp_devices-QFN-10" 0 150 50 H I C C
@@ -5771,8 +5489,6 @@ X GND@3 P3 -500 -100 100 R 40 40 1 1 w
 X GND@4 P4 -500 -200 100 R 40 40 1 1 w 
 X GND@5 V0 500 -200 100 L 40 40 1 1 w 
 X GND@6 V1 500 -100 100 L 40 40 1 1 w 
-# Gate Name: IC
-# Symbol Name: TPS6120X
 P 2 2 0 0 -400 300 -400 -300
 P 2 2 0 0 -400 -300 400 -300
 P 2 2 0 0 400 -300 400 300
@@ -5798,8 +5514,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_TXB0108PW IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: TXB0108
 F0 "IC" -300 525 50 H V L B
 F1 "IC_TXB0108PW" -300 -700 50 H V L B
 F2 "dp_devices-SSOP-20" 0 150 50 H I C C
@@ -5839,8 +5553,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_ATMEGA32U4-TQFP44 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: ATMEGA32U4
 F0 "IC" 750 1050 50 H V L B
 F1 "IC_UC_ATMEGA32U4-TQFP44" 750 950 50 H V L B
 F2 "dp_devices-TQFP-44" 0 150 50 H I C C
@@ -5904,8 +5616,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_ATMEGA328PDIL IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ATMEGA328P
 F0 "IC" -1200 750 50 H V L B
 F1 "IC_UC_ATMEGA328PDIL" -1200 -900 50 H V L B
 F2 "dp_devices-DIL28-N" 0 150 50 H I C C
@@ -5953,8 +5663,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_LPC1343-LQFP48 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: LPC1343
 F0 "IC" -1000 1127 50 H V L B
 F1 "IC_UC_LPC1343-LQFP48" -1000 -1100 50 H V L B
 F2 "dp_devices-LQFP48" 0 150 50 H I C C
@@ -6022,8 +5730,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_MSP430F2132 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MSP430F21X2
 F0 "IC" -1600 850 50 H V L B
 F1 "IC_UC_MSP430F2132" -1600 -800 50 H V L B
 F2 "dp_devices-TSSOP-28" 0 150 50 H I C C
@@ -6071,8 +5777,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_MSP430G2231 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MSP430G2XX1
 F0 "IC" -1600 450 50 H V L B
 F1 "IC_UC_MSP430G2231" -1600 -500 50 H V L B
 F2 "dp_devices-DIP14" 0 150 50 H I C C
@@ -6106,8 +5810,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC10F22 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC10F22X
 F0 "IC" -300 225 50 H V L B
 F1 "IC_UC_PIC10F22" -300 -300 50 H V L B
 F2 "dp_devices-SOT-23-6" 0 150 50 H I C C
@@ -6133,8 +5835,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F508DFN IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F508
 F0 "IC" -300 325 50 H V L B
 F1 "IC_UC_PIC12F508DFN" -300 -300 50 H V L B
 F2 "dp_devices-DFN8_3X2" 0 150 50 H I C C
@@ -6162,8 +5862,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F508DIP IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F508
 F0 "IC" -300 325 50 H V L B
 F1 "IC_UC_PIC12F508DIP" -300 -300 50 H V L B
 F2 "dp_devices-DIP8" 0 150 50 H I C C
@@ -6191,8 +5889,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F508MSOP IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F508
 F0 "IC" -300 325 50 H V L B
 F1 "IC_UC_PIC12F508MSOP" -300 -300 50 H V L B
 F2 "dp_devices-MSOP8" 0 150 50 H I C C
@@ -6220,8 +5916,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F508SOIC IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F508
 F0 "IC" -300 325 50 H V L B
 F1 "IC_UC_PIC12F508SOIC" -300 -300 50 H V L B
 F2 "dp_devices-SO-8" 0 150 50 H I C C
@@ -6249,8 +5943,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F1822DFN6_3X3 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F1822
 F0 "IC" -300 225 50 H V L B
 F1 "IC_UC_PIC12F1822DFN6_3X3" -300 -400 50 H V L B
 F2 "dp_devices-DFN6_3X3" 0 150 50 H I C C
@@ -6278,8 +5970,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC12F1822DIP8 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC12F1822
 F0 "IC" -300 225 50 H V L B
 F1 "IC_UC_PIC12F1822DIP8" -300 -400 50 H V L B
 F2 "dp_devices-DIP8" 0 150 50 H I C C
@@ -6307,8 +5997,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC16F1823-DIL14 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC16F1823
 F0 "IC" -300 -500 50 H V L B
 F1 "IC_UC_PIC16F1823-DIL14" -300 425 50 H V L B
 F2 "dp_devices-DIP14" 0 150 50 H I C C
@@ -6342,8 +6030,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC16F1823-QFN16_4X4 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC16F1823
 F0 "IC" -300 -500 50 H V L B
 F1 "IC_UC_PIC16F1823-QFN16_4X4" -300 425 50 H V L B
 F2 "dp_devices-QFN16_4X4" 0 150 50 H I C C
@@ -6377,8 +6063,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC16F1823PTH-DIL14 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC16F1823
 F0 "IC" -300 -500 50 H V L B
 F1 "IC_UC_PIC16F1823PTH-DIL14" -300 425 50 H V L B
 F2 "dp_devices-DIP14" 0 150 50 H I C C
@@ -6412,8 +6096,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC16F1829-SSOP-20 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC16(L)F1829
 F0 "IC" -590 530 50 H V L B
 F1 "IC_UC_PIC16F1829-SSOP-20" -600 -700 50 H V L B
 F2 "dp_devices-SSOP-20" 0 150 50 H I C C
@@ -6453,8 +6135,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC18F44J50 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC18F44J50
 F0 "IC" -1800 1150 50 H V L B
 F1 "IC_UC_PIC18F44J50" -1800 -1200 50 H V L B
 F2 "dp_devices-TQFP-44" 0 150 50 H I C C
@@ -6516,8 +6196,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC18FJ250-SOIC-28-W IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC18FJ2X50
 F0 "IC" -1300 850 50 H V L B
 F1 "IC_UC_PIC18FJ250-SOIC-28-W" -1300 -800 50 H V L B
 F2 "dp_devices-SOIC-28W" 0 150 50 H I C C
@@ -6565,8 +6243,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC18FJ250-SSOP-28 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC18FJ2X50
 F0 "IC" -1300 850 50 H V L B
 F1 "IC_UC_PIC18FJ250-SSOP-28" -1300 -800 50 H V L B
 F2 "dp_devices-SSOP-28" 0 150 50 H I C C
@@ -6614,8 +6290,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24FJ64GA002 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ64GA002
 F0 "IC" -2000 737 50 H V L B
 F1 "IC_UC_PIC24FJ64GA002" -2000 -900 50 H V L B
 F2 "dp_devices-SSOP-28" 0 150 50 H I C C
@@ -6663,8 +6337,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24FJ64GB002SO IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ64GB002
 F0 "IC" -1000 750 50 H V L B
 F1 "IC_UC_PIC24FJ64GB002SO" -1000 -900 50 H V L B
 F2 "dp_devices-SOIC-28W" 0 150 50 H I C C
@@ -6712,8 +6384,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24FJ64GB002SP IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ64GB002
 F0 "IC" -1000 750 50 H V L B
 F1 "IC_UC_PIC24FJ64GB002SP" -1000 -900 50 H V L B
 F2 "dp_devices-DIL28-3" 0 150 50 H I C C
@@ -6761,8 +6431,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24FJ256GB106 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ256GB106
 F0 "IC" -1800 2137 50 H V L B
 F1 "IC_UC_PIC24FJ256GB106" -1800 -2100 50 H V L B
 F2 "dp_devices-TQFP-64-10X10" 0 150 50 H I C C
@@ -6846,8 +6514,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24FJ256GB110-TQFP100 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ256GB110
 F0 "IC" -2100 2600 50 H V L B
 F1 "IC_UC_PIC24FJ256GB110-TQFP100" -2100 2500 50 H V L B
 F2 "dp_devices-TQFP-100" 0 150 50 H I C C
@@ -6969,8 +6635,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_PIC24J**GP106 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PIC24FJ128GA
 F0 "IC" -1200 1437 50 H V L B
 F1 "IC_UC_PIC24J**GP106" -1200 -1900 50 H V L B
 F2 "dp_devices-TQFP-64-10X10" 0 150 50 H I C C
@@ -7057,8 +6721,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_STM32 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: STM32-48
 F0 "IC" 312 1337 50 H V L B
 F1 "IC_UC_STM32" 300 -1600 50 H V L B
 F2 "dp_devices-LQFP48" 0 150 50 H I C C
@@ -7126,8 +6788,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_UC_STM32F103RBTXX-LQFP64 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: STM32F103RX
 F0 "IC" -2500 1737 50 H V L B
 F1 "IC_UC_STM32F103RBTXX-LQFP64" -2500 -1800 50 H V L B
 F2 "dp_devices-LQFP64" 0 150 50 H I C C
@@ -7211,8 +6871,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ULN2003-TSSOP-16 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: ULN2003
 F0 "IC" -400 737 50 H V L B
 F1 "IC_ULN2003-TSSOP-16" -400 -1000 50 H V L B
 F2 "dp_devices-TSSOP-16" 0 150 50 H I C C
@@ -7401,8 +7059,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ULN2803A-SO-18 IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: 2801A
 F0 "IC" -300 530 50 H V L B
 F1 "IC_ULN2803A-SO-18" -300 -600 50 H V L B
 F2 "dp_devices-SO-18" 0 150 50 H I C C
@@ -7440,8 +7096,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ULN2803ADW IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: 2801A
 F0 "IC" -300 530 50 H V L B
 F1 "IC_ULN2803ADW" -300 -600 50 H V L B
 F2 "dp_devices-SO-18L" 0 150 50 H I C C
@@ -7479,8 +7133,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_ULN2803AN IC 0 40 N N 1 L N
-# Gate Name: IC
-# Symbol Name: 2801A
 F0 "IC" -300 530 50 H V L B
 F1 "IC_ULN2803AN" -300 -600 50 H V L B
 F2 "dp_devices-DIL18" 0 150 50 H I C C
@@ -7518,8 +7170,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_USB2514 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: USB2514
 F0 "IC" -1100 1137 50 H V L B
 F1 "IC_USB2514" -1100 -1100 50 H V L B
 F2 "dp_devices-QFN36_6X6" 0 150 50 H I C C
@@ -7576,8 +7226,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_USBLC6-2 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: USBLC
 F0 "IC" -700 625 50 H V L B
 F1 "IC_USBLC6-2" -700 -100 50 H V L B
 F2 "dp_devices-SOT-23-6L" 0 150 50 H I C C
@@ -7603,8 +7251,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF IC_W25X10 IC 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: W25X10
 F0 "IC" -300 425 50 H V L B
 F1 "IC_W25X10" -300 -500 50 H V L B
 F2 "dp_devices-SOIC-8W" 0 150 50 H I C C
@@ -7632,8 +7278,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF INDUCTOR-L1812 L 0 40 N N 1 L N
-# Gate Name: L
-# Symbol Name: COIL
 F0 "L" -200 100 50 H V L B
 F1 "INDUCTOR-L1812" -200 -100 50 H V L B
 F2 "dp_devices-L1812" 0 150 50 H I C C
@@ -7655,8 +7299,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF JOYSTICK JOY 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JOYSTICK
 F0 "JOY" -350 225 50 H V L B
 F1 "JOYSTICK" 0 0 50 H V L B
 F2 "dp_devices-JOYSTICK" 0 150 50 H I C C
@@ -7689,8 +7331,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF JUMPER_1X30805 J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JUMP3
 F0 "J" -200 225 50 H V L B
 F1 "JUMPER_1X30805" 0 0 50 H V L B
 F2 "dp_devices-JP3_0805" 0 150 50 H I C C
@@ -7715,8 +7355,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF JUMPER_1X3ALT J 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JUMP3
 F0 "J" -200 225 50 H V L B
 F1 "JUMPER_1X3ALT" 0 0 50 H V L B
 F2 "dp_devices-JUMPER_SOLDER" 0 150 50 H I C C
@@ -7741,8 +7379,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LABEL_JUMPER_1X2 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JUMP2_DESC
 DRAW
 T 0 100 25 50 0 1 0 (Jumper~description)
 T 0 -300 -75 50 0 1 0 >ON=
@@ -7758,8 +7394,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LABEL_JUMPER_1X3 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JUMP3_DESC
 DRAW
 T 0 100 25 50 0 1 0 (Jumper~description)
 T 0 -250 -75 50 0 1 0 >LEFT=
@@ -7775,8 +7409,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LABEL_JUMPER_2X2 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: JUMP2X2_DESC
 DRAW
 T 0 50 225 50 0 1 0 (JUMP2x2~desc)
 T 0 -25 125 50 0 1 0 00~=~>OPT1=
@@ -7794,8 +7426,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED-3MM LED 0 40 N N 1 L N
-# Gate Name: LED
-# Symbol Name: LED
 F0 "LED" 105 -180 50 V V L B
 F1 "LED-3MM" 190 -180 50 V V L B
 F2 "dp_devices-LED-3MM" 0 150 50 H I C C
@@ -7824,8 +7454,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED-5MM LED 0 40 N N 1 L N
-# Gate Name: LED
-# Symbol Name: LED
 F0 "LED" 105 -180 50 V V L B
 F1 "LED-5MM" 190 -180 50 V V L B
 F2 "dp_devices-LED-5MM" 0 150 50 H I C C
@@ -7854,8 +7482,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED-5MM-90DEG LED 0 40 N N 1 L N
-# Gate Name: LED
-# Symbol Name: LED
 F0 "LED" 105 -180 50 V V L B
 F1 "LED-5MM-90DEG" 190 -180 50 V V L B
 F2 "dp_devices-LED-5MM-90DEG" 0 150 50 H I C C
@@ -7884,8 +7510,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED-0805 LED 0 40 N N 1 L N
-# Gate Name: LED
-# Symbol Name: LED
 F0 "LED" 105 -180 50 V V L B
 F1 "LED-0805" 190 -180 50 V V L B
 F2 "dp_devices-LED-805" 0 150 50 H I C C
@@ -7914,8 +7538,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED_RGB LED 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RGB
 F0 "LED" 225 100 50 H V L B
 F1 "LED_RGB" 225 0 50 H V L B
 F2 "dp_devices-PLCC4" 0 150 50 H I C C
@@ -7941,8 +7563,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED_RGB21206 LED 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RGBLED
 F0 "LED" -200 225 50 H V L B
 F1 "LED_RGB21206" -200 -300 50 H V L B
 F2 "dp_devices-RGBLED1206" 0 150 50 H I C C
@@ -7966,8 +7586,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LED_RGB3 LED 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RGB3
 F0 "LED" -300 225 50 H V L B
 F1 "LED_RGB3" -300 -300 50 H V L B
 F2 "dp_devices-RGBLED" 0 150 50 H I C C
@@ -7993,8 +7611,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_CC-0 LOGO 0 40 N N 1 L N
-# Gate Name: LOGO
-# Symbol Name: LOGO_CC-0
 F0 "LOGO" 0 0 50 H V C C
 F1 "LOGO_CC-0" 0 0 50 H V C C
 F2 "dp_devices-LOGO_CC-0" 0 150 50 H I C C
@@ -8023,8 +7639,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_CC-BY-SA LOGO 0 40 N N 1 L N
-# Gate Name: LOGO
-# Symbol Name: LOGO_CC_BY_SA
 F0 "LOGO" 0 0 50 H V C C
 F1 "LOGO_CC-BY-SA" 0 0 50 H V C C
 F2 "dp_devices-CC-BY-SA" 0 150 50 H I C C
@@ -8053,8 +7667,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8070,8 +7682,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP0.5X0.5 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8087,8 +7697,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP1.5X1.5 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8104,8 +7712,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP1X1 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8121,8 +7727,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP2.5X2.5 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8138,8 +7742,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP2X2 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8155,8 +7757,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF LOGO_DP3X3 ?? 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: DP_LOGO
 DRAW
 T 0 260 120 40 0 1 0 DP~LOGO~ADDED
 T 0 180 20 40 0 1 0 >PROJECT=
@@ -8172,8 +7772,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF MODULE_MRF24WBOMA MOD 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MRF24WBOMA
 F0 "MOD" 600 -300 50 H V L B
 F1 "MODULE_MRF24WBOMA" 600 -400 50 H V L B
 F2 "dp_devices-MRF24WBOMA" 0 150 50 H I C C
@@ -8220,8 +7818,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-OSCILLATOR XTAL 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: OSCILLATOR
 F0 "XTAL" -300 225 50 H V L B
 F1 "OSC-OSCILLATOR" -300 -300 50 H V L B
 F2 "dp_devices-OSCILLATOR_7X5_SMD" 0 150 50 H I C C
@@ -8245,8 +7841,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTAL-8M XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTAL-8M" -100 -150 50 H V L B
 F2 "dp_devices-XTAL_5X8" 0 150 50 H I C C
@@ -8274,8 +7868,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTAL-12M XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTAL-12M" -100 -150 50 H V L B
 F2 "dp_devices-XTAL_4X6" 0 150 50 H I C C
@@ -8303,8 +7895,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTAL-HC-49U-PTH XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTAL-HC-49U-PTH" -100 -150 50 H V L B
 F2 "dp_devices-HC-49U-PTH" 0 150 50 H I C C
@@ -8332,8 +7922,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTAL-HC-49U-SMD XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTAL-HC-49U-SMD" -100 -150 50 H V L B
 F2 "dp_devices-HC-49U" 0 150 50 H I C C
@@ -8361,8 +7949,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTAL-TC-38 XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTAL-TC-38" -100 -150 50 H V L B
 F2 "dp_devices-TC-38" 0 150 50 H I C C
@@ -8390,8 +7976,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF OSC-XTALTC-26 XTAL 0 40 N N 1 L N
-# Gate Name: X
-# Symbol Name: CRYSTAL
 F0 "XTAL" -100 90 50 H V L B
 F1 "OSC-XTALTC-26" -100 -150 50 H V L B
 F2 "dp_devices-TC-26" 0 150 50 H I C C
@@ -8419,8 +8003,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PAD_TERMINAL-4.1MMROUND T 0 40 N N 1 L N
-# Gate Name: T
-# Symbol Name: TERMINAL
 F0 "T" -100 25 50 H V L B
 F1 "PAD_TERMINAL-4.1MMROUND" 0 0 50 H V L B
 F2 "dp_devices-PAD_ROUND_4.1MM" 0 150 50 H I C C
@@ -8437,8 +8019,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-5X15 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-5X15" -240 -240 50 H V L B
 F2 "dp_devices-PCB5X15" 0 150 50 H I C C
@@ -8467,8 +8047,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-5X20 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-5X20" -240 -240 50 H V L B
 F2 "dp_devices-PCB5X20" 0 150 50 H I C C
@@ -8497,8 +8075,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-6.2X10 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-6.2X10" -240 -240 50 H V L B
 F2 "dp_devices-DP10062_V1" 0 150 50 H I C C
@@ -8527,8 +8103,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-10X15 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-10X15" -240 -240 50 H V L B
 F2 "dp_devices-PCB10X15" 0 150 50 H I C C
@@ -8557,8 +8131,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-10X20 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-10X20" -240 -240 50 H V L B
 F2 "dp_devices-PCB10X20" 0 150 50 H I C C
@@ -8587,8 +8159,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-15X20 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-15X20" -240 -240 50 H V L B
 F2 "dp_devices-PCB15X20" 0 150 50 H I C C
@@ -8617,8 +8187,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-31X50 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-31X50" -240 -240 50 H V L B
 F2 "dp_devices-DP5031_V1" 0 150 50 H I C C
@@ -8647,8 +8215,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-37X60 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-37X60" -240 -240 50 H V L B
 F2 "dp_devices-DP6037_V1" 0 150 50 H I C C
@@ -8677,8 +8243,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-43X70 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-43X70" -240 -240 50 H V L B
 F2 "dp_devices-DP7043_V1" 0 150 50 H I C C
@@ -8707,8 +8271,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-50X100 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-50X100" -240 -240 50 H V L B
 F2 "dp_devices-DP10050_V1" 0 150 50 H I C C
@@ -8737,8 +8299,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-56X90 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-56X90" -240 -240 50 H V L B
 F2 "dp_devices-DP9056_V1" 0 150 50 H I C C
@@ -8767,8 +8327,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-80X49 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-80X49" -240 -240 50 H V L B
 F2 "dp_devices-DP8049_V1" 0 150 50 H I C C
@@ -8797,8 +8355,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-80X100 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-80X100" -240 -240 50 H V L B
 F2 "dp_devices-DP10080_V1" 0 150 50 H I C C
@@ -8827,8 +8383,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_RECTANGLE-85X56 PCB 0 40 N N 1 L N
-# Gate Name: PCB
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_RECTANGLE-85X56" -240 -240 50 H V L B
 F2 "dp_devices-DP8654_V1" 0 150 50 H I C C
@@ -8857,8 +8411,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-3X3 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-3X3" -240 -240 50 H V L B
 F2 "dp_devices-DP3030_V1" 0 150 50 H I C C
@@ -8887,8 +8439,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-4X4 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-4X4" -240 -240 50 H V L B
 F2 "dp_devices-DP4040_V1" 0 150 50 H I C C
@@ -8917,8 +8467,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-5X5 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-5X5" -240 -240 50 H V L B
 F2 "dp_devices-DP5050_V1" 0 150 50 H I C C
@@ -8947,8 +8495,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-6X6 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-6X6" -240 -240 50 H V L B
 F2 "dp_devices-DP6060_V1" 0 150 50 H I C C
@@ -8977,8 +8523,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-7X7 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-7X7" -240 -240 50 H V L B
 F2 "dp_devices-DP7070_V1" 0 150 50 H I C C
@@ -9007,8 +8551,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-8X8 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-8X8" -240 -240 50 H V L B
 F2 "dp_devices-DP8080_V1" 0 150 50 H I C C
@@ -9037,8 +8579,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-9X9 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-9X9" -240 -240 50 H V L B
 F2 "dp_devices-PCB9X9" 0 150 50 H I C C
@@ -9067,8 +8607,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-10X10 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-10X10" -240 -240 50 H V L B
 F2 "dp_devices-PCB10X10" 0 150 50 H I C C
@@ -9097,8 +8635,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-15X15 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-15X15" -240 -240 50 H V L B
 F2 "dp_devices-PCB15X15" 0 150 50 H I C C
@@ -9127,8 +8663,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF PCB_DP_SQUARE-20X20 PCB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: PCB_STANDARD
 F0 "PCB" -250 200 50 H V L B
 F1 "PCB_DP_SQUARE-20X20" -240 -240 50 H V L B
 F2 "dp_devices-PCB20X20" 0 150 50 H I C C
@@ -9168,8 +8702,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTOR-0402 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTOR-0402" -150 -130 50 H V L B
 F2 "dp_devices-R402" 0 150 50 H I C C
@@ -9191,8 +8723,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTOR-0603 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTOR-0603" -150 -130 50 H V L B
 F2 "dp_devices-R603" 0 150 50 H I C C
@@ -9214,8 +8744,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTOR-1206 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTOR-1206" -150 -130 50 H V L B
 F2 "dp_devices-R1206" 0 150 50 H I C C
@@ -9237,8 +8765,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTOR-PTH-0.4 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTOR-PTH-0.4" -150 -130 50 H V L B
 F2 "dp_devices-RTH025W" 0 150 50 H I C C
@@ -9260,8 +8786,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTOR-TO-220-2 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTOR-TO-220-2" -150 -130 50 H V L B
 F2 "dp_devices-TO-220-2" 0 150 50 H I C C
@@ -9283,8 +8807,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF RESISTORR805-0805 R 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: RESISTOR
 F0 "R" -150 59 50 H V L B
 F1 "RESISTORR805-0805" -150 -130 50 H V L B
 F2 "dp_devices-R805" 0 150 50 H I C C
@@ -9306,8 +8828,6 @@ ENDDEF
 # Gate count = 4
 #
 DEF RESISTOR_ARRAY_4 RN 0 40 N N 4 L N
-# Gate Name: A
-# Symbol Name: RESISTOR
 F0 "RN" -150 59 50 H V L B
 F1 "RESISTOR_ARRAY_4" -150 -130 50 H V L B
 F2 "dp_devices-RN8P-4R-CRA06S" 0 150 50 H I C C
@@ -9318,24 +8838,18 @@ P 2 1 0 0 100 -35 100 35
 P 2 1 0 0 -100 -35 -100 35
 X 1 1 -200 0 100 R 40 40 1 1 P 
 X 2 8 200 0 100 L 40 40 1 1 P 
-# Gate Name: B
-# Symbol Name: RESISTOR
 P 2 2 0 0 -100 -35 100 -35
 P 2 2 0 0 100 35 -100 35
 P 2 2 0 0 100 -35 100 35
 P 2 2 0 0 -100 -35 -100 35
 X 1 2 -200 0 100 R 40 40 2 1 P 
 X 2 7 200 0 100 L 40 40 2 1 P 
-# Gate Name: C
-# Symbol Name: RESISTOR
 P 2 3 0 0 -100 -35 100 -35
 P 2 3 0 0 100 35 -100 35
 P 2 3 0 0 100 -35 100 35
 P 2 3 0 0 -100 -35 -100 35
 X 1 3 -200 0 100 R 40 40 3 1 P 
 X 2 6 200 0 100 L 40 40 3 1 P 
-# Gate Name: D
-# Symbol Name: RESISTOR
 P 2 4 0 0 -100 -35 100 -35
 P 2 4 0 0 100 35 -100 35
 P 2 4 0 0 100 -35 100 35
@@ -9353,8 +8867,6 @@ ENDDEF
 # Gate count = 8
 #
 DEF RESISTOR_ARRAY_8 RN 0 40 N N 8 L N
-# Gate Name: A
-# Symbol Name: RESISTOR
 F0 "RN" -150 59 50 H V L B
 F1 "RESISTOR_ARRAY_8" -150 -130 50 H V L B
 F2 "dp_devices-CAT16-F8/CAT16-J8" 0 150 50 H I C C
@@ -9365,56 +8877,42 @@ P 2 1 0 0 100 -35 100 35
 P 2 1 0 0 -100 -35 -100 35
 X 1 1 -200 0 100 R 40 40 1 1 P 
 X 2 16 200 0 100 L 40 40 1 1 P 
-# Gate Name: B
-# Symbol Name: RESISTOR
 P 2 2 0 0 -100 -35 100 -35
 P 2 2 0 0 100 35 -100 35
 P 2 2 0 0 100 -35 100 35
 P 2 2 0 0 -100 -35 -100 35
 X 1 2 -200 0 100 R 40 40 2 1 P 
 X 2 15 200 0 100 L 40 40 2 1 P 
-# Gate Name: C
-# Symbol Name: RESISTOR
 P 2 3 0 0 -100 -35 100 -35
 P 2 3 0 0 100 35 -100 35
 P 2 3 0 0 100 -35 100 35
 P 2 3 0 0 -100 -35 -100 35
 X 1 3 -200 0 100 R 40 40 3 1 P 
 X 2 14 200 0 100 L 40 40 3 1 P 
-# Gate Name: D
-# Symbol Name: RESISTOR
 P 2 4 0 0 -100 -35 100 -35
 P 2 4 0 0 100 35 -100 35
 P 2 4 0 0 100 -35 100 35
 P 2 4 0 0 -100 -35 -100 35
 X 1 4 -200 0 100 R 40 40 4 1 P 
 X 2 13 200 0 100 L 40 40 4 1 P 
-# Gate Name: E
-# Symbol Name: RESISTOR
 P 2 5 0 0 -100 -35 100 -35
 P 2 5 0 0 100 35 -100 35
 P 2 5 0 0 100 -35 100 35
 P 2 5 0 0 -100 -35 -100 35
 X 1 5 -200 0 100 R 40 40 5 1 P 
 X 2 12 200 0 100 L 40 40 5 1 P 
-# Gate Name: F
-# Symbol Name: RESISTOR
 P 2 6 0 0 -100 -35 100 -35
 P 2 6 0 0 100 35 -100 35
 P 2 6 0 0 100 -35 100 35
 P 2 6 0 0 -100 -35 -100 35
 X 1 6 -200 0 100 R 40 40 6 1 P 
 X 2 11 200 0 100 L 40 40 6 1 P 
-# Gate Name: G
-# Symbol Name: RESISTOR
 P 2 7 0 0 -100 -35 100 -35
 P 2 7 0 0 100 35 -100 35
 P 2 7 0 0 100 -35 100 35
 P 2 7 0 0 -100 -35 -100 35
 X 1 7 -200 0 100 R 40 40 7 1 P 
 X 2 10 200 0 100 L 40 40 7 1 P 
-# Gate Name: H
-# Symbol Name: RESISTOR
 P 2 8 0 0 -100 -35 100 -35
 P 2 8 0 0 100 35 -100 35
 P 2 8 0 0 100 -35 100 35
@@ -9431,8 +8929,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_+3V3 +3V3 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SUPPLY_+3V3
 F0 "+3V3" 0 0 50 H V L B
 F1 "SUPPLY_+3V3" 0 100 50 H V L B
 DRAW
@@ -9449,8 +8945,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_+5V +5V 0 40 N N 1 L N
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY_+5V
 F0 "+5V" 0 0 50 H V L B
 F1 "SUPPLY_+5V" 0 100 50 H V L B
 DRAW
@@ -9467,8 +8961,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_+12V +12V 0 40 N N 1 L N
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY_+12V
 F0 "+12V" 0 0 50 H V L B
 F1 "SUPPLY_+12V" 0 100 50 H V L B
 DRAW
@@ -9485,8 +8977,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_-5V -5V 0 40 N N 1 L N
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY_-5V
 F0 "-5V" 0 0 50 H V L B
 F1 "SUPPLY_-5V" 0 100 50 H V L B
 DRAW
@@ -9503,8 +8993,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_-12V -12V 0 40 N N 1 L N
-# Gate Name: SUPPLY
-# Symbol Name: SUPPLY_-12V
 F0 "-12V" 0 0 50 H V L B
 F1 "SUPPLY_-12V" 0 100 50 H V L B
 DRAW
@@ -9521,8 +9009,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_GND GND 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SUPPLY_GND
 F0 "GND" 0 0 50 H V L B
 F1 "SUPPLY_GND" -60 -80 50 H V L B
 DRAW
@@ -9538,8 +9024,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SUPPLY_VUSB VUSB 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SUPPLY_VUSB
 F0 "VUSB" 0 0 50 H V L B
 F1 "SUPPLY_VUSB" 0 100 50 H V L B
 DRAW
@@ -9557,8 +9041,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SW_MEMBRANE SW 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SW_MEMBRANE
 F0 "SW" -100 200 50 H V L B
 F1 "SW_MEMBRANE" -100 100 50 H V L B
 F2 "dp_devices-SW_MEMBRANE" 0 150 50 H I C C
@@ -9587,8 +9069,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SW_PUSH_DPDT SW 0 40 N N 1 L N
-# Gate Name: SW
-# Symbol Name: SW_DPDT
 F0 "SW" -200 300 50 H V L B
 F1 "SW_PUSH_DPDT" 0 0 50 H V L B
 F2 "dp_devices-SW_PUSH_BUTTON_MINI" 0 150 50 H I C C
@@ -9615,8 +9095,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SW_SLIDE SW 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SLIDE_SWITCH_SMD
 F0 "SW" -300 200 50 H V L B
 F1 "SW_SLIDE" 0 0 50 H V L B
 F2 "dp_devices-SLIDE_SWITCH_SMD" 0 150 50 H I C C
@@ -9636,8 +9114,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SW_TACT_2P-3X6 SW 0 40 N N 1 L N
-# Gate Name: SW
-# Symbol Name: SWITCH_1
 F0 "SW" -100 300 50 H V L B
 F1 "SW_TACT_2P-3X6" -100 200 50 H V L B
 F2 "dp_devices-SW_TACT_3X6" 0 150 50 H I C C
@@ -9666,8 +9142,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF SW_TACT_4P SW 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: SWITCH_2
 F0 "SW" -100 300 50 H V L B
 F1 "SW_TACT_4P" -100 200 50 H V L B
 F2 "dp_devices-SW_TACT_SMALL" 0 150 50 H I C C
@@ -9700,8 +9174,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_NPN-SOT-23-BCE Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: NPN
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_NPN-SOT-23-BCE" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9731,8 +9203,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_NPN-SOT-23-BEC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: NPN
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_NPN-SOT-23-BEC" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9762,8 +9232,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_NPN-SOT-23-EBC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: NPN
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_NPN-SOT-23-EBC" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9793,8 +9261,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_NPN-TO-92-EBC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: NPN
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_NPN-TO-92-EBC" -400 200 50 H V L B
 F2 "dp_devices-TO-92" 0 150 50 H I C C
@@ -9824,8 +9290,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_NPN-TO-92-ECB Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: NPN
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_NPN-TO-92-ECB" -400 200 50 H V L B
 F2 "dp_devices-TO-92" 0 150 50 H I C C
@@ -9855,8 +9319,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_PNP-SOT-23-BCE Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: PNP
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_PNP-SOT-23-BCE" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9887,8 +9349,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_PNP-SOT-23-BEC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: PNP
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_PNP-SOT-23-BEC" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9919,8 +9379,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_PNP-SOT-23-EBC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: PNP
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_PNP-SOT-23-EBC" -400 200 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -9951,8 +9409,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_PNP-TO-92-EBC Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: PNP
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_PNP-TO-92-EBC" -400 200 50 H V L B
 F2 "dp_devices-TO-92" 0 150 50 H I C C
@@ -9983,8 +9439,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_BJT_PNP-TO-92-ECB Q 0 40 N N 1 L N
-# Gate Name: Q
-# Symbol Name: PNP
 F0 "Q" -400 300 50 H V L B
 F1 "TRANSISTOR_BJT_PNP-TO-92-ECB" -400 200 50 H V L B
 F2 "dp_devices-TO-92" 0 150 50 H I C C
@@ -10015,8 +9469,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_FET-N Q 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: FET
 F0 "Q" -400 100 50 H V L B
 F1 "TRANSISTOR_FET-N" -400 0 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -10041,8 +9493,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_FET_BS170-SOT-23 Q 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: N-MOSFET
 F0 "Q" -450 100 50 H V L B
 F1 "TRANSISTOR_FET_BS170-SOT-23" -450 0 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -10083,8 +9533,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRANSISTOR_FET_TSM2301CX Q 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: P-MOSFET
 F0 "Q" -450 100 50 H V L B
 F1 "TRANSISTOR_FET_TSM2301CX" -450 0 50 H V L B
 F2 "dp_devices-SOT-23" 0 150 50 H I C C
@@ -10125,8 +9573,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRIMMER-3306F R 0 40 N N 1 L N
-# Gate Name: R
-# Symbol Name: POT
 F0 "R" -150 159 50 H V L B
 F1 "TRIMMER-3306F" -150 70 50 H V L B
 F2 "dp_devices-TRIMMER_3306F" 0 150 50 H I C C
@@ -10155,8 +9601,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF TRIMMER-3362P R 0 40 N N 1 L N
-# Gate Name: R
-# Symbol Name: POT
 F0 "R" -150 159 50 H V L B
 F1 "TRIMMER-3362P" -150 70 50 H V L B
 F2 "dp_devices-TRIMMER_3362P" 0 150 50 H I C C
@@ -10185,8 +9629,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS-D2PAK VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: LD-1117
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS-D2PAK" -300 140 50 H V L B
 F2 "dp_devices-D2PAK" 0 150 50 H I C C
@@ -10210,8 +9652,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS-DPAK VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: LD-1117
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS-DPAK" -300 140 50 H V L B
 F2 "dp_devices-DPAK" 0 150 50 H I C C
@@ -10235,8 +9675,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS-SOT-223 VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: LD-1117
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS-SOT-223" -300 140 50 H V L B
 F2 "dp_devices-SOT-223" 0 150 50 H I C C
@@ -10260,8 +9698,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS-TO-220 VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: LD-1117
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS-TO-220" -300 140 50 H V L B
 F2 "dp_devices-TO-220V" 0 150 50 H I C C
@@ -10285,8 +9721,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS_ADJ-LM317T-TO-220VA VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: VREG-ADJ
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS_ADJ-LM317T-TO-220VA" -300 140 50 H V L B
 F2 "dp_devices-TO-220V" 0 150 50 H I C C
@@ -10310,8 +9744,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_3PINS_ADJ-LM337T-TO-220VB VREG 0 40 N N 1 L N
-# Gate Name: VREG
-# Symbol Name: VREG-ADJ
 F0 "VREG" -300 230 50 H V L B
 F1 "VREG_3PINS_ADJ-LM337T-TO-220VB" -300 140 50 H V L B
 F2 "dp_devices-TO-220V" 0 150 50 H I C C
@@ -10335,8 +9767,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF VREG_5PINS-SOT-23-5 VREG 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: MIC5205
 F0 "VREG" -300 325 50 H V L B
 F1 "VREG_5PINS-SOT-23-5" -300 -400 50 H V L B
 F2 "dp_devices-SOT-23-5" 0 150 50 H I C C
@@ -10361,8 +9791,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF ZENERSOD-123 ZD 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ZENER
 F0 "ZD" -100 75 50 H V L B
 F1 "ZENERSOD-123" -100 -153 50 H V L B
 F2 "dp_devices-SOD-123" 0 150 50 H I C C
@@ -10386,8 +9814,6 @@ ENDDEF
 # Gate count = 1
 #
 DEF ZENERSOD-323F ZD 0 40 N N 1 L N
-# Gate Name: G$1
-# Symbol Name: ZENER
 F0 "ZD" -100 75 50 H V L B
 F1 "ZENERSOD-323F" -100 -153 50 H V L B
 F2 "dp_devices-SOD-323F" 0 150 50 H I C C
