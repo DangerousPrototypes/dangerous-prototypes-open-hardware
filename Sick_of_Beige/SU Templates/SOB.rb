@@ -1,3 +1,8 @@
+# Sick of Beige Google Sketchup plugin
+# This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
+# Copyright Taylan Ayken 2012
+# http://dangerousprototypes.com
+ 
 require 'sketchup.rb'
 
 # User defined values for our design
@@ -8,7 +13,7 @@ $areaHeight = 14.6.m							# Height of the inside volume of box, calculate by st
 $acrylicThichness = 3.m							# Thickness of acrylic piece we are using
 $sideType = 2									# 0: no side piece, 1: interlocking style, 2: stacked style
 
-# Some other values, you shouldn't have to edit these
+# Some other values, you shouldn't have to edit these, we will add some advanced options in the future
 $holeDiameter = 3.m								# Mounting hole diameter
 $holeToEdgeDistance = 4.m						# Distance between mounting hole center and PCB edge
 $pcbToSideDistance = 1.m						# Distance between PCB and side piece
@@ -39,10 +44,18 @@ def SOB.create_top_bottom(x,y,z)
 	centerPt = Geom::Point3d.new(x,y,z)		# For creating other points
 	
 	# 4 corners of our piece
-	northWestPt = centerPt + [-$pcbWidth/2,$pcbLength/2,0] + [-$pcbToSideDistance,$pcbToSideDistance,0] + [-$acrylicThichness,$acrylicThichness,0] + [-$slotToEdgeDistance,$slotToEdgeDistance,0]
-	northEastPt = centerPt + [$pcbWidth/2,$pcbLength/2,0] + [$pcbToSideDistance,$pcbToSideDistance,0] + [$acrylicThichness,$acrylicThichness,0] + [$slotToEdgeDistance,$slotToEdgeDistance,0]
-	southWestPt = centerPt + [-$pcbWidth/2,-$pcbLength/2,0] + [-$pcbToSideDistance,-$pcbToSideDistance,0] + [-$acrylicThichness,-$acrylicThichness,0] + [-$slotToEdgeDistance,-$slotToEdgeDistance,0]
-	southEastPt = centerPt + [$pcbWidth/2,-$pcbLength/2,0] + [$pcbToSideDistance,-$pcbToSideDistance,0] + [$acrylicThichness,-$acrylicThichness,0] + [$slotToEdgeDistance,-$slotToEdgeDistance,0]
+	if $sideType == 0
+		$slotToEdgeDistance = 1.m
+		northWestPt = centerPt + [-$pcbWidth/2,$pcbLength/2,0] + [-$slotToEdgeDistance,$slotToEdgeDistance,0]
+		northEastPt = centerPt + [$pcbWidth/2,$pcbLength/2,0] + [$slotToEdgeDistance,$slotToEdgeDistance,0]
+		southWestPt = centerPt + [-$pcbWidth/2,-$pcbLength/2,0] + [-$slotToEdgeDistance,-$slotToEdgeDistance,0]
+		southEastPt = centerPt + [$pcbWidth/2,-$pcbLength/2,0] + [$slotToEdgeDistance,-$slotToEdgeDistance,0]
+	else
+		northWestPt = centerPt + [-$pcbWidth/2,$pcbLength/2,0] + [-$pcbToSideDistance,$pcbToSideDistance,0] + [-$acrylicThichness,$acrylicThichness,0] + [-$slotToEdgeDistance,$slotToEdgeDistance,0]
+		northEastPt = centerPt + [$pcbWidth/2,$pcbLength/2,0] + [$pcbToSideDistance,$pcbToSideDistance,0] + [$acrylicThichness,$acrylicThichness,0] + [$slotToEdgeDistance,$slotToEdgeDistance,0]
+		southWestPt = centerPt + [-$pcbWidth/2,-$pcbLength/2,0] + [-$pcbToSideDistance,-$pcbToSideDistance,0] + [-$acrylicThichness,-$acrylicThichness,0] + [-$slotToEdgeDistance,-$slotToEdgeDistance,0]
+		southEastPt = centerPt + [$pcbWidth/2,-$pcbLength/2,0] + [$pcbToSideDistance,-$pcbToSideDistance,0] + [$acrylicThichness,-$acrylicThichness,0] + [$slotToEdgeDistance,-$slotToEdgeDistance,0]
+	end
 	
 	# Create sides for the part
 	north = entities.add_line northWestPt + [$cornerRadius,0,0], northEastPt + [-$cornerRadius,0,0]
