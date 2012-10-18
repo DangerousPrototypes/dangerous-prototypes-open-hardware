@@ -28,8 +28,8 @@ NET "FT_DBGACK"      LOC =  "P27";  #AC5 is clock out in 485 mode
 NET "FT_DBGACK"      BUFG = CLK;
 
 #unused ft2232 connections
-NET "ACBUS6"      	LOC =  "P40";
-NET "ACBUS7"      	LOC =  "P39";
+NET "ACBUS6"      	LOC =  "P37";
+NET "ACBUS7"      	LOC =  "P36";
 
 # jtag io header
 NET "RTCK"           LOC =  "P81"; #x
@@ -49,4 +49,3 @@ NET "DBGACK"         LOC =  "P76"; #x
 NET "TEST_MODE_0"    LOC =  "P1"; #test mode trigger pin, pull low to enter test mode
 NET "TEST_MODE_0"    PULLUP;
 NET "TEST_MODE_1"    LOC =  "P64"; #test mode output pin, usually the LED
-NET "TEST_MODE_1"    PULLUP;
