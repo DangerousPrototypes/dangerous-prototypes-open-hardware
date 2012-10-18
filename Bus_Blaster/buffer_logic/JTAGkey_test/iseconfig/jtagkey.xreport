@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <report-views version="2.0" >
  <header>
-  <DateModified>2012-05-02T18:22:01</DateModified>
+  <DateModified>2012-10-18T12:56:38</DateModified>
   <ModuleName>jtagkey</ModuleName>
-  <SummaryTimeStamp>2012-05-02T17:24:07</SummaryTimeStamp>
+  <SummaryTimeStamp>2012-10-18T09:03:47</SummaryTimeStamp>
   <SavedFilePath>E:/Work/dp2/Bus_Blaster/buffer_logic/JTAGkey_test/iseconfig/jtagkey.xreport</SavedFilePath>
   <ImplementationReportsDirectory>E:/Work/dp2/Bus_Blaster/buffer_logic/JTAGkey_test\</ImplementationReportsDirectory>
   <DateInitialized>2011-07-14T17:54:00</DateInitialized>
