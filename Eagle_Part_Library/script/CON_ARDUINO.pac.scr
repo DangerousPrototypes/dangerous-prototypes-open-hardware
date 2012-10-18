@@ -16,19 +16,19 @@ Change Drill 0.8;Pad 'D_4' Round 1.4 R0 (-22.86 5.08);
 Change Drill 0.8;Pad 'D_5' Round 1.4 R0 (-22.86 2.54);
 Change Drill 0.8;Pad 'D_6' Round 1.4 R0 (-22.86 0);
 Change Drill 0.8;Pad 'D_7' Round 1.4 R0 (-22.86 -2.54);
-Change Drill 0.8;Pad 'D_8' Round 1.4 R0 (-22.86 -6.985);
-Change Drill 0.8;Pad 'D_9' Round 1.4 R0 (-22.86 -9.525);
-Change Drill 0.8;Pad 'D_10' Round 1.4 R0 (-22.86 -12.065);
-Change Drill 0.8;Pad 'D_11' Round 1.4 R0 (-22.86 -14.605);
-Change Drill 0.8;Pad 'D_12' Round 1.4 R0 (-22.86 -17.145);
-Change Drill 0.8;Pad 'D_13' Round 1.4 R0 (-22.86 -19.685);
-Change Drill 0.8;Pad 'GND0' Round 1.4 R0 (-22.86 -22.225);
-Change Drill 0.8;Pad 'AREF' Round 1.4 R0 (-22.86 -24.765);
+Change Drill 0.8;Pad 'D_8' Round 1.4 R0 (-22.86 -6.604);
+Change Drill 0.8;Pad 'D_9' Round 1.4 R0 (-22.86 -9.144);
+Change Drill 0.8;Pad 'D_10' Round 1.4 R0 (-22.86 -11.684);
+Change Drill 0.8;Pad 'D_11' Round 1.4 R0 (-22.86 -14.224);
+Change Drill 0.8;Pad 'D_12' Round 1.4 R0 (-22.86 -16.764);
+Change Drill 0.8;Pad 'D_13' Round 1.4 R0 (-22.86 -19.304);
+Change Drill 0.8;Pad 'GND0' Round 1.4 R0 (-22.86 -21.844);
+Change Drill 0.8;Pad 'AREF' Round 1.4 R0 (-22.86 -24.384);
 Layer 21;
 Wire  0.127 (-23.495 15.875) (-22.225 15.875) (-22.225 -3.175) (-23.495 -3.175) \
       (-23.495 15.875);
-Wire  0.127 (-23.495 -6.35) (-22.225 -6.35) (-22.225 -25.4) (-23.495 -25.4) \
-      (-23.495 -6.35);
+Wire  0.127 (-23.495 -5.969) (-22.225 -5.969) (-22.225 -25.4) (-23.495 -25.4) \
+      (-23.495 -5.969);
 Change Drill 0.8;Pad 'A_5' Round 1.4 R0 (25.4 15.24);
 Change Drill 0.8;Pad 'A_4' Round 1.4 R0 (25.4 12.7);
 Change Drill 0.8;Pad 'A_3' Round 1.4 R0 (25.4 10.16);
@@ -47,7 +47,7 @@ Wire  0.127 (24.765 15.875) (26.035 15.875) (26.035 1.905) (24.765 1.905) \
 Wire  0.127 (24.765 -1.905) (26.035 -1.905) (26.035 -15.875) (24.765 -15.875) \
       (24.765 -1.905);
 Layer 47;
-Wire  0 (-1.27 0) (0 0) (1.27 0);
+Wire  0 (-1.27 0) (1.27 0);
 Layer 48;
 Wire  0 (-25.4 -48.26) (-25.4 16.256) (-23.876 17.78) (-12.446 17.78) \
       (-9.906 20.32) (22.86 20.32) (25.4 17.78) (27.94 17.78) \

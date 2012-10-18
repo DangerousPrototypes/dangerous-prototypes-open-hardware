@@ -41,7 +41,7 @@ Layer  47 Measures;
 Layer  48 Document;
 Layer  49 Reference;
 Layer  50 dxf;
-Layer  51 tDocu;
+Layer  51 wire;
 Layer  52 bDocu;
 Layer  53 tGND_GNDA;
 Layer  54 bGND_GNDA;
