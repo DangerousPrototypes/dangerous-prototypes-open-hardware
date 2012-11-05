@@ -17,3 +17,6 @@ Connect  'R.3' '3'  'R.1' '1'  'R.2' '2';
 Package 'TRIMMER_3306F' '-3306F';
 Technology '';
 Connect  'R.2' '2'  'R.3' '3'  'R.1' '1';
+Package 'TRIMMER_3314G' '-3314G';
+Technology '';
+Connect  'R.1' '1'  'R.3' '3'  'R.2' '2';
