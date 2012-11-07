@@ -8,14 +8,14 @@ Grid mm;
 
 Edit 'M1X8.pac';
 Description '';
-Change Drill 0.8;Pad '1' Square 0 R0 (-8.89 0);
-Change Drill 0.8;Pad '2' Round 0 R0 (-6.35 0);
-Change Drill 0.8;Pad '3' Round 0 R0 (-3.81 0);
-Change Drill 0.8;Pad '4' Round 0 R0 (-1.27 0);
-Change Drill 0.8;Pad '5' Round 0 R0 (1.27 0);
-Change Drill 0.8;Pad '6' Round 0 R0 (3.81 0);
-Change Drill 0.8;Pad '7' Round 0 R0 (6.35 0);
-Change Drill 0.8;Pad '8' Round 0 R0 (8.89 0);
+Change Drill 1.02;Pad '1' Square 1.632 R0 (-8.89 0);
+Change Drill 1.02;Pad '2' Round 1.632 R0 (-6.35 0);
+Change Drill 1.02;Pad '3' Round 1.632 R0 (-3.81 0);
+Change Drill 1.02;Pad '4' Round 1.632 R0 (-1.27 0);
+Change Drill 1.02;Pad '5' Round 1.632 R0 (1.27 0);
+Change Drill 1.02;Pad '6' Round 1.632 R0 (3.81 0);
+Change Drill 1.02;Pad '7' Round 1.632 R0 (6.35 0);
+Change Drill 1.02;Pad '8' Round 1.632 R0 (8.89 0);
 Layer 21;
 Wire  0.1524 (-10.16 1.27) (-7.62 1.27) (10.16 1.27) (10.16 -1.27) \
       (-7.62 -1.27) (-10.16 -1.27) (-10.16 1.27);
