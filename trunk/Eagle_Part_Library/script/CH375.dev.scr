@@ -6,12 +6,12 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'CH375.dev';
+Edit 'IC_CH375.dev';
 Prefix 'IC';
-Description 'USB Bus Interface Chip';
+Description 'USB Host/Slave Interface Chip';
 Value Off;
 Add CH375 'G$1' Next 0 (0 0);
-Package 'SOIC28W' '''''';
+Package 'SOIC-28W' '''''';
 Technology '';
 Connect  'G$1.INT#' '1'  'G$1.RSTI' '2'  'G$1.WR#' '3'  'G$1.RD#' '4'  'G$1.TXD' '5' \
          'G$1.RXD' '6'  'G$1.A0' '8'  'G$1.V3' '9'  'G$1.UD+' '10'  'G$1.B5' '20'  'G$1.B4' '19' \
