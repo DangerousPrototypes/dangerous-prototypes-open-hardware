@@ -23,3 +23,7 @@ Package 'M1X6_MALE_RIGHT_ANGLED' '-PTH-RIGHT-ANGLED';
 Technology '';
 Connect  'J.1' '1'  'J.2' '2'  'J.3' '3'  'J.4' '4'  'J.5' '5' \
          'J.6' '6';
+Package 'M1X6_MALE_RIGHT_ANGLED_SMD' '-SMD-RIGHT-ANGLED';
+Technology '';
+Connect  'J.1' '1'  'J.2' '2'  'J.3' '3'  'J.4' '4'  'J.5' '5' \
+         'J.6' '6';

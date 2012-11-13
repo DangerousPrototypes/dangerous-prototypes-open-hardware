@@ -11,7 +11,11 @@ Prefix 'J';
 Description '2x3 AVR ICSP programming header';
 Value Off;
 Add PRG_ICSP_AVR 'J' Next 0 (0 0);
-Package 'HEADER_PRG_2X03' '''''';
+Package 'HEADER_PRG_2X03' '-PTH';
 Technology '';
 Connect  'J.MISO' '1'  'J.+V' '2'  'J.SCK' '3'  'J.MOSI' '4'  'J.RST' '5' \
          'J.GND' '6';
+Package 'M2X3_SMD' '-SMD';
+Technology '';
+Connect  'J.MISO' '1'  'J.SCK' '3'  'J.RST' '5'  'J.GND' '6'  'J.MOSI' '4' \
+         'J.+V' '2';
