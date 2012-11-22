@@ -12,12 +12,11 @@ Description '\
 <BR/> pogo pin diameter 0.65mm\n\
 <BR/> total pogo diameter 1.70mm\n\
 <BR/> pinout from top left: MCLR, GND, VCC\n\
-<BR/> pinout from bottom left: PGD, PGC';
+<BR/> pinout from bottom left: PGD, PGC, KEY(NC)';
 Layer 25;
 Change Size 1.27;
 Change Ratio 10;
 Text '>NAME' R0 (-3.81 2.2225);
-Hole 0.99 (2.5 -0.866);
 Change Drill 0.7;Pad 'MCLR' Round 1.7 R180 (-2.5 0.866);
 Layer 21;
 Wire  0.1524 (1.5 1.866) (0.5 1.866) (-1.5 1.866) \
@@ -56,3 +55,4 @@ Change Rank 0;
 Polygon 0.1524  (2.333 1.419) +64.0015 (1.5 1.866) (-2.5 1.866) +120.001 (-3.366 0.366) \
       (-2.366 -1.366) +60.0042 (-1.5 -1.866) (2.5 -1.866) +115.999 (3.395 -0.421) \
       (2.333 1.419);
+Change Drill 0.7;Pad 'NC' Round 1.7 R180 (2.5 -0.866);
