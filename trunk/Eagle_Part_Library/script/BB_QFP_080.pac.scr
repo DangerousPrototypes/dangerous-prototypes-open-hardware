@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'BB_QFP_080.pac';
 Description '\
-<b>QFP 0.5 mm pitch</b>\n\
+<b>QFP 0.8 mm pitch</b>\n\
 <br/>32p (7mm sq)\n\
 <br/>44p (10mm sq)\n\
 <br/>64p (14mm sq)\n\
