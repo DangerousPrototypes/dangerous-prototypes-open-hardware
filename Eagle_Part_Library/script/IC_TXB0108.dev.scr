@@ -8,12 +8,21 @@ Grid mm;
 
 Edit 'IC_TXB0108.dev';
 Prefix 'IC';
-Description '';
+Description '\
+<b>8-Bit bidirectional voltage level translator</b>\n\
+<br> Mfr no: TXB0108PWR\n\
+<br><a href="http://www.digikey.com/product-detail/en/TXB0108PWR/296-21527-2-ND/1305699"> TXB0108PWR </a>';
 Value Off;
-Add TXB0108 'G$1' Next 0 (0 0);
+Add TXB0108 'IC' Next 0 (0 0);
 Package 'SSOP-20' 'PW';
 Technology '';
-Connect  'G$1.A1' '1'  'G$1.VA' '2'  'G$1.A2' '3'  'G$1.A3' '4'  'G$1.A4' '5' \
-         'G$1.A5' '6'  'G$1.A6' '7'  'G$1.A7' '8'  'G$1.A8' '9'  'G$1.OE' '10'  'G$1.GND' '11' \
-         'G$1.B8' '12'  'G$1.B7' '13'  'G$1.B6' '14'  'G$1.B5' '15'  'G$1.B4' '16'  'G$1.B3' '17' \
-         'G$1.B2' '18'  'G$1.VB' '19'  'G$1.B1' '20';
+Connect  'IC.A1' '1'  'IC.VA' '2'  'IC.A2' '3'  'IC.A3' '4'  'IC.A4' '5' \
+         'IC.A5' '6'  'IC.A6' '7'  'IC.A7' '8'  'IC.A8' '9'  'IC.OE' '10'  'IC.GND' '11' \
+         'IC.B8' '12'  'IC.B7' '13'  'IC.B6' '14'  'IC.B5' '15'  'IC.B4' '16'  'IC.B3' '17' \
+         'IC.B2' '18'  'IC.VB' '19'  'IC.B1' '20';
+Package 'TSSOP-20' '-TSSOP-20';
+Technology '';
+Connect  'IC.A1' '1'  'IC.VA' '2'  'IC.A2' '3'  'IC.A3' '4'  'IC.A4' '5' \
+         'IC.A5' '6'  'IC.A6' '7'  'IC.A7' '8'  'IC.A8' '9'  'IC.OE' '10'  'IC.GND' '11' \
+         'IC.B8' '12'  'IC.B7' '13'  'IC.B6' '14'  'IC.B5' '15'  'IC.B4' '16'  'IC.B3' '17' \
+         'IC.B2' '18'  'IC.VB' '19'  'IC.B1' '20';
