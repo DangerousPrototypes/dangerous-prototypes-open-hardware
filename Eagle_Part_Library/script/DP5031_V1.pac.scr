@@ -75,7 +75,7 @@ Wire  0 (44.75 17) (44.75 14);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text '>NAME' MR0 (43 1);
+Text 'DP5031_V1' MR0 (43 1);
 Layer 49;
 Wire  0 (5 15) (-3 7) (-7 7);
 Wire  0 (45 16) (52 23) (57 23);
