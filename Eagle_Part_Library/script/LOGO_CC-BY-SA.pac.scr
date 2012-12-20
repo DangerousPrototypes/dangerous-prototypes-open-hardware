@@ -6,7 +6,7 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'CC-BY-SA.pac';
+Edit 'LOGO_CC-BY-SA.pac';
 Description '';
 Layer 21;
 Rect R0 (0.0191 -0.0191) (15.2972 0.0191);
