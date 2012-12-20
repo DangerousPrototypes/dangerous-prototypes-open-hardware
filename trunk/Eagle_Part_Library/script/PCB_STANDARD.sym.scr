@@ -31,4 +31,4 @@ Text '>NAME' R0 (-6.35 5.08);
 Layer 96;
 Change Size 1.778;
 Change Ratio 8;
-Text '>VALUE' R0 (-6.096 -6.096);
+Text '>PCB_SIZE' R0 (-6.096 -6.096);

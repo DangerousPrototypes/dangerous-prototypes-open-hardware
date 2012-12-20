@@ -95,7 +95,7 @@ Text 'Center' R0 (84 33);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP8049_V1' MR0 (73 1);
+Text '>PCB_SIZE' MR0 (73 1);
 Layer 41;
 Change Spacing 1.27;
 Change Pour Solid;

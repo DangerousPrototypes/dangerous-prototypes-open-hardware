@@ -97,7 +97,7 @@ Text 'Center' R0 (89.9 35.49);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP8654_V1' MR0 (78.6 1);
+Text '>PCB_SIZE' MR0 (78.6 1);
 Layer 41;
 Change Spacing 1.27;
 Change Pour Solid;
@@ -114,8 +114,8 @@ Layer 43;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
-Polygon 0  (7 56) (7 52) -90 (4 49) (0 49) \
-      (0 52) -90 (4 56) (7 56);
+Polygon 0  (7 53.98) (7 49.98) -90 (4 46.98) (0 46.98) \
+      (0 49.98) -90 (4 53.98) (7 53.98);
 Layer 41;
 Change Spacing 1.27;
 Change Pour Solid;
@@ -132,8 +132,8 @@ Layer 43;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
-Polygon 0  (85 49) (81 49) -90 (78 52) (78 56) \
-      (81 56) -90 (85 52) (85 49);
+Polygon 0  (85.6 46.98) (81.6 46.98) -90 (78.6 49.98) (78.6 53.98) \
+      (81.6 53.98) -90 (85.6 49.98) (85.6 46.98);
 Layer 41;
 Change Spacing 1.27;
 Change Pour Solid;
@@ -168,5 +168,5 @@ Layer 43;
 Change Spacing 1.27;
 Change Pour Solid;
 Change Rank 0;
-Polygon 0  (78 0) (78 4) -90 (81 7) (85 7) \
-      (85 4) -90 (81 0) (78 0);
+Polygon 0  (78.6 0) (78.6 4) -90 (81.6 7) (85.6 7) \
+      (85.6 4) -90 (81.6 0) (78.6 0);
