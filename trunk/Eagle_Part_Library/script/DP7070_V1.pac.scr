@@ -9,7 +9,8 @@ Grid mm;
 Edit 'DP7070_V1.pac';
 Description '';
 Layer 20;
-Wire  0 (4 0) (66 0);
+Wire  0 (4 0) \
+      (66 0);
 Wire  0 (70 4) (70 66);
 Wire  0 (66 70) (4 70);
 Wire  0 (0 66) (0 4);
@@ -158,4 +159,4 @@ Text 'Center' R0 (-14 22);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP7070_v1' MR0 (63 1);
+Text '>NAME' MR0 (63 1);

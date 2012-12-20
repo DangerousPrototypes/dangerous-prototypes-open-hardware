@@ -9,7 +9,8 @@ Grid mm;
 Edit 'DP5050_V1.pac';
 Description '';
 Layer 20;
-Wire  0 (4 0) (46 0);
+Wire  0 (4 0) \
+      (46 0);
 Wire  0 (50 4) (50 46);
 Wire  0 (46 50) (4 50);
 Wire  0 (0 46) (0 4);
@@ -158,4 +159,4 @@ Text 'Center' R0 (-13 14);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP5050_v1' MR0 (43 1);
+Text '>NAME' MR0 (43 1);

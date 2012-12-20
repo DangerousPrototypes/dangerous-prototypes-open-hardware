@@ -158,4 +158,4 @@ Text 'Center' R0 (33 22);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP3030_v1' MR0 (23 1);
+Text '>NAME' MR0 (23 1);

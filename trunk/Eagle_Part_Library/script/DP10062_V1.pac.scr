@@ -211,4 +211,4 @@ Text 'Center' R0 (-14 19);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP10062_v1' MR0 (93 1);
+Text '>NAME' MR0 (93 1);

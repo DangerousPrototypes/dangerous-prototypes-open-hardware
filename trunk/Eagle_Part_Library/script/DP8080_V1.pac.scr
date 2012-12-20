@@ -9,7 +9,8 @@ Grid mm;
 Edit 'DP8080_V1.pac';
 Description '';
 Layer 20;
-Wire  0 (4 0) (76 0);
+Wire  0 (4 0) \
+      (76 0);
 Wire  0 (80 4) (80 76);
 Wire  0 (76 80) (4 80);
 Wire  0 (0 76) (0 4);
@@ -157,4 +158,4 @@ Text 'Center' R0 (-12 29);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP8080_v1' MR0 (73 1);
+Text '>NAME' MR0 (73 1);

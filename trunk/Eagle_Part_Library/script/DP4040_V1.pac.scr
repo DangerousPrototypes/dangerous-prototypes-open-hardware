@@ -9,8 +9,7 @@ Grid mm;
 Edit 'DP4040_V1.pac';
 Description '';
 Layer 20;
-Wire  0 (4 0) \
-      (36 0);
+Wire  0 (4 0) (36 0);
 Wire  0 (40 4) (40 36);
 Wire  0 (36 40) (4 40);
 Wire  0 (0 36) (0 4);
@@ -158,4 +157,4 @@ Text 'Center' R0 (-12 9);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP4040_v1' MR0 (33 1);
+Text '>NAME' MR0 (33 1);

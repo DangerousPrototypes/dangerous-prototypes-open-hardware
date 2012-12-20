@@ -21,8 +21,7 @@ Change Size 2.54;
 Change Ratio 8;
 Text 'D = 3.2mm' R0 (13.57 -3.575);
 Layer 47;
-Wire  0.127 (58.655 0) \
-      (61.83 0);
+Wire  0.127 (58.655 0) (61.83 0);
 Layer 47;
 Change Size 2.54;
 Change Ratio 8;
@@ -100,7 +99,7 @@ Text 'CENTER' R0 (-10.38 11);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP6037_v1' MR0 (52.5 0.5);
+Text '>NAME' MR0 (52.5 0.5);
 Layer 49;
 Wire  0 (55 18) (61 12) (63 12);
 Layer 49;

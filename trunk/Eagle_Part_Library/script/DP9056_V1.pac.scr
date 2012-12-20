@@ -160,4 +160,4 @@ Text 'Center' R0 (-13 15);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP9056_v1' MR0 (83 1);
+Text '>NAME' MR0 (83 1);
