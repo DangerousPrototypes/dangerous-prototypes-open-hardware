@@ -99,7 +99,7 @@ Text 'Center' R0 (73.1 30.3);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text '>NAME' MR0 (63 1);
+Text 'DP7043_V1' MR0 (63 1);
 Layer 41;
 Change Spacing 1.27;
 Change Pour Solid;

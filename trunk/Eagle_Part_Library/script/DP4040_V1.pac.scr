@@ -157,4 +157,4 @@ Text 'Center' R0 (-12 9);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text '>NAME' MR0 (33 1);
+Text 'DP4040_V1' MR0 (33 1);
