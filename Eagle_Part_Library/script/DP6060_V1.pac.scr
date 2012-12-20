@@ -189,4 +189,4 @@ Text 'Center' R0 (-20 12);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP6060_V1' MR0 (53 1);
+Text '>PCB_SIZE' MR0 (53 1);

@@ -159,4 +159,4 @@ Text 'Center' R0 (-14 22);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP7070_V1' MR0 (63 1);
+Text '>PCB_SIZE' MR0 (63 1);

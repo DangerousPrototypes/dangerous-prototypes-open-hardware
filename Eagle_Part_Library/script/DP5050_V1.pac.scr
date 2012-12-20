@@ -159,4 +159,4 @@ Text 'Center' R0 (-13 14);
 Layer 26;
 Change Size 1.27;
 Change Ratio 12;
-Text 'DP5050_V1' MR0 (43 1);
+Text '>PCB_SIZE' MR0 (43 1);
