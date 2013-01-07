@@ -23,3 +23,6 @@ Connect  'LED.C' 'C'  'LED.A' 'A';
 Package 'LED-5MM-90DEG' '-5MM-90DEG';
 Technology '';
 Connect  'LED.A' 'A'  'LED.C' 'K';
+Package 'LED-603' '-0603';
+Technology '';
+Connect  'LED.C' 'C'  'LED.A' 'A';
