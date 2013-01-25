@@ -1,0 +1,123 @@
+[Header]
+MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
+Version=1.0
+[File000]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Framework.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File001]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\BootLoader.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File002]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_function_hid.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File003]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_device.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File004]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_descriptors.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File005]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Usb_HID_tasks.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File006]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\NVMem.o
+Folder=Intermediary
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={DBB2B82D-3E10-4401-85A6-C9CB169D3E05}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
+TraceCmdString=
+DebugOptions=
+[File007]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.elf
+Folder=Output
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={A90E7C70-81C8-4500-B1F8-8560038BEFC0}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-ld.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=
+[File008]
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.hex
+Folder=Output
+DeviceName=PIC32MX250F128B
+LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
+LanguageToolID={A90E7C70-81C8-4500-B1F8-8560038BEFC0}
+LanguageToolLocation=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-ld.exe
+PPAD=$(BINDIR)|.\output||$(TMPDIR)|.\objects||$(AINDIR)||$(INCDIR)|..;..\Include;..\Include\Usb\Stack;..\Include\FrameWork;..\Include\Usb;..\Include\HardwareProfile||$(LIBDIR)||$(LKRDIR)||
+SOLK=<src>|..\Source\FrameWork\Framework.c|..\Source\BootLoader.c|..\Source\USB\usb_function_hid.c|..\Source\USB\usb_device.c|..\Source\USB\usb_descriptors.c|..\Source\USB\Usb_HID_tasks.c|..\Source\NVMem.c||<obj>||<lib>||<lkr>|example.ld||
+SuiteArgsString=
+ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(TARGETSUFFIX)"
+TraceCmdString=
+DebugOptions=
+[TOOL_LOC_STAMPS]
+tool_loc{DBB2B82D-3E10-4401-85A6-C9CB169D3E05}=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-gcc.exe
+tool_loc{A90E7C70-81C8-4500-B1F8-8560038BEFC0}=C:\Program Files (x86)\Microchip\xc32\v1.11\bin\xc32-ld.exe
