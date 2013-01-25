@@ -15,10 +15,15 @@ Description '\
 Value Off;
 Add 74AC573 'IC' Next 0 (0 0);
 Add SUPPLY 'PWR' Request 0 (-22.86 0);
-Package 'SOIC-20' '''''';
+Package 'SOIC-20' '-SOIC-20';
 Technology '';
 Connect  'IC.!OE' '1'  'IC.1D' '2'  'IC.2D' '3'  'IC.3D' '4'  'IC.4D' '5' \
          'IC.5D' '6'  'IC.6D' '7'  'IC.7D' '8'  'IC.8D' '9'  'PWR.GND' '10'  'IC.LE' '11' \
          'IC.8Q' '12'  'IC.7Q' '13'  'IC.6Q' '14'  'IC.5Q' '15'  'IC.4Q' '16'  'IC.3Q' '17' \
          'IC.2Q' '18'  'IC.1Q' '19'  'PWR.V+' '20';
-Grid inch;
+Package 'TSSOP-20' '-TSSOP-20';
+Technology '';
+Connect  'IC.1D' '2'  'IC.2D' '3'  'IC.3D' '4'  'IC.4D' '5'  'IC.5D' '6' \
+         'IC.6D' '7'  'IC.7D' '8'  'IC.8D' '9'  'IC.8Q' '12'  'IC.7Q' '13'  'IC.6Q' '14' \
+         'IC.5Q' '15'  'IC.4Q' '16'  'IC.3Q' '17'  'IC.2Q' '18'  'IC.1Q' '19'  'PWR.GND' '10' \
+         'IC.LE' '11'  'IC.!OE' '1'  'PWR.V+' '20';
