@@ -337,7 +337,7 @@ static void send_to_host( config_t * const config )
                                + 0x20000
                                - ( config->use_trigger ? ADDRESS_CORRECTION : 0 ) / m
                                - config->read_count * 2
-                               + config->delay_count * 2 ) % 0x1FFFF;
+                               + config->delay_count * 2 ) % 0x20000;
     sqi_write( 0x03000000 | address ); // Read data from memory array beginning at address.
     RAM_SCK = 1; // Dummy Byte
     RAM_SCK = 0;
@@ -346,14 +346,14 @@ static void send_to_host( config_t * const config )
     SET_PARALLEL_IN;
 
     uint32_t count = config->read_count << 2;
-    uint32_t i = 0;
+    uint32_t index = 0;
     while ( count > 0 ) {
         --count;
         RAM_SCK = 1;
-        USB_In_Buffer[ i++ ] = parallel_read();
+        USB_In_Buffer[ index++ ] = parallel_read();
         RAM_SCK = 0;
-        if ( i >= USB_IN_ENDPOINT_PACKET_SIZE ) {
-            i = 0;
+        if ( index >= USB_IN_ENDPOINT_PACKET_SIZE ) {
+            index = 0;
             putUSBUSART( USB_In_Buffer, USB_IN_ENDPOINT_PACKET_SIZE );
             while ( ! USBUSARTIsTxTrfReady() ) {
                 CDCTxService();
@@ -511,15 +511,23 @@ static void user_init()
 #define SC_RESET                       0x00
 #define SC_RUN                         0x01
 #define SC_ID                          0x02
+#define SC_META                        0x04
 #define SC_XON                         0x11
 #define SC_XOFF                        0x13
-#define LC_SET_TRIGGER_MASK_0          0xC0 // 0xC4 0xC8 0xCC
-#define LC_SET_TRIGGER_VALUES_0        0xC1 // 0xC5 0xC9 0xCD
-#define LC_SET_TRIGGER_CONFIGURATION_0 0xC2 // 0xC6 0xCA 0xCE
 #define LC_SET_DIVIDER                 0x80
 #define LC_SET_READ_AND_DELAY_COUNT    0x81
 #define LC_SET_FLAGS                   0x82
+#define LC_SET_TRIGGER_MASK_0          0xC0 // 0xC4 0xC8 0xCC
+#define LC_SET_TRIGGER_VALUES_0        0xC1 // 0xC5 0xC9 0xCD
+#define LC_SET_TRIGGER_CONFIGURATION_0 0xC2 // 0xC6 0xCA 0xCE
 
+static const char meta_info[] = { "\x01" "Logic Pirate" "\x00"
+#if defined( OVERCLOCK )
+                                  "\x02" "60 MHz" "\x00"
+#else
+                                  "\x02" "40 MHz" "\x00"
+#endif
+                                  "\x03" "2013-01-31" "\x00" };
 static config_t config = { 0 };
 static bool do_fill_ram = false;
 static uint32_t delayed_fill_counter = 0;
@@ -551,11 +559,14 @@ static void process_io()
                 // otherwise finnishing the OLS acquire process gets unneccessarily delayed.
             }
             break;
+        case SC_RUN:
+            start_sampling( &config );
+            break;
         case SC_ID:
             putrsUSBUSART( "1ALS" );
             break;
-        case SC_RUN:
-            start_sampling( &config );
+        case SC_META:
+            putUSBUSART( (char *)meta_info, sizeof( meta_info ) );
             break;
         case LC_SET_DIVIDER:
         case LC_SET_TRIGGER_MASK_0:
