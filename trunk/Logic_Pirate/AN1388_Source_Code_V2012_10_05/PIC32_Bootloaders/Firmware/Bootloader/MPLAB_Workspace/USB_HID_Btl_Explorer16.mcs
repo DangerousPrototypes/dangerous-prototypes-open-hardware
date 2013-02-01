@@ -2,7 +2,7 @@
 MagicCookie={0b13fe8c-dfe0-40eb-8900-6712719559a7}
 Version=1.0
 [File000]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Framework.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Framework.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -15,7 +15,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File001]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\BootLoader.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\BootLoader.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -28,7 +28,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File002]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_function_hid.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_function_hid.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -41,7 +41,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File003]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_device.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_device.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -54,7 +54,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File004]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_descriptors.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\usb_descriptors.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -67,7 +67,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File005]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Usb_HID_tasks.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\Usb_HID_tasks.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -80,7 +80,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File006]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\NVMem.o
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\objects\NVMem.o
 Folder=Intermediary
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -93,7 +93,7 @@ ToolArgsString=-g -DDEMO_BOARD_EXPLORER_16 -DTRANSPORT_LAYER_USB -O1
 TraceCmdString=
 DebugOptions=
 [File007]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.elf
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.elf
 Folder=Output
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}
@@ -106,7 +106,7 @@ ToolArgsString=-Map="$(BINDIR_)$(TARGETBASE).map" -o"$(BINDIR_)$(TARGETBASE).$(T
 TraceCmdString=
 DebugOptions=
 [File008]
-Location=C:\Daten\Eigene Dateien\Embedded\PIC32\logic_pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.hex
+Location=C:\Daten\Eigene Dateien\Embedded\PIC32\Logic_Pirate\AN1388_Source_Code_V2012_10_05\PIC32_Bootloaders\Firmware\Bootloader\MPLAB_Workspace\.\output\USB_HID_Btl_Explorer16.hex
 Folder=Output
 DeviceName=PIC32MX250F128B
 LanguageToolSuiteID={62D235D8-2DB2-49CD-AF24-5489A6015337}

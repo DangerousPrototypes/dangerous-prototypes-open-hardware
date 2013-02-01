@@ -511,6 +511,7 @@ static void user_init()
 #define SC_RESET                       0x00
 #define SC_RUN                         0x01
 #define SC_ID                          0x02
+#define SC_TEST                        0x03
 #define SC_META                        0x04
 #define SC_XON                         0x11
 #define SC_XOFF                        0x13
@@ -521,13 +522,14 @@ static void user_init()
 #define LC_SET_TRIGGER_VALUES_0        0xC1 // 0xC5 0xC9 0xCD
 #define LC_SET_TRIGGER_CONFIGURATION_0 0xC2 // 0xC6 0xCA 0xCE
 
-static const char meta_info[] = { "\x01" "Logic Pirate" "\x00"
+// http://dangerousprototypes.com/docs/The_Logic_Sniffer%27s_extended_SUMP_protocol#Metadata_command
+static const char meta_info[] = { "\x01" "Logic Pirate ("
 #if defined( OVERCLOCK )
-                                  "\x02" "60 MHz" "\x00"
+                                  "60"
 #else
-                                  "\x02" "40 MHz" "\x00"
+                                  "40"
 #endif
-                                  "\x03" "2013-01-31" "\x00" };
+                                  " MHz)" "\x00" "\x02" "2013-02-01" "\x00" "\x00" };
 static config_t config = { 0 };
 static bool do_fill_ram = false;
 static uint32_t delayed_fill_counter = 0;
