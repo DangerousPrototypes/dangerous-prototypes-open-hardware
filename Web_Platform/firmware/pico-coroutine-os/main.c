@@ -131,21 +131,12 @@ int i;
 void task0(void);
 void task1(void);
 void task2(void);
-
+void taskKeyboard(void);
 
 void task0(void)
 {
     int i;
-
-    osSemInit( 0, 0);
-    osSemInit( 1, 0);
-    osSemInit( 2, 0);
-	osSemInit( 3, 0);
-
-    osTaskCreate( task1 );
-    osTaskCreate( task2 );
-
-     
+    
      while(1) {
         uart1Print( "Task 0 P0 loop\n" );
         osSemP(0);
@@ -185,7 +176,6 @@ void task2(void)
 void taskKeyboard(void)
 {
     int i,j;
-
  	char c;
     
     while(1){
@@ -240,9 +230,15 @@ int main(void){
 	
     initstuff();
 
-    osInit();
+    osInit();   
+    osSemInit(0, 0);
+    osSemInit(1, 0);
+    osSemInit(2, 0);
     osTaskCreate(taskKeyboard);
     osTaskCreate(task0);
+    osTaskCreate( task1 );
+    osTaskCreate( task2 );
+        
     osBegin();
 
 }
