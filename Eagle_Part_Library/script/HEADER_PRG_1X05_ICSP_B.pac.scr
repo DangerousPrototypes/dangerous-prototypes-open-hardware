@@ -12,7 +12,7 @@ Change Drill 1.016;Pad '1' Square 0 R0 (-5.08 0);
 Change Drill 1.016;Pad '2' Round 0 R0 (-2.54 0);
 Change Drill 1.016;Pad '3' Round 0 R0 (0 0);
 Change Drill 1.016;Pad '4' Round 0 R0 (2.54 0);
-Change Drill 1.016;Pad '5' Round 0 R0 FIRST (5.08 0);
+Change Drill 1.016;Pad '5' Round 0 R0 (5.08 0);
 Layer 25;
 Change Size 1.27;
 Change Ratio 10;
