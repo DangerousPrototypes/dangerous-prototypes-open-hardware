@@ -8,7 +8,7 @@ Grid mm;
 
 Edit 'DIP14.pac';
 Description '';
-Change Drill 0.8;Pad '1' Square 0 R0 (-7.62 -3.81);
+Change Drill 0.8;Pad '1' Square 0 R0 FIRST (-7.62 -3.81);
 Change Drill 0.8;Pad '2' Round 0 R0 (-5.08 -3.81);
 Change Drill 0.8;Pad '3' Round 0 R0 (-2.54 -3.81);
 Change Drill 0.8;Pad '4' Round 0 R0 (0 -3.81);
@@ -21,7 +21,7 @@ Change Drill 0.8;Pad '10' Round 0 R0 (2.54 3.81);
 Change Drill 0.8;Pad '11' Round 0 R0 (0 3.81);
 Change Drill 0.8;Pad '12' Round 0 R0 (-2.54 3.81);
 Change Drill 0.8;Pad '13' Round 0 R0 (-5.08 3.81);
-Change Drill 0.8;Pad '14' Round 0 R0 FIRST (-7.62 3.81);
+Change Drill 0.8;Pad '14' Round 0 R0 (-7.62 3.81);
 Layer 25;
 Change Size 1.27;
 Change Ratio 10;
