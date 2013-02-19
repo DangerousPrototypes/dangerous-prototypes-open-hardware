@@ -1,0 +1,4 @@
+cable ft2232 interface=1
+bsdl path c:/bsdl
+detect
+svf c:/svf/bbv4.svf progress stop
