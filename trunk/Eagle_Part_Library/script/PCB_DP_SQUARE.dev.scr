@@ -35,3 +35,5 @@ Package 'DP8080_V1' '-8X8';
 Technology '';
 Technology '';
 Attribute PCB_SIZE 'DP8080_V1' constant;
+Package 'DP100100_V1' '-10X10';
+Technology '';
