@@ -35,6 +35,7 @@ inary1WIRE mode:
 
 from .BitBang import *
 
+
 class _1WIRE(BBIO):
 	def __init__(self, port, speed):
 		BBIO.__init__(self, port, speed)
@@ -61,6 +62,8 @@ class _1WIRE(BBIO):
 
 	def __group_response(self):
 		EOD = [0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]
-		while (data = self.port.read(8)) != EOD:
+		data = None
+		while data != EOD:
+			data = self.port.read(8)
 			print data
 

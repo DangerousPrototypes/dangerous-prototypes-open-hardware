@@ -20,13 +20,14 @@ You should have received a copy of the GNU General Public License
 along with pyBusPirate.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from .BitBang import BBIO, PinCfg
+from .BitBang import BBIO
 
-FOSC = (32000000/2)
+FOSC = (32000000 / 2)
+
 
 class UARTCfg:
 	OUTPUT_TYPE = 0x10
-	OUTPUT_TOTEM = OUTPUT_TYPE	# Normal totem-pole output
+	OUTPUT_TOTEM = OUTPUT_TYPE 	# Normal totem-pole output
 	OUTPUT_OPENC = 0		# Open-collector output
 
 	DATABITS = 0x0C
@@ -43,26 +44,28 @@ class UARTCfg:
 	RX_NORMAL = 0			# Receive normal polarity
 	RX_INVERT = POLARITY		# Receive inverted polarity
 
+
 class UARTSpeed:
-	_300    = 0b0000
-	_1200   = 0b0001
-	_2400   = 0b0010
-	_4800   = 0b0011
-	_9600   = 0b0100
-	_19200  = 0b0101
-	_33250  = 0b0110
-	_38400  = 0b0111
-	_57600  = 0b1000
-	_115200 = 0b1001
+	_300	= 0b0000
+	_1200	= 0b0001
+	_2400	= 0b0010
+	_4800	= 0b0011
+	_9600	= 0b0100
+	_19200	= 0b0101
+	_33250	= 0b0110
+	_38400	= 0b0111
+	_57600	= 0b1000
+	_115200	= 0b1001
+
 
 class UART(BBIO):
 	def __init__(self, port, speed):
 		BBIO.__init__(self, port, speed)
 
 	def manual_speed_cfg(self, baud):
-		BRG = ((FOSC)/(4*baud))-1
-		BRGH = ((BRG>>8)&0xFF)
-		BRGL = (BRG&0xFF)
+		BRG = ((FOSC) / (4 * baud)) - 1
+		BRGH = ((BRG >> 8) & 0xFF)
+		BRGL = (BRG & 0xFF)
 		self.port.write("\x02")
 		self.port.write(BRGH)
 		self.port.write(BRGL)
@@ -78,20 +81,20 @@ class UART(BBIO):
 		self.port.write("\x03")
 		self.timeout(0.1)
 		return self.response(1, True)
-		
+
 	def enter_bridge_mode(self):
 		self.port.write("\x0F")
 		self.timeout(0.1)
 		return self.response(1, True)
-		
+
 	def set_cfg(self, cfg):
 		self.port.write(chr(0x80 | cfg))
 		self.timeout(0.1)
 		return self.response(1, True)
-		
+
 	def read_cfg(self):
 		self.port.write("\xD0")
 		self.timeout(0.1)
 		return self.response(1, True)
-		
-	
+
+
