@@ -1,2 +1,0 @@
-del *.o
-del *.err

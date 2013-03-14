@@ -1,1 +1,0 @@
-This firmware uses Microchip TCPIP stack version 5.0.

@@ -1,6 +1,0 @@
-#PIN MAP OF DANGEROUSPROTOTYPES.COM CPLD BREAKOUT BOARDS
-#lICENSE: CC-0 (CREATIVE COMMONS 0)
-#http://dangerousprototypes.com/docs/XC9500XL_CPLD_breakout_board
-#http://dangerousprototypes.com/docs/CoolRunner-II_CPLD_breakout_board
-NET "BUTTON"    	LOC =  "P18";
-NET "LED"        	LOC =  "P39";

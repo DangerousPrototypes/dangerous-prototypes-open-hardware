@@ -1,7 +1,0 @@
-#units are in mil
-grid ON mil 50 ALT mil 12.5;
-#wire, pad and drill settings
-change width 12;
-change shape ROUND;
-#change drill 35; #35 for power
-change drill 20; #20 for signals

@@ -1,1 +1,0 @@
-At then end of april 2011 Twitter closed the old feed. This is the v0b firmware branch with the new URL. The backlight should also be enabled.

@@ -1,7 +1,0 @@
-http://dangerousprototypes.com/forum/viewtopic.php?f=29&t=2740&sid=9ba2fd06d04d2993f96ba9c90fc6acac
-
-V21:
--Made to run for multiplaplatform: (Windows, Linux (Fedora,debian) and MacOS leopard
--Change record buffer to 512 bytes as suggested by TitanMKD. Was later confirmed to be the optimum size, but buffer can still be increase for other requirements such as 3d glasses (need confirmation)
-
-

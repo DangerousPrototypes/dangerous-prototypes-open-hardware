@@ -1,1 +1,0 @@
-"..\Microchip\TCPIP Stack\Utilities\MPFS2.exe" /mpfs2 ".\WebPages" "." "DP-MPFSImg2.bin"

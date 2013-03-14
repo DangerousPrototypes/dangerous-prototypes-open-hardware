@@ -1,2 +1,0 @@
-#!/bin/sh
-mono ds30LoaderConsole.exe "$@"

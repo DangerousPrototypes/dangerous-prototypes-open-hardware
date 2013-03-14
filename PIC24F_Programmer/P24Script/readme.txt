@@ -1,1 +1,0 @@
-Just open the script file with notepad to edit.
