@@ -8,11 +8,15 @@ Grid mm;
 
 Edit 'IC_MEM_24AA*.dev';
 Prefix 'IC';
-Description '';
+Description 'I2C EEPROM';
 Value On;
-Add 24AA 'G$1' Next 0 (0 2.54);
-Package 'SOT-23-5' '''''';
+Add 24AA 'IC' Next 0 (0 0);
+Package 'SOT-23-5' '-SOT23-5';
 Technology '';
 Technology '';
 Attribute 24AA '24AA' variable;
-Connect  'G$1.SCL' '1'  'G$1.GND' '2'  'G$1.SDA' '3'  'G$1.VCC' '4'  'G$1.WP' '5';
+Connect  'IC.SCL' '1'  'IC.GND' '2'  'IC.SDA' '3'  'IC.VCC' '4'  'IC.WP' '5';
+Package 'DIP8' '-DIP8';
+Technology '';
+Connect  'IC.A0' '1'  'IC.A1' '2'  'IC.A2' '3'  'IC.GND' '4'  'IC.SDA' '5' \
+         'IC.SCL' '6'  'IC.WP' '7'  'IC.VCC' '8';

@@ -8,9 +8,12 @@ Grid mm;
 
 Edit 'IC_TC74.dev';
 Prefix 'IC';
-Description '';
+Description 'Serial digital thermal sensor';
 Value Off;
-Add TC74 'G$1' Next 0 (0 2.54);
-Package 'SOT-23-5' '''''';
+Add TC74 'IC' Next 0 (0 0);
+Package 'SOT-23-5' '-SOT23-5';
 Technology '';
-Connect  'G$1.GND' '2'  'G$1.VDD' '3'  'G$1.SCL' '4'  'G$1.SDA' '5';
+Connect  'IC.GND' '2'  'IC.VDD' '3'  'IC.SCL' '4'  'IC.SDA' '5';
+Package 'TO-220V-5' '-TO220-5';
+Technology '';
+Connect  'IC.SDA' '2'  'IC.GND' '3'  'IC.SCL' '4'  'IC.VDD' '5';
