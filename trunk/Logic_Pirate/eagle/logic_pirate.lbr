@@ -139,11 +139,11 @@ by exp-project-lbr.ulp</description>
 </package>
 <package name="TINYLOGIC_CHIPKIT_UNO32_MECHANICAL_HDR-1X6_OFFSET">
 <description>1x5 Header with 23 mil holes offset by 3 mils</description>
-<pad name="1" x="-0.1016" y="2.54" drill="0.5842" diameter="1.016" shape="square"/>
-<pad name="2" x="0.1016" y="1.27" drill="0.5842" diameter="1.016"/>
-<pad name="3" x="-0.1016" y="0" drill="0.5842" diameter="1.016"/>
-<pad name="4" x="0.1016" y="-1.27" drill="0.5842" diameter="1.016"/>
-<pad name="5" x="-0.1016" y="-2.54" drill="0.5842" diameter="1.016"/>
+<pad name="1" x="-0.1524" y="2.54" drill="0.5842" diameter="1.016" shape="square"/>
+<pad name="2" x="0.1524" y="1.27" drill="0.5842" diameter="1.016"/>
+<pad name="3" x="-0.1524" y="0" drill="0.5842" diameter="1.016"/>
+<pad name="4" x="0.1524" y="-1.27" drill="0.5842" diameter="1.016"/>
+<pad name="5" x="-0.1524" y="-2.54" drill="0.5842" diameter="1.016"/>
 <text x="-2.54" y="-5.715" size="1.27" layer="25">&gt;NAME</text>
 </package>
 <package name="TINYLOGIC_DP_DEVICES_C0.1PTH">
