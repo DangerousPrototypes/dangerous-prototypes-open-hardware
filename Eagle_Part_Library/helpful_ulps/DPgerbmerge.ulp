@@ -1,0 +1,225 @@
+#usage "Setup gerbmerge inside Eagle\n"
+//Author: Vimark Trocio
+//20130418 - directory checking for each project fix
+//20130419 - gerbmerge config file creation fix, selectable by user.
+//20130422 - added settings for merged panel size
+
+//string dirPython;
+string dirOutput;
+string nameMerged;
+string projDirs[], projNames[];
+int nbrPCB, projMulti[];
+string fConfig;
+real sizePanelX=0.00, sizePanelY=0.00;
+
+int w1(void){
+  //Define how many Project to feed to Gerbmerge
+  return dlgDialog("Gerbmerge config editor"){
+          int nPCB = 1;
+          dlgHBoxLayout{
+            dlgLabel("PCBs to Merge: ");
+            dlgSpinBox(nPCB, 1, 25);
+          }
+          dlgHBoxLayout {
+            dlgPushButton("+Ok") dlgAccept(nPCB);
+            dlgPushButton("Cancel"){
+              dlgReject();
+              exit(0);
+            }
+          }
+        };
+}
+
+void w2(int numPCB){
+  dlgDialog("Directories"){
+    dlgHBoxLayout {
+      dlgVBoxLayout {
+        dlgGridLayout{
+          //Python Directory, may not be useable anymore
+          //dlgLabel("Python Directory");
+          //dlgStringEdit(dirPython);
+          //dlgPushButton("Browse") dirPython=dlgDirectory("Python Directory", "");
+          
+          //Project Directory, A directory where all project subfolders are located
+          dlgCell(0,0)
+          dlgLabel("Output Directory");
+          dlgCell(0,1)
+          dlgStringEdit(dirOutput);
+          dlgCell(0,2)
+          dlgPushButton("Browse") dirOutput=dlgDirectory("Project Directory", "");
+          
+          //Output Directory, Merged/Output Directory
+          dlgCell(0,3)
+          dlgLabel("Output Filename");
+          dlgCell(0,4)
+          dlgStringEdit(nameMerged);
+        }
+        dlgHBoxLayout{        
+          string listNames[]; //texts for list view use
+          
+          //make default project names and directories
+          for(int i=0; i<numPCB; i++){
+            projDirs[i] = "..."; //default value
+            projNames[i] = "Project " + ('1'+ i);
+            listNames[i] = projNames[i] + "\t" + projDirs[i];
+          }
+          
+          int Selected = 0; // first project as default selected
+          dlgListView("Name\tDirectory", listNames, Selected){
+            string newFilePath = dlgFileOpen("Project 1", dirOutput, "*.gbl *.gbo *.gbs *.gtl *.gto *.gts *.txt");
+            projDirs[Selected] = filedir(newFilePath);
+            projNames[Selected] = filename(filesetext(newFilePath, ""));
+            listNames[Selected] = projNames[Selected] + "\t" + projDirs[Selected];
+          }
+        }
+      }
+    }
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("+Next"){
+        //uninitialize directories check
+        int emptyFlag=0, i, ctr=0;
+        string dirEmpty[];
+        for(i=0; i<numPCB; i++){
+          if((projDirs[i]=="...")||(projDirs[i]=="")){ //check only directory, project name is extracted from directory path
+            emptyFlag=1; //flag it when default value or empty
+            dirEmpty[ctr]=projNames[i];
+            ctr++;
+          }
+        }
+        //if(!dirPython) dlgMessageBox("You did not define Python directory\nPlease define directory where Gerbmerge reside");
+        if(!dirOutput) dlgMessageBox("You did not define your Output directory\nThis is where all your merged project/s goes");
+        else if(!nameMerged) nameMerged="merged"; //dont bother to ask anymore
+        else if(emptyFlag){
+          string msg ="";
+          for(i=0; i<ctr; i++) msg += "\n" + dirEmpty[i];
+          dlgMessageBox("You haven't provide:" + msg);
+        }
+        else dlgAccept();
+      };
+      dlgPushButton("Cancel"){
+        dlgReject();
+        exit(0);
+      }
+    }
+  };
+}
+
+void w3(void){
+  dlgDialog("Populate Panel and Panel Size"){
+    dlgGroup("Project Multiple"){
+      dlgGridLayout{
+        for(int i=0; i<nbrPCB; i++){
+          dlgCell(0+i,0) dlgSpinBox(projMulti[i], 1, 10);
+          dlgCell(0+i,1) dlgLabel("x " + projNames[i]);
+        }
+      }
+    };
+    dlgGroup("Set Panel Size"){
+    //Panel size, units are in inches
+      dlgHBoxLayout{
+      dlgRealEdit(sizePanelX, 0.00, 12.00);
+      dlgLabel(" x ");
+      dlgRealEdit(sizePanelY, 0.00, 12.00);
+      dlgLabel(" (inches)");
+      }
+    };
+    dlgHBoxLayout {
+      dlgPushButton("+Yey! Create gerbmerge config now"){
+        fConfig=dlgFileSave("Save gerbmerge config file", dirOutput, "*.cfg");
+        if(fConfig) dlgAccept();
+      }
+      dlgPushButton("Cancel") dlgReject();
+    }
+  };
+}
+//Dialog sequence
+nbrPCB = w1();
+w2(nbrPCB);
+w3();
+
+//start processing gerbmerge config
+string config;
+string num;
+
+config += "#DPgerbmerge ULP generated";
+
+//gerbmerge DEFAULT
+config += "\n[DEFAULT]";
+config += "\nprojdir=" + dirOutput;
+config += "\nMergeOut=" + nameMerged;
+
+//gerbmerge Optional settings
+config += "\n[Options]";
+config += "\nCutLineLayers = *topsilkscreen,*bottomsilkscreen";
+config += "\nCropMarkLayers = *topsilkscreen,*bottomsilkscreen";
+config += "\nFabricationDrawingFile = %%(projdir)s/%%(mergeout)s.fab";
+config += "\nFabricationDrawingText = %%(projdir)s/%%(mergeout)s.txt";
+config += "\nExcellonLeadingZeros = 0";
+config += "\nOutlineLayerFile = %%(projdir)s/%%(mergeout)s.oln";
+config += "\nScoringFile = %%(projdir)s/%%(mergeout)s.sco";
+
+//no itoa() in Eagle ULP, so we use sprintf() alternatively
+sprintf(num, "%f", sizePanelX);
+config += "\nPanelWidth = " + num;
+sprintf(num, "%f", sizePanelY);
+config += "\nPanelHeight = " + num;
+config += "\nLeftMargin   = 0.1";
+config += "\nRightMargin  = 0.1";
+config += "\nTopMargin    = 0.1";
+config += "\nBottomMargin = 0.1";
+config += "\nXSpacing = 0.065";
+config += "\nYSpacing = 0.065";
+config += "\nCutLineWidth = 0.01";
+config += "\nCropMarkWidth = 0.01";
+config += "\nAllowMissingLayers = 1";
+config += "\nDrillClusterTolerance = 0.002";
+config += "\nMinimumFeatureSize = *topsilkscreen,0.008,*bottomsilkscreen,0.008";
+
+//Merged Output
+config += "\n";
+config += "\n[MergeOutputFiles]";
+config += "\nPrefix =%%(projdir)s/%%(mergeout)s";
+
+config += "\n*TopLayer=%%(prefix)s.GTL";
+config += "\n*BottomLayer=%%(prefix)s.GBL";
+config += "\n*TopSilkscreen=%%(prefix)s.GTO";
+config += "\n*BottomSilkscreen=%%(prefix)s.GBO";
+config += "\n*TopSoldermask=%%(prefix)s.GTS";
+config += "\n*BottomSoldermask=%%(prefix)s.GBS";
+//DP, cannot change .drd to .txt directly as 'Drills' are reserved names in gerbmerge
+config += "\nDrills=%%(prefix)s.drd";
+config += "\nBoardOutline=%%(prefix)s.bor";
+config += "\nToolList = %%(prefix)s.drl";
+config += "\nPlacement = %%(prefix)s.txt";
+
+//Project to be marged
+for(int i=0; i<nbrPCB; i++){
+  config += "\n";
+  config += "\n[" + projNames[i] + "]";
+  config += "\nPrefix="+projDirs[i] + projNames[i];
+  
+  config += "\n*TopLayer=%%(prefix)s.GTL";
+  config += "\n*BottomLayer=%%(prefix)s.GBL";
+  config += "\n*TopSilkscreen=%%(prefix)s.GTO";
+  config += "\n*BottomSilkscreen=%%(prefix)s.GBO";
+  config += "\n*TopSoldermask=%%(prefix)s.GTS";
+  config += "\n*BottomSoldermask=%%(prefix)s.GBS";
+  config += "\nDrills=%%(prefix)s.TXT";
+  config += "\nBoardOutline=%%(prefix)s.BOR";
+  
+  //Board multiple
+  sprintf(num, "%d", projMulti[i]); //no itoa() in Eagle ULP, so we use sprintf() alternatively
+  config += "\nRepeat = " + num;
+}
+
+board (B){
+  if(fConfig){
+    output(fConfig, "wt") {
+      printf(config);
+    }
+  }
+  else dlgMessageBox("no config file created");
+}
+
+exit(0);
