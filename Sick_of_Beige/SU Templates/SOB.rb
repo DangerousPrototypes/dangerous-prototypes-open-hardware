@@ -44,11 +44,10 @@ def SOB.create_top_bottom(x,y,z)
 	
 	# 4 corners of our piece
 	if @sideType == 0
-		@slotToEdgeDistance = 1.m
-		northWestPt = centerPt + [-@pcbWidth/2,@pcbLength/2,0] + [-@slotToEdgeDistance,@slotToEdgeDistance,0]
-		northEastPt = centerPt + [@pcbWidth/2,@pcbLength/2,0] + [@slotToEdgeDistance,@slotToEdgeDistance,0]
-		southWestPt = centerPt + [-@pcbWidth/2,-@pcbLength/2,0] + [-@slotToEdgeDistance,-@slotToEdgeDistance,0]
-		southEastPt = centerPt + [@pcbWidth/2,-@pcbLength/2,0] + [@slotToEdgeDistance,-@slotToEdgeDistance,0]
+		northWestPt = centerPt + [-@pcbWidth/2,@pcbLength/2,0] + [-@pcbToSideDistance,@pcbToSideDistance,0]
+		northEastPt = centerPt + [@pcbWidth/2,@pcbLength/2,0] + [@pcbToSideDistance,@pcbToSideDistance,0]
+		southWestPt = centerPt + [-@pcbWidth/2,-@pcbLength/2,0] + [-@pcbToSideDistance,-@pcbToSideDistance,0]
+		southEastPt = centerPt + [@pcbWidth/2,-@pcbLength/2,0] + [@pcbToSideDistance,-@pcbToSideDistance,0]
 	else
 		northWestPt = centerPt + [-@pcbWidth/2,@pcbLength/2,0] + [-@pcbToSideDistance,@pcbToSideDistance,0] + [-@acrylicThickness,@acrylicThickness,0] + [-@slotToEdgeDistance,@slotToEdgeDistance,0]
 		northEastPt = centerPt + [@pcbWidth/2,@pcbLength/2,0] + [@pcbToSideDistance,@pcbToSideDistance,0] + [@acrylicThickness,@acrylicThickness,0] + [@slotToEdgeDistance,@slotToEdgeDistance,0]
