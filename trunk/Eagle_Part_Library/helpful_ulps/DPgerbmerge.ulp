@@ -127,6 +127,11 @@ void w3(void){
     dlgHBoxLayout {
       dlgPushButton("+Yey! Create gerbmerge config now"){
         fConfig=dlgFileSave("Save gerbmerge config file", dirOutput, "*.cfg");
+        //a zero value is stored at projMulti variable when dlgSpinBox is not touched
+        //we force projMulti[] to a min value of 1
+        for(int i=0; i<nbrPCB; i++){
+          if(!projMulti[i]) projMulti[i]=1;
+        }
         if(fConfig) dlgAccept();
       }
       dlgPushButton("Cancel") dlgReject();
