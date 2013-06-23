@@ -531,7 +531,7 @@ static const char meta_info[] = { "\x01" "Logic Pirate ("
 #else
                                   "40"
 #endif
-                                  " MHz)" "\x00" "\x02" "2013-02-01" "\x00" "\x00" };
+                                  " MHz)" "\x00" "\x02" "2013-06-23" "\x00" "\x00" };
 static config_t config = { 0 };
 static bool do_fill_ram = false;
 static uint32_t delayed_fill_counter = 0;
