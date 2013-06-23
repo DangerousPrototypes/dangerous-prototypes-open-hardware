@@ -522,6 +522,8 @@ static void user_init()
 #define LC_SET_TRIGGER_VALUES_0        0xC1 // 0xC5 0xC9 0xCD
 #define LC_SET_TRIGGER_CONFIGURATION_0 0xC2 // 0xC6 0xCA 0xCE
 
+static const char id_string[ 4 ] = { "1ALS" };
+
 // http://dangerousprototypes.com/docs/The_Logic_Sniffer%27s_extended_SUMP_protocol#Metadata_command
 static const char meta_info[] = { "\x01" "Logic Pirate ("
 #if defined( OVERCLOCK )
@@ -565,10 +567,10 @@ static void process_io()
             start_sampling( &config );
             break;
         case SC_ID:
-            putrsUSBUSART( "1ALS" );
+            putUSBUSART( (char *)id_string, 4 ); // 1ALS.
             break;
         case SC_META:
-            putUSBUSART( (char *)meta_info, sizeof( meta_info ) );
+            putUSBUSART( (char *)meta_info, sizeof( meta_info ) - 1 ); // Do not send the string terminator \0x00.
             break;
         case LC_SET_DIVIDER:
         case LC_SET_TRIGGER_MASK_0:
