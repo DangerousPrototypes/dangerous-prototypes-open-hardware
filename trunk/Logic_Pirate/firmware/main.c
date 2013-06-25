@@ -48,7 +48,7 @@
 #include "usb_config.h"
 
 static char USB_In_Buffer[ USB_IN_ENDPOINT_PACKET_SIZE ];
-//static char USB_Out_Buffer[ 64 ];
+static char USB_Out_Buffer[ CDC_DATA_OUT_EP_SIZE ];
 
 static void user_init();
 static void process_io();
@@ -531,7 +531,7 @@ static const char meta_info[] = { "\x01" "Logic Pirate ("
 #else
                                   "40"
 #endif
-                                  " MHz)" "\x00" "\x02" "2013-06-23" "\x00" "\x00" };
+                                  " MHz)" "\x00" "\x02" "2013-06-25" "\x00" "\x00" };
 static config_t config = { 0 };
 static bool do_fill_ram = false;
 static uint32_t delayed_fill_counter = 0;
@@ -541,18 +541,23 @@ static void process_io()
         return;
     }
 
-    uint8_t byte_count;
-    uint8_t command;
-    uint8_t lc[ 5 ];
-    // The following mechanism to read data currently relies on the fact, that the OLS sends
-    // one command at a time.  Calling getsUSBUSART() seems to consume all the bytes in the USB
-    // buffer, even when specifying less bytes, e.g. 5, and additional bytes eventually available
-    // are lost and not returned in the next call to getsUSBUSART().  So be carefull.
-    // Example: sending 0x00 0x00 0x00 0x00 0x00 and then 0x02 works, but if it would be sent as
-    // 0x00 0x00 0x00 0x00 0x00 0x02 in one transfer, 0x02 would get lost.
-    byte_count = getsUSBUSART( lc, 5 );
+    static uint8_t byte_count = 0;
+    static uint8_t byte_index = 0;
+    // Calling getsUSBUSART() seems to consume all the bytes in the USB buffer, even when specifying
+    // less bytes, e.g. 5.  Any additional bytes eventually available are lost and not returned in
+    // the subsequent call to getsUSBUSART(), as one might possibly expect.  So it is good practice
+    // to read CDC_DATA_OUT_EP_SIZE bytes.
+    // The following mechanism to read data currently requires that the host never sends more than
+    // CDC_DATA_OUT_EP_SIZE bytes.  The mechanism would break, if a command spans over
+    // CDC_DATA_OUT_EP_SIZE into the buffer of the next transfer.
+    if ( byte_index >= byte_count ) {
+        byte_index = 0;
+        byte_count = getsUSBUSART( USB_Out_Buffer, CDC_DATA_OUT_EP_SIZE );
+    }
     if ( byte_count > 0 ) {
-        command = lc[ 0 ];
+        uint8_t command = USB_Out_Buffer[ byte_index++ ];
+        uint8_t lc[ 4 ];
+        uint8_t i;
         switch ( command ) {
         case SC_RESET:
             if ( is_ram_dirty ) {
@@ -580,29 +585,32 @@ static void process_io()
         case LC_SET_FLAGS:
         case 't':
         case 'p':
+            for ( i = 0; i < sizeof( lc ); ++i ) {
+                lc[ i ] = USB_Out_Buffer[ byte_index++ ];
+            }
             switch ( command ) {
             case LC_SET_DIVIDER:
-                config.divider = ( lc[ 3 ] << 16 ) | ( lc[ 2 ] << 8 ) | lc[ 1 ];
+                config.divider = ( lc[ 2 ] << 16 ) | ( lc[ 1 ] << 8 ) | lc[ 0 ];
                 break;
             case LC_SET_TRIGGER_MASK_0:
-                config.trigger_mask = lc[ 1 ];
+                config.trigger_mask = lc[ 0 ];
                 config.use_trigger = config.trigger_mask != 0;
                 break;
             case LC_SET_READ_AND_DELAY_COUNT:
-                config.read_count = ( lc[ 2 ] << 8 ) | lc[ 1 ];
+                config.read_count = ( lc[ 1 ] << 8 ) | lc[ 0 ];
                 ++config.read_count; // Seems to be a quirk of the SUMP protocol.
                 ++config.read_count;
-                config.delay_count = ( lc[ 4 ] << 8 ) | lc[ 3 ];
+                config.delay_count = ( lc[ 3 ] << 8 ) | lc[ 2 ];
                 ++config.delay_count;
                 if ( config.delay_count < LATENCY_CORRECTION + 1 ) { // Workaround to prevent the timer period from becoming 0 or negative.
                     config.delay_count = LATENCY_CORRECTION + 1;
                 }
                 break;
             case 't':
-                set_test_pin( ( lc[ 2 ] << 8 ) | lc[ 1 ], ( lc[ 4 ] << 8 ) | lc[ 3 ] );
+                set_test_pin( ( lc[ 1 ] << 8 ) | lc[ 0 ], ( lc[ 3 ] << 8 ) | lc[ 2 ] );
                 break;
             case 'p':
-                T3CONbits.TCKPS = lc[ 1 ];
+                T3CONbits.TCKPS = lc[ 0 ];
                 break;
             default:
                 break;
