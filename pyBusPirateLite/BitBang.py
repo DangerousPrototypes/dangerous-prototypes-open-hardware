@@ -82,7 +82,7 @@ class BBIO:
 
 	def reset(self):
 		self.port.write("\x00")
-		time.sleep(0.1)
+		self.timeout(0.1)
 
 	def enter_SPI(self):
 		self.response(5, errOnTimout=False)
@@ -143,12 +143,10 @@ class BBIO:
 
 		return self.response(1)
 
+	def timeout(self, timeout=0.1):
+		time.sleep(timeout)
 
-	def response(self, byte_count=1, return_data=False, timeout=0.1, errOnTimout=True):		# This is basically the primary communication function.
-													# The timeout function is new, and the other tools (aside from the SPI library, which has been tested pretty thoroughly)
-													# will need to be tested
-
-													# Adding the ability to receive an unknown number of bytes would be a very good idea in the near future
+	def response(self, byte_count=1, return_data=False, timeout=0.1, errOnTimout=True):
 
 		startTime = time.time()
 
@@ -160,7 +158,7 @@ class BBIO:
 
 		data = self.port.read(byte_count)
 
-		if byte_count == 1 and return_data is False:				# If you don't request anyt return data, the bus-pirate returns 0x01 upon success
+		if byte_count == 1 and return_data == False:
 			if data == chr(0x01):
 				return 1
 			else:
