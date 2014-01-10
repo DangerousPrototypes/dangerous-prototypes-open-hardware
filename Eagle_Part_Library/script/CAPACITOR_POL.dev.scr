@@ -23,3 +23,6 @@ Connect  'C.-' '-'  'C.+' '+';
 Package 'CASE_B' '-CASE_B';
 Technology '';
 Connect  'C.-' '-'  'C.+' '+';
+Package 'SMC_C' '-SMC_C';
+Technology '';
+Connect  'C.+' '+'  'C.-' '-';

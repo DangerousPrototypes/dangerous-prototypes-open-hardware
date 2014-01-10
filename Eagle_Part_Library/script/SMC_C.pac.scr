@@ -6,26 +6,26 @@
 Set Wire_Bend 2;
 Grid mm;
 
-Edit 'SMC_B.pac';
+Edit 'SMC_C.pac';
 Description '\
-<b> CASE-B (1210) </b>\n\
-<br>LWH: 3.20 x 2.80 x 1.90\n\
-<br>pad size: 1.40 x 2.80\n\
-<br>pad pitch: 1.20\n\
+<b> CASE-C (2312) </b>\n\
+<br>LWH: 6.00 x 3.20 x 2.60\n\
+<br>pad size: 2.00 x 2.80\n\
+<br>pad pitch: 4.50\n\
 <br>unit: mm';
 Layer 51;
-Rect R0 (-1.75 -1.1) (-1.55 1.1);
+Rect R0 (-3 -1.1) (-2.85 1.1);
 Layer 51;
-Rect R180 (1.55 -1.1) (1.75 1.1);
+Rect R180 (2.85 -1.1) (3 1.1);
 Layer 51;
-Wire  0.1016 (-1.6 1.35) (1.6 1.35) (1.6 -1.35) (-1.6 -1.35) \
-      (-1.6 1.35);
+Wire  0.1016 (-2.85 1.35) (2.85 1.35) (2.85 -1.35) (-2.85 -1.35) \
+      (-2.85 1.35);
 Layer 51;
-Rect R0 (-1.6 -1.35) (-0.95 1.35);
+Rect R0 (-2.87 -1.35) (-2.22 1.35);
 Layer 1;
-Smd '+' 1.4 2.8 -0 R0 (-1.3 0);
+Smd '+' 2 2.8 -0 R0 (-2.25 0);
 Layer 1;
-Smd '-' 1.4 2.8 -0 R180 (1.3 0);
+Smd '-' 2 2.8 -0 R180 (2.25 0);
 Layer 25;
 Change Size 1.27;
 Change Ratio 10;
