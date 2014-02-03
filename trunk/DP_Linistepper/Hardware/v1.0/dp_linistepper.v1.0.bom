@@ -1,0 +1,40 @@
+Partlist exported from C:/vimark/electronics/projects_wherelabs/pcb_wherelabs/DP Linistepper/dp_linistepper.v1.0.sch at 1/16/2014 5:08:51 PM
+
+Qty Value                     Device                    Parts                                    
+2   2.2uF 35V                 CPOL-EUETR1               C1, C2 
+1   10uF 25V                  CPOL-EUETR1               C3    
+2   22pF                      CAPACITOR_NPOL-PTH_0.1"   C4, C6                                   
+1                             CPOL-EUE5-13              C5   
+
+4   120R                      RESISTOR-PTH-0.4          R1, R2, R12, R13                                      
+2                             RHPS923                   R3, R8     
+2   470R                      RESISTOR-PTH-0.4          R4, R17                               
+2                             RHPS63                    R5, R9  
+9   3.3K                      RESISTOR-PTH-0.4          R6, R7, R10, R11, R21, R22, R23, R24, R25                                 
+2   680R                      RESISTOR-PTH-0.4          R14, R20 
+2   220R                      RESISTOR-PTH-0.4          R15, R19  
+2   150R                      RESISTOR-PTH-0.4          R16, R18 
+4   BC337                     BC337                     Q3, Q5, Q7, Q8                           
+6   1N4148                    1N4148                    D1, D2, D3, D4, D5, D6  
+4   TIP122                    2SC2098V                  Q1, Q2, Q4, Q6                                           
+1   16Mhz                     OSC-XTAL-HC-49U-PTH       XTAL1   
+1   PIC16F628P                PIC16F628P                IC1                                      
+
+                                   
+
+
+                                 
+
+                       
+                                
+                               
+                                 
+                                
+
+1   CON_HEADER_2X02-PTH       CON_HEADER_2X02-PTH       J4                                       
+1   CON_HEADER_2X05-PTH       CON_HEADER_2X05-PTH       J1                                       
+2   CON_TERMINAL_BLOCK_03-5MM CON_TERMINAL_BLOCK_03-5MM J2, J3                                   
+                                      
+
+
+
