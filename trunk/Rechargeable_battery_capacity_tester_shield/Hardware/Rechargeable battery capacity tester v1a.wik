@@ -1,0 +1,42 @@
+{| class="wikitable" border="1"
+|+ C:/vimark/electronics/projects_wherelabs/pcb_wherelabs/Rechargeable_battery_capacity_tester_shield/Hardware/Rechargeable battery capacity tester v1a.brd
+!Part!!Quantity!!Value!!Package
+|-
+|ARDUINO1||1||CON_ARDUINO||CON_ARDUINO
+|-
+|BATT-1,BATT-2,BATT-3||3||CON_TERMINAL_BLOCK_02-5MM||TERMINAL_BLOCK_2P_5
+|-
+|BUTTON1||1||||SW_TACT_SMALL
+|-
+|J1||1||CON_JST_2PIN-PTH||CON_JST_2PIN
+|-
+|J3,J5||2||CON_HEADER_1X08-PTH||M1X8
+|-
+|Q1,Q2,Q3||3||IRL3103S||D2PAK
+|-
+|Q4||1||BS170 500mA max||SOT-23
+|-
+|R1||1||1K||R603
+|-
+|R2,R4,R5||3||2.5R 9W||KH214-8
+|-
+|R3,R8,R13||3||2M||R603
+|-
+|R17||1||180R||R603
+|-
+|R18-R,R22-R,R26,R26||6||1.8K||R603
+|-
+|R19-R,R23-R,R27,R27||6||3.3K||R603
+|-
+|R30||1||30R||R603
+|-
+|SP1||1||AL60P||AL60P
+|-
+|U$1||1||FRAME_DINA4_L||DP_LOGO
+|-
+|U$2||1||||DP_LOGO_ART_1.5X1.5
+|-
+|U$3||1||||LOGO_CC-BY-SA
+|-
+|U$4||1||||OSHW_10X750_NOTEXT
+|}
