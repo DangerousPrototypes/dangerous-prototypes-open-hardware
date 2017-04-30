@@ -1,5 +1,5 @@
 EESchema Schematic File Version 2
-LIBS:logic pirate-rescue
+LIBS:logic_pirate_THT-rescue
 LIBS:power
 LIBS:device
 LIBS:transistors

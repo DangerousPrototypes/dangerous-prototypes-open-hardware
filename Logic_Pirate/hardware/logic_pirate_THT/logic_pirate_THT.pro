@@ -29,7 +29,7 @@ version=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=logic pirate-rescue
+LibName1=logic_pirate_THT-rescue
 LibName2=power
 LibName3=device
 LibName4=transistors
