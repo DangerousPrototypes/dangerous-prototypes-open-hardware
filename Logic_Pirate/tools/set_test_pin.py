@@ -1,6 +1,10 @@
 import serial, struct, sys
 
-ser = serial.Serial( 'COM24', timeout=None )
+try:
+    ser = serial.Serial( 'COM24', timeout=None )
+except serial.SerialException:
+    print("The selected port does not exist.")
+    exit()
 
 frequency = 10000000 # 2 .. 10000000 (15000000 with OVERCLOCK)
 duty_percent = 50
