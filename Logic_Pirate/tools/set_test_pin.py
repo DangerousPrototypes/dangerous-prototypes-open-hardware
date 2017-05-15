@@ -1,4 +1,4 @@
-import serial, struct
+import serial, struct, sys
 
 ser = serial.Serial( 'COM24', timeout=None )
 
@@ -33,8 +33,11 @@ else:
 timer_clock = PBCLK / prescale_value
 period = int( timer_clock / frequency )
 duty_cycle = int( timer_clock / frequency * duty_percent / 100 )
-print timer_clock / float( period ), 'Hz,', duty_cycle * 100 / float( period ), '%'
-ser.write( 't' + struct.pack( '<H', period - 1 ) + struct.pack( '<H', duty_cycle ) )
-ser.write( 'p' + struct.pack( '<B', TCKPS ) )
-
+print (timer_clock / float( period ), 'Hz,', duty_cycle * 100 / float( period ), '%')
+if sys.version_info[0] < 3:
+    ser.write( 't' + struct.pack( '<H', period - 1 ) + struct.pack( '<H', duty_cycle ) )
+    ser.write( 'p' + struct.pack( '<B', TCKPS ) )
+else:
+    ser.write( bytes('t',encoding='utf-8') + struct.pack( '<H', period - 1 ) + struct.pack( '<H', duty_cycle ) )
+    ser.write( bytes('p',encoding='utf-8') + struct.pack( '<B', TCKPS ) )
 ser.close()
